@@ -36,10 +36,10 @@ class VocabularyDatabase extends Dexie {
       categories: '++id, name',
       studySessions: '++id, wordId, timestamp',
       studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
-    }).upgrade((tx) => {
-      // 迁移单词表
+    }).upgrade(async (tx) => {
+      // 迁移单词表（必须 await，否则 Dexie 会在事务提交前返回导致迁移未完成）
       const wordTable = tx.table<Word>('words')
-      wordTable.toCollection().modify((word) => {
+      await wordTable.toCollection().modify((word) => {
         if (!word.definitions || word.definitions.length === 0) {
           const defs: Definition[] = []
           if (word.definition || word.translation) {
@@ -56,7 +56,7 @@ class VocabularyDatabase extends Dexie {
       })
       // 迁移短句表
       const sentenceTable = tx.table<Sentence>('sentences')
-      sentenceTable.toCollection().modify((s) => {
+      await sentenceTable.toCollection().modify((s) => {
         if (!s.definitions || s.definitions.length === 0) {
           if (s.translation) {
             s.definitions = [{ pos: '', def: '', trans: s.translation }]

@@ -77,17 +77,26 @@ export function ImportSentences() {
   }, [])
 
   const handleFile = async (file: File) => {
-    const text = await file.text()
-    setContent(text)
-    setResult(null)
-    const lower = file.name.toLowerCase()
-    const fmt: Format = lower.endsWith('.json')
-      ? 'json'
-      : lower.endsWith('.csv')
-      ? 'csv'
-      : 'text'
-    setFormat(fmt)
-    parse(text, fmt)
+    // 限制文件大小，避免大文件把页面卡死
+    if (file.size > 10 * 1024 * 1024) {
+      toast('error', '文件过大(>10MB)，请拆分后导入')
+      return
+    }
+    try {
+      const text = await file.text()
+      setContent(text)
+      setResult(null)
+      const lower = file.name.toLowerCase()
+      const fmt: Format = lower.endsWith('.json')
+        ? 'json'
+        : lower.endsWith('.csv')
+        ? 'csv'
+        : 'text'
+      setFormat(fmt)
+      parse(text, fmt)
+    } catch (e) {
+      toast('error', '读取文件失败: ' + (e as Error).message)
+    }
   }
 
   const parse = (text: string, fmt: Format = format) => {
@@ -126,9 +135,14 @@ export function ImportSentences() {
         return
       }
       targetCategory = name
+      // 如果新分类还不存在,先建一个；并发/竞态下若已存在则忽略
       const exists = categories.some((c) => c.name === name)
       if (!exists) {
-        await addCategory(name)
+        try {
+          await addCategory(name)
+        } catch (e) {
+          toast('warning', '分类创建失败: ' + (e as Error).message)
+        }
       }
     } else if (categoryChoice !== KEEP_FILE_CATEGORY) {
       targetCategory = categoryChoice
@@ -143,6 +157,9 @@ export function ImportSentences() {
       })
       setResult(r)
       toast('success', `成功导入 ${r.added} 个短句`)
+    } catch (e) {
+      toast('error', '导入失败: ' + (e as Error).message)
+      setResult(null)
     } finally {
       setImporting(false)
     }
@@ -226,7 +243,6 @@ export function ImportSentences() {
             setContent(e.target.value)
             setResult(null)
           }}
-          onBlur={handleParse}
           placeholder={SAMPLES[format]}
           className="input-field font-mono min-h-[200px]"
         />

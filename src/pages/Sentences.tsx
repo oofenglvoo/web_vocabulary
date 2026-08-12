@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Plus, Upload } from 'lucide-react'
 import {
@@ -11,6 +11,7 @@ import {
 } from '../hooks/useSentences'
 import { useCategories } from '../hooks/useWords'
 import { SelectableWordList } from '../components/SelectableWordList'
+import { ConfirmModal } from '../components/ConfirmModal'
 import { SentenceCard } from '../components/SentenceCard'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
@@ -26,8 +27,11 @@ export function Sentences() {
   const [category, setCategory] = useState('全部')
   const [showMove, setShowMove] = useState(false)
   const [moveIds, setMoveIds] = useState<number[]>([])
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null)
+  const [confirmBatchDelete, setConfirmBatchDelete] = useState(false)
+  const [batchDeleteIds, setBatchDeleteIds] = useState<number[]>([])
 
-  const categoryList = ['全部', ...new Set(sentences.map((s) => s.category))]
+  const categoryList = useMemo(() => ['全部', ...new Set(sentences.map((s) => s.category))], [sentences])
   const filtered = category === '全部' ? sentences : sentences.filter((s) => s.category === category)
 
   const handleMoveTo = async (cat: string) => {
@@ -71,12 +75,7 @@ export function Sentences() {
         onSearchChange={setSearch}
         onWordClick={(s) => navigate(`/sentence/${s.id}?scope=all`)}
         onFavorite={(s) => toggleSentenceFavorite(s.id!, s.isFavorite)}
-        onDelete={(s) => {
-          if (confirm('确定删除?')) {
-            deleteSentence(s.id!)
-            toast('success', '短句已删除')
-          }
-        }}
+        onDelete={(s) => setConfirmDeleteId(s.id!)}
         renderItem={renderSentence}
         matchSearch={(q, s) => {
           const defs = s.definitions ?? []
@@ -99,10 +98,8 @@ export function Sentences() {
             toast('success', `已收藏 ${ids.length} 个短句`)
           },
           onDeleteAll: (ids) => {
-            if (confirm(`确定删除选中的 ${ids.length} 个短句?`)) {
-              bulkDeleteSentences(ids)
-              toast('success', '已删除选中短句')
-            }
+            setBatchDeleteIds(ids)
+            setConfirmBatchDelete(true)
           },
         }}
       />
@@ -128,6 +125,32 @@ export function Sentences() {
             </button>
           </div>
         </div>
+      )}
+
+      {confirmDeleteId !== null && (
+        <ConfirmModal
+          title="删除短句?"
+          message="删除后不可恢复（相关计划引用会一并清理）"
+          confirmText="删除"
+          onConfirm={async () => {
+            await deleteSentence(confirmDeleteId)
+            toast('success', '短句已删除')
+          }}
+          onCancel={() => setConfirmDeleteId(null)}
+        />
+      )}
+
+      {confirmBatchDelete && (
+        <ConfirmModal
+          title="删除选中的短句?"
+          message={`共 ${batchDeleteIds.length} 个短句`}
+          confirmText="删除"
+          onConfirm={async () => {
+            await bulkDeleteSentences(batchDeleteIds)
+            toast('success', `已删除 ${batchDeleteIds.length} 个短句`)
+          }}
+          onCancel={() => setConfirmBatchDelete(false)}
+        />
       )}
     </div>
   )

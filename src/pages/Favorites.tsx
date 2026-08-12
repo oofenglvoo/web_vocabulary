@@ -19,6 +19,7 @@ import {
   bulkDeleteSentences,
 } from '../hooks/useSentences'
 import { SelectableWordList } from '../components/SelectableWordList'
+import { ConfirmModal } from '../components/ConfirmModal'
 import { SentenceCard } from '../components/SentenceCard'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
@@ -37,20 +38,28 @@ export function Favorites() {
   const [tab, setTab] = useState<Tab>('word')
   const [search, setSearch] = useState('')
   const [showMove, setShowMove] = useState(false)
-  const [moveIds, setMoveIds] = useState<number[]>([])
+  // 分开记录要移动的单词/短句 ID，避免切 tab 时串表
+  const [moveWordIds, setMoveWordIds] = useState<number[]>([])
+  const [moveSentenceIds, setMoveSentenceIds] = useState<number[]>([])
+  const [confirmDeleteWordId, setConfirmDeleteWordId] = useState<number | null>(null)
+  const [confirmDeleteSentenceId, setConfirmDeleteSentenceId] = useState<number | null>(null)
+  const [confirmBatchWordDelete, setConfirmBatchWordDelete] = useState(false)
+  const [confirmBatchSentenceDelete, setConfirmBatchSentenceDelete] = useState(false)
+  const [batchWordIds, setBatchWordIds] = useState<number[]>([])
+  const [batchSentenceIds, setBatchSentenceIds] = useState<number[]>([])
 
   const handleMoveToWord = async (cat: string) => {
-    await bulkSetCategory(moveIds, cat)
-    toast('success', `已移动 ${moveIds.length} 个单词到「${cat}」`)
+    await bulkSetCategory(moveWordIds, cat)
+    toast('success', `已移动 ${moveWordIds.length} 个单词到「${cat}」`)
     setShowMove(false)
-    setMoveIds([])
+    setMoveWordIds([])
   }
 
   const handleMoveToSentence = async (cat: string) => {
-    await bulkSetSentenceCategory(moveIds, cat)
-    toast('success', `已移动 ${moveIds.length} 个短句到「${cat}」`)
+    await bulkSetSentenceCategory(moveSentenceIds, cat)
+    toast('success', `已移动 ${moveSentenceIds.length} 个短句到「${cat}」`)
     setShowMove(false)
-    setMoveIds([])
+    setMoveSentenceIds([])
   }
 
   const renderSentence = (
@@ -118,18 +127,13 @@ export function Favorites() {
             onSearchChange={setSearch}
             onWordClick={(w) => navigate(`/word/${w.id}?scope=favorites`)}
             onFavorite={(w) => toggleFavorite(w.id!, w.isFavorite)}
-            onDelete={(w) => {
-              if (confirm('确定删除?')) {
-                deleteWord(w.id!)
-                toast('success', '单词已删除')
-              }
-            }}
+            onDelete={(w) => setConfirmDeleteWordId(w.id!)}
             emptyText="收藏夹是空的"
             emptyHint="在单词详情页点心形图标即可收藏"
             emptyAction={{ label: '批量导入并收藏', href: '/import?favorite=1' }}
             batchActions={{
               onMoveToCategory: (ids) => {
-                setMoveIds(ids)
+                setMoveWordIds(ids)
                 setShowMove(true)
               },
               onUnfavoriteAll: (ids) => {
@@ -137,10 +141,8 @@ export function Favorites() {
                 toast('success', '已取消收藏')
               },
               onDeleteAll: (ids) => {
-                if (confirm(`确定删除选中的 ${ids.length} 个单词?`)) {
-                  bulkDeleteWords(ids)
-                  toast('success', '已删除选中单词')
-                }
+                setBatchWordIds(ids)
+                setConfirmBatchWordDelete(true)
               },
             }}
           />
@@ -163,12 +165,7 @@ export function Favorites() {
             onSearchChange={setSearch}
             onWordClick={(s) => navigate(`/sentence/${s.id}?scope=favorites`)}
             onFavorite={(s) => toggleSentenceFavorite(s.id!, s.isFavorite)}
-            onDelete={(s) => {
-              if (confirm('确定删除?')) {
-                deleteSentence(s.id!)
-                toast('success', '短句已删除')
-              }
-            }}
+            onDelete={(s) => setConfirmDeleteSentenceId(s.id!)}
             renderItem={renderSentence}
             matchSearch={(q, s) => {
               const defs = s.definitions ?? []
@@ -180,7 +177,7 @@ export function Favorites() {
             emptyAction={{ label: '批量导入并收藏', href: '/sentences/import?favorite=1' }}
             batchActions={{
               onMoveToCategory: (ids) => {
-                setMoveIds(ids)
+                setMoveSentenceIds(ids)
                 setShowMove(true)
               },
               onUnfavoriteAll: (ids) => {
@@ -188,10 +185,8 @@ export function Favorites() {
                 toast('success', '已取消收藏')
               },
               onDeleteAll: (ids) => {
-                if (confirm(`确定删除选中的 ${ids.length} 个短句?`)) {
-                  bulkDeleteSentences(ids)
-                  toast('success', '已删除选中短句')
-                }
+                setBatchSentenceIds(ids)
+                setConfirmBatchSentenceDelete(true)
               },
             }}
           />
@@ -221,6 +216,58 @@ export function Favorites() {
             </button>
           </div>
         </div>
+      )}
+
+      {confirmDeleteWordId !== null && (
+        <ConfirmModal
+          title="删除单词?"
+          message="删除后不可恢复（相关学习记录与计划引用会一并清理）"
+          confirmText="删除"
+          onConfirm={async () => {
+            await deleteWord(confirmDeleteWordId)
+            toast('success', '单词已删除')
+          }}
+          onCancel={() => setConfirmDeleteWordId(null)}
+        />
+      )}
+
+      {confirmDeleteSentenceId !== null && (
+        <ConfirmModal
+          title="删除短句?"
+          message="删除后不可恢复（相关计划引用会一并清理）"
+          confirmText="删除"
+          onConfirm={async () => {
+            await deleteSentence(confirmDeleteSentenceId)
+            toast('success', '短句已删除')
+          }}
+          onCancel={() => setConfirmDeleteSentenceId(null)}
+        />
+      )}
+
+      {confirmBatchWordDelete && (
+        <ConfirmModal
+          title="删除选中的单词?"
+          message={`共 ${batchWordIds.length} 个单词`}
+          confirmText="删除"
+          onConfirm={async () => {
+            await bulkDeleteWords(batchWordIds)
+            toast('success', `已删除 ${batchWordIds.length} 个单词`)
+          }}
+          onCancel={() => setConfirmBatchWordDelete(false)}
+        />
+      )}
+
+      {confirmBatchSentenceDelete && (
+        <ConfirmModal
+          title="删除选中的短句?"
+          message={`共 ${batchSentenceIds.length} 个短句`}
+          confirmText="删除"
+          onConfirm={async () => {
+            await bulkDeleteSentences(batchSentenceIds)
+            toast('success', `已删除 ${batchSentenceIds.length} 个短句`)
+          }}
+          onCancel={() => setConfirmBatchSentenceDelete(false)}
+        />
       )}
     </div>
   )

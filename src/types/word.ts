@@ -5,6 +5,9 @@ export interface Definition {
   trans: string // 中文翻译
 }
 
+// IndexedDB 只能索引 number，布尔用 0|1 表示并收紧类型，避免任意 number 漏过类型检查
+export type Flag = 0 | 1
+
 export interface Word {
   id?: number
   word: string
@@ -25,8 +28,8 @@ export interface Word {
   easeFactor: number
   interval: number
   nextReviewAt: number
-  isLearned: number
-  isFavorite: number
+  isLearned: Flag
+  isFavorite: Flag
   notes: string
 }
 
@@ -48,8 +51,8 @@ export interface Sentence {
   easeFactor: number
   interval: number
   nextReviewAt: number
-  isLearned: number
-  isFavorite: number
+  isLearned: Flag
+  isFavorite: Flag
   notes: string
 }
 
@@ -62,11 +65,15 @@ export interface Category {
   createdAt: number
 }
 
+// 复习结果与模式：收紧为字面量联合，避免脏数据 / 拼写错误静默通过
+export type StudyResult = 'correct' | 'hint' | 'incorrect' | 'mastered'
+export type StudySessionMode = StudyMode | 'mark-learned'
+
 export interface StudySession {
   id?: number
   wordId: number
-  mode: string
-  result: string
+  mode: StudySessionMode
+  result: StudyResult
   durationMs: number
   timestamp: number
 }
@@ -97,8 +104,8 @@ export interface StudyPlan {
   // 已"开始学习过"的 ID(从 wordIds 中按 newPerDay 推送)
   startedIds: number[]
   // 状态
-  isActive: number // 1 当前激活的计划(单词/短句各自全局只允许一个),0 否
-  isArchived: number // 1 已归档(完成或手动归档)
+  isActive: Flag // 1 当前激活的计划(单词/短句各自全局只允许一个),0 否
+  isArchived: Flag // 1 已归档(完成或手动归档)
   createdAt: number
   // 当日完成进度跟踪 (yyyy-mm-dd)
   todayDate: string

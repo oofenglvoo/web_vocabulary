@@ -32,14 +32,16 @@ export function exportWordsToCsv(words: Word[]): string {
     String(w.difficulty),
     w.definitions && w.definitions.length > 0 ? JSON.stringify(w.definitions) : '',
   ])
-  return [headers.join(','), ...rows.map((r) => r.map(escapeCsv).join(','))].join('\n')
+  // 前缀 ﻿ (UTF-8 BOM)，让 Excel 正确识别 UTF-8 编码，避免中文乱码
+  return '﻿' + [headers.join(','), ...rows.map((r) => r.map(escapeCsv).join(','))].join('\n')
 }
 
-function escapeCsv(value: string): string {
-  if (value.includes(',') || value.includes('"') || value.includes('\n')) {
-    return `"${value.replace(/"/g, '""')}"`
+function escapeCsv(value: unknown): string {
+  const str = value == null ? '' : String(value)
+  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    return `"${str.replace(/"/g, '""')}"`
   }
-  return value
+  return str
 }
 
 export function downloadFile(content: string, filename: string, type: string) {
@@ -85,5 +87,6 @@ export function exportSentencesToCsv(sentences: Sentence[]): string {
     s.notes,
     s.definitions && s.definitions.length > 0 ? JSON.stringify(s.definitions) : '',
   ])
-  return [headers.join(','), ...rows.map((r) => r.map(escapeCsv).join(','))].join('\n')
+  // 前缀 ﻿ (UTF-8 BOM)，让 Excel 正确识别 UTF-8 编码，避免中文乱码
+  return '﻿' + [headers.join(','), ...rows.map((r) => r.map(escapeCsv).join(','))].join('\n')
 }

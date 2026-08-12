@@ -107,6 +107,7 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
   const [description, setDescription] = useState(category?.description ?? '')
   const [color, setColor] = useState(category?.color ?? PRESET_COLORS[0])
   const [error, setError] = useState('')
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   const handleSave = async () => {
     const n = name.trim()
@@ -114,20 +115,22 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
       setError('名称不能为空')
       return
     }
-    if (mode === 'add') {
-      await addCategory(n, description.trim(), color)
-      toast('success', `分类「${n}」已创建`)
-    } else if (category?.id) {
-      await updateCategory(category.id, { name: n, description: description.trim(), color })
-      toast('success', `分类「${n}」已更新`)
+    try {
+      if (mode === 'add') {
+        await addCategory(n, description.trim(), color)
+        toast('success', `分类「${n}」已创建`)
+      } else if (category?.id) {
+        await updateCategory(category.id, { name: n, description: description.trim(), color })
+        toast('success', `分类「${n}」已更新`)
+      }
+      onClose()
+    } catch (e) {
+      setError((e as Error).message || '保存失败，请重试')
     }
-    onClose()
   }
 
   const handleDelete = async () => {
     if (!category?.id) return
-    const msg = `删除分类 "${category.name}"，其中的单词和短句将移到其他分类。继续?`
-    if (!confirm(msg)) return
     await deleteCategory(category.id)
     toast('success', `分类「${category.name}」已删除`)
     onClose()
@@ -185,7 +188,7 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
         <div className="flex gap-2 mt-5">
           {mode === 'edit' && (
             <button
-              onClick={handleDelete}
+              onClick={() => setConfirmDelete(true)}
               className="btn-secondary text-red-600 flex items-center gap-1"
             >
               <Trash2 size={16} /> 删除
@@ -195,6 +198,37 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
           <button onClick={handleSave} className="btn-primary flex-1">保存</button>
         </div>
       </div>
+
+      {confirmDelete && (
+        <div className="modal-overlay">
+          <div className="modal-content max-w-xs text-center">
+            <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-warn flex items-center justify-center shadow-glow">
+              <Trash2 size={28} className="text-white" />
+            </div>
+            <h3 className="font-bold text-lg mb-1 dark:text-gray-100">删除分类?</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              分类: <span className="font-medium text-gray-700 dark:text-gray-200">{category?.name}</span>
+            </p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mb-5">
+              其中的单词和短句将移到其他分类
+            </p>
+            <div className="flex gap-2">
+              <button onClick={() => setConfirmDelete(false)} className="btn-secondary flex-1">
+                取消
+              </button>
+              <button
+                onClick={() => {
+                  setConfirmDelete(false)
+                  handleDelete()
+                }}
+                className="btn-danger flex-1"
+              >
+                确认删除
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

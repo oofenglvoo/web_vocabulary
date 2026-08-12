@@ -14,6 +14,7 @@ import { useCategories } from '../hooks/useWords'
 import { speakWord } from '../utils/tts'
 import { getSentenceDefinitions } from '../utils/definitions'
 import { BackButton } from '../components/BackButton'
+import { ConfirmModal } from '../components/ConfirmModal'
 import { useToast } from '../components/Toast'
 import { SkeletonCard } from '../components/Skeleton'
 import { Definition } from '../types/word'
@@ -31,6 +32,13 @@ export function SentenceDetail() {
   const [showMove, setShowMove] = useState(false)
   const [editingDefs, setEditingDefs] = useState(false)
   const [editDefinitions, setEditDefinitions] = useState<Definition[]>([])
+  const [confirmDelete, setConfirmDelete] = useState(false)
+
+  // 切换短句时重置编辑状态，避免残留上一个短句的编辑面板
+  useEffect(() => {
+    setEditingDefs(false)
+    setEditDefinitions([])
+  }, [id])
 
   const scopeParam = (searchParams.get('scope') as Scope) || 'all'
   const scopeCategory = searchParams.get('category') || ''
@@ -84,7 +92,6 @@ export function SentenceDetail() {
   }
 
   const handleDelete = async () => {
-    if (!confirm('确定删除这个短句吗?')) return
     const idToDelete = sentence.id!
     const after = nextItem ?? prevItem
     await deleteSentence(idToDelete)
@@ -166,8 +173,9 @@ export function SentenceDetail() {
             <FolderInput size={20} className="text-gray-400" />
           </button>
           <button
-            onClick={handleDelete}
+            onClick={() => setConfirmDelete(true)}
             className="p-2 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+            aria-label="删除短句"
           >
             <Trash2 size={20} className="text-gray-400 hover:text-red-500" />
           </button>
@@ -180,6 +188,7 @@ export function SentenceDetail() {
           <button
             onClick={() => speakWord(sentence.sentence)}
             className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors shrink-0"
+            aria-label="发音"
           >
             <Volume2 size={24} />
           </button>
@@ -383,6 +392,16 @@ export function SentenceDetail() {
             </button>
           </div>
         </div>
+      )}
+
+      {confirmDelete && (
+        <ConfirmModal
+          title="删除这个短句?"
+          message="删除后不可恢复（相关计划引用会一并清理）"
+          confirmText="删除"
+          onConfirm={handleDelete}
+          onCancel={() => setConfirmDelete(false)}
+        />
       )}
     </div>
   )

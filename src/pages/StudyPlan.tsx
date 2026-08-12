@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import {
   ArrowLeft,
@@ -51,7 +51,7 @@ import {
   getSentencePlanNewWordCount,
 } from '../hooks/useSentencePlan'
 import { useCategories, useCategoryStats, useStats, useFavoriteWords, bulkMarkLearned, unmarkWordLearned } from '../hooks/useWords'
-import { useSentenceStats, useFavoriteSentences } from '../hooks/useSentences'
+import { useSentenceStats, useFavoriteSentences, useSentenceCategoryStats } from '../hooks/useSentences'
 import { StudyPlan as PlanType } from '../types/word'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
@@ -174,9 +174,7 @@ export function StudyPlanPage() {
                         isActive={p.id === activePlan?.id}
                         onActivate={() => activatePlan(p.id!)}
                         onArchive={() => archivePlan(p.id!)}
-                        onDelete={() => {
-                          if (confirm(`删除计划「${p.name}」?`)) deletePlan(p.id!)
-                        }}
+                        onDelete={() => deletePlan(p.id!)}
                       />
                     </motion.div>
                   ))}
@@ -225,9 +223,7 @@ export function StudyPlanPage() {
                         isActive={p.id === activeSentencePlan?.id}
                         onActivate={() => activateSentencePlan(p.id!)}
                         onArchive={() => archiveSentencePlan(p.id!)}
-                        onDelete={() => {
-                          if (confirm(`删除计划「${p.name}」?`)) deleteSentencePlan(p.id!)
-                        }}
+                        onDelete={() => deleteSentencePlan(p.id!)}
                       />
                     </motion.div>
                   ))}
@@ -468,6 +464,7 @@ function PlanRow({
   onArchive: () => void
   onDelete: () => void
 }) {
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const sourceLabel =
     plan.sourceKind === 'category' ? plan.sourceCategory : SOURCE_LABEL[plan.sourceKind]
   return (
@@ -512,13 +509,49 @@ function PlanRow({
           </button>
         )}
         <button
-          onClick={onDelete}
+          onClick={() => setConfirmDelete(true)}
           className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-400 hover:text-red-500 dark:hover:text-red-400"
           aria-label="删除"
         >
           <Trash2 size={16} />
         </button>
       </div>
+
+      {confirmDelete && (
+        <div className="modal-overlay">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className="modal-content max-w-xs text-center"
+          >
+            <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-warn flex items-center justify-center shadow-glow">
+              <Trash2 size={28} className="text-white" />
+            </div>
+            <h3 className="font-bold text-lg mb-1 dark:text-gray-100">删除计划?</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              计划: <span className="font-medium text-gray-700 dark:text-gray-200">{plan.name}</span>
+            </p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mb-5">
+              删除后不可恢复（不会删除单词本身）
+            </p>
+            <div className="flex gap-2">
+              <button onClick={() => setConfirmDelete(false)} className="btn-secondary flex-1">
+                取消
+              </button>
+              <button
+                onClick={() => {
+                  setConfirmDelete(false)
+                  onDelete()
+                }}
+                className="btn-danger flex-1"
+              >
+                确认删除
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }
@@ -582,6 +615,8 @@ function CreatePlanModal({
       })
       toast('success', `计划「${n}」已创建`)
       onCreated()
+    } catch (e) {
+      setError((e as Error).message || '创建失败，请重试')
     } finally {
       setCreating(false)
     }
@@ -895,6 +930,7 @@ function CreateSentencePlanModal({
   const { toast } = useToast()
   const categories = useCategories()
   const sentenceStats = useSentenceStats()
+  const sentenceCategoryStats = useSentenceCategoryStats()
   const favSentences = useFavoriteSentences()
   const [name, setName] = useState('')
   const [sourceKind, setSourceKind] = useState<'category' | 'favorites' | 'all'>('all')
@@ -911,9 +947,11 @@ function CreateSentencePlanModal({
   }, [sourceKind, categories, sourceCategory])
 
   const previewCount =
-    sourceKind === 'category' ? 0
-    : sourceKind === 'favorites' ? favSentences.length
-    : sentenceStats.total
+    sourceKind === 'category'
+      ? sentenceCategoryStats[sourceCategory] ?? 0
+      : sourceKind === 'favorites'
+      ? favSentences.length
+      : sentenceStats.total
 
   const estimatedDays = newPerDay > 0 ? Math.ceil(previewCount / newPerDay) : 0
 
@@ -938,6 +976,8 @@ function CreateSentencePlanModal({
       })
       toast('success', `短句计划「${n}」已创建`)
       onCreated()
+    } catch (e) {
+      setError((e as Error).message || '创建失败，请重试')
     } finally {
       setCreating(false)
     }
@@ -1016,6 +1056,7 @@ function CreateSentencePlanModal({
                   >
                     <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: c.color }} />
                     <span className="text-sm flex-1 text-left dark:text-gray-200">{c.name}</span>
+                    <span className="text-xs text-gray-400 dark:text-gray-500">{sentenceCategoryStats[c.name] ?? 0} 条</span>
                   </button>
                 ))}
               </div>
@@ -1075,9 +1116,9 @@ function CreateSentencePlanModal({
 
 type WordStatus = 'new' | 'started' | 'mastered'
 
-function getWordStatus(word: { isLearned: number; reviewCount: number }, startedIds: number[], wordId: number): WordStatus {
+function getWordStatus(word: { isLearned: number; reviewCount: number }, startedSet: Set<number>, wordId: number): WordStatus {
   if (word.isLearned === 1) return 'mastered'
-  if (startedIds.includes(wordId) || word.reviewCount > 0) return 'started'
+  if (startedSet.has(wordId) || word.reviewCount > 0) return 'started'
   return 'new'
 }
 
@@ -1108,9 +1149,14 @@ export function PlanWordList() {
   const [confirmBatch, setConfirmBatch] = useState(false)
   const [confirmUnmaster, setConfirmUnmaster] = useState<number | null>(null)
 
+  const startedSet = useMemo(
+    () => new Set(plan?.startedIds ?? []),
+    [plan?.startedIds]
+  )
+
   const enriched = words.map((w) => ({
     ...w,
-    status: getWordStatus(w, plan?.startedIds ?? [], w.id!),
+    status: getWordStatus(w, startedSet, w.id!),
   }))
 
   const filtered = enriched.filter((w) => {
@@ -1120,8 +1166,8 @@ export function PlanWordList() {
     const matchSearch =
       search === '' ||
       w.word.toLowerCase().includes(q) ||
-      w.translation.includes(search) ||
-      w.definition.toLowerCase().includes(q) ||
+      (w.translation ?? '').includes(search) ||
+      (w.definition ?? '').toLowerCase().includes(q) ||
       defsText.toLowerCase().includes(q)
     const matchStatus = statusFilter === 'all' || w.status === statusFilter
     return matchSearch && matchStatus
@@ -1141,7 +1187,9 @@ export function PlanWordList() {
   }
 
   function selectAll() {
-    setSelected(new Set(selectableIds.filter((id) => filtered.some((w) => w.id === id) && enriched.find((w) => w.id === id)?.status !== 'mastered')))
+    const filteredIds = new Set(filtered.map((w) => w.id))
+    const masteredIds = new Set(enriched.filter((w) => w.status === 'mastered').map((w) => w.id))
+    setSelected(new Set(selectableIds.filter((id) => filteredIds.has(id) && !masteredIds.has(id))))
   }
 
   function deselectAll() {
@@ -1153,8 +1201,10 @@ export function PlanWordList() {
     const ids = Array.from(selected)
     await bulkMarkLearned(ids)
     if (plan) {
+      // 用 Map 避免每次 find 都是 O(n)
+      const byId = new Map(enriched.map((w) => [w.id, w]))
       for (const wordId of ids) {
-        const w = enriched.find((w) => w.id === wordId)
+        const w = byId.get(wordId)
         if (w) {
           const wasReview = w.status === 'started'
           await markPlanWordLearned(plan.id!, wordId, wasReview)

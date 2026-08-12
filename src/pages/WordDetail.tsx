@@ -25,6 +25,7 @@ import {
 import { speakWord } from '../utils/tts'
 import { getDefinitions } from '../utils/definitions'
 import { BackButton } from '../components/BackButton'
+import { ConfirmModal } from '../components/ConfirmModal'
 import { useToast } from '../components/Toast'
 import { SkeletonCard } from '../components/Skeleton'
 import { Definition } from '../types/word'
@@ -45,6 +46,13 @@ export function WordDetail() {
   const [showMove, setShowMove] = useState(false)
   const [editingDefs, setEditingDefs] = useState(false)
   const [editDefinitions, setEditDefinitions] = useState<Definition[]>([])
+  const [confirmDelete, setConfirmDelete] = useState(false)
+
+  // 切换单词时重置编辑状态，避免残留上一个单词的释义编辑面板
+  useEffect(() => {
+    setEditingDefs(false)
+    setEditDefinitions([])
+  }, [id])
 
   // 上一个/下一个的来源
   const scopeParam = (searchParams.get('scope') as Scope) || 'all'
@@ -98,7 +106,6 @@ export function WordDetail() {
   }
 
   const handleDelete = async () => {
-    if (!confirm('确定删除这个单词吗?')) return
     const idToDelete = word.id!
     // 删除前确定下一个目标
     const after = nextWord ?? prevWord
@@ -187,8 +194,9 @@ export function WordDetail() {
             <FolderInput size={20} className="text-gray-400" />
           </button>
           <button
-            onClick={handleDelete}
+            onClick={() => setConfirmDelete(true)}
             className="p-2 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+            aria-label="删除单词"
           >
             <Trash2 size={20} className="text-gray-400 hover:text-red-500" />
           </button>
@@ -198,7 +206,7 @@ export function WordDetail() {
       <div className="card p-6 text-center mb-4">
         <div className="flex items-center justify-center gap-3">
           <h1 className="text-3xl font-bold text-gradient">{word.word}</h1>
-          <button onClick={speak} className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+          <button onClick={speak} className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors" aria-label="发音">
             <Volume2 size={24} />
           </button>
         </div>
@@ -419,6 +427,16 @@ export function WordDetail() {
             </button>
           </div>
         </div>
+      )}
+
+      {confirmDelete && (
+        <ConfirmModal
+          title="删除这个单词?"
+          message="删除后不可恢复（相关学习记录与计划引用会一并清理）"
+          confirmText="删除"
+          onConfirm={handleDelete}
+          onCancel={() => setConfirmDelete(false)}
+        />
       )}
     </div>
   )

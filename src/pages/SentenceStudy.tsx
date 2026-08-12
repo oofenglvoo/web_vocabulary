@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
   Volume2,
@@ -23,6 +23,7 @@ import { Sentence, StudyPlan } from '../types/word'
 import { speakWord, unlockTts } from '../utils/tts'
 import { getSentencePrimaryTranslation } from '../utils/definitions'
 import { BackButton } from '../components/BackButton'
+import { useToast } from '../components/Toast'
 
 interface QuizItem {
   sentence: Sentence
@@ -34,6 +35,7 @@ interface QuizItem {
 
 export function SentenceStudy() {
   const navigate = useNavigate()
+  const { toast } = useToast()
   const [searchParams] = useSearchParams()
   const planId = searchParams.get('plan')
   const planIdNum = planId ? Number(planId) : null
@@ -51,11 +53,29 @@ export function SentenceStudy() {
   const [, setLearnStats] = useState({ newDone: 0, reviewDone: 0 })
   const [confirmMaster, setConfirmMaster] = useState(false)
 
+  // 延迟回调定时器：组件卸载时统一清理
+  const timersRef = useRef<number[]>([])
+  const allTranslationsRef = useRef<string[] | null>(null)
+
+  useEffect(() => {
+    const timers = timersRef.current
+    return () => {
+      timers.forEach((t) => clearTimeout(t))
+      timers.length = 0
+    }
+  }, [])
+
+  const schedule = (fn: () => void, ms: number) => {
+    const t = window.setTimeout(fn, ms)
+    timersRef.current.push(t)
+  }
+
   useEffect(() => {
     startStudy()
     unlockTts()
+    // isReviewMode 作为依赖：仅改 mode 参数时也要重新加载队列
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [planIdNum])
+  }, [planIdNum, isReviewMode])
 
   async function startStudy() {
     setLoading(true)
@@ -114,11 +134,12 @@ export function SentenceStudy() {
 
   async function prepareQuiz(sentence: Sentence) {
     const primaryTrans = getSentencePrimaryTranslation(sentence)
-    const all = await db.sentences.toArray()
-    const others = all
-      .filter((s) => s.id !== sentence.id)
-      .map((s) => getSentencePrimaryTranslation(s))
-      .filter((t) => t && t !== primaryTrans)
+    // 全表翻译列表只加载一次并缓存，避免每道题都 toArray 全表读取
+    if (allTranslationsRef.current === null) {
+      const all = await db.sentences.toArray()
+      allTranslationsRef.current = all.map((s) => getSentencePrimaryTranslation(s)).filter(Boolean)
+    }
+    const others = allTranslationsRef.current.filter((t) => t !== primaryTrans)
     const uniqueOthers = [...new Set(others)]
     const distractors = uniqueOthers.slice(0, 3)
     const opts = [primaryTrans, ...distractors].sort(() => Math.random() - 0.5)
@@ -135,26 +156,34 @@ export function SentenceStudy() {
     const sentenceId = currentQuiz.sentence.id!
 
     if (correct) {
-      await recordSentenceReview(sentenceId, 5)
+      try {
+        await recordSentenceReview(sentenceId, 5)
+      } catch (e) {
+        toast('error', '记录失败: ' + (e as Error).message)
+      }
       const newStreak = currentQuiz.correctStreak + 1
       if (newStreak >= currentQuiz.requiredCorrect) {
         setQuizStats((s) => ({ ...s, correct: s.correct + 1 }))
         if (planIdNum) {
-          if (currentQuiz.isReview) {
-            await markSentenceReviewDone(planIdNum)
-            setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
-          } else {
-            await markSentenceStarted(planIdNum, sentenceId)
-            setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+          try {
+            if (currentQuiz.isReview) {
+              await markSentenceReviewDone(planIdNum)
+              setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
+            } else {
+              await markSentenceStarted(planIdNum, sentenceId)
+              setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+            }
+          } catch (e) {
+            toast('error', '记录失败: ' + (e as Error).message)
           }
         }
-        setTimeout(() => {
+        schedule(() => {
           setQuizQueue((q) => q.slice(1))
           setSelectedOption(null)
           setQuizRevealed(false)
         }, 900)
       } else {
-        setTimeout(() => {
+        schedule(() => {
           setQuizQueue((q) => {
             const [head, ...rest] = q
             return [...rest, { ...head!, correctStreak: newStreak }]
@@ -164,9 +193,13 @@ export function SentenceStudy() {
         }, 900)
       }
     } else {
-      await recordSentenceReview(sentenceId, 1)
+      try {
+        await recordSentenceReview(sentenceId, 1)
+      } catch (e) {
+        toast('error', '记录失败: ' + (e as Error).message)
+      }
       setQuizStats((s) => ({ ...s, wrong: s.wrong + 1 }))
-      setTimeout(() => {
+      schedule(() => {
         setQuizQueue((q) => {
           const [head, ...rest] = q
           if (!head) return q
@@ -185,15 +218,20 @@ export function SentenceStudy() {
     if (!currentQuiz) return
     setConfirmMaster(false)
     const sentenceId = currentQuiz.sentence.id!
-    await markSentenceLearned(sentenceId)
-    if (planIdNum) {
-      if (currentQuiz.isReview) {
-        await markSentenceReviewDone(planIdNum)
-        setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
-      } else {
-        await markSentenceStarted(planIdNum, sentenceId)
-        setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+    try {
+      await markSentenceLearned(sentenceId)
+      if (planIdNum) {
+        if (currentQuiz.isReview) {
+          await markSentenceReviewDone(planIdNum)
+          setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
+        } else {
+          await markSentenceStarted(planIdNum, sentenceId)
+          setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+        }
       }
+    } catch (e) {
+      toast('error', '操作失败: ' + (e as Error).message)
+      return
     }
     setQuizQueue((q) => q.slice(1))
     setSelectedOption(null)
@@ -210,7 +248,7 @@ export function SentenceStudy() {
         origin: { y: 0.7 },
         colors: ['#6366f1', '#8b5cf6', '#ec4899', '#10b981'],
       })
-      setTimeout(() => {
+      schedule(() => {
         confetti({
           particleCount: 50,
           angle: 60,

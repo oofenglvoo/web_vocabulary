@@ -65,7 +65,8 @@ export function usePlanSentences(plan: StudyPlan | undefined): Sentence[] {
       if (!plan || plan.wordIds.length === 0) return []
       const sentences = await db.sentences.bulkGet(plan.wordIds)
       return sentences.filter((s): s is Sentence => !!s)
-    }, [plan?.id, plan?.wordIds.length]) ?? []
+      // 依赖数组引用而非 length：wordIds 内容变化（同长度换词）时也要重跑
+    }, [plan?.id, plan?.wordIds]) ?? []
   )
 }
 
@@ -155,7 +156,8 @@ export async function createSentencePlan(input: {
     input.sourceKind,
     input.sourceCategory ?? ''
   )
-  // 新建短句计划时,把其他"激活"的短句计划置 0
+  // 新建短句计划时,把其他"激活"的短句计划置 0；事务内直接取回新计划 id
+  let createdId = 0
   await db.transaction('rw', db.studyPlans, async () => {
     const existing = await db.studyPlans
       .where('entityType')
@@ -165,29 +167,26 @@ export async function createSentencePlan(input: {
     for (const p of existing) {
       if (p.id) await db.studyPlans.update(p.id, { isActive: 0 })
     }
-    await db.studyPlans.add({
-      name: input.name,
-      entityType: 'sentence',
-      sourceKind: input.sourceKind,
-      sourceCategory: input.sourceCategory ?? '',
-      newPerDay: input.newPerDay,
-      reviewPerDay: input.reviewPerDay,
-      wordIds,
-      startedIds: [],
-      isActive: 1,
-      isArchived: 0,
-      createdAt: Date.now(),
-      todayDate: todayStr(),
-      todayNewDone: 0,
-      todayReviewDone: 0,
-    } as StudyPlan)
+    createdId = Number(
+      await db.studyPlans.add({
+        name: input.name,
+        entityType: 'sentence',
+        sourceKind: input.sourceKind,
+        sourceCategory: input.sourceCategory ?? '',
+        newPerDay: input.newPerDay,
+        reviewPerDay: input.reviewPerDay,
+        wordIds,
+        startedIds: [],
+        isActive: 1,
+        isArchived: 0,
+        createdAt: Date.now(),
+        todayDate: todayStr(),
+        todayNewDone: 0,
+        todayReviewDone: 0,
+      } as StudyPlan)
+    )
   })
-  const created = await db.studyPlans
-    .where('entityType')
-    .equals('sentence')
-    .filter((p) => p.isActive === 1)
-    .first()
-  return created?.id ?? 0
+  return createdId
 }
 
 export async function activateSentencePlan(id: number) {
@@ -219,14 +218,15 @@ export async function updateSentencePlanSettings(
   await db.studyPlans.update(id, changes)
 }
 
-// 刷新短句计划的 id 池
+// 刷新短句计划的 id 池，同时清理已删除短句遗留的失效 ID
 export async function refreshSentencePlanWords(id: number): Promise<number> {
   const plan = await db.studyPlans.get(id)
   if (!plan) return 0
   const fresh = await buildSentenceIdsFromSource(plan.sourceKind, plan.sourceCategory)
-  const existingSet = new Set(plan.wordIds)
-  const newIds = fresh.filter((id) => !existingSet.has(id))
-  const merged = Array.from(new Set([...plan.wordIds, ...fresh]))
+  const existing = await db.sentences.bulkGet(plan.wordIds)
+  const existingIds = existing.filter((s): s is Sentence => !!s).map((s) => s.id!)
+  const merged = Array.from(new Set([...existingIds, ...fresh]))
+  const newIds = fresh.filter((fid) => !existingIds.includes(fid))
   await db.studyPlans.update(id, { wordIds: merged })
   return newIds.length
 }
@@ -262,52 +262,62 @@ export async function getTodayReviewSentences(plan: StudyPlan): Promise<Sentence
     .slice(0, plan.reviewPerDay)
 }
 
+// 事务内读取-计算-写入计划更新，避免并发互相覆盖
+async function withPlanUpdate(
+  planId: number,
+  fn: (plan: StudyPlan) => Partial<StudyPlan>
+): Promise<void> {
+  await db.transaction('rw', db.studyPlans, async () => {
+    const plan = await db.studyPlans.get(planId)
+    if (!plan) return
+    const changes = fn(plan)
+    await db.studyPlans.update(planId, changes)
+  })
+}
+
 export async function markSentenceStarted(planId: number, sentenceId: number) {
-  const plan = await db.studyPlans.get(planId)
-  if (!plan) return
-  if (plan.startedIds.includes(sentenceId)) return
-  const today = todayStr()
-  const isToday = plan.todayDate === today
-  const changes: Partial<StudyPlan> = {
-    startedIds: [...plan.startedIds, sentenceId],
-  }
-  if (isToday) {
-    changes.todayNewDone = plan.todayNewDone + 1
-  } else {
-    changes.todayDate = today
-    changes.todayNewDone = 1
-    changes.todayReviewDone = 0
-  }
-  await db.studyPlans.update(planId, changes)
+  await withPlanUpdate(planId, (plan) => {
+    if (plan.startedIds.includes(sentenceId)) return {}
+    const today = todayStr()
+    const isToday = plan.todayDate === today
+    const changes: Partial<StudyPlan> = {
+      startedIds: [...plan.startedIds, sentenceId],
+    }
+    if (isToday) {
+      changes.todayNewDone = plan.todayNewDone + 1
+    } else {
+      changes.todayDate = today
+      changes.todayNewDone = 1
+      changes.todayReviewDone = 0
+    }
+    return changes
+  })
 }
 
 export async function markSentenceReviewDone(planId: number) {
-  const plan = await db.studyPlans.get(planId)
-  if (!plan) return
-  const today = todayStr()
-  const isToday = plan.todayDate === today
-  const changes: Partial<StudyPlan> = {}
-  if (isToday) {
-    changes.todayReviewDone = plan.todayReviewDone + 1
-  } else {
-    changes.todayDate = today
-    changes.todayNewDone = 0
-    changes.todayReviewDone = 1
-  }
-  await db.studyPlans.update(planId, changes)
+  await withPlanUpdate(planId, (plan) => {
+    const today = todayStr()
+    const isToday = plan.todayDate === today
+    const changes: Partial<StudyPlan> = {}
+    if (isToday) {
+      changes.todayReviewDone = plan.todayReviewDone + 1
+    } else {
+      changes.todayDate = today
+      changes.todayNewDone = 0
+      changes.todayReviewDone = 1
+    }
+    return changes
+  })
 }
 
 export async function ensureSentenceTodayReset(planId: number) {
-  const plan = await db.studyPlans.get(planId)
-  if (!plan) return
-  const today = todayStr()
-  if (plan.todayDate !== today) {
-    await db.studyPlans.update(planId, {
-      todayDate: today,
-      todayNewDone: 0,
-      todayReviewDone: 0,
-    })
-  }
+  await withPlanUpdate(planId, (plan) => {
+    const today = todayStr()
+    if (plan.todayDate !== today) {
+      return { todayDate: today, todayNewDone: 0, todayReviewDone: 0 }
+    }
+    return {}
+  })
 }
 
 export async function markPlanSentenceLearned(
@@ -315,23 +325,23 @@ export async function markPlanSentenceLearned(
   sentenceId: number,
   wasReview: boolean
 ) {
-  const plan = await db.studyPlans.get(planId)
-  if (!plan) return
-  const today = todayStr()
-  const isToday = plan.todayDate === today
-  const changes: Partial<StudyPlan> = {}
-  if (!isToday) {
-    changes.todayDate = today
-    changes.todayNewDone = 0
-    changes.todayReviewDone = 0
-  }
-  if (wasReview) {
-    changes.todayReviewDone = (changes.todayReviewDone ?? plan.todayReviewDone) + 1
-  } else {
-    if (!plan.startedIds.includes(sentenceId)) {
-      changes.startedIds = [...plan.startedIds, sentenceId]
+  await withPlanUpdate(planId, (plan) => {
+    const today = todayStr()
+    const isToday = plan.todayDate === today
+    const changes: Partial<StudyPlan> = {}
+    if (!isToday) {
+      changes.todayDate = today
+      changes.todayNewDone = 0
+      changes.todayReviewDone = 0
     }
-    changes.todayNewDone = (changes.todayNewDone ?? plan.todayNewDone) + 1
-  }
-  await db.studyPlans.update(planId, changes)
+    if (wasReview) {
+      changes.todayReviewDone = (changes.todayReviewDone ?? plan.todayReviewDone) + 1
+    } else {
+      if (!plan.startedIds.includes(sentenceId)) {
+        changes.startedIds = [...plan.startedIds, sentenceId]
+      }
+      changes.todayNewDone = (changes.todayNewDone ?? plan.todayNewDone) + 1
+    }
+    return changes
+  })
 }

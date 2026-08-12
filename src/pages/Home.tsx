@@ -326,17 +326,13 @@ export function Home() {
 function HeroStat({
   label,
   value,
-  highlight,
 }: {
   label: string
   value: number | string
-  highlight?: boolean
 }) {
   return (
     <div className="bg-white/15 backdrop-blur rounded-xl p-2.5 text-center">
-      <div className={`text-xl font-bold ${highlight ? 'text-yellow-200' : ''}`}>
-        {value}
-      </div>
+      <div className="text-xl font-bold">{value}</div>
       <div className="text-[10px] text-white/80 mt-0.5">{label}</div>
     </div>
   )

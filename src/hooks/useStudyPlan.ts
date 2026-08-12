@@ -65,7 +65,8 @@ export function usePlanWords(plan: StudyPlan | undefined): Word[] {
       if (!plan || plan.wordIds.length === 0) return []
       const words = await db.words.bulkGet(plan.wordIds)
       return words.filter((w): w is Word => !!w)
-    }, [plan?.id, plan?.wordIds.length]) ?? []
+      // 依赖数组引用而非 length：wordIds 内容变化（同长度换词）时也要重跑
+    }, [plan?.id, plan?.wordIds]) ?? []
   )
 }
 
@@ -158,7 +159,8 @@ export async function createPlan(input: {
     input.sourceKind,
     input.sourceCategory ?? ''
   )
-  // 新建计划时,把其他激活的"单词"计划 isActive 置 0
+  // 新建计划时,把其他激活的"单词"计划 isActive 置 0；在事务内直接取回新计划 id
+  let createdId = 0
   await db.transaction('rw', db.studyPlans, async () => {
     const existing = await db.studyPlans
       .where('isActive')
@@ -168,30 +170,26 @@ export async function createPlan(input: {
     for (const p of existing) {
       if (p.id) await db.studyPlans.update(p.id, { isActive: 0 })
     }
-    await db.studyPlans.add({
-      name: input.name,
-      entityType: 'word',
-      sourceKind: input.sourceKind,
-      sourceCategory: input.sourceCategory ?? '',
-      newPerDay: input.newPerDay,
-      reviewPerDay: input.reviewPerDay,
-      wordIds,
-      startedIds: [],
-      isActive: 1,
-      isArchived: 0,
-      createdAt: Date.now(),
-      todayDate: todayStr(),
-      todayNewDone: 0,
-      todayReviewDone: 0,
-    } as StudyPlan)
+    createdId = Number(
+      await db.studyPlans.add({
+        name: input.name,
+        entityType: 'word',
+        sourceKind: input.sourceKind,
+        sourceCategory: input.sourceCategory ?? '',
+        newPerDay: input.newPerDay,
+        reviewPerDay: input.reviewPerDay,
+        wordIds,
+        startedIds: [],
+        isActive: 1,
+        isArchived: 0,
+        createdAt: Date.now(),
+        todayDate: todayStr(),
+        todayNewDone: 0,
+        todayReviewDone: 0,
+      } as StudyPlan)
+    )
   })
-  // 返回新建的 id (取最后一个)
-  const created = await db.studyPlans
-    .where('isActive')
-    .equals(1)
-    .filter((p) => (p.entityType ?? 'word') === 'word')
-    .first()
-  return created?.id ?? 0
+  return createdId
 }
 
 export async function activatePlan(id: number) {
@@ -224,13 +222,16 @@ export async function updatePlanSettings(
 }
 
 // 刷新计划的 wordIds (新增了同分类/收藏的单词时调用)
+// 同时清理已删除单词遗留的失效 ID
 export async function refreshPlanWords(id: number): Promise<number> {
   const plan = await db.studyPlans.get(id)
   if (!plan) return 0
   const fresh = await buildWordIdsFromSource(plan.sourceKind, plan.sourceCategory)
-  const existingSet = new Set(plan.wordIds)
-  const newIds = fresh.filter((id) => !existingSet.has(id))
-  const merged = Array.from(new Set([...plan.wordIds, ...fresh]))
+  // 剔除已删除的 ID，保留仍存在的旧 ID，再并入来源中新增的 ID
+  const existing = await db.words.bulkGet(plan.wordIds)
+  const existingIds = existing.filter((w): w is Word => !!w).map((w) => w.id!)
+  const merged = Array.from(new Set([...existingIds, ...fresh]))
+  const newIds = fresh.filter((fid) => !existingIds.includes(fid))
   await db.studyPlans.update(id, { wordIds: merged })
   return newIds.length
 }
@@ -269,55 +270,65 @@ export async function getTodayReviewWords(plan: StudyPlan): Promise<Word[]> {
     .slice(0, plan.reviewPerDay)
 }
 
+// 事务内读取-计算-写入计划更新，避免并发(如跨午夜重置与新词计数)互相覆盖
+async function withPlanUpdate(
+  planId: number,
+  fn: (plan: StudyPlan) => Partial<StudyPlan>
+): Promise<void> {
+  await db.transaction('rw', db.studyPlans, async () => {
+    const plan = await db.studyPlans.get(planId)
+    if (!plan) return
+    const changes = fn(plan)
+    await db.studyPlans.update(planId, changes)
+  })
+}
+
 // 标记一个新词为"已开始学"(加入 startedIds)
 export async function markWordStarted(planId: number, wordId: number) {
-  const plan = await db.studyPlans.get(planId)
-  if (!plan) return
-  if (plan.startedIds.includes(wordId)) return
-  const today = todayStr()
-  const isToday = plan.todayDate === today
-  const changes: Partial<StudyPlan> = {
-    startedIds: [...plan.startedIds, wordId],
-  }
-  if (isToday) {
-    changes.todayNewDone = plan.todayNewDone + 1
-  } else {
-    changes.todayDate = today
-    changes.todayNewDone = 1
-    changes.todayReviewDone = 0
-  }
-  await db.studyPlans.update(planId, changes)
+  await withPlanUpdate(planId, (plan) => {
+    if (plan.startedIds.includes(wordId)) return {}
+    const today = todayStr()
+    const isToday = plan.todayDate === today
+    const changes: Partial<StudyPlan> = {
+      startedIds: [...plan.startedIds, wordId],
+    }
+    if (isToday) {
+      changes.todayNewDone = plan.todayNewDone + 1
+    } else {
+      changes.todayDate = today
+      changes.todayNewDone = 1
+      changes.todayReviewDone = 0
+    }
+    return changes
+  })
 }
 
 // 标记一次复习完成(只增加今日计数)
 export async function markReviewDone(planId: number) {
-  const plan = await db.studyPlans.get(planId)
-  if (!plan) return
-  const today = todayStr()
-  const isToday = plan.todayDate === today
-  const changes: Partial<StudyPlan> = {}
-  if (isToday) {
-    changes.todayReviewDone = plan.todayReviewDone + 1
-  } else {
-    changes.todayDate = today
-    changes.todayNewDone = 0
-    changes.todayReviewDone = 1
-  }
-  await db.studyPlans.update(planId, changes)
+  await withPlanUpdate(planId, (plan) => {
+    const today = todayStr()
+    const isToday = plan.todayDate === today
+    const changes: Partial<StudyPlan> = {}
+    if (isToday) {
+      changes.todayReviewDone = plan.todayReviewDone + 1
+    } else {
+      changes.todayDate = today
+      changes.todayNewDone = 0
+      changes.todayReviewDone = 1
+    }
+    return changes
+  })
 }
 
 // 跨日重置今日计数(在读取时调用)
 export async function ensureTodayReset(planId: number) {
-  const plan = await db.studyPlans.get(planId)
-  if (!plan) return
-  const today = todayStr()
-  if (plan.todayDate !== today) {
-    await db.studyPlans.update(planId, {
-      todayDate: today,
-      todayNewDone: 0,
-      todayReviewDone: 0,
-    })
-  }
+  await withPlanUpdate(planId, (plan) => {
+    const today = todayStr()
+    if (plan.todayDate !== today) {
+      return { todayDate: today, todayNewDone: 0, todayReviewDone: 0 }
+    }
+    return {}
+  })
 }
 
 /**
@@ -331,23 +342,23 @@ export async function markPlanWordLearned(
   wordId: number,
   wasReview: boolean
 ) {
-  const plan = await db.studyPlans.get(planId)
-  if (!plan) return
-  const today = todayStr()
-  const isToday = plan.todayDate === today
-  const changes: Partial<StudyPlan> = {}
-  if (!isToday) {
-    changes.todayDate = today
-    changes.todayNewDone = 0
-    changes.todayReviewDone = 0
-  }
-  if (wasReview) {
-    changes.todayReviewDone = (changes.todayReviewDone ?? plan.todayReviewDone) + 1
-  } else {
-    if (!plan.startedIds.includes(wordId)) {
-      changes.startedIds = [...plan.startedIds, wordId]
+  await withPlanUpdate(planId, (plan) => {
+    const today = todayStr()
+    const isToday = plan.todayDate === today
+    const changes: Partial<StudyPlan> = {}
+    if (!isToday) {
+      changes.todayDate = today
+      changes.todayNewDone = 0
+      changes.todayReviewDone = 0
     }
-    changes.todayNewDone = (changes.todayNewDone ?? plan.todayNewDone) + 1
-  }
-  await db.studyPlans.update(planId, changes)
+    if (wasReview) {
+      changes.todayReviewDone = (changes.todayReviewDone ?? plan.todayReviewDone) + 1
+    } else {
+      if (!plan.startedIds.includes(wordId)) {
+        changes.startedIds = [...plan.startedIds, wordId]
+      }
+      changes.todayNewDone = (changes.todayNewDone ?? plan.todayNewDone) + 1
+    }
+    return changes
+  })
 }
