@@ -144,7 +144,7 @@ body {
 
   /* Modal 统一样式 */
   .modal-overlay {
-    @apply fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in;
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-fade-in;
   }
   .modal-content {
     @apply bg-white dark:bg-slate-800 rounded-2xl p-6 w-full max-w-sm animate-scale-in;
