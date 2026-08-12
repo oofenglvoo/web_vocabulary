@@ -1,6 +1,8 @@
+import { memo } from 'react'
 import { Heart, Trash2, Volume2 } from 'lucide-react'
 import { Word } from '../types/word'
 import { speakWord } from '../utils/tts'
+import { getDefinitions, getPrimaryTranslation, getPrimaryDefinition } from '../utils/definitions'
 
 interface WordCardProps {
   word: Word
@@ -9,16 +11,19 @@ interface WordCardProps {
   onDelete: () => void
 }
 
-export function WordCard({ word, onClick, onFavorite, onDelete }: WordCardProps) {
+export const WordCard = memo(function WordCard({ word, onClick, onFavorite, onDelete }: WordCardProps) {
   const difficultyLabels = ['简单', '较易', '中等', '较难', '困难']
   const difficultyStyles = [
-    'bg-success-50 text-success-600',
-    'bg-success-50 text-success-600',
-    'bg-warn-50 text-warn-600',
-    'bg-orange-50 text-orange-600',
-    'bg-red-50 text-red-600',
+    'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400',
+    'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400',
+    'bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400',
+    'bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400',
+    'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400',
   ]
   const learnedBadge = word.isLearned === 1
+  const defs = getDefinitions(word)
+  const primaryTrans = getPrimaryTranslation(word)
+  const primaryDef = getPrimaryDefinition(word)
 
   return (
     <div
@@ -28,33 +33,52 @@ export function WordCard({ word, onClick, onFavorite, onDelete }: WordCardProps)
       <div className="flex justify-between items-start gap-2">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="font-bold text-lg text-gray-900">{word.word}</h3>
+            <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">{word.word}</h3>
             <button
               onClick={(e) => {
                 e.stopPropagation()
                 speakWord(word.word)
               }}
-              className="p-1 rounded-full hover:bg-primary-50 active:scale-90 transition"
+              className="p-1 rounded-full hover:bg-primary-50 active:scale-90 transition dark:hover:bg-primary-900/30"
               aria-label="发音"
             >
-              <Volume2 size={15} className="text-primary-500" />
+              <Volume2 size={15} className="text-primary-500 dark:text-primary-400" />
             </button>
             {word.phonetic && (
-              <span className="text-xs text-gray-400">{word.phonetic}</span>
+              <span className="text-xs text-gray-400 dark:text-gray-500">{word.phonetic}</span>
             )}
             {learnedBadge && (
-              <span className="chip bg-success-50 text-success-600 text-[10px]">
+              <span className="chip bg-emerald-50 text-emerald-600 text-[10px] dark:bg-emerald-900/30 dark:text-emerald-400">
                 已掌握
               </span>
             )}
           </div>
-          {word.translation && (
-            <p className="text-sm text-gray-700 mt-1 truncate font-medium">
-              {word.translation}
-            </p>
-          )}
-          {word.definition && (
-            <p className="text-xs text-gray-500 mt-0.5 truncate">{word.definition}</p>
+          {/* 多释义展示 */}
+          {defs.length > 0 ? (
+            <div className="mt-1 space-y-0.5">
+              {defs.slice(0, 3).map((d, i) => (
+                <p key={i} className="text-sm text-gray-700 dark:text-gray-300 truncate">
+                  {d.pos && <span className="text-primary-500 dark:text-primary-400 font-medium mr-1">{d.pos}</span>}
+                  {d.trans && <span className="font-medium">{d.trans}</span>}
+                  {d.trans && d.def && <span className="text-gray-400 dark:text-gray-500 mx-1">·</span>}
+                  {d.def && <span className="text-xs text-gray-500 dark:text-gray-400">{d.def}</span>}
+                </p>
+              ))}
+              {defs.length > 3 && (
+                <p className="text-xs text-gray-400 dark:text-gray-500">+{defs.length - 3} 更多释义</p>
+              )}
+            </div>
+          ) : (
+            <>
+              {primaryTrans && (
+                <p className="text-sm text-gray-700 dark:text-gray-300 mt-1 truncate font-medium">
+                  {primaryTrans}
+                </p>
+              )}
+              {primaryDef && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">{primaryDef}</p>
+              )}
+            </>
           )}
           <div className="flex items-center gap-1.5 mt-2">
             <span
@@ -64,7 +88,7 @@ export function WordCard({ word, onClick, onFavorite, onDelete }: WordCardProps)
             >
               {difficultyLabels[word.difficulty - 1] || '中等'}
             </span>
-            <span className="text-[11px] text-gray-400">{word.category}</span>
+            <span className="text-[11px] text-gray-400 dark:text-gray-500">{word.category}</span>
           </div>
         </div>
         <div className="flex items-center -mr-1.5 -my-1">
@@ -73,15 +97,15 @@ export function WordCard({ word, onClick, onFavorite, onDelete }: WordCardProps)
               e.stopPropagation()
               onFavorite()
             }}
-            className="p-2 rounded-full hover:bg-accent-50 active:scale-90 transition"
+            className="p-2 rounded-full hover:bg-pink-50 active:scale-90 transition dark:hover:bg-pink-900/20"
             aria-label="收藏"
           >
             <Heart
               size={17}
               className={
                 word.isFavorite
-                  ? 'fill-accent-500 text-accent-500'
-                  : 'text-gray-300'
+                  ? 'fill-pink-500 text-pink-500'
+                  : 'text-gray-300 dark:text-gray-600'
               }
             />
           </button>
@@ -90,13 +114,13 @@ export function WordCard({ word, onClick, onFavorite, onDelete }: WordCardProps)
               e.stopPropagation()
               onDelete()
             }}
-            className="p-2 rounded-full hover:bg-red-50 active:scale-90 transition"
+            className="p-2 rounded-full hover:bg-red-50 active:scale-90 transition dark:hover:bg-red-900/20"
             aria-label="删除"
           >
-            <Trash2 size={17} className="text-gray-300 hover:text-red-500" />
+            <Trash2 size={17} className="text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400" />
           </button>
         </div>
       </div>
     </div>
   )
-}
+})

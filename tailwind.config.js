@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -34,14 +35,15 @@ export default {
         warn: {
           50: '#fffbeb',
           100: '#fef3c7',
+          300: '#fcd34d',
           500: '#f59e0b',
           600: '#d97706',
         },
       },
       boxShadow: {
         soft: '0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04)',
-        card: '0 4px 16px -4px rgb(99 102 241 / 0.08), 0 2px 6px -2px rgb(0 0 0 / 0.04)',
-        glow: '0 8px 24px -8px rgb(99 102 241 / 0.35)',
+        card: '0 4px 16px -4px rgb(99 102 241 / 0.06), 0 1px 4px -1px rgb(0 0 0 / 0.04)',
+        glow: '0 8px 24px -8px rgb(99 102 241 / 0.3)',
       },
       backgroundImage: {
         'gradient-primary':
@@ -50,6 +52,7 @@ export default {
           'linear-gradient(135deg, #eef2ff 0%, #f5f3ff 50%, #fdf2f8 100%)',
         'gradient-success': 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
         'gradient-warn': 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
+        'gradient-accent': 'linear-gradient(135deg, #ec4899 0%, #f472b6 100%)',
         'gradient-mesh':
           'radial-gradient(at 0% 0%, rgb(99 102 241 / 0.12) 0px, transparent 50%), radial-gradient(at 100% 0%, rgb(236 72 153 / 0.12) 0px, transparent 50%), radial-gradient(at 50% 100%, rgb(139 92 246 / 0.12) 0px, transparent 50%)',
       },
@@ -57,6 +60,7 @@ export default {
         'fade-in': 'fadeIn 0.3s ease-out',
         'slide-up': 'slideUp 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
+        'bounce-in': 'bounceIn 0.5s ease-out',
       },
       keyframes: {
         fadeIn: {
@@ -69,6 +73,12 @@ export default {
         },
         scaleIn: {
           '0%': { opacity: '0', transform: 'scale(0.96)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        bounceIn: {
+          '0%': { opacity: '0', transform: 'scale(0.3)' },
+          '50%': { transform: 'scale(1.05)' },
+          '70%': { transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
       },

@@ -21,20 +21,35 @@ export interface PlanProgress {
   todayReviewDone: number
   todayNewTarget: number
   todayReviewTarget: number
-  // 0-100
+  todayNewRemaining: number
+  todayReviewRemaining: number
   overallPercent: number
-  // 预计剩余天数 (基于未开始新词 / newPerDay)
   estimatedDaysLeft: number
 }
 
 export function useActivePlan(): StudyPlan | undefined {
-  return useLiveQuery(() => db.studyPlans.where('isActive').equals(1).first(), [])
+  return (
+    useLiveQuery(
+      () =>
+        db.studyPlans
+          .where('isActive')
+          .equals(1)
+          .filter((p) => (p.entityType ?? 'word') === 'word')
+          .first(),
+      []
+    ) ?? undefined
+  )
 }
 
 export function useAllPlans(): StudyPlan[] {
   return (
     useLiveQuery(
-      () => db.studyPlans.orderBy('createdAt').reverse().toArray(),
+      () =>
+        db.studyPlans
+          .orderBy('createdAt')
+          .reverse()
+          .filter((p) => (p.entityType ?? 'word') === 'word')
+          .toArray(),
       []
     ) ?? []
   )
@@ -67,6 +82,8 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
       todayReviewDone: 0,
       todayNewTarget: 0,
       todayReviewTarget: 0,
+      todayNewRemaining: 0,
+      todayReviewRemaining: 0,
       overallPercent: 0,
       estimatedDaysLeft: 0,
     }
@@ -86,6 +103,15 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
     words.length > 0 ? Math.round((learned / words.length) * 100) : 0
   const estimatedDaysLeft =
     plan.newPerDay > 0 ? Math.ceil(remainingNew / plan.newPerDay) : 0
+
+  // 今日待学新词 = 每日目标 - 今日已完成（但不超过实际剩余新词数）
+  const todayNewRemaining = Math.min(
+    Math.max(0, plan.newPerDay - todayNewDone),
+    remainingNew
+  )
+  // 今日待复习 = 到期待复习 - 今日已复习完成（但不超过实际到期数）
+  const todayReviewRemaining = Math.max(0, dueReview - todayReviewDone)
+
   return {
     totalWords: words.length,
     startedWords: plan.startedIds.length,
@@ -96,6 +122,8 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
     todayReviewDone,
     todayNewTarget: plan.newPerDay,
     todayReviewTarget: plan.reviewPerDay,
+    todayNewRemaining,
+    todayReviewRemaining,
     overallPercent,
     estimatedDaysLeft,
   }
@@ -130,14 +158,19 @@ export async function createPlan(input: {
     input.sourceKind,
     input.sourceCategory ?? ''
   )
-  // 新建计划时,把其他计划的 isActive 置 0
+  // 新建计划时,把其他激活的"单词"计划 isActive 置 0
   await db.transaction('rw', db.studyPlans, async () => {
-    const existing = await db.studyPlans.where('isActive').equals(1).toArray()
+    const existing = await db.studyPlans
+      .where('isActive')
+      .equals(1)
+      .filter((p) => (p.entityType ?? 'word') === 'word')
+      .toArray()
     for (const p of existing) {
       if (p.id) await db.studyPlans.update(p.id, { isActive: 0 })
     }
     await db.studyPlans.add({
       name: input.name,
+      entityType: 'word',
       sourceKind: input.sourceKind,
       sourceCategory: input.sourceCategory ?? '',
       newPerDay: input.newPerDay,
@@ -153,13 +186,21 @@ export async function createPlan(input: {
     } as StudyPlan)
   })
   // 返回新建的 id (取最后一个)
-  const created = await db.studyPlans.where('isActive').equals(1).first()
+  const created = await db.studyPlans
+    .where('isActive')
+    .equals(1)
+    .filter((p) => (p.entityType ?? 'word') === 'word')
+    .first()
   return created?.id ?? 0
 }
 
 export async function activatePlan(id: number) {
   await db.transaction('rw', db.studyPlans, async () => {
-    const existing = await db.studyPlans.where('isActive').equals(1).toArray()
+    const existing = await db.studyPlans
+      .where('isActive')
+      .equals(1)
+      .filter((p) => (p.entityType ?? 'word') === 'word')
+      .toArray()
     for (const p of existing) {
       if (p.id && p.id !== id) await db.studyPlans.update(p.id, { isActive: 0 })
     }
@@ -183,17 +224,24 @@ export async function updatePlanSettings(
 }
 
 // 刷新计划的 wordIds (新增了同分类/收藏的单词时调用)
-export async function refreshPlanWords(id: number) {
+export async function refreshPlanWords(id: number): Promise<number> {
   const plan = await db.studyPlans.get(id)
-  if (!plan) return
+  if (!plan) return 0
   const fresh = await buildWordIdsFromSource(plan.sourceKind, plan.sourceCategory)
-  // 合并:已 started 的保留,新加入的尚 started 的 ID 也保留
-  const startedSet = new Set(plan.startedIds)
+  const existingSet = new Set(plan.wordIds)
+  const newIds = fresh.filter((id) => !existingSet.has(id))
   const merged = Array.from(new Set([...plan.wordIds, ...fresh]))
-  // 但删除已经不在来源里的单词?这里保守保留,不删除
   await db.studyPlans.update(id, { wordIds: merged })
-  // 提示: 已学过的单词保留;但下次取新词时只会从 fresh 中尚未 started 的里取
-  void startedSet
+  return newIds.length
+}
+
+// 检查计划来源中是否有尚未纳入的新单词
+export async function getPlanNewWordCount(id: number): Promise<number> {
+  const plan = await db.studyPlans.get(id)
+  if (!plan) return 0
+  const fresh = await buildWordIdsFromSource(plan.sourceKind, plan.sourceCategory)
+  const existingSet = new Set(plan.wordIds)
+  return fresh.filter((wid) => !existingSet.has(wid)).length
 }
 
 // 获取今日应学的"新词"队列:从 wordIds 中尚未 started 的取 newPerDay 个

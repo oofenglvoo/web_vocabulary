@@ -27,10 +27,10 @@ export function StatCard({
     )
   }
   return (
-    <div className="rounded-2xl p-4 bg-white border border-gray-100 shadow-soft">
+    <div className="rounded-2xl p-4 bg-white border border-gray-100/80 shadow-soft dark:bg-slate-800/90 dark:border-slate-700/60">
       {icon && <div className={`mb-1.5 ${color}`}>{icon}</div>}
-      <div className={`text-2xl font-bold ${color}`}>{value}</div>
-      <div className="text-xs text-gray-500 mt-0.5">{title}</div>
+      <div className={`text-2xl font-bold text-gradient`}>{value}</div>
+      <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{title}</div>
     </div>
   )
 }

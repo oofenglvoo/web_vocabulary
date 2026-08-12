@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, Upload, FileText, Save, Heart } from 'lucide-react'
+import { Upload, FileText, Save, Heart } from 'lucide-react'
 import { bulkAddWords, BulkAddResult, useCategories } from '../hooks/useWords'
 import {
   parseWordsJson,
@@ -9,6 +9,8 @@ import {
   ImportableWord,
   ParseResult,
 } from '../utils/import'
+import { BackButton } from '../components/BackButton'
+import { useToast } from '../components/Toast'
 
 type Format = 'json' | 'csv' | 'text'
 // 分类选择特殊值
@@ -17,6 +19,18 @@ const NEW_CATEGORY = '__new__' // 新建分类
 
 const SAMPLES: Record<Format, string> = {
   json: `[
+  {
+    "word": "bank",
+    "phonetic": "/bæŋk/",
+    "definitions": [
+      { "pos": "n.", "def": "a financial institution", "trans": "银行" },
+      { "pos": "n.", "def": "the land alongside a river", "trans": "河岸" },
+      { "pos": "v.", "def": "to deposit money", "trans": "存钱" }
+    ],
+    "example": "I need to go to the bank.",
+    "category": "CET-4",
+    "difficulty": 2
+  },
   {
     "word": "hello",
     "phonetic": "/həˈloʊ/",
@@ -27,16 +41,17 @@ const SAMPLES: Record<Format, string> = {
     "difficulty": 1
   }
 ]`,
-  csv: `word,phonetic,definition,example,translation,category,difficulty
-hello,/həˈloʊ/,used as a greeting,"Hello, world!",你好,日常用语,1
-world,/wɜːrld/,the earth,The world is big,世界,默认,2`,
+  csv: `word,phonetic,definition,example,translation,category,difficulty,definitions
+bank,/bæŋk/,a financial institution,"I need to go to the bank.",银行,CET-4,2,"[{""pos"":""n."",""def"":""a financial institution"",""trans"":""银行""},{""pos"":""n."",""def"":""the land alongside a river"",""trans"":""河岸""},{""pos"":""v."",""def"":""to deposit money"",""trans"":""存钱""}]"
+hello,/həˈloʊ/,used as a greeting,"Hello, world!",你好,日常用语,1,`,
   text: `hello	你好	/həˈloʊ/
 world	世界
-apple	苹果`,
+bank	银行;河岸;存钱`,
 }
 
 export function ImportWords() {
   const navigate = useNavigate()
+  const { toast } = useToast()
   const [searchParams] = useSearchParams()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const categories = useCategories()
@@ -116,7 +131,7 @@ export function ImportWords() {
     if (categoryChoice === NEW_CATEGORY) {
       const name = newCategoryName.trim()
       if (!name) {
-        alert('请填写新分类名称')
+        toast('warning', '请填写新分类名称')
         return
       }
       targetCategory = name
@@ -138,6 +153,7 @@ export function ImportWords() {
         forceFavorite: autoFavorite,
       })
       setResult(r)
+      toast('success', `成功导入 ${r.added} 个单词`)
     } finally {
       setImporting(false)
     }
@@ -152,19 +168,14 @@ export function ImportWords() {
   return (
     <div className="p-4 space-y-4">
       <div className="flex items-center justify-between">
-        <button
-          onClick={() => navigate(-1)}
-          className="p-2 hover:bg-gray-100 rounded-lg"
-        >
-          <ArrowLeft size={24} />
-        </button>
-        <h1 className="text-xl font-bold">批量导入</h1>
+        <BackButton />
+        <h1 className="page-title-accent">批量导入</h1>
         <div className="w-10" />
       </div>
 
       {/* 格式切换 */}
       <div>
-        <label className="block text-sm font-medium mb-2">数据格式</label>
+        <label className="block text-sm font-medium mb-2 dark:text-gray-300">数据格式</label>
         <div className="flex gap-2">
           {(['json', 'csv', 'text'] as Format[]).map((f) => (
             <button
@@ -173,20 +184,20 @@ export function ImportWords() {
                 setFormat(f)
                 if (content) parse(content, f)
               }}
-              className={`px-4 py-2 rounded-lg text-sm ${
+              className={`px-4 py-2 rounded-xl text-sm transition-all ${
                 format === f
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-gradient-primary text-white shadow-glow'
+                  : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'
               }`}
             >
               {f.toUpperCase()}
             </button>
           ))}
         </div>
-        <p className="text-xs text-gray-500 mt-2">
-          {format === 'json' && '支持单词数组,每个对象包含 word/definition/translation 等字段'}
-          {format === 'csv' && '第一行为表头 (word,phonetic,definition,example,translation,category,difficulty)'}
-          {format === 'text' && '每行一个单词:word [Tab/逗号/|] 释义 [可选: 音标 例句 分类]'}
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+          {format === 'json' && '支持单词数组，每个对象可含 definitions 数组实现多释义，也兼容旧格式 definition/translation'}
+          {format === 'csv' && '表头含 definitions 列时值为 JSON 数组；也可用旧列 definition/translation'}
+          {format === 'text' && '每行: word [Tab/逗号/|] 释义。多释义用分号分隔，如: 银行;河岸;存钱'}
         </p>
       </div>
 
@@ -219,7 +230,7 @@ export function ImportWords() {
 
       {/* 文本输入 */}
       <div>
-        <label className="block text-sm font-medium mb-1">粘贴内容</label>
+        <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">粘贴内容</label>
         <textarea
           value={content}
           onChange={(e) => {
@@ -228,7 +239,7 @@ export function ImportWords() {
           }}
           onBlur={handleParse}
           placeholder={SAMPLES[format]}
-          className="w-full border rounded-lg px-3 py-2 font-mono text-sm focus:border-primary-600 focus:outline-none min-h-[200px]"
+          className="input-field font-mono min-h-[200px]"
         />
         <button onClick={handleParse} className="btn-secondary mt-2 text-sm">
           解析预览
@@ -237,15 +248,15 @@ export function ImportWords() {
 
       {/* 导入选项 */}
       <div className="card p-4 space-y-3">
-        <h3 className="font-medium">导入选项</h3>
+        <h3 className="font-medium dark:text-gray-200">导入选项</h3>
 
         {/* 目标分类 */}
         <div>
-          <label className="block text-sm font-medium mb-1">目标分类</label>
+          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">目标分类</label>
           <select
             value={categoryChoice}
             onChange={(e) => setCategoryChoice(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 focus:border-primary-600 focus:outline-none"
+            className="input-field"
           >
             <option value={KEEP_FILE_CATEGORY}>保持文件中的分类</option>
             <option disabled>──────────</option>
@@ -261,10 +272,10 @@ export function ImportWords() {
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.target.value)}
               placeholder="新分类名称"
-              className="w-full mt-2 border rounded-lg px-3 py-2 focus:border-primary-600 focus:outline-none"
+              className="input-field mt-2"
             />
           )}
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             {categoryChoice === KEEP_FILE_CATEGORY
               ? '使用文件中每条记录自带的分类(缺失则使用「默认」)'
               : `所有导入的单词都会归到「${previewCategory}」分类`}
@@ -272,7 +283,7 @@ export function ImportWords() {
         </div>
 
         {/* 自动收藏 */}
-        <label className="flex items-center gap-2 text-sm cursor-pointer">
+        <label className="flex items-center gap-2 text-sm cursor-pointer dark:text-gray-300">
           <input
             type="checkbox"
             checked={autoFavorite}
@@ -283,7 +294,7 @@ export function ImportWords() {
         </label>
 
         {/* 跳过重复 */}
-        <label className="flex items-center gap-2 text-sm cursor-pointer">
+        <label className="flex items-center gap-2 text-sm cursor-pointer dark:text-gray-300">
           <input
             type="checkbox"
             checked={skipDuplicates}
@@ -297,15 +308,15 @@ export function ImportWords() {
       {parsed && (
         <div className="card p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="font-medium">解析结果</h3>
-            <span className="text-sm text-gray-500">
+            <h3 className="font-medium dark:text-gray-200">解析结果</h3>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
               共 {parsed.words.length} 个有效单词
               {parsed.errors.length > 0 && `, ${parsed.errors.length} 条错误`}
             </span>
           </div>
 
           {parsed.errors.length > 0 && (
-            <div className="bg-red-50 text-red-600 rounded-lg p-3 text-xs max-h-32 overflow-auto">
+            <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-xl p-3 text-xs max-h-32 overflow-auto">
               {parsed.errors.slice(0, 20).map((err, i) => (
                 <div key={i}>{err}</div>
               ))}
@@ -316,9 +327,9 @@ export function ImportWords() {
           )}
 
           {parsed.words.length > 0 && (
-            <div className="text-xs text-gray-500 max-h-40 overflow-auto border rounded-lg">
+            <div className="text-xs text-gray-500 dark:text-gray-400 max-h-40 overflow-auto border rounded-xl dark:border-slate-700">
               <table className="w-full">
-                <thead className="bg-gray-50 sticky top-0">
+                <thead className="bg-gray-50 dark:bg-slate-700 sticky top-0">
                   <tr>
                     <th className="text-left px-2 py-1">单词</th>
                     <th className="text-left px-2 py-1">释义/翻译</th>
@@ -327,10 +338,12 @@ export function ImportWords() {
                 </thead>
                 <tbody>
                   {parsed.words.slice(0, 50).map((w, i) => (
-                    <tr key={i} className="border-t">
+                    <tr key={i} className="border-t dark:border-slate-700">
                       <td className="px-2 py-1 font-medium">{w.word}</td>
                       <td className="px-2 py-1 truncate max-w-[200px]">
-                        {w.translation || w.definition}
+                        {w.definitions && w.definitions.length > 0
+                          ? w.definitions.map((d: any) => [d.pos, d.trans || d.def].filter(Boolean).join(' ')).join('; ')
+                          : (w.translation || w.definition)}
                       </td>
                       <td className="px-2 py-1">
                         {previewCategory ?? w.category}
@@ -361,9 +374,9 @@ export function ImportWords() {
 
       {/* 导入结果 */}
       {result && (
-        <div className="card p-4 bg-green-50 border border-green-200">
-          <h3 className="font-medium text-green-700 mb-2">导入完成</h3>
-          <div className="text-sm space-y-1">
+        <div className="card p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
+          <h3 className="font-medium text-green-700 dark:text-green-400 mb-2">导入完成</h3>
+          <div className="text-sm space-y-1 dark:text-gray-300">
             <div>新增: {result.added} 个</div>
             <div>跳过: {result.skipped} 个</div>
             {previewCategory && result.added > 0 && (
@@ -377,7 +390,7 @@ export function ImportWords() {
             )}
           </div>
           {result.skippedWords.length > 0 && (
-            <details className="mt-2 text-xs text-gray-600">
+            <details className="mt-2 text-xs text-gray-600 dark:text-gray-400">
               <summary className="cursor-pointer">查看跳过的单词</summary>
               <div className="mt-1 max-h-32 overflow-auto">
                 {result.skippedWords.join(', ')}
