@@ -92,7 +92,10 @@ export function useSentencePlanProgress(plan: StudyPlan | undefined): SentencePl
   const now = Date.now()
   const startedSet = new Set(plan.startedIds)
   const learned = sentences.filter((s) => s.isLearned === 1).length
-  const remainingNew = sentences.filter((s) => !startedSet.has(s.id!)).length
+  // 剩余新句：未 start 且未掌握（与 getTodayNewSentences 口径一致，已掌握不算新句）
+  const remainingNew = sentences.filter(
+    (s) => !startedSet.has(s.id!) && s.isLearned === 0
+  ).length
   const dueReview = sentences.filter(
     (s) => startedSet.has(s.id!) && s.isLearned === 0 && s.nextReviewAt <= now
   ).length
@@ -242,11 +245,42 @@ export async function getSentencePlanNewWordCount(id: number): Promise<number> {
 export async function getTodayNewSentences(plan: StudyPlan): Promise<Sentence[]> {
   if (plan.wordIds.length === 0) return []
   const startedSet = new Set(plan.startedIds)
-  const candidates = plan.wordIds.filter((id) => !startedSet.has(id))
-  const take = candidates.slice(0, plan.newPerDay)
-  if (take.length === 0) return []
-  const sentences = await db.sentences.bulkGet(take)
-  return sentences.filter((s): s is Sentence => !!s)
+  const notStartedIds = plan.wordIds.filter((id) => !startedSet.has(id))
+  if (notStartedIds.length === 0) return []
+  const sentences = await db.sentences.bulkGet(notStartedIds)
+  // 已掌握(isLearned=1)的短句不再作为新句——先排除再取配额
+  return sentences
+    .filter((s): s is Sentence => !!s)
+    .filter((s) => s.isLearned === 0)
+    .slice(0, plan.newPerDay)
+}
+
+// 计划今日新句是否已学满(newPerDay)
+export function isTodayNewQuotaDone(plan: StudyPlan): boolean {
+  const isToday = plan.todayDate === todayStr()
+  const done = isToday ? plan.todayNewDone : 0
+  return done >= plan.newPerDay
+}
+
+// 加学：从计划取"未掌握且未 start 的"一批新句(数量=newPerDay)，独立于今日配额
+export async function getExtraNewSentences(plan: StudyPlan): Promise<Sentence[]> {
+  if (plan.wordIds.length === 0) return []
+  const startedSet = new Set(plan.startedIds)
+  const notStartedIds = plan.wordIds.filter((id) => !startedSet.has(id))
+  if (notStartedIds.length === 0) return []
+  const sentences = await db.sentences.bulkGet(notStartedIds)
+  return sentences
+    .filter((s): s is Sentence => !!s)
+    .filter((s) => s.isLearned === 0)
+    .slice(0, plan.newPerDay)
+}
+
+// 加学中标记短句已学：只写入 startedIds，不计入今日配额
+export async function markExtraSentenceStarted(planId: number, sentenceId: number) {
+  await withPlanUpdate(planId, (plan) => {
+    if (plan.startedIds.includes(sentenceId)) return {}
+    return { startedIds: [...plan.startedIds, sentenceId] }
+  })
 }
 
 export async function getTodayReviewSentences(plan: StudyPlan): Promise<Sentence[]> {

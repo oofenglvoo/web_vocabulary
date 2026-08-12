@@ -92,7 +92,10 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
   const now = Date.now()
   const startedSet = new Set(plan.startedIds)
   const learned = words.filter((w) => w.isLearned === 1).length
-  const remainingNew = words.filter((w) => !startedSet.has(w.id!)).length
+  // 剩余新词：未 start 且未掌握（与 getTodayNewWords 口径一致，已掌握不算新词）
+  const remainingNew = words.filter(
+    (w) => !startedSet.has(w.id!) && w.isLearned === 0
+  ).length
   const dueReview = words.filter(
     (w) => startedSet.has(w.id!) && w.isLearned === 0 && w.nextReviewAt <= now
   ).length
@@ -246,14 +249,45 @@ export async function getPlanNewWordCount(id: number): Promise<number> {
 }
 
 // 获取今日应学的"新词"队列:从 wordIds 中尚未 started 的取 newPerDay 个
+// 已掌握(isLearned=1)的词不再作为新词——先排除已掌握，再取配额，避免配额被已掌握词占满
 export async function getTodayNewWords(plan: StudyPlan): Promise<Word[]> {
   if (plan.wordIds.length === 0) return []
   const startedSet = new Set(plan.startedIds)
-  const candidates = plan.wordIds.filter((id) => !startedSet.has(id))
-  const take = candidates.slice(0, plan.newPerDay)
-  if (take.length === 0) return []
-  const words = await db.words.bulkGet(take)
-  return words.filter((w): w is Word => !!w)
+  const notStartedIds = plan.wordIds.filter((id) => !startedSet.has(id))
+  if (notStartedIds.length === 0) return []
+  const words = await db.words.bulkGet(notStartedIds)
+  const unlearned = words
+    .filter((w): w is Word => !!w)
+    .filter((w) => w.isLearned === 0)
+  return unlearned.slice(0, plan.newPerDay)
+}
+
+// 计划今日新词是否已学满(newPerDay)
+export function isTodayNewQuotaDone(plan: StudyPlan): boolean {
+  const isToday = plan.todayDate === todayStr()
+  const done = isToday ? plan.todayNewDone : 0
+  return done >= plan.newPerDay
+}
+
+// 加学：从计划取"未掌握且未 start 的"一批新词(数量=newPerDay)，独立于今日配额
+export async function getExtraNewWords(plan: StudyPlan): Promise<Word[]> {
+  if (plan.wordIds.length === 0) return []
+  const startedSet = new Set(plan.startedIds)
+  const notStartedIds = plan.wordIds.filter((id) => !startedSet.has(id))
+  if (notStartedIds.length === 0) return []
+  const words = await db.words.bulkGet(notStartedIds)
+  return words
+    .filter((w): w is Word => !!w)
+    .filter((w) => w.isLearned === 0)
+    .slice(0, plan.newPerDay)
+}
+
+// 加学中标记词已学：只写入 startedIds，不计入今日配额(todayNewDone)
+export async function markExtraWordStarted(planId: number, wordId: number) {
+  await withPlanUpdate(planId, (plan) => {
+    if (plan.startedIds.includes(wordId)) return {}
+    return { startedIds: [...plan.startedIds, wordId] }
+  })
 }
 
 // 获取今日应复习的单词队列:已 started 且未掌握且到期

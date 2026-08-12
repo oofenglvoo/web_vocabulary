@@ -2,14 +2,20 @@ import { useState } from 'react'
 import { Settings2 } from 'lucide-react'
 import { getStudyPrefs, setStudyType, StudyType, STUDY_TYPE_LABEL } from '../utils/studyPrefs'
 
+interface StudyTypeSettingsProps {
+  /** 题型变化时的回调（父级用于重置会话状态，如 done/index） */
+  onChange?: () => void
+}
+
 /** 学习页头部的题型设置入口：新学/复习分别配置题型 */
-export function StudyTypeSettings() {
+export function StudyTypeSettings({ onChange }: StudyTypeSettingsProps) {
   const [open, setOpen] = useState(false)
   const [prefs, setPrefs] = useState(() => getStudyPrefs())
 
   const change = (target: 'newType' | 'reviewType', type: StudyType) => {
     setStudyType(target, type)
     setPrefs(getStudyPrefs())
+    onChange?.()
   }
 
   return (
