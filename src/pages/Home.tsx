@@ -13,6 +13,7 @@ import {
   Flame,
   Zap,
   MessageSquare,
+  CalendarCheck,
 } from 'lucide-react'
 import {
   useStats,
@@ -44,13 +45,22 @@ export function Home() {
               <p className="text-white/80 text-xs">今日</p>
               <h1 className="text-2xl font-bold tracking-tight mt-0.5">单词记忆</h1>
             </div>
-            <Link
-              to="/stats"
-              className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center hover:bg-white/30 transition-colors"
-              aria-label="统计"
-            >
-              <Settings size={18} />
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                to="/checkin"
+                className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center hover:bg-white/30 transition-colors"
+                aria-label="打卡"
+              >
+                <CalendarCheck size={18} />
+              </Link>
+              <Link
+                to="/stats"
+                className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center hover:bg-white/30 transition-colors"
+                aria-label="统计"
+              >
+                <Settings size={18} />
+              </Link>
+            </div>
           </div>
 
           <div className="grid grid-cols-3 gap-3">

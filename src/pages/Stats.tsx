@@ -45,28 +45,44 @@ export function Stats() {
   const todayAccuracy = stats.todayTotal > 0 ? Math.round((stats.todayCorrect / stats.todayTotal) * 100) : 0
   const weekAccuracy = stats.weekTotal > 0 ? Math.round((stats.weekCorrect / stats.weekTotal) * 100) : 0
 
-  const handleExportJson = () => {
+  const handleExportJson = async () => {
     const json = exportWordsToJson(words)
-    downloadFile(json, 'vocabulary.json', 'application/json')
-    toast('success', 'JSON 导出成功')
+    try {
+      await downloadFile(json, 'vocabulary.json', 'application/json')
+      toast('success', 'JSON 导出成功')
+    } catch (e) {
+      toast('error', '导出失败: ' + (e as Error).message)
+    }
   }
 
-  const handleExportCsv = () => {
+  const handleExportCsv = async () => {
     const csv = exportWordsToCsv(words)
-    downloadFile(csv, 'vocabulary.csv', 'text/csv')
-    toast('success', 'CSV 导出成功')
+    try {
+      await downloadFile(csv, 'vocabulary.csv', 'text/csv')
+      toast('success', 'CSV 导出成功')
+    } catch (e) {
+      toast('error', '导出失败: ' + (e as Error).message)
+    }
   }
 
-  const handleExportSentencesJson = () => {
+  const handleExportSentencesJson = async () => {
     const json = exportSentencesToJson(sentences)
-    downloadFile(json, 'sentences.json', 'application/json')
-    toast('success', '短句 JSON 导出成功')
+    try {
+      await downloadFile(json, 'sentences.json', 'application/json')
+      toast('success', '短句 JSON 导出成功')
+    } catch (e) {
+      toast('error', '导出失败: ' + (e as Error).message)
+    }
   }
 
-  const handleExportSentencesCsv = () => {
+  const handleExportSentencesCsv = async () => {
     const csv = exportSentencesToCsv(sentences)
-    downloadFile(csv, 'sentences.csv', 'text/csv')
-    toast('success', '短句 CSV 导出成功')
+    try {
+      await downloadFile(csv, 'sentences.csv', 'text/csv')
+      toast('success', '短句 CSV 导出成功')
+    } catch (e) {
+      toast('error', '导出失败: ' + (e as Error).message)
+    }
   }
 
   const handleAddCategory = async () => {

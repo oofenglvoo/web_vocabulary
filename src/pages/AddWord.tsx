@@ -78,6 +78,8 @@ export function AddWord() {
         easeFactor: 2.5,
         interval: 0,
         nextReviewAt: Date.now(),
+        srsStage: 0,
+        stageProgress: 0,
         isLearned: 0,
         isFavorite: 0,
       })

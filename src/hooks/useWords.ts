@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
-import { Word, Category, Flag } from '../types/word'
-import { calculateSrs } from '../utils/srs'
+import { Word, Category, Flag, StudyKind } from '../types/word'
+import { applyStageReview, stageIntervalDays, MAX_STAGE } from '../utils/srs'
 import { useNow } from './useNow'
 
 export function useAllWords() {
@@ -252,7 +252,12 @@ async function pruneWordIdFromPlans(id: number) {
   }
 }
 
-export async function recordReview(wordId: number, quality: number, durationMs = 0) {
+export async function recordReview(
+  wordId: number,
+  quality: number,
+  durationMs = 0,
+  kind: StudyKind = 'review'
+) {
   // 读-改-写放进同一事务，避免双标签页/双击并发时自增计数丢失
   await db.transaction('rw', db.words, db.studySessions, async () => {
     const word = await db.words.get(wordId)
@@ -267,21 +272,23 @@ export async function recordReview(wordId: number, quality: number, durationMs =
       result,
       durationMs,
       timestamp: Date.now(),
+      kind,
     })
 
-    const { newInterval, newEaseFactor, nextReviewAt } = calculateSrs(
-      quality,
-      word.interval,
-      word.easeFactor,
-      word.streak
+    const now = Date.now()
+    const { newStage, newProgress, isLearned } = applyStageReview(
+      { srsStage: word.srsStage ?? 0, stageProgress: word.stageProgress ?? 0 },
+      quality
     )
 
     const changes: Partial<Word> = {
       reviewCount: word.reviewCount + 1,
-      lastReviewedAt: Date.now(),
-      interval: newInterval,
-      easeFactor: newEaseFactor,
-      nextReviewAt,
+      lastReviewedAt: now,
+      srsStage: newStage,
+      stageProgress: newProgress,
+      // 周期间隔由 srsStage 决定
+      interval: stageIntervalDays(newStage),
+      nextReviewAt: now + stageIntervalDays(newStage) * DAY_MS,
     }
 
     if (quality >= 3) {
@@ -291,7 +298,7 @@ export async function recordReview(wordId: number, quality: number, durationMs =
       changes.streak = 0
     }
 
-    if (newInterval >= 21) {
+    if (isLearned) {
       changes.isLearned = 1
     }
 
@@ -312,6 +319,8 @@ export async function markWordLearned(id: number) {
     if (!w) return
     await db.words.update(id, {
       isLearned: 1,
+      srsStage: MAX_STAGE,
+      stageProgress: 0,
       interval: 365,
       streak: Math.max(5, w.streak),
       easeFactor: Math.max(2.5, w.easeFactor),
@@ -326,6 +335,7 @@ export async function markWordLearned(id: number) {
       result: 'mastered',
       durationMs: 0,
       timestamp: now,
+      kind: 'review',
     })
   })
 }
@@ -337,6 +347,8 @@ export async function unmarkWordLearned(id: number) {
   if (!w || w.isLearned === 0) return
   await db.words.update(id, {
     isLearned: 0,
+    srsStage: 1,
+    stageProgress: 0,
     interval: 1,
     streak: 0,
     easeFactor: 2.5,
@@ -482,6 +494,8 @@ export async function bulkMarkLearned(ids: number[]) {
       if (!w || w.isLearned === 1) continue
       await db.words.update(id, {
         isLearned: 1,
+        srsStage: MAX_STAGE,
+        stageProgress: 0,
         interval: 365,
         streak: Math.max(5, w.streak),
         easeFactor: Math.max(2.5, w.easeFactor),
@@ -496,6 +510,7 @@ export async function bulkMarkLearned(ids: number[]) {
         result: 'mastered',
         durationMs: 0,
         timestamp: now,
+        kind: 'review',
       })
     }
   })

@@ -64,6 +64,34 @@ class VocabularyDatabase extends Dexie {
         }
       })
     })
+    // v6: 艾宾浩斯 7 周期制。words/sentences 增加 srsStage/stageProgress；
+    //     studySessions 增加 kind('new'|'review') 区分新学/复习(打卡双圈用)。
+    //     srsStage: 0=未学, 1-6=学习中周期, 7=已掌握；stageProgress=当前周期内连续答对数
+    this.version(6).stores({
+      words: '++id, word, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      sentences: '++id, sentence, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      categories: '++id, name',
+      studySessions: '++id, wordId, timestamp, kind',
+      studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
+    }).upgrade(async (tx) => {
+      // 老数据映射: 已掌握 → 周期 7；有复习记录 → 周期 1；否则未学
+      await tx.table('words').toCollection().modify((w: any) => {
+        if (w.isLearned === 1) w.srsStage = 7
+        else if (w.reviewCount > 0) w.srsStage = 1
+        else w.srsStage = 0
+        w.stageProgress = 0
+      })
+      await tx.table('sentences').toCollection().modify((s: any) => {
+        if (s.isLearned === 1) s.srsStage = 7
+        else if (s.reviewCount > 0) s.srsStage = 1
+        else s.srsStage = 0
+        s.stageProgress = 0
+      })
+      // 旧会话记录统一视为复习
+      await tx.table('studySessions').toCollection().modify((s: any) => {
+        if (!s.kind) s.kind = 'review'
+      })
+    })
   }
 }
 

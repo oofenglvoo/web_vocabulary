@@ -33,6 +33,13 @@ export function setProvider(provider: TtsProvider) {
 let synth: SpeechSynthesis | null = null
 let voices: SpeechSynthesisVoice[] = []
 
+// 平假名/片假名/假名扩展：用于自动检测日语
+const JA_RE = /[぀-ヿㇰ-ㇿ・]/
+
+export function isJapanese(text: string): boolean {
+  return JA_RE.test(text)
+}
+
 export function initTts() {
   if (typeof window === 'undefined') return
   if (!('speechSynthesis' in window)) return
@@ -45,7 +52,7 @@ export function initTts() {
   }
 }
 
-function speakNative(word: string, accent: Accent): boolean {
+function speakNative(word: string, accent: Accent, lang: 'en' | 'ja'): boolean {
   if (typeof window === 'undefined') return false
   if (!('speechSynthesis' in window)) return false
   if (!synth) initTts()
@@ -55,12 +62,18 @@ function speakNative(word: string, accent: Accent): boolean {
 
   synth.cancel()
   const utterance = new SpeechSynthesisUtterance(word)
-  utterance.lang = accent === 'uk' ? 'en-GB' : 'en-US'
+  if (lang === 'ja') {
+    utterance.lang = 'ja-JP'
+  } else {
+    utterance.lang = accent === 'uk' ? 'en-GB' : 'en-US'
+  }
   utterance.rate = 0.9
   const target = utterance.lang.toLowerCase()
   const voice =
     voices.find((v) => v.lang.toLowerCase() === target) ||
-    voices.find((v) => v.lang.toLowerCase().startsWith('en'))
+    (lang === 'ja'
+      ? voices.find((v) => v.lang.toLowerCase().startsWith('ja'))
+      : voices.find((v) => v.lang.toLowerCase().startsWith('en')))
   if (voice) utterance.voice = voice
   synth.speak(utterance)
   return true
@@ -133,25 +146,35 @@ function speakYoudao(word: string, accent: Accent, myToken: number): Promise<'pl
 }
 
 // ---- 对外统一接口 ----
-export async function speakWord(word: string, opts: { accent?: Accent } = {}) {
+export async function speakWord(
+  word: string,
+  opts: { accent?: Accent; lang?: 'en' | 'ja' } = {}
+) {
   const w = (word || '').trim()
   if (!w) return
   const accent = opts.accent ?? getAccent()
+  // 自动检测日语(含假名)，显式 lang 优先
+  const lang: 'en' | 'ja' = opts.lang ?? (isJapanese(w) ? 'ja' : 'en')
   const provider = getProvider()
   const myToken = ++speakToken
 
   if (provider === 'native') {
-    speakNative(w, accent)
+    speakNative(w, accent, lang)
     return
   }
 
   if (provider === 'youdao' || provider === 'auto') {
+    // 有道接口无日语音频保证，日语直接走原生语音
+    if (lang === 'ja') {
+      speakNative(w, accent, lang)
+      return
+    }
     const result = await speakYoudao(w, accent, myToken)
     // 如果当前 token 已经被新的播放请求顶替,直接返回,避免叠加播放
     if (myToken !== speakToken) return
     if (result === 'played') return
     // 有道失败 → 回退原生
-    speakNative(w, accent)
+    speakNative(w, accent, lang)
     return
   }
 }
