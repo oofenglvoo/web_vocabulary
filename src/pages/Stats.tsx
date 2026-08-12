@@ -1,8 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Download, Upload, FileUp, Volume2 } from 'lucide-react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Download, Upload, FileUp, Volume2, BarChart3, Moon, Sun } from 'lucide-react'
 import { useStats, useAllWords, useCategories, addCategory } from '../hooks/useWords'
+import { useAllSentences, useSentenceStats } from '../hooks/useSentences'
 import { StatCard } from '../components/StatCard'
-import { exportWordsToJson, exportWordsToCsv, downloadFile } from '../utils/export'
+import { exportWordsToJson, exportWordsToCsv, exportSentencesToJson, exportSentencesToCsv, downloadFile } from '../utils/export'
 import {
   getAccent,
   setAccent,
@@ -12,17 +14,24 @@ import {
   Accent,
   TtsProvider,
 } from '../utils/tts'
-import { useState } from 'react'
+import { db } from '../db/database'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { isDarkMode, toggleDarkMode } from '../main'
+import { BackButton } from '../components/BackButton'
+import { useToast } from '../components/Toast'
 
 export function Stats() {
-  const navigate = useNavigate()
+  const { toast } = useToast()
   const stats = useStats()
   const words = useAllWords()
   const categories = useCategories()
+  const sentences = useAllSentences()
+  const sentenceStats = useSentenceStats()
   const [showAddCat, setShowAddCat] = useState(false)
   const [newCatName, setNewCatName] = useState('')
   const [accent, setAccentState] = useState<Accent>(getAccent())
   const [provider, setProviderState] = useState<TtsProvider>(getProvider())
+  const [dark, setDarkState] = useState(isDarkMode())
 
   const handleAccentChange = (value: Accent) => {
     setAccent(value)
@@ -39,16 +48,31 @@ export function Stats() {
   const handleExportJson = () => {
     const json = exportWordsToJson(words)
     downloadFile(json, 'vocabulary.json', 'application/json')
+    toast('success', 'JSON 导出成功')
   }
 
   const handleExportCsv = () => {
     const csv = exportWordsToCsv(words)
     downloadFile(csv, 'vocabulary.csv', 'text/csv')
+    toast('success', 'CSV 导出成功')
+  }
+
+  const handleExportSentencesJson = () => {
+    const json = exportSentencesToJson(sentences)
+    downloadFile(json, 'sentences.json', 'application/json')
+    toast('success', '短句 JSON 导出成功')
+  }
+
+  const handleExportSentencesCsv = () => {
+    const csv = exportSentencesToCsv(sentences)
+    downloadFile(csv, 'sentences.csv', 'text/csv')
+    toast('success', '短句 CSV 导出成功')
   }
 
   const handleAddCategory = async () => {
     if (!newCatName.trim()) return
     await addCategory(newCatName.trim())
+    toast('success', `分类「${newCatName.trim()}」已创建`)
     setNewCatName('')
     setShowAddCat(false)
   }
@@ -56,15 +80,13 @@ export function Stats() {
   return (
     <div className="p-4 space-y-6">
       <div className="flex items-center justify-between">
-        <button onClick={() => navigate(-1)} className="p-2 hover:bg-gray-100 rounded-lg">
-          <ArrowLeft size={24} />
-        </button>
-        <h1 className="text-xl font-bold">统计与设置</h1>
+        <BackButton />
+        <h1 className="page-title-accent">统计与设置</h1>
         <div className="w-10" />
       </div>
 
       <div>
-        <h2 className="font-semibold text-lg mb-3">学习统计</h2>
+        <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">学习统计</h2>
         <div className="grid grid-cols-3 gap-3">
           <StatCard title="总单词" value={stats.total} />
           <StatCard title="已掌握" value={stats.learned} color="text-success-600" />
@@ -73,7 +95,7 @@ export function Stats() {
       </div>
 
       <div className="card p-4">
-        <h3 className="font-medium mb-3">今日学习</h3>
+        <h3 className="font-medium mb-3 dark:text-gray-200">今日学习</h3>
         <div className="space-y-2 text-sm">
           <Row label="答题数" value={stats.todayTotal} />
           <Row label="正确数" value={stats.todayCorrect} />
@@ -82,7 +104,7 @@ export function Stats() {
       </div>
 
       <div className="card p-4">
-        <h3 className="font-medium mb-3">本周学习</h3>
+        <h3 className="font-medium mb-3 dark:text-gray-200">本周学习</h3>
         <div className="space-y-2 text-sm">
           <Row label="答题数" value={stats.weekTotal} />
           <Row label="正确数" value={stats.weekCorrect} />
@@ -90,10 +112,21 @@ export function Stats() {
         </div>
       </div>
 
+      {/* 近7日学习趋势 */}
+      <WeeklyChart />
+
+      <div>
+        <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">短句统计</h2>
+        <div className="grid grid-cols-3 gap-3">
+          <StatCard title="总短句" value={sentenceStats.total} />
+          <StatCard title="已掌握" value={sentenceStats.learned} color="text-success-600" />
+        </div>
+      </div>
+
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-semibold text-lg">分类管理</h2>
-          <button onClick={() => setShowAddCat(true)} className="text-sm text-primary-600 hover:underline">
+          <h2 className="font-semibold text-lg dark:text-gray-200">分类管理</h2>
+          <button onClick={() => setShowAddCat(true)} className="text-sm text-primary-600 dark:text-primary-400 hover:underline">
             添加分类
           </button>
         </div>
@@ -105,28 +138,52 @@ export function Stats() {
                   className="w-4 h-4 rounded-full"
                   style={{ backgroundColor: cat.color }}
                 />
-                <span>{cat.name}</span>
+                <span className="dark:text-gray-200">{cat.name}</span>
               </div>
-              <span className="text-sm text-gray-400">{cat.wordCount} 词</span>
+              <span className="text-sm text-gray-400 dark:text-gray-500">{cat.wordCount} 词</span>
             </div>
           ))}
         </div>
       </div>
 
+      {/* 深色模式切换 */}
       <div>
-        <h2 className="font-semibold text-lg mb-3">发音设置</h2>
+        <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">外观</h2>
+        <div className="card p-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-medium dark:text-gray-200">深色模式</div>
+            <button
+              onClick={() => {
+                toggleDarkMode()
+                setDarkState(!dark)
+              }}
+              className={`p-2 rounded-xl transition-all ${
+                dark
+                  ? 'bg-slate-700 text-yellow-300'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-slate-700 dark:text-yellow-300'
+              }`}
+            >
+              {dark ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 发音设置 */}
+      <div>
+        <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">发音设置</h2>
         <div className="card p-4 space-y-4">
           <div>
-            <div className="text-sm font-medium mb-2">口音</div>
+            <div className="text-sm font-medium mb-2 dark:text-gray-200">口音</div>
             <div className="flex gap-2">
               {(['us', 'uk'] as Accent[]).map((a) => (
                 <button
                   key={a}
                   onClick={() => handleAccentChange(a)}
-                  className={`flex-1 py-2 rounded-lg text-sm ${
+                  className={`flex-1 py-2 rounded-xl text-sm transition-all ${
                     accent === a
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-gradient-primary text-white shadow-glow'
+                      : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'
                   }`}
                 >
                   {a === 'us' ? '美音' : '英音'}
@@ -136,7 +193,7 @@ export function Stats() {
           </div>
 
           <div>
-            <div className="text-sm font-medium mb-2">发音源</div>
+            <div className="text-sm font-medium mb-2 dark:text-gray-200">发音源</div>
             <div className="flex gap-2">
               {([
                 ['auto', '自动'],
@@ -146,17 +203,17 @@ export function Stats() {
                 <button
                   key={p}
                   onClick={() => handleProviderChange(p)}
-                  className={`flex-1 py-2 rounded-lg text-xs ${
+                  className={`flex-1 py-2 rounded-xl text-xs transition-all ${
                     provider === p
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-gradient-primary text-white shadow-glow'
+                      : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600'
                   }`}
                 >
                   {label}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
               自动: 优先有道真人发音,失败回退浏览器合成
             </p>
           </div>
@@ -171,32 +228,56 @@ export function Stats() {
       </div>
 
       <div>
-        <h2 className="font-semibold text-lg mb-3">数据导入/导出</h2>
-        <Link
-          to="/import"
-          className="btn-primary w-full flex items-center justify-center gap-2 mb-3"
-        >
-          <FileUp size={18} /> 批量导入单词
-        </Link>
-        <div className="flex gap-3">
-          <button onClick={handleExportJson} className="btn-secondary flex-1 flex items-center justify-center gap-2">
-            <Download size={18} /> JSON
-          </button>
-          <button onClick={handleExportCsv} className="btn-secondary flex-1 flex items-center justify-center gap-2">
-            <Upload size={18} /> CSV
-          </button>
+        <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">数据导入/导出</h2>
+
+        {/* 单词 */}
+        <div className="mb-3">
+          <h3 className="text-sm font-medium mb-2 dark:text-gray-300">单词</h3>
+          <Link
+            to="/import"
+            className="btn-primary w-full flex items-center justify-center gap-2 mb-2"
+          >
+            <FileUp size={18} /> 批量导入单词
+          </Link>
+          <div className="flex gap-3">
+            <button onClick={handleExportJson} className="btn-secondary flex-1 flex items-center justify-center gap-2">
+              <Download size={18} /> JSON
+            </button>
+            <button onClick={handleExportCsv} className="btn-secondary flex-1 flex items-center justify-center gap-2">
+              <Upload size={18} /> CSV
+            </button>
+          </div>
+        </div>
+
+        {/* 短句 */}
+        <div>
+          <h3 className="text-sm font-medium mb-2 dark:text-gray-300">短句</h3>
+          <Link
+            to="/sentences/import"
+            className="btn-primary w-full flex items-center justify-center gap-2 mb-2"
+          >
+            <FileUp size={18} /> 批量导入短句
+          </Link>
+          <div className="flex gap-3">
+            <button onClick={handleExportSentencesJson} className="btn-secondary flex-1 flex items-center justify-center gap-2">
+              <Download size={18} /> JSON
+            </button>
+            <button onClick={handleExportSentencesCsv} className="btn-secondary flex-1 flex items-center justify-center gap-2">
+              <Upload size={18} /> CSV
+            </button>
+          </div>
         </div>
       </div>
 
       {showAddCat && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-sm">
-            <h3 className="font-bold text-lg mb-4">添加分类</h3>
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3 className="font-bold text-lg mb-4 dark:text-gray-100">添加分类</h3>
             <input
               value={newCatName}
               onChange={(e) => setNewCatName(e.target.value)}
               placeholder="分类名称"
-              className="w-full border rounded-lg px-3 py-2 mb-4 focus:border-primary-600 focus:outline-none"
+              className="input-field mb-4"
               autoFocus
             />
             <div className="flex gap-3">
@@ -213,8 +294,111 @@ export function Stats() {
 function Row({ label, value }: { label: string; value: string | number }) {
   return (
     <div className="flex justify-between">
-      <span className="text-gray-500">{label}</span>
-      <span className="font-medium">{value}</span>
+      <span className="text-gray-500 dark:text-gray-400">{label}</span>
+      <span className="font-medium dark:text-gray-200">{value}</span>
+    </div>
+  )
+}
+
+// 近7日学习趋势图
+function WeeklyChart() {
+  const [tooltip, setTooltip] = useState<{ index: number; data: { total: number; correct: number } } | null>(null)
+  const dailyData = useLiveQuery(async () => {
+    const now = Date.now()
+    const dayMs = 24 * 60 * 60 * 1000
+    const days: { date: string; label: string; total: number; correct: number }[] = []
+
+    for (let i = 6; i >= 0; i--) {
+      const dayStart = now - i * dayMs
+      const start = new Date(dayStart)
+      start.setHours(0, 0, 0, 0)
+      const end = new Date(start.getTime() + dayMs)
+
+      const sessions = await db.studySessions
+        .where('timestamp')
+        .between(start.getTime(), end.getTime())
+        .toArray()
+
+      const d = new Date(start.getTime())
+      const label = `${d.getMonth() + 1}/${d.getDate()}`
+      const weekdays = ['日', '一', '二', '三', '四', '五', '六']
+      const dayLabel = weekdays[d.getDay()]
+
+      days.push({
+        date: label,
+        label: dayLabel,
+        total: sessions.length,
+        correct: sessions.filter((s) => s.result === 'correct' || s.result === 'mastered').length,
+      })
+    }
+    return days
+  }, []) ?? []
+
+  const maxTotal = Math.max(1, ...dailyData.map((d) => d.total))
+
+  return (
+    <div className="card p-4">
+      <div className="flex items-center gap-2 mb-4">
+        <BarChart3 size={18} className="text-primary-600 dark:text-primary-400" />
+        <h3 className="font-medium dark:text-gray-200">近7日学习趋势</h3>
+      </div>
+
+      <div className="flex items-end gap-2 h-36 relative">
+        {dailyData.map((d, i) => {
+          const totalH = (d.total / maxTotal) * 100
+          const correctH = d.total > 0 ? (d.correct / maxTotal) * 100 : 0
+          return (
+            <div
+              key={i}
+              className="flex-1 flex flex-col items-center gap-1 h-full"
+              onMouseEnter={() => d.total > 0 && setTooltip({ index: i, data: { total: d.total, correct: d.correct } })}
+              onMouseLeave={() => setTooltip(null)}
+            >
+              <span className="text-[10px] text-gray-500 dark:text-gray-400 font-medium shrink-0">
+                {d.total > 0 ? d.total : ''}
+              </span>
+              <div className="flex-1 w-full flex flex-col justify-end relative">
+                {/* 正确部分 - 渐变填充 */}
+                <div
+                  className="w-full rounded-t-md transition-all duration-500 bg-gradient-to-t from-primary-600 to-primary-400 dark:from-primary-500 dark:to-primary-300"
+                  style={{ height: `${correctH}%`, minHeight: d.correct > 0 ? '4px' : '0' }}
+                />
+                {/* 总量-正确部分 (错误) */}
+                {d.total > d.correct && (
+                  <div
+                    className="w-full rounded-none transition-all duration-500 bg-gradient-to-t from-warn-500 to-warn-300 dark:from-warn-600 dark:to-warn-400"
+                    style={{ height: `${totalH - correctH}%`, minHeight: '2px' }}
+                  />
+                )}
+
+                {/* Tooltip */}
+                {tooltip && tooltip.index === i && (
+                  <div className="absolute -top-16 left-1/2 -translate-x-1/2 bg-gray-800 dark:bg-slate-600 text-white text-[10px] px-2 py-1.5 rounded-lg shadow-lg whitespace-nowrap z-10">
+                    <div>正确: {d.correct}</div>
+                    <div>出错: {d.total - d.correct}</div>
+                    <div>总计: {d.total}</div>
+                  </div>
+                )}
+              </div>
+              <div className="text-center shrink-0">
+                <div className="text-[10px] text-gray-400 dark:text-gray-500">{d.date}</div>
+                <div className="text-[10px] text-gray-300 dark:text-gray-600">{d.label}</div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="flex items-center justify-center gap-4 mt-3">
+        <div className="flex items-center gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-sm bg-gradient-to-t from-primary-600 to-primary-400" />
+          <span className="text-[10px] text-gray-500 dark:text-gray-400">正确</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-sm bg-gradient-to-t from-warn-500 to-warn-300" />
+          <span className="text-[10px] text-gray-500 dark:text-gray-400">出错</span>
+        </div>
+      </div>
     </div>
   )
 }

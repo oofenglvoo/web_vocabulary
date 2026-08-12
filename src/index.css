@@ -7,12 +7,17 @@
   --bg-soft: #f1f5f9;
 }
 
+.dark {
+  --bg: #0f172a;
+  --bg-soft: #1e293b;
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  @apply text-gray-900;
+  @apply text-gray-900 dark:text-gray-100;
   background-color: var(--bg);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -22,43 +27,49 @@ body {
 
 /* 滚动条精简 */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgb(0 0 0 / 0.12);
-  border-radius: 3px;
+  background: rgb(0 0 0 / 0.08);
+  border-radius: 2px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgb(255 255 255 / 0.12);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(0 0 0 / 0.2);
+  background: rgb(0 0 0 / 0.15);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgb(255 255 255 / 0.2);
 }
 
 @layer components {
   .card {
-    @apply bg-white rounded-2xl shadow-card border border-gray-100;
+    @apply bg-white rounded-2xl shadow-card border border-gray-100/80 dark:bg-slate-800/90 dark:border-slate-700/60;
   }
   .card-hover {
     @apply transition-all duration-200 hover:shadow-glow hover:-translate-y-0.5;
   }
 
   .btn-primary {
-    @apply bg-gradient-primary text-white px-4 py-2.5 rounded-xl font-medium shadow-soft hover:shadow-glow active:scale-[0.97] transition-all inline-flex items-center justify-center;
+    @apply bg-gradient-primary text-white px-4 py-2.5 rounded-xl font-medium shadow-soft hover:shadow-glow active:scale-[0.97] transition-all inline-flex items-center justify-center gap-1.5;
   }
   .btn-secondary {
-    @apply bg-white text-gray-700 border border-gray-200 px-4 py-2.5 rounded-xl font-medium hover:bg-gray-50 hover:border-gray-300 active:scale-[0.97] transition-all inline-flex items-center justify-center;
+    @apply bg-white text-gray-700 border border-gray-200 px-4 py-2.5 rounded-xl font-medium hover:bg-gray-50 hover:border-gray-300 active:scale-[0.97] transition-all inline-flex items-center justify-center gap-1.5 dark:bg-slate-700 dark:text-gray-200 dark:border-slate-600 dark:hover:bg-slate-600;
   }
   .btn-ghost {
-    @apply text-gray-600 px-3 py-2 rounded-xl hover:bg-gray-100 active:scale-[0.97] transition-all inline-flex items-center justify-center;
+    @apply text-gray-600 px-3 py-2 rounded-xl hover:bg-gray-100 active:scale-[0.97] transition-all inline-flex items-center justify-center gap-1.5 dark:text-gray-300 dark:hover:bg-slate-700;
   }
   .btn-danger {
-    @apply bg-red-500 text-white px-4 py-2.5 rounded-xl font-medium hover:bg-red-600 active:scale-[0.97] transition-all inline-flex items-center justify-center;
+    @apply bg-red-500 text-white px-4 py-2.5 rounded-xl font-medium hover:bg-red-600 active:scale-[0.97] transition-all inline-flex items-center justify-center gap-1.5;
   }
   .btn-success {
-    @apply bg-gradient-success text-white px-4 py-2.5 rounded-xl font-medium shadow-soft hover:shadow-glow active:scale-[0.97] transition-all inline-flex items-center justify-center;
+    @apply bg-gradient-success text-white px-4 py-2.5 rounded-xl font-medium shadow-soft hover:shadow-glow active:scale-[0.97] transition-all inline-flex items-center justify-center gap-1.5;
   }
 
   .input-field {
-    @apply w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-100 focus:outline-none transition-all placeholder:text-gray-400;
+    @apply w-full bg-white border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-100 focus:outline-none transition-all placeholder:text-gray-400 dark:bg-slate-700 dark:border-slate-600 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:ring-primary-900;
   }
 
   .chip {
@@ -66,10 +77,26 @@ body {
   }
 
   .progress-track {
-    @apply w-full bg-gray-100 rounded-full overflow-hidden;
+    @apply w-full bg-gray-100/80 rounded-full overflow-hidden dark:bg-slate-700/60;
   }
   .progress-fill {
     @apply h-full bg-gradient-primary transition-all duration-500;
+  }
+
+  /* 进度条微光动画 */
+  .progress-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
   }
 
   .scrollbar-hide::-webkit-scrollbar {
@@ -79,7 +106,58 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* 页面通用容器 */
+  .page-container {
+    @apply min-h-screen bg-gradient-mesh;
+  }
+  .page-header {
+    @apply flex items-center justify-between mb-4;
+  }
+  .page-title {
+    @apply text-xl font-bold tracking-tight;
+  }
+
+  /* 渐变标题装饰线 */
+  .page-title-accent {
+    @apply text-xl font-bold tracking-tight relative;
+  }
+  .page-title-accent::after {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 3px;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+    margin-top: 4px;
+  }
+
+  /* 渐变文字 */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-accent-500;
+  }
+
+  /* 顶部渐变装饰条 */
+  .top-accent-bar {
+    @apply h-1 bg-gradient-primary;
+  }
+
+  /* Modal 统一样式 */
+  .modal-overlay {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in;
+  }
+  .modal-content {
+    @apply bg-white dark:bg-slate-800 rounded-2xl p-6 w-full max-w-sm animate-scale-in;
+  }
+
+  /* 列表项交错入场 */
+  .stagger-item {
+    animation: slideUp 0.3s ease-out both;
+  }
 }
+
+/* 交错入场 delay 工具 */
+.stagger-item { --stagger-index: 0; animation-delay: calc(var(--stagger-index) * 50ms); }
 
 /* range slider 美化 */
 input[type='range'] {
@@ -108,4 +186,20 @@ input[type='range']::-moz-range-thumb {
   background: #fff;
   border: 3px solid #6366f1;
   cursor: pointer;
+}
+
+/* 输入框 focus 蓝光 */
+input:focus, textarea:focus, select:focus {
+  @apply ring-2 ring-primary-100 dark:ring-primary-900/50;
+}
+
+/* 弹窗毛玻璃 */
+.fixed.inset-0.bg-black\/50 {
+  backdrop-filter: blur(4px);
+}
+
+/* Shimmer 动画 */
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }

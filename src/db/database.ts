@@ -1,8 +1,9 @@
 import Dexie, { Table } from 'dexie'
-import { Word, Category, StudySession, StudyPlan } from '../types/word'
+import { Word, Category, StudySession, StudyPlan, Sentence, Definition } from '../types/word'
 
 class VocabularyDatabase extends Dexie {
   words!: Table<Word>
+  sentences!: Table<Sentence>
   categories!: Table<Category>
   studySessions!: Table<StudySession>
   studyPlans!: Table<StudyPlan>
@@ -19,6 +20,49 @@ class VocabularyDatabase extends Dexie {
       categories: '++id, name',
       studySessions: '++id, wordId, timestamp',
       studyPlans: '++id, name, sourceKind, isActive, isArchived, createdAt',
+    })
+    // 新增 sentences 表 + studyPlans 增加 entityType 索引(用于区分单词/短句计划)
+    this.version(4).stores({
+      words: '++id, word, category, nextReviewAt, isLearned, isFavorite, createdAt',
+      sentences: '++id, sentence, category, nextReviewAt, isLearned, isFavorite, createdAt',
+      categories: '++id, name',
+      studySessions: '++id, wordId, timestamp',
+      studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
+    })
+    // 新增 definitions 字段：将旧 definition/translation 迁移为结构化数组
+    this.version(5).stores({
+      words: '++id, word, category, nextReviewAt, isLearned, isFavorite, createdAt',
+      sentences: '++id, sentence, category, nextReviewAt, isLearned, isFavorite, createdAt',
+      categories: '++id, name',
+      studySessions: '++id, wordId, timestamp',
+      studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
+    }).upgrade((tx) => {
+      // 迁移单词表
+      const wordTable = tx.table<Word>('words')
+      wordTable.toCollection().modify((word) => {
+        if (!word.definitions || word.definitions.length === 0) {
+          const defs: Definition[] = []
+          if (word.definition || word.translation) {
+            defs.push({
+              pos: '',
+              def: word.definition ?? '',
+              trans: word.translation ?? '',
+            })
+          }
+          if (defs.length > 0) {
+            word.definitions = defs
+          }
+        }
+      })
+      // 迁移短句表
+      const sentenceTable = tx.table<Sentence>('sentences')
+      sentenceTable.toCollection().modify((s) => {
+        if (!s.definitions || s.definitions.length === 0) {
+          if (s.translation) {
+            s.definitions = [{ pos: '', def: '', trans: s.translation }]
+          }
+        }
+      })
     })
   }
 }

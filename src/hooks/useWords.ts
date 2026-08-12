@@ -10,7 +10,12 @@ export function useAllWords() {
 export function useDueWords() {
   const now = Date.now()
   return useLiveQuery(
-    () => db.words.where('nextReviewAt').belowOrEqual(now).filter((w) => w.isLearned === 0).sortBy('nextReviewAt'),
+    () =>
+      db.words
+        .where('nextReviewAt')
+        .belowOrEqual(now)
+        .filter((w) => w.isLearned === 0 && w.reviewCount > 0)
+        .sortBy('nextReviewAt'),
     []
   ) ?? []
 }
@@ -18,7 +23,7 @@ export function useDueWords() {
 export function useDueCount() {
   const now = Date.now()
   return useLiveQuery(
-    () => db.words.where('nextReviewAt').belowOrEqual(now).filter((w) => w.isLearned === 0).count(),
+    () => db.words.where('nextReviewAt').belowOrEqual(now).filter((w) => w.isLearned === 0 && w.reviewCount > 0).count(),
     []
   ) ?? 0
 }
@@ -70,6 +75,47 @@ export function useStats() {
   const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000
   const weekSessions = useLiveQuery(() => db.studySessions.where('timestamp').above(weekAgo).toArray(), []) ?? []
 
+  // 计算连续学习天数
+  const streak = useLiveQuery(async () => {
+    const sessions = await db.studySessions.orderBy('timestamp').reverse().toArray()
+    if (sessions.length === 0) return 0
+
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const dayMs = 24 * 60 * 60 * 1000
+
+    // 获取最近一次学习日期
+    const lastSession = sessions[0]
+    const lastDate = new Date(lastSession.timestamp)
+    lastDate.setHours(0, 0, 0, 0)
+
+    // 如果最近一次学习不是今天也不是昨天,连续天数归零
+    const diffDays = Math.floor((today.getTime() - lastDate.getTime()) / dayMs)
+    if (diffDays > 1) return 0
+
+    // 从最近学习日往回数连续天数
+    let streakCount = 0
+    let checkDate = diffDays === 0 ? today.getTime() : lastDate.getTime()
+    const dateSet = new Set<string>()
+    for (const s of sessions) {
+      const d = new Date(s.timestamp)
+      const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+      dateSet.add(key)
+    }
+
+    while (true) {
+      const d = new Date(checkDate)
+      const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+      if (dateSet.has(key)) {
+        streakCount++
+        checkDate -= dayMs
+      } else {
+        break
+      }
+    }
+    return streakCount
+  }, []) ?? 0
+
   return {
     total,
     learned,
@@ -78,6 +124,7 @@ export function useStats() {
     todayCorrect: todaySessions.filter((s) => s.result === 'correct').length,
     weekTotal: weekSessions.length,
     weekCorrect: weekSessions.filter((s) => s.result === 'correct').length,
+    streak,
   }
 }
 
@@ -218,6 +265,20 @@ export async function markWordLearned(id: number) {
   })
 }
 
+// 取消掌握：将已掌握单词恢复为学习中状态
+export async function unmarkWordLearned(id: number) {
+  const now = Date.now()
+  const w = await db.words.get(id)
+  if (!w || w.isLearned === 0) return
+  await db.words.update(id, {
+    isLearned: 0,
+    interval: 1,
+    streak: 0,
+    easeFactor: 2.5,
+    nextReviewAt: now,
+  })
+}
+
 export async function getRandomWords(limit: number): Promise<Word[]> {
   const all = await db.words.toArray()
   return all.filter((w) => w.isLearned === 0).sort(() => Math.random() - 0.5).slice(0, limit)
@@ -252,15 +313,19 @@ export async function addCategory(name: string, description = '', color = '#8b5c
 }
 
 export async function updateCategory(id: number, changes: Partial<Category>) {
-  // 如果改名,需要把已有单词的 category 字段同步更新
+  // 如果改名,需要把已有单词和短句的 category 字段同步更新
   if (changes.name) {
     const old = await db.categories.get(id)
     if (old && old.name !== changes.name) {
-      const affected = await db.words.where('category').equals(old.name).toArray()
-      if (affected.length > 0) {
-        await db.transaction('rw', db.words, db.categories, async () => {
-          for (const w of affected) {
+      const affectedWords = await db.words.where('category').equals(old.name).toArray()
+      const affectedSentences = await db.sentences.where('category').equals(old.name).toArray()
+      if (affectedWords.length > 0 || affectedSentences.length > 0) {
+        await db.transaction('rw', db.words, db.sentences, db.categories, async () => {
+          for (const w of affectedWords) {
             await db.words.update(w.id!, { category: changes.name! })
+          }
+          for (const s of affectedSentences) {
+            await db.sentences.update(s.id!, { category: changes.name! })
           }
           await db.categories.update(id, changes)
         })
@@ -277,13 +342,43 @@ export async function deleteCategory(
 ) {
   const cat = await db.categories.get(id)
   if (!cat) return
-  const target = options.reassignTo ?? '默认'
-  await db.transaction('rw', db.words, db.categories, async () => {
+
+  // 确定目标分类：优先使用指定分类，否则选择另一个现存分类
+  let target = options.reassignTo
+  if (!target) {
+    const others = await db.categories.where('id').notEqual(id).toArray()
+    if (others.length > 0) {
+      target = others[0].name
+    } else {
+      // 删除的是最后一个分类 → 删后自动重建"默认"
+      target = '默认'
+    }
+  }
+
+  await db.transaction('rw', db.words, db.sentences, db.categories, async () => {
+    // 将该分类下的单词移到目标分类
     const words = await db.words.where('category').equals(cat.name).toArray()
     for (const w of words) {
       await db.words.update(w.id!, { category: target })
     }
+    // 将该分类下的短句也移到目标分类
+    const sentences = await db.sentences.where('category').equals(cat.name).toArray()
+    for (const s of sentences) {
+      await db.sentences.update(s.id!, { category: target })
+    }
+    // 删除分类
     await db.categories.delete(id)
+    // 如果删除后没有任何分类，自动重建"默认"
+    const remaining = await db.categories.count()
+    if (remaining === 0) {
+      await db.categories.add({
+        name: '默认',
+        description: '默认分类',
+        color: '#8b5cf6',
+        wordCount: 0,
+        createdAt: Date.now(),
+      })
+    }
   })
 }
 
@@ -302,6 +397,34 @@ export async function bulkSetFavorite(ids: number[], favorite: boolean) {
   await db.transaction('rw', db.words, async () => {
     for (const id of ids) {
       await db.words.update(id, { isFavorite: favorite ? 1 : 0 })
+    }
+  })
+}
+
+export async function bulkMarkLearned(ids: number[]) {
+  if (ids.length === 0) return
+  const now = Date.now()
+  await db.transaction('rw', db.words, db.studySessions, async () => {
+    for (const id of ids) {
+      const w = await db.words.get(id)
+      if (!w || w.isLearned === 1) continue
+      await db.words.update(id, {
+        isLearned: 1,
+        interval: 365,
+        streak: Math.max(5, w.streak),
+        easeFactor: Math.max(2.5, w.easeFactor),
+        lastReviewedAt: now,
+        nextReviewAt: now + 365 * 24 * 60 * 60 * 1000,
+        reviewCount: w.reviewCount + 1,
+        correctCount: w.correctCount + 1,
+      })
+      await db.studySessions.add({
+        wordId: id,
+        mode: 'mark-learned',
+        result: 'mastered',
+        durationMs: 0,
+        timestamp: now,
+      })
     }
   })
 }

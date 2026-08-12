@@ -1,22 +1,20 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Save, Plus, X } from 'lucide-react'
-import { addWord, useCategories } from '../hooks/useWords'
+import { addSentence } from '../hooks/useSentences'
+import { useCategories } from '../hooks/useWords'
 import { useToast } from '../components/Toast'
 import { BackButton } from '../components/BackButton'
 import { Definition } from '../types/word'
 
-const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.']
-
-export function AddWord() {
+export function AddSentence() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { toast } = useToast()
   const categories = useCategories()
   const presetCategory = searchParams.get('category') ?? '默认'
   const [form, setForm] = useState({
-    word: '',
-    phonetic: '',
+    sentence: '',
     example: '',
     category: presetCategory,
     difficulty: 1,
@@ -43,23 +41,19 @@ export function AddWord() {
   }
 
   const handleSubmit = async () => {
-    if (!form.word.trim()) {
-      setError('单词不能为空')
+    if (!form.sentence.trim()) {
+      setError('短句不能为空')
       return
     }
     const validDefs = definitions.filter((d) => d.def.trim() || d.trans.trim())
     if (validDefs.length === 0) {
-      setError('至少需要一个释义')
+      setError('至少需要一个翻译/释义')
       return
     }
 
-    // 向前兼容：将第一个释义写入旧字段
     const primary = validDefs[0]
-
-    await addWord({
-      word: form.word.trim(),
-      phonetic: form.phonetic.trim(),
-      definition: primary.def.trim(),
+    await addSentence({
+      sentence: form.sentence.trim(),
       translation: primary.trans.trim(),
       definitions: validDefs.map((d) => ({
         pos: d.pos.trim(),
@@ -80,8 +74,8 @@ export function AddWord() {
       isLearned: 0,
       isFavorite: 0,
     })
-    toast('success', '单词已保存')
-    navigate('/words')
+    toast('success', '短句已保存')
+    navigate('/sentences')
   }
 
   const difficultyLabels = ['简单', '较易', '中等', '较难', '困难']
@@ -90,41 +84,33 @@ export function AddWord() {
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
         <BackButton />
-        <h1 className="page-title-accent">添加单词</h1>
+        <h1 className="page-title-accent">添加短句</h1>
         <button onClick={handleSubmit} className="btn-primary flex items-center gap-1">
           <Save size={18} /> 保存
         </button>
       </div>
 
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-3 rounded-xl mb-4 text-sm">{error}</div>
+        <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-3 rounded-xl mb-4 text-sm">
+          {error}
+        </div>
       )}
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">单词 *</label>
-          <input
-            value={form.word}
-            onChange={(e) => setForm({ ...form, word: e.target.value })}
-            className="input-field"
-            placeholder="输入英文单词"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">音标</label>
-          <input
-            value={form.phonetic}
-            onChange={(e) => setForm({ ...form, phonetic: e.target.value })}
-            className="input-field"
-            placeholder="/həˈloʊ/"
+          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">英文短句 *</label>
+          <textarea
+            value={form.sentence}
+            onChange={(e) => setForm({ ...form, sentence: e.target.value })}
+            className="input-field min-h-[70px]"
+            placeholder="输入英文短句或短语"
           />
         </div>
 
         {/* 多释义区域 */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="block text-sm font-medium dark:text-gray-300">释义 *</label>
+            <label className="block text-sm font-medium dark:text-gray-300">翻译/释义 *</label>
             <button
               type="button"
               onClick={addDefinition}
@@ -149,28 +135,17 @@ export function AddWord() {
                     <X size={14} className="text-gray-400" />
                   </button>
                 )}
-                <div className="flex gap-2">
-                  <select
-                    value={d.pos}
-                    onChange={(e) => updateDefinition(i, 'pos', e.target.value)}
-                    className="input-field w-24 shrink-0 text-sm"
-                  >
-                    {POS_OPTIONS.map((p) => (
-                      <option key={p} value={p}>{p || '词性'}</option>
-                    ))}
-                  </select>
-                  <input
-                    value={d.def}
-                    onChange={(e) => updateDefinition(i, 'def', e.target.value)}
-                    className="input-field flex-1 text-sm"
-                    placeholder="英文释义"
-                  />
-                </div>
                 <input
                   value={d.trans}
                   onChange={(e) => updateDefinition(i, 'trans', e.target.value)}
                   className="input-field text-sm"
                   placeholder="中文翻译"
+                />
+                <input
+                  value={d.def}
+                  onChange={(e) => updateDefinition(i, 'def', e.target.value)}
+                  className="input-field text-sm"
+                  placeholder="英文释义（可选）"
                 />
               </div>
             ))}
@@ -178,12 +153,12 @@ export function AddWord() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">例句</label>
+          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">用法说明</label>
           <textarea
             value={form.example}
             onChange={(e) => setForm({ ...form, example: e.target.value })}
             className="input-field min-h-[60px]"
-            placeholder="输入例句"
+            placeholder="语境/用法说明(可选)"
           />
         </div>
 
@@ -195,13 +170,17 @@ export function AddWord() {
             className="input-field"
           >
             {categories.map((cat) => (
-              <option key={cat.name} value={cat.name}>{cat.name}</option>
+              <option key={cat.name} value={cat.name}>
+                {cat.name}
+              </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">难度: {difficultyLabels[form.difficulty - 1]}</label>
+          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">
+            难度: {difficultyLabels[form.difficulty - 1]}
+          </label>
           <input
             type="range"
             min={1}
@@ -227,8 +206,11 @@ export function AddWord() {
           />
         </div>
 
-        <button onClick={handleSubmit} className="btn-primary w-full flex items-center justify-center gap-2">
-          <Save size={18} /> 保存单词
+        <button
+          onClick={handleSubmit}
+          className="btn-primary w-full flex items-center justify-center gap-2"
+        >
+          <Save size={18} /> 保存短句
         </button>
       </div>
     </div>

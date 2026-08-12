@@ -1,8 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
-import { StudyPlan, Word } from '../types/word'
+import { StudyPlan, Sentence } from '../types/word'
 
-// 当日日期字符串 (本地时区 yyyy-mm-dd)
+// 短句计划:与单词计划(useStudyPlan.ts)逻辑一致,仅查表改为 sentences,
+// 且只管理 entityType === 'sentence' 的计划。单词/短句各自独立维护"激活"状态。
+
 function todayStr(): string {
   const d = new Date()
   const y = d.getFullYear()
@@ -11,10 +13,10 @@ function todayStr(): string {
   return `${y}-${m}-${day}`
 }
 
-export interface PlanProgress {
-  totalWords: number
-  startedWords: number
-  learnedWords: number
+export interface SentencePlanProgress {
+  totalSentences: number
+  startedSentences: number
+  learnedSentences: number
   remainingNew: number
   dueReview: number
   todayNewDone: number
@@ -27,55 +29,53 @@ export interface PlanProgress {
   estimatedDaysLeft: number
 }
 
-export function useActivePlan(): StudyPlan | undefined {
+export function useActiveSentencePlan(): StudyPlan | undefined {
   return (
     useLiveQuery(
       () =>
         db.studyPlans
-          .where('isActive')
-          .equals(1)
-          .filter((p) => (p.entityType ?? 'word') === 'word')
+          .where('entityType')
+          .equals('sentence')
+          .filter((p) => p.isActive === 1)
           .first(),
       []
     ) ?? undefined
   )
 }
 
-export function useAllPlans(): StudyPlan[] {
+export function useAllSentencePlans(): StudyPlan[] {
   return (
-    useLiveQuery(
-      () =>
-        db.studyPlans
-          .orderBy('createdAt')
-          .reverse()
-          .filter((p) => (p.entityType ?? 'word') === 'word')
-          .toArray(),
-      []
-    ) ?? []
+    useLiveQuery(async () => {
+      const plans = await db.studyPlans
+        .where('entityType')
+        .equals('sentence')
+        .toArray()
+      return plans.sort((a, b) => b.createdAt - a.createdAt)
+    }, []) ?? []
   )
 }
 
-export function usePlanById(id: number): StudyPlan | undefined {
+export function useSentencePlanById(id: number): StudyPlan | undefined {
   return useLiveQuery(() => db.studyPlans.get(id), [id])
 }
 
-export function usePlanWords(plan: StudyPlan | undefined): Word[] {
+export function usePlanSentences(plan: StudyPlan | undefined): Sentence[] {
   return (
     useLiveQuery(async () => {
       if (!plan || plan.wordIds.length === 0) return []
-      const words = await db.words.bulkGet(plan.wordIds)
-      return words.filter((w): w is Word => !!w)
+      const sentences = await db.sentences.bulkGet(plan.wordIds)
+      return sentences.filter((s): s is Sentence => !!s)
     }, [plan?.id, plan?.wordIds.length]) ?? []
   )
 }
 
-export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
-  const words = usePlanWords(plan)
+export function useSentencePlanProgress(plan: StudyPlan | undefined): SentencePlanProgress {
+  const sentences = usePlanSentences(plan)
   if (!plan) {
     return {
-      totalWords: 0,
-      startedWords: 0,
-      learnedWords: 0,
+      totalSentences: 0,
+      startedSentences: 0,
+      learnedSentences: 0,
       remainingNew: 0,
       dueReview: 0,
       todayNewDone: 0,
@@ -90,32 +90,30 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
   }
   const now = Date.now()
   const startedSet = new Set(plan.startedIds)
-  const learned = words.filter((w) => w.isLearned === 1).length
-  const remainingNew = words.filter((w) => !startedSet.has(w.id!)).length
-  const dueReview = words.filter(
-    (w) => startedSet.has(w.id!) && w.isLearned === 0 && w.nextReviewAt <= now
+  const learned = sentences.filter((s) => s.isLearned === 1).length
+  const remainingNew = sentences.filter((s) => !startedSet.has(s.id!)).length
+  const dueReview = sentences.filter(
+    (s) => startedSet.has(s.id!) && s.isLearned === 0 && s.nextReviewAt <= now
   ).length
   const today = todayStr()
   const isToday = plan.todayDate === today
   const todayNewDone = isToday ? plan.todayNewDone : 0
   const todayReviewDone = isToday ? plan.todayReviewDone : 0
   const overallPercent =
-    words.length > 0 ? Math.round((learned / words.length) * 100) : 0
+    sentences.length > 0 ? Math.round((learned / sentences.length) * 100) : 0
   const estimatedDaysLeft =
     plan.newPerDay > 0 ? Math.ceil(remainingNew / plan.newPerDay) : 0
 
-  // 今日待学新词 = 每日目标 - 今日已完成（但不超过实际剩余新词数）
   const todayNewRemaining = Math.min(
     Math.max(0, plan.newPerDay - todayNewDone),
     remainingNew
   )
-  // 今日待复习 = 到期待复习 - 今日已复习完成（但不超过实际到期数）
   const todayReviewRemaining = Math.max(0, dueReview - todayReviewDone)
 
   return {
-    totalWords: words.length,
-    startedWords: plan.startedIds.length,
-    learnedWords: learned,
+    totalSentences: sentences.length,
+    startedSentences: plan.startedIds.length,
+    learnedSentences: learned,
     remainingNew,
     dueReview,
     todayNewDone,
@@ -129,48 +127,47 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
   }
 }
 
-// 根据来源构建 wordIds 快照
-async function buildWordIdsFromSource(
+// 根据来源构建 sentenceIds 快照(查 sentences 表)
+async function buildSentenceIdsFromSource(
   sourceKind: 'category' | 'favorites' | 'all',
   sourceCategory: string
 ): Promise<number[]> {
-  let words: Word[] = []
+  let sentences: Sentence[] = []
   if (sourceKind === 'category') {
-    words = await db.words.where('category').equals(sourceCategory).toArray()
+    sentences = await db.sentences.where('category').equals(sourceCategory).toArray()
   } else if (sourceKind === 'favorites') {
-    words = await db.words.where('isFavorite').equals(1).toArray()
+    sentences = await db.sentences.where('isFavorite').equals(1).toArray()
   } else {
-    words = await db.words.toArray()
+    sentences = await db.sentences.toArray()
   }
-  // 按创建时间升序,优先学早加入的;未掌握的优先
-  words.sort((a, b) => a.createdAt - b.createdAt)
-  return words.map((w) => w.id!).filter((id) => id != null)
+  sentences.sort((a, b) => a.createdAt - b.createdAt)
+  return sentences.map((s) => s.id!).filter((id) => id != null)
 }
 
-export async function createPlan(input: {
+export async function createSentencePlan(input: {
   name: string
   sourceKind: 'category' | 'favorites' | 'all'
   sourceCategory?: string
   newPerDay: number
   reviewPerDay: number
 }): Promise<number> {
-  const wordIds = await buildWordIdsFromSource(
+  const wordIds = await buildSentenceIdsFromSource(
     input.sourceKind,
     input.sourceCategory ?? ''
   )
-  // 新建计划时,把其他激活的"单词"计划 isActive 置 0
+  // 新建短句计划时,把其他"激活"的短句计划置 0
   await db.transaction('rw', db.studyPlans, async () => {
     const existing = await db.studyPlans
-      .where('isActive')
-      .equals(1)
-      .filter((p) => (p.entityType ?? 'word') === 'word')
+      .where('entityType')
+      .equals('sentence')
+      .filter((p) => p.isActive === 1)
       .toArray()
     for (const p of existing) {
       if (p.id) await db.studyPlans.update(p.id, { isActive: 0 })
     }
     await db.studyPlans.add({
       name: input.name,
-      entityType: 'word',
+      entityType: 'sentence',
       sourceKind: input.sourceKind,
       sourceCategory: input.sourceCategory ?? '',
       newPerDay: input.newPerDay,
@@ -185,21 +182,20 @@ export async function createPlan(input: {
       todayReviewDone: 0,
     } as StudyPlan)
   })
-  // 返回新建的 id (取最后一个)
   const created = await db.studyPlans
-    .where('isActive')
-    .equals(1)
-    .filter((p) => (p.entityType ?? 'word') === 'word')
+    .where('entityType')
+    .equals('sentence')
+    .filter((p) => p.isActive === 1)
     .first()
   return created?.id ?? 0
 }
 
-export async function activatePlan(id: number) {
+export async function activateSentencePlan(id: number) {
   await db.transaction('rw', db.studyPlans, async () => {
     const existing = await db.studyPlans
-      .where('isActive')
-      .equals(1)
-      .filter((p) => (p.entityType ?? 'word') === 'word')
+      .where('entityType')
+      .equals('sentence')
+      .filter((p) => p.isActive === 1)
       .toArray()
     for (const p of existing) {
       if (p.id && p.id !== id) await db.studyPlans.update(p.id, { isActive: 0 })
@@ -208,26 +204,26 @@ export async function activatePlan(id: number) {
   })
 }
 
-export async function archivePlan(id: number) {
+export async function archiveSentencePlan(id: number) {
   await db.studyPlans.update(id, { isActive: 0, isArchived: 1 })
 }
 
-export async function deletePlan(id: number) {
+export async function deleteSentencePlan(id: number) {
   await db.studyPlans.delete(id)
 }
 
-export async function updatePlanSettings(
+export async function updateSentencePlanSettings(
   id: number,
   changes: { name?: string; newPerDay?: number; reviewPerDay?: number }
 ) {
   await db.studyPlans.update(id, changes)
 }
 
-// 刷新计划的 wordIds (新增了同分类/收藏的单词时调用)
-export async function refreshPlanWords(id: number): Promise<number> {
+// 刷新短句计划的 id 池
+export async function refreshSentencePlanWords(id: number): Promise<number> {
   const plan = await db.studyPlans.get(id)
   if (!plan) return 0
-  const fresh = await buildWordIdsFromSource(plan.sourceKind, plan.sourceCategory)
+  const fresh = await buildSentenceIdsFromSource(plan.sourceKind, plan.sourceCategory)
   const existingSet = new Set(plan.wordIds)
   const newIds = fresh.filter((id) => !existingSet.has(id))
   const merged = Array.from(new Set([...plan.wordIds, ...fresh]))
@@ -235,49 +231,45 @@ export async function refreshPlanWords(id: number): Promise<number> {
   return newIds.length
 }
 
-// 检查计划来源中是否有尚未纳入的新单词
-export async function getPlanNewWordCount(id: number): Promise<number> {
+export async function getSentencePlanNewWordCount(id: number): Promise<number> {
   const plan = await db.studyPlans.get(id)
   if (!plan) return 0
-  const fresh = await buildWordIdsFromSource(plan.sourceKind, plan.sourceCategory)
+  const fresh = await buildSentenceIdsFromSource(plan.sourceKind, plan.sourceCategory)
   const existingSet = new Set(plan.wordIds)
   return fresh.filter((wid) => !existingSet.has(wid)).length
 }
 
-// 获取今日应学的"新词"队列:从 wordIds 中尚未 started 的取 newPerDay 个
-export async function getTodayNewWords(plan: StudyPlan): Promise<Word[]> {
+export async function getTodayNewSentences(plan: StudyPlan): Promise<Sentence[]> {
   if (plan.wordIds.length === 0) return []
   const startedSet = new Set(plan.startedIds)
   const candidates = plan.wordIds.filter((id) => !startedSet.has(id))
   const take = candidates.slice(0, plan.newPerDay)
   if (take.length === 0) return []
-  const words = await db.words.bulkGet(take)
-  return words.filter((w): w is Word => !!w)
+  const sentences = await db.sentences.bulkGet(take)
+  return sentences.filter((s): s is Sentence => !!s)
 }
 
-// 获取今日应复习的单词队列:已 started 且未掌握且到期
-export async function getTodayReviewWords(plan: StudyPlan): Promise<Word[]> {
+export async function getTodayReviewSentences(plan: StudyPlan): Promise<Sentence[]> {
   if (plan.wordIds.length === 0) return []
   const now = Date.now()
   const startedSet = new Set(plan.startedIds)
   const candidates = plan.wordIds.filter((id) => startedSet.has(id))
-  const words = await db.words.bulkGet(candidates)
-  return words
-    .filter((w): w is Word => !!w)
-    .filter((w) => w.isLearned === 0 && w.nextReviewAt <= now)
+  const sentences = await db.sentences.bulkGet(candidates)
+  return sentences
+    .filter((s): s is Sentence => !!s)
+    .filter((s) => s.isLearned === 0 && s.nextReviewAt <= now)
     .sort((a, b) => a.nextReviewAt - b.nextReviewAt)
     .slice(0, plan.reviewPerDay)
 }
 
-// 标记一个新词为"已开始学"(加入 startedIds)
-export async function markWordStarted(planId: number, wordId: number) {
+export async function markSentenceStarted(planId: number, sentenceId: number) {
   const plan = await db.studyPlans.get(planId)
   if (!plan) return
-  if (plan.startedIds.includes(wordId)) return
+  if (plan.startedIds.includes(sentenceId)) return
   const today = todayStr()
   const isToday = plan.todayDate === today
   const changes: Partial<StudyPlan> = {
-    startedIds: [...plan.startedIds, wordId],
+    startedIds: [...plan.startedIds, sentenceId],
   }
   if (isToday) {
     changes.todayNewDone = plan.todayNewDone + 1
@@ -289,8 +281,7 @@ export async function markWordStarted(planId: number, wordId: number) {
   await db.studyPlans.update(planId, changes)
 }
 
-// 标记一次复习完成(只增加今日计数)
-export async function markReviewDone(planId: number) {
+export async function markSentenceReviewDone(planId: number) {
   const plan = await db.studyPlans.get(planId)
   if (!plan) return
   const today = todayStr()
@@ -306,8 +297,7 @@ export async function markReviewDone(planId: number) {
   await db.studyPlans.update(planId, changes)
 }
 
-// 跨日重置今日计数(在读取时调用)
-export async function ensureTodayReset(planId: number) {
+export async function ensureSentenceTodayReset(planId: number) {
   const plan = await db.studyPlans.get(planId)
   if (!plan) return
   const today = todayStr()
@@ -320,15 +310,9 @@ export async function ensureTodayReset(planId: number) {
   }
 }
 
-/**
- * 在计划上下文中把一个单词标记为已掌握
- *  - 若该词原本是"新词"(不在 startedIds 中):加入 startedIds,本日新词计数 +1
- *  - 若该词原本是"复习"(已在 startedIds 中):本日复习计数 +1
- * 之后由调用方再调 markWordLearned() 把单词的 isLearned 置 1
- */
-export async function markPlanWordLearned(
+export async function markPlanSentenceLearned(
   planId: number,
-  wordId: number,
+  sentenceId: number,
   wasReview: boolean
 ) {
   const plan = await db.studyPlans.get(planId)
@@ -344,8 +328,8 @@ export async function markPlanWordLearned(
   if (wasReview) {
     changes.todayReviewDone = (changes.todayReviewDone ?? plan.todayReviewDone) + 1
   } else {
-    if (!plan.startedIds.includes(wordId)) {
-      changes.startedIds = [...plan.startedIds, wordId]
+    if (!plan.startedIds.includes(sentenceId)) {
+      changes.startedIds = [...plan.startedIds, sentenceId]
     }
     changes.todayNewDone = (changes.todayNewDone ?? plan.todayNewDone) + 1
   }

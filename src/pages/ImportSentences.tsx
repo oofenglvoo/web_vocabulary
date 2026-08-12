@@ -1,55 +1,52 @@
 import { useState, useRef, useMemo, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Upload, FileText, Save, Heart } from 'lucide-react'
-import { bulkAddWords, BulkAddResult, useCategories } from '../hooks/useWords'
+import { bulkAddSentences, BulkAddSentenceResult } from '../hooks/useSentences'
+import { useCategories, addCategory } from '../hooks/useWords'
 import {
-  parseWordsJson,
-  parseWordsCsv,
-  parseWordsText,
-  ImportableWord,
-  ParseResult,
+  parseSentencesJson,
+  parseSentencesCsv,
+  parseSentencesText,
+  ImportableSentence,
+  SentenceParseResult,
 } from '../utils/import'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
 
 type Format = 'json' | 'csv' | 'text'
 // 分类选择特殊值
-const KEEP_FILE_CATEGORY = '__keep__' // 使用文件中每条记录自带的 category
-const NEW_CATEGORY = '__new__' // 新建分类
+const KEEP_FILE_CATEGORY = '__keep__'
+const NEW_CATEGORY = '__new__'
 
 const SAMPLES: Record<Format, string> = {
   json: `[
   {
-    "word": "bank",
-    "phonetic": "/bæŋk/",
+    "sentence": "How's it going?",
     "definitions": [
-      { "pos": "n.", "def": "a financial institution", "trans": "银行" },
-      { "pos": "n.", "def": "the land alongside a river", "trans": "河岸" },
-      { "pos": "v.", "def": "to deposit money", "trans": "存钱" }
+      { "pos": "", "def": "", "trans": "最近怎么样？" },
+      { "pos": "", "def": "", "trans": "你好吗？" }
     ],
-    "example": "I need to go to the bank.",
-    "category": "CET-4",
-    "difficulty": 2
+    "example": "Hey, how's it going?",
+    "category": "日常用语",
+    "difficulty": 2,
+    "notes": "非正式问候"
   },
   {
-    "word": "hello",
-    "phonetic": "/həˈloʊ/",
-    "definition": "used as a greeting",
-    "translation": "你好",
-    "example": "Hello, world!",
+    "sentence": "I'm looking forward to it.",
+    "translation": "我很期待。",
+    "example": "I'm looking forward to the weekend.",
     "category": "日常用语",
-    "difficulty": 1
+    "difficulty": 3
   }
 ]`,
-  csv: `word,phonetic,definition,example,translation,category,difficulty,definitions
-bank,/bæŋk/,a financial institution,"I need to go to the bank.",银行,CET-4,2,"[{""pos"":""n."",""def"":""a financial institution"",""trans"":""银行""},{""pos"":""n."",""def"":""the land alongside a river"",""trans"":""河岸""},{""pos"":""v."",""def"":""to deposit money"",""trans"":""存钱""}]"
-hello,/həˈloʊ/,used as a greeting,"Hello, world!",你好,日常用语,1,`,
-  text: `hello	你好	/həˈloʊ/
-world	世界
-bank	银行;河岸;存钱`,
+  csv: `sentence,translation,example,category,difficulty,notes,definitions
+"How's it going?","最近怎么样？","Hey, how's it going?",日常用语,2,非正式问候,"[{""pos"":"""",""def"":"""",""trans"":""最近怎么样？""},{""pos"":"""",""def"":"""",""trans"":""你好吗？""}]"
+"I'm looking forward to it.","我很期待。","I'm looking forward to the weekend.",日常用语,3,,`,
+  text: `How's it going?	最近怎么样？;你好吗？	日常用语	2
+I'm looking forward to it.	我很期待。	日常用语	3`,
 }
 
-export function ImportWords() {
+export function ImportSentences() {
   const navigate = useNavigate()
   const { toast } = useToast()
   const [searchParams] = useSearchParams()
@@ -57,19 +54,15 @@ export function ImportWords() {
   const categories = useCategories()
   const [format, setFormat] = useState<Format>('json')
   const [content, setContent] = useState('')
-  const [parsed, setParsed] = useState<ParseResult | null>(null)
+  const [parsed, setParsed] = useState<SentenceParseResult | null>(null)
   const [skipDuplicates, setSkipDuplicates] = useState(true)
   const [importing, setImporting] = useState(false)
-  const [result, setResult] = useState<BulkAddResult | null>(null)
+  const [result, setResult] = useState<BulkAddSentenceResult | null>(null)
 
-  // 目标分类:KEEP_FILE_CATEGORY 表示用文件原值;NEW_CATEGORY 表示要新建;其他为现有分类名
   const [categoryChoice, setCategoryChoice] = useState<string>(KEEP_FILE_CATEGORY)
   const [newCategoryName, setNewCategoryName] = useState('')
   const [autoFavorite, setAutoFavorite] = useState(false)
 
-  // 通过 URL 查询参数预设(从分类详情页/收藏夹页跳转过来时)
-  // ?category=雅思  → 锁定目标分类
-  // ?favorite=1     → 默认勾选自动收藏
   const presetCategory = searchParams.get('category')
   const presetFavorite = searchParams.get('favorite')
 
@@ -80,7 +73,6 @@ export function ImportWords() {
     if (presetFavorite === '1' || presetFavorite === 'true') {
       setAutoFavorite(true)
     }
-    // 仅在挂载时根据查询参数初始化一次
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -105,10 +97,10 @@ export function ImportWords() {
     }
     const r =
       fmt === 'json'
-        ? parseWordsJson(text)
+        ? parseSentencesJson(text)
         : fmt === 'csv'
-        ? parseWordsCsv(text)
-        : parseWordsText(text)
+        ? parseSentencesCsv(text)
+        : parseSentencesText(text)
     setParsed(r)
   }
 
@@ -117,15 +109,14 @@ export function ImportWords() {
     setResult(null)
   }
 
-  // 生成预览时使用的最终分类名(给每条记录展示)
   const previewCategory = useMemo(() => {
-    if (categoryChoice === KEEP_FILE_CATEGORY) return null // 保持原值
+    if (categoryChoice === KEEP_FILE_CATEGORY) return null
     if (categoryChoice === NEW_CATEGORY) return newCategoryName.trim() || '(待填写)'
     return categoryChoice
   }, [categoryChoice, newCategoryName])
 
   const handleImport = async () => {
-    if (!parsed || parsed.words.length === 0) return
+    if (!parsed || parsed.sentences.length === 0) return
 
     let targetCategory: string | undefined
     if (categoryChoice === NEW_CATEGORY) {
@@ -135,10 +126,8 @@ export function ImportWords() {
         return
       }
       targetCategory = name
-      // 如果新分类还不存在,先建一个
       const exists = categories.some((c) => c.name === name)
       if (!exists) {
-        const { addCategory } = await import('../hooks/useWords')
         await addCategory(name)
       }
     } else if (categoryChoice !== KEEP_FILE_CATEGORY) {
@@ -147,13 +136,13 @@ export function ImportWords() {
 
     setImporting(true)
     try {
-      const r = await bulkAddWords(parsed.words as ImportableWord[], {
+      const r = await bulkAddSentences(parsed.sentences as ImportableSentence[], {
         skipDuplicates,
         overrideCategory: targetCategory,
         forceFavorite: autoFavorite,
       })
       setResult(r)
-      toast('success', `成功导入 ${r.added} 个单词`)
+      toast('success', `成功导入 ${r.added} 个短句`)
     } finally {
       setImporting(false)
     }
@@ -169,7 +158,7 @@ export function ImportWords() {
     <div className="p-4 space-y-4">
       <div className="flex items-center justify-between">
         <BackButton />
-        <h1 className="page-title-accent">批量导入</h1>
+        <h1 className="page-title-accent">批量导入短句</h1>
         <div className="w-10" />
       </div>
 
@@ -195,9 +184,9 @@ export function ImportWords() {
           ))}
         </div>
         <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-          {format === 'json' && '支持单词数组，每个对象可含 definitions 数组实现多释义，也兼容旧格式 definition/translation'}
-          {format === 'csv' && '表头含 definitions 列时值为 JSON 数组；也可用旧列 definition/translation'}
-          {format === 'text' && '每行: word [Tab/逗号/|] 释义。多释义用分号分隔，如: 银行;河岸;存钱'}
+          {format === 'json' && '支持短句数组，每个对象可含 definitions 数组实现多翻译，也兼容旧格式 translation'}
+          {format === 'csv' && '表头含 definitions 列时值为 JSON 数组；也可用旧列 translation'}
+          {format === 'text' && '每行: sentence [Tab/逗号/|] 翻译。多翻译用分号分隔，如: 最近怎么样？;你好吗？'}
         </p>
       </div>
 
@@ -250,7 +239,6 @@ export function ImportWords() {
       <div className="card p-4 space-y-3">
         <h3 className="font-medium dark:text-gray-200">导入选项</h3>
 
-        {/* 目标分类 */}
         <div>
           <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">目标分类</label>
           <select
@@ -277,12 +265,11 @@ export function ImportWords() {
           )}
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             {categoryChoice === KEEP_FILE_CATEGORY
-              ? '使用文件中每条记录自带的分类(缺失则使用「默认」)'
-              : `所有导入的单词都会归到「${previewCategory}」分类`}
+              ? '使用文件中每条记录自带的分类(缺失则为空)'
+              : `所有导入的短句都会归到「${previewCategory}」分类`}
           </p>
         </div>
 
-        {/* 自动收藏 */}
         <label className="flex items-center gap-2 text-sm cursor-pointer dark:text-gray-300">
           <input
             type="checkbox"
@@ -293,14 +280,13 @@ export function ImportWords() {
           <span>导入后自动加入收藏夹</span>
         </label>
 
-        {/* 跳过重复 */}
         <label className="flex items-center gap-2 text-sm cursor-pointer dark:text-gray-300">
           <input
             type="checkbox"
             checked={skipDuplicates}
             onChange={(e) => setSkipDuplicates(e.target.checked)}
           />
-          <span>跳过已存在的单词 (按 word 字段去重)</span>
+          <span>跳过已存在的短句 (按 sentence 字段去重)</span>
         </label>
       </div>
 
@@ -310,7 +296,7 @@ export function ImportWords() {
           <div className="flex items-center justify-between">
             <h3 className="font-medium dark:text-gray-200">解析结果</h3>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              共 {parsed.words.length} 个有效单词
+              共 {parsed.sentences.length} 个有效短句
               {parsed.errors.length > 0 && `, ${parsed.errors.length} 条错误`}
             </span>
           </div>
@@ -326,35 +312,35 @@ export function ImportWords() {
             </div>
           )}
 
-          {parsed.words.length > 0 && (
+          {parsed.sentences.length > 0 && (
             <div className="text-xs text-gray-500 dark:text-gray-400 max-h-40 overflow-auto border rounded-xl dark:border-slate-700">
               <table className="w-full">
                 <thead className="bg-gray-50 dark:bg-slate-700 sticky top-0">
                   <tr>
-                    <th className="text-left px-2 py-1">单词</th>
-                    <th className="text-left px-2 py-1">释义/翻译</th>
+                    <th className="text-left px-2 py-1">短句</th>
+                    <th className="text-left px-2 py-1">翻译</th>
                     <th className="text-left px-2 py-1">分类</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {parsed.words.slice(0, 50).map((w, i) => (
+                  {parsed.sentences.slice(0, 50).map((s, i) => (
                     <tr key={i} className="border-t dark:border-slate-700">
-                      <td className="px-2 py-1 font-medium">{w.word}</td>
+                      <td className="px-2 py-1 font-medium">{s.sentence}</td>
                       <td className="px-2 py-1 truncate max-w-[200px]">
-                        {w.definitions && w.definitions.length > 0
-                          ? w.definitions.map((d: any) => [d.pos, d.trans || d.def].filter(Boolean).join(' ')).join('; ')
-                          : (w.translation || w.definition)}
+                        {s.definitions && s.definitions.length > 0
+                          ? s.definitions.map((d: any) => d.trans || d.def).filter(Boolean).join('; ')
+                          : s.translation}
                       </td>
                       <td className="px-2 py-1">
-                        {previewCategory ?? w.category}
+                        {previewCategory ?? s.category}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              {parsed.words.length > 50 && (
+              {parsed.sentences.length > 50 && (
                 <div className="text-center py-1 text-gray-400">
-                  ... 仅展示前 50 条,共 {parsed.words.length} 条
+                  ... 仅展示前 50 条,共 {parsed.sentences.length} 条
                 </div>
               )}
             </div>
@@ -362,11 +348,11 @@ export function ImportWords() {
 
           <button
             onClick={handleImport}
-            disabled={importing || parsed.words.length === 0}
+            disabled={importing || parsed.sentences.length === 0}
             className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50"
           >
             <Save size={18} />
-            {importing ? '导入中...' : `导入 ${parsed.words.length} 个单词`}
+            {importing ? '导入中...' : `导入 ${parsed.sentences.length} 个短句`}
             {autoFavorite && <Heart size={14} className="fill-white" />}
           </button>
         </div>
@@ -389,11 +375,11 @@ export function ImportWords() {
               </div>
             )}
           </div>
-          {result.skippedWords.length > 0 && (
+          {result.skippedSentences.length > 0 && (
             <details className="mt-2 text-xs text-gray-600 dark:text-gray-400">
-              <summary className="cursor-pointer">查看跳过的单词</summary>
+              <summary className="cursor-pointer">查看跳过的短句</summary>
               <div className="mt-1 max-h-32 overflow-auto">
-                {result.skippedWords.join(', ')}
+                {result.skippedSentences.join(', ')}
               </div>
             </details>
           )}
@@ -416,10 +402,10 @@ export function ImportWords() {
               </button>
             ) : (
               <button
-                onClick={() => navigate('/words')}
+                onClick={() => navigate('/sentences')}
                 className="btn-secondary flex-1 text-sm"
               >
-                查看单词列表
+                查看短句列表
               </button>
             )}
             <button

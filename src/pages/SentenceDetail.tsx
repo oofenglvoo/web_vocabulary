@@ -1,89 +1,79 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom'
+import { Heart, Trash2, Volume2, FolderInput, ChevronLeft, ChevronRight, Plus, X, Pencil, Check } from 'lucide-react'
 import {
-  Heart,
-  Trash2,
-  Volume2,
-  FolderInput,
-  ChevronLeft,
-  ChevronRight,
-  Plus,
-  X,
-  Pencil,
-  Check,
-} from 'lucide-react'
-import {
-  useWordById,
-  deleteWord,
-  toggleFavorite,
-  updateWord,
-  useCategories,
-  useAllWords,
-  useFavoriteWords,
-  useWordsByCategory,
-} from '../hooks/useWords'
+  useSentenceById,
+  deleteSentence,
+  toggleSentenceFavorite,
+  updateSentence,
+  useAllSentences,
+  useFavoriteSentences,
+  useSentencesByCategory,
+} from '../hooks/useSentences'
+import { useCategories } from '../hooks/useWords'
 import { speakWord } from '../utils/tts'
-import { getDefinitions } from '../utils/definitions'
+import { getSentenceDefinitions } from '../utils/definitions'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
 import { SkeletonCard } from '../components/Skeleton'
 import { Definition } from '../types/word'
 
-const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.']
-
-// 浏览来源:从哪个列表进入了这个详情页 → 决定上一个/下一个的取数集
 type Scope = 'all' | 'favorites' | 'category'
 
-export function WordDetail() {
+export function SentenceDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { toast } = useToast()
 
-  const word = useWordById(Number(id))
+  const sentence = useSentenceById(Number(id))
   const categories = useCategories()
   const [showMove, setShowMove] = useState(false)
   const [editingDefs, setEditingDefs] = useState(false)
   const [editDefinitions, setEditDefinitions] = useState<Definition[]>([])
 
-  // 上一个/下一个的来源
   const scopeParam = (searchParams.get('scope') as Scope) || 'all'
   const scopeCategory = searchParams.get('category') || ''
   const scope: Scope =
-    scopeParam === 'category' && scopeCategory ? 'category' : scopeParam === 'favorites' ? 'favorites' : 'all'
+    scopeParam === 'category' && scopeCategory
+      ? 'category'
+      : scopeParam === 'favorites'
+      ? 'favorites'
+      : 'all'
 
-  const allWords = useAllWords()
-  const favWords = useFavoriteWords()
-  const catWords = useWordsByCategory(scopeCategory)
+  const allSentences = useAllSentences()
+  const favSentences = useFavoriteSentences()
+  const catSentences = useSentencesByCategory(scopeCategory)
 
-  const list = scope === 'favorites' ? favWords : scope === 'category' ? catWords : allWords
-  const currentIdx = list.findIndex((w) => w.id === Number(id))
-  const prevWord = currentIdx > 0 ? list[currentIdx - 1] : null
-  const nextWord = currentIdx >= 0 && currentIdx < list.length - 1 ? list[currentIdx + 1] : null
+  const list =
+    scope === 'favorites'
+      ? favSentences
+      : scope === 'category'
+      ? catSentences
+      : allSentences
+  const currentIdx = list.findIndex((s) => s.id === Number(id))
+  const prevItem = currentIdx > 0 ? list[currentIdx - 1] : null
+  const nextItem = currentIdx >= 0 && currentIdx < list.length - 1 ? list[currentIdx + 1] : null
 
-  const buildHref = (wordId: number) => {
+  const buildHref = (itemId: number) => {
     const params = new URLSearchParams()
     params.set('scope', scope)
     if (scope === 'category' && scopeCategory) params.set('category', scopeCategory)
-    return `/word/${wordId}?${params.toString()}`
+    return `/sentence/${itemId}?${params.toString()}`
   }
 
-  // 键盘 ←/→ 切换上下一个
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.target && (e.target as HTMLElement).tagName.match(/INPUT|TEXTAREA|SELECT/)) return
-      if (e.key === 'ArrowLeft' && prevWord) {
-        navigate(buildHref(prevWord.id!))
-      } else if (e.key === 'ArrowRight' && nextWord) {
-        navigate(buildHref(nextWord.id!))
-      }
+      if (e.key === 'ArrowLeft' && prevItem) navigate(buildHref(prevItem.id!))
+      else if (e.key === 'ArrowRight' && nextItem) navigate(buildHref(nextItem.id!))
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prevWord?.id, nextWord?.id, scope, scopeCategory])
+  }, [prevItem?.id, nextItem?.id, scope, scopeCategory])
 
-  if (!word) {
+  if (!sentence) {
     return (
       <div className="p-4 space-y-3">
         <SkeletonCard />
@@ -93,32 +83,24 @@ export function WordDetail() {
     )
   }
 
-  const speak = () => {
-    speakWord(word.word)
-  }
-
   const handleDelete = async () => {
-    if (!confirm('确定删除这个单词吗?')) return
-    const idToDelete = word.id!
-    // 删除前确定下一个目标
-    const after = nextWord ?? prevWord
-    await deleteWord(idToDelete)
-    toast('success', '单词已删除')
-    if (after) {
-      navigate(buildHref(after.id!), { replace: true })
-    } else {
-      navigate('/words')
-    }
+    if (!confirm('确定删除这个短句吗?')) return
+    const idToDelete = sentence.id!
+    const after = nextItem ?? prevItem
+    await deleteSentence(idToDelete)
+    toast('success', '短句已删除')
+    if (after) navigate(buildHref(after.id!), { replace: true })
+    else navigate('/sentences')
   }
 
   const handleMoveTo = async (cat: string) => {
-    await updateWord(word.id!, { category: cat })
+    await updateSentence(sentence.id!, { category: cat })
     toast('success', `已移动到「${cat}」`)
     setShowMove(false)
   }
 
   const startEditDefs = () => {
-    const defs = getDefinitions(word)
+    const defs = getSentenceDefinitions(sentence)
     setEditDefinitions(defs.length > 0 ? defs.map((d) => ({ ...d })) : [{ pos: '', def: '', trans: '' }])
     setEditingDefs(true)
   }
@@ -126,14 +108,12 @@ export function WordDetail() {
   const saveEditDefs = async () => {
     const validDefs = editDefinitions.filter((d) => d.def.trim() || d.trans.trim())
     if (validDefs.length === 0) {
-      toast('warning', '至少需要一个释义')
+      toast('warning', '至少需要一个翻译/释义')
       return
     }
     const primary = validDefs[0]
-    await updateWord(word.id!, {
+    await updateSentence(sentence.id!, {
       definitions: validDefs.map((d) => ({ pos: d.pos.trim(), def: d.def.trim(), trans: d.trans.trim() })),
-      // 向前兼容旧字段
-      definition: primary.def.trim(),
       translation: primary.trans.trim(),
     })
     setEditingDefs(false)
@@ -157,12 +137,11 @@ export function WordDetail() {
 
   const difficultyLabels = ['简单', '较易', '中等', '较难', '困难']
   const dateFmt = (t: number) => (t ? new Date(t).toLocaleString('zh-CN') : '无')
-  const currentCat = categories.find((c) => c.name === word.category)
-
+  const currentCat = categories.find((c) => c.name === sentence.category)
   const scopeLabel =
-    scope === 'favorites' ? '收藏夹' : scope === 'category' ? scopeCategory : '全部单词'
+    scope === 'favorites' ? '收藏夹' : scope === 'category' ? scopeCategory : '全部短句'
 
-  const defs = getDefinitions(word)
+  const defs = getSentenceDefinitions(sentence)
 
   return (
     <div className="p-4">
@@ -170,13 +149,13 @@ export function WordDetail() {
         <BackButton />
         <div className="flex items-center gap-2">
           <button
-            onClick={() => toggleFavorite(word.id!, word.isFavorite)}
+            onClick={() => toggleSentenceFavorite(sentence.id!, sentence.isFavorite)}
             className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
             aria-label="收藏"
           >
             <Heart
               size={20}
-              className={word.isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'}
+              className={sentence.isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'}
             />
           </button>
           <button
@@ -197,18 +176,20 @@ export function WordDetail() {
 
       <div className="card p-6 text-center mb-4">
         <div className="flex items-center justify-center gap-3">
-          <h1 className="text-3xl font-bold text-gradient">{word.word}</h1>
-          <button onClick={speak} className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+          <h1 className="text-2xl font-bold text-gradient leading-snug">{sentence.sentence}</h1>
+          <button
+            onClick={() => speakWord(sentence.sentence)}
+            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors shrink-0"
+          >
             <Volume2 size={24} />
           </button>
         </div>
-        {word.phonetic && <p className="text-gray-500 dark:text-gray-400 mt-1">{word.phonetic}</p>}
         <div className="flex items-center justify-center gap-2 mt-3 flex-wrap">
           <span className="inline-block px-3 py-1 rounded-full text-sm bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300">
-            {difficultyLabels[word.difficulty - 1]}
+            {difficultyLabels[sentence.difficulty - 1]}
           </span>
           <Link
-            to={`/categories/${encodeURIComponent(word.category)}`}
+            to={`/categories/${encodeURIComponent(sentence.category)}`}
             className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors"
           >
             {currentCat && (
@@ -217,9 +198,9 @@ export function WordDetail() {
                 style={{ backgroundColor: currentCat.color }}
               />
             )}
-            {word.category}
+            {sentence.category}
           </Link>
-          {word.isFavorite ? (
+          {sentence.isFavorite ? (
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400">
               <Heart size={12} className="fill-red-500" /> 已收藏
             </span>
@@ -227,39 +208,36 @@ export function WordDetail() {
         </div>
       </div>
 
-      {/* 上一个 / 下一个 */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <button
-          onClick={() => prevWord && navigate(buildHref(prevWord.id!))}
-          disabled={!prevWord}
+          onClick={() => prevItem && navigate(buildHref(prevItem.id!))}
+          disabled={!prevItem}
           className="flex-1 flex items-center justify-start gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
         >
           <ChevronLeft size={18} className="flex-shrink-0" />
           <div className="text-left min-w-0">
             <div className="text-xs text-gray-400">上一个</div>
             <div className="text-sm font-medium truncate dark:text-gray-200">
-              {prevWord?.word ?? '已是第一个'}
+              {prevItem?.sentence ?? '已是第一个'}
             </div>
           </div>
         </button>
         <button
-          onClick={() => nextWord && navigate(buildHref(nextWord.id!))}
-          disabled={!nextWord}
+          onClick={() => nextItem && navigate(buildHref(nextItem.id!))}
+          disabled={!nextItem}
           className="flex-1 flex items-center justify-end gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
         >
           <div className="text-right min-w-0">
             <div className="text-xs text-gray-400">下一个</div>
             <div className="text-sm font-medium truncate dark:text-gray-200">
-              {nextWord?.word ?? '已是最后一个'}
+              {nextItem?.sentence ?? '已是最后一个'}
             </div>
           </div>
           <ChevronRight size={18} className="flex-shrink-0" />
         </button>
       </div>
       <div className="text-center text-xs text-gray-400 -mt-2 mb-3">
-        {currentIdx >= 0 && list.length > 0
-          ? `${currentIdx + 1} / ${list.length} · ${scopeLabel}`
-          : ''}
+        {currentIdx >= 0 && list.length > 0 ? `${currentIdx + 1} / ${list.length} · ${scopeLabel}` : ''}
       </div>
 
       <div className="space-y-3">
@@ -305,28 +283,17 @@ export function WordDetail() {
                       <X size={14} className="text-gray-400" />
                     </button>
                   )}
-                  <div className="flex gap-2">
-                    <select
-                      value={d.pos}
-                      onChange={(e) => updateEditDefinition(i, 'pos', e.target.value)}
-                      className="input-field w-24 shrink-0 text-sm"
-                    >
-                      {POS_OPTIONS.map((p) => (
-                        <option key={p} value={p}>{p || '词性'}</option>
-                      ))}
-                    </select>
-                    <input
-                      value={d.def}
-                      onChange={(e) => updateEditDefinition(i, 'def', e.target.value)}
-                      className="input-field flex-1 text-sm"
-                      placeholder="英文释义"
-                    />
-                  </div>
                   <input
                     value={d.trans}
                     onChange={(e) => updateEditDefinition(i, 'trans', e.target.value)}
                     className="input-field text-sm"
                     placeholder="中文翻译"
+                  />
+                  <input
+                    value={d.def}
+                    onChange={(e) => updateEditDefinition(i, 'def', e.target.value)}
+                    className="input-field text-sm"
+                    placeholder="英文释义（可选）"
                   />
                 </div>
               ))}
@@ -335,7 +302,7 @@ export function WordDetail() {
         ) : (
           <div className="card p-4">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400">释义</h3>
+              <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400">翻译/释义</h3>
               <button
                 onClick={startEditDefs}
                 className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
@@ -365,24 +332,24 @@ export function WordDetail() {
                 ))}
               </div>
             ) : (
-              <p className="text-lg dark:text-gray-200">{word.definition || '暂无释义'}</p>
+              <p className="text-lg dark:text-gray-200">{sentence.translation || '暂无翻译'}</p>
             )}
           </div>
         )}
 
-        {word.example && <SectionCard title="例句" content={word.example} highlight />}
-        {word.notes && <SectionCard title="笔记" content={word.notes} />}
+        {sentence.example && <SectionCard title="用法说明" content={sentence.example} highlight />}
+        {sentence.notes && <SectionCard title="笔记" content={sentence.notes} />}
 
         <div className="card p-4">
           <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400 mb-2">学习数据</h3>
           <div className="space-y-2 text-sm">
-            <Row label="分类" value={word.category} />
-            <Row label="学习状态" value={word.isLearned ? '已掌握' : '学习中'} />
-            <Row label="复习次数" value={`${word.reviewCount} 次`} />
-            <Row label="正确次数" value={`${word.correctCount} 次`} />
-            <Row label="连续正确" value={`${word.streak} 次`} />
-            <Row label="上次复习" value={dateFmt(word.lastReviewedAt)} />
-            <Row label="添加时间" value={dateFmt(word.createdAt)} />
+            <Row label="分类" value={sentence.category} />
+            <Row label="学习状态" value={sentence.isLearned ? '已掌握' : '学习中'} />
+            <Row label="复习次数" value={`${sentence.reviewCount} 次`} />
+            <Row label="正确次数" value={`${sentence.correctCount} 次`} />
+            <Row label="连续正确" value={`${sentence.streak} 次`} />
+            <Row label="上次复习" value={dateFmt(sentence.lastReviewedAt)} />
+            <Row label="添加时间" value={dateFmt(sentence.createdAt)} />
           </div>
         </div>
       </div>
@@ -396,19 +363,16 @@ export function WordDetail() {
                 <button
                   key={cat.id}
                   onClick={() => handleMoveTo(cat.name)}
-                  disabled={cat.name === word.category}
+                  disabled={cat.name === sentence.category}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl border dark:border-slate-700 transition-colors ${
-                    cat.name === word.category
+                    cat.name === sentence.category
                       ? 'bg-primary-50 dark:bg-primary-900/30 border-primary-200 dark:border-primary-800'
                       : 'hover:bg-gray-50 dark:hover:bg-slate-700'
                   }`}
                 >
-                  <div
-                    className="w-4 h-4 rounded-full"
-                    style={{ backgroundColor: cat.color }}
-                  />
+                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: cat.color }} />
                   <span className="flex-1 text-left dark:text-gray-200">{cat.name}</span>
-                  {cat.name === word.category && (
+                  {cat.name === sentence.category && (
                     <span className="text-xs text-primary-600 dark:text-primary-400">当前</span>
                   )}
                 </button>
@@ -424,15 +388,7 @@ export function WordDetail() {
   )
 }
 
-function SectionCard({
-  title,
-  content,
-  highlight,
-}: {
-  title: string
-  content: string
-  highlight?: boolean
-}) {
+function SectionCard({ title, content, highlight }: { title: string; content: string; highlight?: boolean }) {
   return (
     <div className="card p-4">
       <h3
@@ -442,7 +398,9 @@ function SectionCard({
       >
         {title}
       </h3>
-      <p className={`text-lg ${highlight ? 'italic text-primary-700 dark:text-primary-300' : 'dark:text-gray-200'}`}>{content}</p>
+      <p className={`text-lg ${highlight ? 'italic text-primary-700 dark:text-primary-300' : 'dark:text-gray-200'}`}>
+        {content}
+      </p>
     </div>
   )
 }

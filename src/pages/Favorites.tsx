@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, Heart, Search, Trash2, FolderInput, Upload } from 'lucide-react'
+import { Heart, Upload } from 'lucide-react'
 import {
   useFavoriteWords,
   useCategories,
@@ -10,193 +10,213 @@ import {
   bulkSetCategory,
   bulkDeleteWords,
 } from '../hooks/useWords'
-import { WordCard } from '../components/WordCard'
+import {
+  useFavoriteSentences,
+  toggleSentenceFavorite,
+  deleteSentence,
+  bulkSetSentenceFavorite,
+  bulkSetSentenceCategory,
+  bulkDeleteSentences,
+} from '../hooks/useSentences'
+import { SelectableWordList } from '../components/SelectableWordList'
+import { SentenceCard } from '../components/SentenceCard'
+import { BackButton } from '../components/BackButton'
+import { useToast } from '../components/Toast'
+import { enhancedSearch } from '../utils/search'
+import { Sentence } from '../types/word'
+
+type Tab = 'word' | 'sentence'
 
 export function Favorites() {
   const navigate = useNavigate()
+  const { toast } = useToast()
   const words = useFavoriteWords()
+  const sentences = useFavoriteSentences()
   const categories = useCategories()
+
+  const [tab, setTab] = useState<Tab>('word')
   const [search, setSearch] = useState('')
-  const [selectMode, setSelectMode] = useState(false)
-  const [selected, setSelected] = useState<Set<number>>(new Set())
   const [showMove, setShowMove] = useState(false)
+  const [moveIds, setMoveIds] = useState<number[]>([])
 
-  const filtered = words.filter((w) => {
-    if (!search) return true
-    const s = search.toLowerCase()
-    return (
-      w.word.toLowerCase().includes(s) ||
-      w.definition.toLowerCase().includes(s) ||
-      w.translation.includes(search)
-    )
-  })
-
-  const toggleSelect = (id: number) => {
-    const next = new Set(selected)
-    if (next.has(id)) next.delete(id)
-    else next.add(id)
-    setSelected(next)
-  }
-
-  const exitSelect = () => {
-    setSelectMode(false)
-    setSelected(new Set())
-  }
-
-  const handleUnfavoriteAll = async () => {
-    await bulkSetFavorite(Array.from(selected), false)
-    exitSelect()
-  }
-
-  const handleDeleteAll = async () => {
-    if (!confirm(`确定删除选中的 ${selected.size} 个单词?`)) return
-    await bulkDeleteWords(Array.from(selected))
-    exitSelect()
-  }
-
-  const handleMoveTo = async (cat: string) => {
-    await bulkSetCategory(Array.from(selected), cat)
+  const handleMoveToWord = async (cat: string) => {
+    await bulkSetCategory(moveIds, cat)
+    toast('success', `已移动 ${moveIds.length} 个单词到「${cat}」`)
     setShowMove(false)
-    exitSelect()
+    setMoveIds([])
   }
+
+  const handleMoveToSentence = async (cat: string) => {
+    await bulkSetSentenceCategory(moveIds, cat)
+    toast('success', `已移动 ${moveIds.length} 个短句到「${cat}」`)
+    setShowMove(false)
+    setMoveIds([])
+  }
+
+  const renderSentence = (
+    s: Sentence,
+    actions: { onClick: () => void; onFavorite: () => void; onDelete: () => void }
+  ) => (
+    <SentenceCard
+      key={s.id}
+      sentence={s}
+      onClick={actions.onClick}
+      onFavorite={actions.onFavorite}
+      onDelete={actions.onDelete}
+    />
+  )
 
   return (
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
-        <button onClick={() => navigate(-1)} className="p-2 hover:bg-gray-100 rounded-lg">
-          <ArrowLeft size={24} />
-        </button>
-        <h1 className="text-xl font-bold flex items-center gap-2">
+        <BackButton />
+        <h1 className="page-title-accent flex items-center gap-2">
           <Heart size={20} className="fill-red-500 text-red-500" /> 收藏夹
         </h1>
+        <div className="w-10" />
+      </div>
+
+      {/* 单词 | 短句 切换 */}
+      <div className="flex gap-2 mb-3">
         <button
-          onClick={() => (selectMode ? exitSelect() : setSelectMode(true))}
-          className="text-sm text-primary-600"
+          onClick={() => setTab('word')}
+          className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
+            tab === 'word'
+              ? 'bg-primary-500 text-white'
+              : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
+          }`}
         >
-          {selectMode ? '取消' : '多选'}
+          单词 {words.length > 0 && `(${words.length})`}
+        </button>
+        <button
+          onClick={() => setTab('sentence')}
+          className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
+            tab === 'sentence'
+              ? 'bg-primary-500 text-white'
+              : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
+          }`}
+        >
+          短句 {sentences.length > 0 && `(${sentences.length})`}
         </button>
       </div>
 
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-sm text-gray-500">共 {words.length} 个</span>
-        <Link
-          to="/import?favorite=1"
-          className="text-sm text-primary-600 hover:underline flex items-center gap-1"
-        >
-          <Upload size={14} /> 导入并收藏
-        </Link>
-      </div>
-
-      <div className="relative mb-4">
-        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="搜索收藏..."
-          className="w-full pl-10 pr-4 py-2 border rounded-lg focus:border-primary-600 focus:outline-none"
-        />
-      </div>
-
-      {selectMode && (
-        <div className="card p-3 mb-3 flex items-center justify-between bg-primary-50">
-          <span className="text-sm">已选 {selected.size}</span>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setShowMove(true)}
-              disabled={selected.size === 0}
-              className="text-sm text-primary-600 disabled:opacity-50 flex items-center gap-1"
+      {tab === 'word' ? (
+        <>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm text-gray-500 dark:text-gray-400">共 {words.length} 个</span>
+            <Link
+              to="/import?favorite=1"
+              className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
             >
-              <FolderInput size={14} /> 移动分类
-            </button>
-            <button
-              onClick={handleUnfavoriteAll}
-              disabled={selected.size === 0}
-              className="text-sm text-gray-600 disabled:opacity-50"
-            >
-              取消收藏
-            </button>
-            <button
-              onClick={handleDeleteAll}
-              disabled={selected.size === 0}
-              className="text-sm text-red-600 disabled:opacity-50 flex items-center gap-1"
-            >
-              <Trash2 size={14} /> 删除
-            </button>
+              <Upload size={14} /> 导入并收藏
+            </Link>
           </div>
-        </div>
-      )}
 
-      {filtered.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">
-          <Heart size={48} className="mx-auto mb-2 opacity-30" />
-          <p>{search ? '未找到匹配的单词' : '收藏夹是空的'}</p>
-          {!search && (
-            <>
-              <p className="text-sm mt-1">在单词详情页点心形图标即可收藏</p>
-              <Link
-                to="/import?favorite=1"
-                className="btn-primary inline-flex items-center gap-2 mt-4"
-              >
-                <Upload size={16} /> 批量导入并收藏
-              </Link>
-            </>
-          )}
-        </div>
+          <SelectableWordList
+            words={words}
+            search={search}
+            onSearchChange={setSearch}
+            onWordClick={(w) => navigate(`/word/${w.id}?scope=favorites`)}
+            onFavorite={(w) => toggleFavorite(w.id!, w.isFavorite)}
+            onDelete={(w) => {
+              if (confirm('确定删除?')) {
+                deleteWord(w.id!)
+                toast('success', '单词已删除')
+              }
+            }}
+            emptyText="收藏夹是空的"
+            emptyHint="在单词详情页点心形图标即可收藏"
+            emptyAction={{ label: '批量导入并收藏', href: '/import?favorite=1' }}
+            batchActions={{
+              onMoveToCategory: (ids) => {
+                setMoveIds(ids)
+                setShowMove(true)
+              },
+              onUnfavoriteAll: (ids) => {
+                bulkSetFavorite(ids, false)
+                toast('success', '已取消收藏')
+              },
+              onDeleteAll: (ids) => {
+                if (confirm(`确定删除选中的 ${ids.length} 个单词?`)) {
+                  bulkDeleteWords(ids)
+                  toast('success', '已删除选中单词')
+                }
+              },
+            }}
+          />
+        </>
       ) : (
-        <div className="space-y-3">
-          {filtered.map((word) => (
-            <div key={word.id} className="flex items-center gap-2">
-              {selectMode && (
-                <input
-                  type="checkbox"
-                  checked={selected.has(word.id!)}
-                  onChange={() => toggleSelect(word.id!)}
-                  className="w-5 h-5 accent-primary-600"
-                />
-              )}
-              <div className="flex-1 min-w-0">
-                <WordCard
-                  word={word}
-                  onClick={() =>
-                    selectMode
-                      ? toggleSelect(word.id!)
-                      : (window.location.href = `/word/${word.id}`)
-                  }
-                  onFavorite={() => toggleFavorite(word.id!, word.isFavorite)}
-                  onDelete={() => {
-                    if (confirm('确定删除?')) deleteWord(word.id!)
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm text-gray-500 dark:text-gray-400">共 {sentences.length} 个</span>
+            <Link
+              to="/sentences/import?favorite=1"
+              className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
+            >
+              <Upload size={14} /> 导入并收藏
+            </Link>
+          </div>
+
+          <SelectableWordList<Sentence>
+            words={sentences}
+            search={search}
+            onSearchChange={setSearch}
+            onWordClick={(s) => navigate(`/sentence/${s.id}?scope=favorites`)}
+            onFavorite={(s) => toggleSentenceFavorite(s.id!, s.isFavorite)}
+            onDelete={(s) => {
+              if (confirm('确定删除?')) {
+                deleteSentence(s.id!)
+                toast('success', '短句已删除')
+              }
+            }}
+            renderItem={renderSentence}
+            matchSearch={(q, s) => {
+              const defs = s.definitions ?? []
+              const defsText = defs.map((d: any) => `${d.pos ?? ''} ${d.def ?? ''} ${d.trans ?? ''}`).join(' ')
+              return enhancedSearch(q, { word: s.sentence, translation: s.translation, definition: defsText })
+            }}
+            emptyText="收藏夹暂无短句"
+            emptyHint="在短句详情页点心形图标即可收藏"
+            emptyAction={{ label: '批量导入并收藏', href: '/sentences/import?favorite=1' }}
+            batchActions={{
+              onMoveToCategory: (ids) => {
+                setMoveIds(ids)
+                setShowMove(true)
+              },
+              onUnfavoriteAll: (ids) => {
+                bulkSetSentenceFavorite(ids, false)
+                toast('success', '已取消收藏')
+              },
+              onDeleteAll: (ids) => {
+                if (confirm(`确定删除选中的 ${ids.length} 个短句?`)) {
+                  bulkDeleteSentences(ids)
+                  toast('success', '已删除选中短句')
+                }
+              },
+            }}
+          />
+        </>
       )}
 
       {showMove && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-sm max-h-[80vh] overflow-auto">
-            <h3 className="font-bold text-lg mb-4">移动到分类</h3>
+        <div className="modal-overlay">
+          <div className="modal-content max-h-[80vh] overflow-auto">
+            <h3 className="font-bold text-lg mb-4 dark:text-gray-100">移动到分类</h3>
             <div className="space-y-2">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
-                  onClick={() => handleMoveTo(cat.name)}
-                  className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border"
+                  onClick={() =>
+                    tab === 'word' ? handleMoveToWord(cat.name) : handleMoveToSentence(cat.name)
+                  }
+                  className="w-full flex items-center gap-3 p-3 rounded-xl border dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
                 >
-                  <div
-                    className="w-4 h-4 rounded-full"
-                    style={{ backgroundColor: cat.color }}
-                  />
-                  <span>{cat.name}</span>
+                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: cat.color }} />
+                  <span className="dark:text-gray-200">{cat.name}</span>
                 </button>
               ))}
             </div>
-            <button
-              onClick={() => setShowMove(false)}
-              className="btn-secondary w-full mt-4"
-            >
+            <button onClick={() => setShowMove(false)} className="btn-secondary w-full mt-4">
               取消
             </button>
           </div>
