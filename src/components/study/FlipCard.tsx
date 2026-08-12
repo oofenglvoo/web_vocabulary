@@ -38,7 +38,10 @@ export function FlipCard({ item, flipped, onSpeak, children }: FlipCardProps) {
               </h2>
               <button
                 type="button"
-                onClick={onSpeak}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onSpeak()
+                }}
                 className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors shrink-0"
                 aria-label="发音"
               >
@@ -50,11 +53,11 @@ export function FlipCard({ item, flipped, onSpeak, children }: FlipCardProps) {
             )}
 
             <div className="text-center text-xs text-gray-400 dark:text-gray-500 mt-2">
-              点击「翻转」查看释义
+              点击卡片查看释义
             </div>
 
             <div className="mt-auto pt-5 text-center text-xs text-gray-400 dark:text-gray-500">
-              浏览模式 · 点击「翻转」查看释义
+              浏览模式 · 点击卡片查看释义
             </div>
           </motion.div>
         ) : (
@@ -76,7 +79,7 @@ export function FlipCard({ item, flipped, onSpeak, children }: FlipCardProps) {
             <div className="space-y-3 mt-2">{item.renderDefs()}</div>
 
             <div className="mt-auto pt-4 text-center text-xs text-gray-400 dark:text-gray-500">
-              点击「翻转」回到单词面
+              点击卡片回到单词面
             </div>
           </motion.div>
         )}

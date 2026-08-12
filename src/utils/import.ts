@@ -17,18 +17,7 @@ function buildWord(raw: Record<string, any>): ImportableWord | null {
   const word = String(raw.word ?? '').trim()
   if (!word) return null
 
-  const definition = String(raw.definition ?? raw.def ?? '').trim()
-  const translation = String(raw.translation ?? raw.trans ?? raw.meaning ?? '').trim()
-  // 至少需要释义或中文翻译之一
-  if (!definition && !translation) return null
-
-  const difficultyRaw = raw.difficulty
-  let difficulty = Number(difficultyRaw)
-  if (!Number.isFinite(difficulty) || difficulty < 1 || difficulty > 5) {
-    difficulty = 1
-  }
-
-  // 构建多释义数组
+  // 先解析多释义数组（可能只有 definitions，没有顶层 definition/translation）
   let definitions: Definition[] = []
   if (Array.isArray(raw.definitions) && raw.definitions.length > 0) {
     definitions = raw.definitions
@@ -39,17 +28,37 @@ function buildWord(raw: Record<string, any>): ImportableWord | null {
         trans: String(d.trans ?? '').trim(),
       }))
   }
-  // 如果没有 definitions 数组，从旧字段构造
+
+  // 再读旧字段（兼容只有 definition/translation 的文件）
+  const definition = String(raw.definition ?? raw.def ?? '').trim()
+  const translation = String(raw.translation ?? raw.trans ?? raw.meaning ?? '').trim()
+
+  // 必要字段：word + 有释义（definitions 数组或旧字段至少有一个非空）
+  if (definitions.length === 0 && !definition && !translation) return null
+
+  // 如果只有旧字段，构造 definitions；如果有 definitions 但旧字段为空，回填第一个释义
   if (definitions.length === 0 && (definition || translation)) {
     definitions = [{ pos: '', def: definition, trans: translation }]
+  } else if (definitions.length > 0) {
+    const primary = definitions.find((d) => d.def || d.trans)
+    if (primary) {
+      if (!definition) raw.definition = primary.def
+      if (!translation) raw.translation = primary.trans
+    }
+  }
+
+  const difficultyRaw = raw.difficulty
+  let difficulty = Number(difficultyRaw)
+  if (!Number.isFinite(difficulty) || difficulty < 1 || difficulty > 5) {
+    difficulty = 1
   }
 
   return {
     word,
     phonetic: String(raw.phonetic ?? '').trim(),
-    definition,
+    definition: String(raw.definition ?? '').trim(),
     example: String(raw.example ?? '').trim(),
-    translation,
+    translation: String(raw.translation ?? '').trim(),
     definitions,
     category: String(raw.category ?? '默认').trim() || '默认',
     difficulty,

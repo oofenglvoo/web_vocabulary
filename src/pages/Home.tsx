@@ -141,6 +141,16 @@ export function Home() {
                 <RefreshCw size={14} /> 复习
               </button>
             </div>
+
+            {/* 今日新词学满后出现"加学"入口：独立一轮,不计入今日配额 */}
+            {todayNewRemaining === 0 && (
+              <button
+                onClick={() => navigate(`/study?plan=${activePlan.id}&mode=learn&extra=1`)}
+                className="mt-2 w-full py-2.5 text-sm flex items-center justify-center gap-1.5 rounded-xl bg-warn-50 dark:bg-warn-900/30 text-warn-600 dark:text-warn-400 font-medium hover:bg-warn-100 dark:hover:bg-warn-900/50 transition-colors"
+              >
+                <Sparkles size={14} /> 加学今日新词
+              </button>
+            )}
           </motion.div>
         )}
 

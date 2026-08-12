@@ -1116,9 +1116,11 @@ function CreateSentencePlanModal({
 
 type WordStatus = 'new' | 'started' | 'mastered'
 
-function getWordStatus(word: { isLearned: number; reviewCount: number }, startedSet: Set<number>, wordId: number): WordStatus {
+// "学习中"只看该计划自己的 startedIds(计划独立)。
+// 不依赖全局的 word.reviewCount——否则删除计划后其他计划/新计划会残留旧计划的"学习中"状态。
+function getWordStatus(word: { isLearned: number }, startedSet: Set<number>, wordId: number): WordStatus {
   if (word.isLearned === 1) return 'mastered'
-  if (startedSet.has(wordId) || word.reviewCount > 0) return 'started'
+  if (startedSet.has(wordId)) return 'started'
   return 'new'
 }
 

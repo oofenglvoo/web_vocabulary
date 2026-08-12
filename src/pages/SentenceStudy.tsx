@@ -8,7 +8,9 @@ import { getRandomSentences, recordSentenceReview, markSentenceLearned } from '.
 import {
   getTodayNewSentences,
   getTodayReviewSentences,
+  getExtraNewSentences,
   markSentenceStarted,
+  markExtraSentenceStarted,
   markSentenceReviewDone,
 } from '../hooks/useSentencePlan'
 import { Sentence, StudyPlan } from '../types/word'
@@ -30,10 +32,14 @@ export function SentenceStudy() {
   const planId = searchParams.get('plan')
   const planIdNum = planId ? Number(planId) : null
   const isReviewMode = searchParams.get('mode') === 'review'
+  // 加学模式:今日配额学满后的独立一轮,不计入今日配额
+  const isExtra = searchParams.get('extra') === '1'
 
   const [plan, setPlan] = useState<StudyPlan | null>(null)
   const [queue, setQueue] = useState<StudyItem[]>([])
   const [index, setIndex] = useState(0)
+  // 本轮初始条数(回忆式进度用)
+  const [startTotal, setStartTotal] = useState(0)
   const [loading, setLoading] = useState(true)
   const [learnStats, setLearnStats] = useState({ newDone: 0, reviewDone: 0 })
   const [confirmMaster, setConfirmMaster] = useState(false)
@@ -111,6 +117,10 @@ export function SentenceStudy() {
       if (isReviewMode) {
         const reviewSentences = await getTodayReviewSentences(p)
         items = reviewSentences.map((s) => ({ sentence: s, isReview: true }))
+      } else if (isExtra) {
+        // 加学:取一批新句,独立于今日配额
+        const extraSentences = await getExtraNewSentences(p)
+        items = extraSentences.map((s) => ({ sentence: s, isReview: false }))
       } else {
         const reviewSentences = await getTodayReviewSentences(p)
         const newSentences = await getTodayNewSentences(p)
@@ -133,6 +143,7 @@ export function SentenceStudy() {
       renderDefs: () => renderSentenceDefs(sentence),
     }))
     setQueue(studyItems)
+    setStartTotal(studyItems.length)
     setIndex(0)
     setLoading(false)
   }
@@ -162,11 +173,44 @@ export function SentenceStudy() {
     } catch (e) {
       toast('error', '记录失败: ' + (e as Error).message)
     }
+    // 回忆式(Moji)：认识(quality>=3) → 计数 + 从队列移除(通过不再出现)；模糊/忘记(quality<3) → 重排到队尾，重复直到认识
+    if (studyType === 'recall') {
+      if (quality < 3) {
+        setQueue((q) => {
+          const idx = q.findIndex((x) => x.id === item.id)
+          if (idx === -1) return q
+          return [...q.slice(0, idx), ...q.slice(idx + 1), item]
+        })
+        return // 不计数、不推进（当前词重排到队尾，下一个词自动顶到当前位置）
+      }
+      if (planIdNum) {
+        try {
+          if (item.isReview) {
+            await markSentenceReviewDone(planIdNum)
+            setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
+          } else if (isExtra) {
+            await markExtraSentenceStarted(planIdNum, item.id)
+            setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+          } else {
+            await markSentenceStarted(planIdNum, item.id)
+            setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+          }
+        } catch (e) {
+          toast('error', '记录失败: ' + (e as Error).message)
+        }
+      }
+      // 认识 → 移除当前词；index 不推进（下一个词顶到当前位置，避免跳过）
+      setQueue((q) => q.filter((x) => x.id !== item.id))
+      return
+    }
     if (planIdNum) {
       try {
         if (item.isReview) {
           await markSentenceReviewDone(planIdNum)
           setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
+        } else if (isExtra) {
+          await markExtraSentenceStarted(planIdNum, item.id)
+          setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
         } else {
           await markSentenceStarted(planIdNum, item.id)
           setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
@@ -199,6 +243,9 @@ export function SentenceStudy() {
           if (item.isReview) {
             await markSentenceReviewDone(planIdNum)
             setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
+          } else if (isExtra) {
+            await markExtraSentenceStarted(planIdNum, item.id)
+            setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
           } else {
             await markSentenceStarted(planIdNum, item.id)
             setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
@@ -225,6 +272,9 @@ export function SentenceStudy() {
         if (item.isReview) {
           await markSentenceReviewDone(planIdNum)
           setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
+        } else if (isExtra) {
+          await markExtraSentenceStarted(planIdNum, item.id)
+          setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
         } else {
           await markSentenceStarted(planIdNum, item.id)
           setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
@@ -241,7 +291,14 @@ export function SentenceStudy() {
   const speak = (item: StudyItem) => speakWord(item.title)
 
   useEffect(() => {
-    if (!loading && total > 0 && index >= total && !done) {
+    // 回忆式：加载完成后队列清空(所有词都"认识")才算完成；
+    // 其他模式：index 走完。都需 !loading，避免初始空队列/未加载时误判完成
+    const completed = !loading
+      ? studyType === 'recall'
+        ? queue.length === 0
+        : total > 0 && index >= total
+      : false
+    if (completed && !done) {
       setDone(true)
       confetti({
         particleCount: 100,
@@ -250,7 +307,7 @@ export function SentenceStudy() {
         colors: ['#6366f1', '#8b5cf6', '#ec4899', '#10b981'],
       })
     }
-  }, [loading, index, total, done])
+  }, [loading, index, total, done, queue.length, studyType])
 
   if (loading) {
     return (
@@ -340,7 +397,11 @@ export function SentenceStudy() {
     )
   }
 
-  const progressPct = Math.round(((index) / Math.max(total, 1)) * 100)
+  // 回忆式进度 = 已完成(移除)数 / 本轮总数；其他模式 = index/total
+  const progressPct =
+    studyType === 'recall'
+      ? Math.round(((startTotal - queue.length) / Math.max(startTotal, 1)) * 100)
+      : Math.round(((index) / Math.max(total, 1)) * 100)
 
   return (
     <div className="p-4 min-h-screen flex flex-col">
@@ -353,9 +414,11 @@ export function SentenceStudy() {
             </span>
           )}
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            {Math.min(index + 1, total)} / {total}
+            {studyType === 'recall'
+              ? `剩余 ${queue.length}`
+              : `${Math.min(index + 1, total)} / ${total}`}
           </span>
-          <StudyTypeSettings />
+          <StudyTypeSettings onChange={() => setDone(false)} />
         </div>
       </div>
 
@@ -364,6 +427,10 @@ export function SentenceStudy() {
         {isReviewMode ? (
           <span className="chip bg-accent-50 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400">
             <RefreshCw size={11} /> 复习 · {STUDY_TYPE_LABEL_ZH[studyType]}
+          </span>
+        ) : isExtra ? (
+          <span className="chip bg-warn-50 dark:bg-warn-900/30 text-warn-600 dark:text-warn-400">
+            <Sparkles size={11} /> 加学 · {STUDY_TYPE_LABEL_ZH[studyType]}
           </span>
         ) : (
           <span className="chip bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400">
@@ -399,7 +466,7 @@ export function SentenceStudy() {
         )}
         {studyType === 'quick' && (
           <QuickMode
-            key={queue.length}
+            key={`quick-${studyType}-${queue.length}`}
             items={queue}
             onRateAll={handleQuickSubmit}
             onSpeak={speak}
