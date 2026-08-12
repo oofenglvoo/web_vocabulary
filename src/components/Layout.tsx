@@ -1,18 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
 import { BookOpen, Home, Heart, FolderOpen, Target } from 'lucide-react'
-
-const pageVariants = {
-  initial: { opacity: 0, y: 8 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -4 },
-}
-
-const pageTransition = {
-  type: 'tween' as const,
-  ease: 'easeOut' as const,
-  duration: 0.2,
-}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation()
@@ -34,20 +21,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* 顶部渐变装饰条 */}
       <div className="top-accent-bar" />
 
-      <main className="flex-1 pb-24">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            variants={pageVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            transition={pageTransition}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
-      </main>
+      {/* 不用 key={pathname} 包裹：避免同组件路由变化(如 /word/1 → /word/2)时整页重挂、状态丢失 */}
+      <main className="flex-1 pb-24 animate-fade-in">{children}</main>
 
       <nav className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
         <div className="max-w-md mx-auto px-3 pb-3 pointer-events-auto">
@@ -59,6 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <Link
                     key={item.path}
                     to={item.path}
+                    aria-current={active ? 'page' : undefined}
                     className="flex flex-col items-center px-2.5 py-1.5 rounded-xl transition-all"
                   >
                     <div
@@ -87,3 +63,4 @@ export function Layout({ children }: { children: React.ReactNode }) {
     </div>
   )
 }
+

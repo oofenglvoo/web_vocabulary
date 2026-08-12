@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Plus, Upload } from 'lucide-react'
 import { useAllWords, toggleFavorite, deleteWord, bulkSetCategory, bulkSetFavorite, bulkDeleteWords, useCategories } from '../hooks/useWords'
 import { SelectableWordList } from '../components/SelectableWordList'
+import { ConfirmModal } from '../components/ConfirmModal'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
 
@@ -15,8 +16,12 @@ export function WordList() {
   const [category, setCategory] = useState('全部')
   const [showMove, setShowMove] = useState(false)
   const [moveIds, setMoveIds] = useState<number[]>([])
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null)
+  const [confirmBatchDelete, setConfirmBatchDelete] = useState(false)
+  const [batchDeleteIds, setBatchDeleteIds] = useState<number[]>([])
 
-  const categoryList = ['全部', ...new Set(words.map((w) => w.category))]
+  // 记忆化分类列表，避免每次渲染都生成新数组
+  const categoryList = useMemo(() => ['全部', ...new Set(words.map((w) => w.category))], [words])
 
   const filtered = category === '全部' ? words : words.filter((w) => w.category === category)
 
@@ -48,19 +53,14 @@ export function WordList() {
         onSearchChange={setSearch}
         onWordClick={(w) => navigate(`/word/${w.id}?scope=all`)}
         onFavorite={(w) => toggleFavorite(w.id!, w.isFavorite)}
-        onDelete={(w) => {
-          if (confirm('确定删除?')) {
-            deleteWord(w.id!)
-            toast('success', '单词已删除')
-          }
-        }}
+        onDelete={(w) => setConfirmDeleteId(w.id!)}
         categories={categoryList}
         category={category}
         onCategoryChange={setCategory}
         batchActions={{
           onMoveToCategory: (ids) => { setMoveIds(ids); setShowMove(true) },
           onFavoriteAll: (ids) => { bulkSetFavorite(ids, true); toast('success', `已收藏 ${ids.length} 个单词`) },
-          onDeleteAll: (ids) => { if (confirm(`确定删除选中的 ${ids.length} 个单词?`)) { bulkDeleteWords(ids); toast('success', '已删除选中单词') } },
+          onDeleteAll: (ids) => { setBatchDeleteIds(ids); setConfirmBatchDelete(true) },
         }}
       />
 
@@ -85,6 +85,32 @@ export function WordList() {
             </button>
           </div>
         </div>
+      )}
+
+      {confirmDeleteId !== null && (
+        <ConfirmModal
+          title="删除单词?"
+          message="删除后不可恢复（相关学习记录与计划引用会一并清理）"
+          confirmText="删除"
+          onConfirm={async () => {
+            await deleteWord(confirmDeleteId)
+            toast('success', '单词已删除')
+          }}
+          onCancel={() => setConfirmDeleteId(null)}
+        />
+      )}
+
+      {confirmBatchDelete && (
+        <ConfirmModal
+          title="删除选中的单词?"
+          message={`共 ${batchDeleteIds.length} 个单词`}
+          confirmText="删除"
+          onConfirm={async () => {
+            await bulkDeleteWords(batchDeleteIds)
+            toast('success', `已删除 ${batchDeleteIds.length} 个单词`)
+          }}
+          onCancel={() => setConfirmBatchDelete(false)}
+        />
       )}
     </div>
   )

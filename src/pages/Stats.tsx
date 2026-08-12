@@ -16,7 +16,7 @@ import {
 } from '../utils/tts'
 import { db } from '../db/database'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { isDarkMode, toggleDarkMode } from '../main'
+import { isDarkMode, toggleDarkMode } from '../utils/theme'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
 
@@ -70,11 +70,16 @@ export function Stats() {
   }
 
   const handleAddCategory = async () => {
-    if (!newCatName.trim()) return
-    await addCategory(newCatName.trim())
-    toast('success', `分类「${newCatName.trim()}」已创建`)
-    setNewCatName('')
-    setShowAddCat(false)
+    const name = newCatName.trim()
+    if (!name) return
+    try {
+      await addCategory(name)
+      toast('success', `分类「${name}」已创建`)
+      setNewCatName('')
+      setShowAddCat(false)
+    } catch (e) {
+      toast('error', (e as Error).message || '创建失败')
+    }
   }
 
   return (

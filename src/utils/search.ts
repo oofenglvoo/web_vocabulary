@@ -82,19 +82,24 @@ export function enhancedSearch(
   if (!query.trim()) return true
   const q = query.trim().toLowerCase()
 
+  // 防御：字段可能来自旧数据而缺失，统一转字符串避免崩溃
+  const word = String(fields.word ?? '')
+  const translation = String(fields.translation ?? '')
+  const definition = String(fields.definition ?? '')
+
   // 1. 精确子串匹配 (原有逻辑)
-  if (fields.word.toLowerCase().includes(q)) return true
-  if (fields.translation.includes(q)) return true
-  if (fields.definition.toLowerCase().includes(q)) return true
+  if (word.toLowerCase().includes(q)) return true
+  if (translation.includes(q)) return true
+  if (definition.toLowerCase().includes(q)) return true
 
   // 2. 拼音首字母匹配 (输入是纯字母时匹配中文翻译)
   if (/^[a-zA-Z]+$/.test(q)) {
-    const pinyin = toPinyinInitials(fields.translation)
+    const pinyin = toPinyinInitials(translation)
     if (pinyin.includes(q)) return true
   }
 
   // 3. 模糊匹配 (英文单词拼写容错)
-  if (fuzzyMatch(q, fields.word)) return true
+  if (fuzzyMatch(q, word)) return true
 
   return false
 }

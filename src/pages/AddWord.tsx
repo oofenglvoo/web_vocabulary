@@ -56,32 +56,36 @@ export function AddWord() {
     // 向前兼容：将第一个释义写入旧字段
     const primary = validDefs[0]
 
-    await addWord({
-      word: form.word.trim(),
-      phonetic: form.phonetic.trim(),
-      definition: primary.def.trim(),
-      translation: primary.trans.trim(),
-      definitions: validDefs.map((d) => ({
-        pos: d.pos.trim(),
-        def: d.def.trim(),
-        trans: d.trans.trim(),
-      })),
-      example: form.example.trim(),
-      category: form.category,
-      difficulty: form.difficulty,
-      notes: form.notes.trim(),
-      lastReviewedAt: 0,
-      reviewCount: 0,
-      correctCount: 0,
-      streak: 0,
-      easeFactor: 2.5,
-      interval: 0,
-      nextReviewAt: Date.now(),
-      isLearned: 0,
-      isFavorite: 0,
-    })
-    toast('success', '单词已保存')
-    navigate('/words')
+    try {
+      await addWord({
+        word: form.word.trim(),
+        phonetic: form.phonetic.trim(),
+        definition: primary.def.trim(),
+        translation: primary.trans.trim(),
+        definitions: validDefs.map((d) => ({
+          pos: d.pos.trim(),
+          def: d.def.trim(),
+          trans: d.trans.trim(),
+        })),
+        example: form.example.trim(),
+        category: form.category,
+        difficulty: form.difficulty,
+        notes: form.notes.trim(),
+        lastReviewedAt: 0,
+        reviewCount: 0,
+        correctCount: 0,
+        streak: 0,
+        easeFactor: 2.5,
+        interval: 0,
+        nextReviewAt: Date.now(),
+        isLearned: 0,
+        isFavorite: 0,
+      })
+      toast('success', '单词已保存')
+      navigate('/words')
+    } catch (e) {
+      setError((e as Error).message || '保存失败，请重试')
+    }
   }
 
   const difficultyLabels = ['简单', '较易', '中等', '较难', '困难']

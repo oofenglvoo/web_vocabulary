@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import {
   Volume2,
@@ -26,6 +26,7 @@ import { Word, StudyPlan } from '../types/word'
 import { speakWord, unlockTts } from '../utils/tts'
 import { getDefinitions, getPrimaryTranslation } from '../utils/definitions'
 import { BackButton } from '../components/BackButton'
+import { useToast } from '../components/Toast'
 
 type StudyMode = 'learn' | 'quiz' | 'review'
 
@@ -42,6 +43,7 @@ interface QuizItem extends QueueItem {
 
 export function Study() {
   const navigate = useNavigate()
+  const { toast } = useToast()
   const [searchParams] = useSearchParams()
   const planId = searchParams.get('plan')
   const planIdNum = planId ? Number(planId) : null
@@ -72,11 +74,30 @@ export function Study() {
   // 翻转状态
   const [isFlipped, setIsFlipped] = useState(false)
 
+  // 延迟回调定时器：组件卸载时统一清理，避免在已卸载组件上 setState
+  const timersRef = useRef<number[]>([])
+  const allTranslationsRef = useRef<string[] | null>(null)
+
+  useEffect(() => {
+    const timers = timersRef.current
+    return () => {
+      timers.forEach((t) => clearTimeout(t))
+      timers.length = 0
+    }
+  }, [])
+
   useEffect(() => {
     startStudy()
     unlockTts()
+    // isReviewMode 也作为依赖：仅改 mode 参数(plan 不变)时也要重新加载队列
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [planIdNum])
+  }, [planIdNum, isReviewMode])
+
+  // 登记延迟回调，统一随组件卸载清理
+  const schedule = (fn: () => void, ms: number) => {
+    const t = window.setTimeout(fn, ms)
+    timersRef.current.push(t)
+  }
 
   async function startStudy() {
     setLoading(true)
@@ -146,21 +167,27 @@ export function Study() {
     if (!learnItem) return
     setConfirmMaster(false)
     const wordId = learnItem.word.id!
-    await markWordLearned(wordId)
-    if (planIdNum) {
-      if (learnItem.isReview) {
-        await markReviewDone(planIdNum)
-        setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
-      } else {
-        await markWordStarted(planIdNum, wordId)
-        setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+    try {
+      await markWordLearned(wordId)
+      if (planIdNum) {
+        if (learnItem.isReview) {
+          await markReviewDone(planIdNum)
+          setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
+        } else {
+          await markWordStarted(planIdNum, wordId)
+          setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+        }
       }
+    } catch (e) {
+      toast('error', '操作失败: ' + (e as Error).message)
+      return
     }
-    const next = learnQueue.filter((_, i) => i !== learnIndex)
-    setLearnQueue(next)
-    if (learnIndex >= next.length) {
-      setLearnIndex(Math.max(0, next.length))
-    }
+    // 按 wordId 移除，避免使用可能过期的 learnIndex 删错项
+    setLearnQueue((prev) => {
+      const next = prev.filter((q) => q.word.id !== wordId)
+      setLearnIndex((i) => Math.min(i, Math.max(0, next.length - 1)))
+      return next
+    })
     setIsFlipped(false)
   }
 
@@ -211,11 +238,12 @@ export function Study() {
 
   async function prepareQuiz(word: Word) {
     const primaryTrans = getPrimaryTranslation(word)
-    const all = await db.words.toArray()
-    const others = all
-      .filter((w) => w.id !== word.id)
-      .map((w) => getPrimaryTranslation(w))
-      .filter((t) => t && t !== primaryTrans)
+    // 全表翻译列表只加载一次并缓存，避免每道题都 toArray 全表读取
+    if (allTranslationsRef.current === null) {
+      const all = await db.words.toArray()
+      allTranslationsRef.current = all.map((w) => getPrimaryTranslation(w)).filter(Boolean)
+    }
+    const others = allTranslationsRef.current.filter((t) => t !== primaryTrans)
     // 去重并取干扰项
     const uniqueOthers = [...new Set(others)]
     const distractors = uniqueOthers.slice(0, 3)
@@ -234,26 +262,34 @@ export function Study() {
     const wordId = currentQuiz.word.id!
 
     if (correct) {
-      await recordReview(wordId, 5)
+      try {
+        await recordReview(wordId, 5)
+      } catch (e) {
+        toast('error', '记录失败: ' + (e as Error).message)
+      }
       const newStreak = currentQuiz.correctStreak + 1
       if (newStreak >= currentQuiz.requiredCorrect) {
         setQuizStats((s) => ({ ...s, correct: s.correct + 1 }))
         if (planIdNum) {
-          if (currentQuiz.isReview) {
-            await markReviewDone(planIdNum)
-            setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
-          } else {
-            await markWordStarted(planIdNum, wordId)
-            setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+          try {
+            if (currentQuiz.isReview) {
+              await markReviewDone(planIdNum)
+              setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
+            } else {
+              await markWordStarted(planIdNum, wordId)
+              setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+            }
+          } catch (e) {
+            toast('error', '记录失败: ' + (e as Error).message)
           }
         }
-        setTimeout(() => {
+        schedule(() => {
           setQuizQueue((q) => q.slice(1))
           setSelectedOption(null)
           setQuizRevealed(false)
         }, 900)
       } else {
-        setTimeout(() => {
+        schedule(() => {
           setQuizQueue((q) => {
             const [head, ...rest] = q
             return [...rest, { ...head!, correctStreak: newStreak }]
@@ -263,9 +299,13 @@ export function Study() {
         }, 900)
       }
     } else {
-      await recordReview(wordId, 1)
+      try {
+        await recordReview(wordId, 1)
+      } catch (e) {
+        toast('error', '记录失败: ' + (e as Error).message)
+      }
       setQuizStats((s) => ({ ...s, wrong: s.wrong + 1 }))
-      setTimeout(() => {
+      schedule(() => {
         setQuizQueue((q) => {
           const [head, ...rest] = q
           if (!head) return q
@@ -289,15 +329,20 @@ export function Study() {
     if (!currentQuiz) return
     setConfirmMaster(false)
     const wordId = currentQuiz.word.id!
-    await markWordLearned(wordId)
-    if (planIdNum) {
-      if (currentQuiz.isReview) {
-        await markReviewDone(planIdNum)
-        setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
-      } else {
-        await markWordStarted(planIdNum, wordId)
-        setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+    try {
+      await markWordLearned(wordId)
+      if (planIdNum) {
+        if (currentQuiz.isReview) {
+          await markReviewDone(planIdNum)
+          setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
+        } else {
+          await markWordStarted(planIdNum, wordId)
+          setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
+        }
       }
+    } catch (e) {
+      toast('error', '操作失败: ' + (e as Error).message)
+      return
     }
     setQuizQueue((q) => q.slice(1))
     setSelectedOption(null)
@@ -316,7 +361,7 @@ export function Study() {
         colors: ['#6366f1', '#8b5cf6', '#ec4899', '#10b981'],
       })
       // 第二波
-      setTimeout(() => {
+      schedule(() => {
         confetti({
           particleCount: 50,
           angle: 60,

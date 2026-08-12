@@ -28,7 +28,15 @@ export const WordCard = memo(function WordCard({ word, onClick, onFavorite, onDe
   return (
     <div
       onClick={onClick}
-      className="card p-4 cursor-pointer hover:shadow-glow hover:-translate-y-0.5 transition-all"
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick()
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      className="card p-4 cursor-pointer hover:shadow-glow hover:-translate-y-0.5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
     >
       <div className="flex justify-between items-start gap-2">
         <div className="flex-1 min-w-0">
