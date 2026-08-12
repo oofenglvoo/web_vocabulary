@@ -61,6 +61,8 @@ function buildWord(raw: Record<string, any>): ImportableWord | null {
     easeFactor: 2.5,
     interval: 0,
     nextReviewAt: Date.now(),
+    srsStage: 0,
+    stageProgress: 0,
     isLearned: 0,
     isFavorite: 0,
   }
@@ -302,6 +304,8 @@ function buildSentence(raw: Record<string, any>): ImportableSentence | null {
     reviewCount: 0,
     correctCount: 0,
     streak: 0,
+    srsStage: 0,
+    stageProgress: 0,
   }
 }
 

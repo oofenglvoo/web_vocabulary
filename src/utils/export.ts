@@ -44,7 +44,40 @@ function escapeCsv(value: unknown): string {
   return str
 }
 
-export function downloadFile(content: string, filename: string, type: string) {
+/**
+ * 导出/下载文件。
+ * - 浏览器环境:创建 Blob 触发下载(原逻辑)。
+ * - 安卓原生环境(Capacitor):WebView 无法触发浏览器下载,改为用 Filesystem 写入缓存目录,
+ *   再调起系统分享面板,由用户选择保存位置(文件管理器/其他应用)。
+ * 通过 window.Capacitor 判断,浏览器环境不加载任何 Capacitor 库。
+ */
+export async function downloadFile(content: string, filename: string, type: string) {
+  const isNative = (window as any)?.Capacitor?.isNativePlatform?.() === true
+  if (isNative) {
+    try {
+      const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem')
+      const { Share } = await import('@capacitor/share')
+      const base = 'vocab-exports'
+      await Filesystem.mkdir({ path: base, directory: Directory.Cache, recursive: true }).catch(() => {})
+      const filePath = `${base}/${filename}`
+      await Filesystem.writeFile({
+        path: filePath,
+        data: content,
+        directory: Directory.Cache,
+        encoding: Encoding.UTF8,
+      })
+      const { uri } = await Filesystem.getUri({ path: filePath, directory: Directory.Cache })
+      await Share.share({ title: filename, url: uri })
+    } catch {
+      // 插件异常时回退浏览器方式,避免静默失败
+      browserDownload(content, filename, type)
+    }
+    return
+  }
+  browserDownload(content, filename, type)
+}
+
+function browserDownload(content: string, filename: string, type: string) {
   const blob = new Blob([content], { type })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')

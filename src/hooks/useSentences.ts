@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
 import { Sentence } from '../types/word'
-import { calculateSrs } from '../utils/srs'
+import { applyStageReview, stageIntervalDays, MAX_STAGE } from '../utils/srs'
 import { useNow } from './useNow'
 
 // ---------- 读取 hooks ----------
@@ -191,19 +191,19 @@ export async function recordSentenceReview(sentenceId: number, quality: number) 
     const s = await db.sentences.get(sentenceId)
     if (!s) return
 
-    const { newInterval, newEaseFactor, nextReviewAt } = calculateSrs(
-      quality,
-      s.interval,
-      s.easeFactor,
-      s.streak
+    const now = Date.now()
+    const { newStage, newProgress, isLearned } = applyStageReview(
+      { srsStage: s.srsStage ?? 0, stageProgress: s.stageProgress ?? 0 },
+      quality
     )
 
     const changes: Partial<Sentence> = {
       reviewCount: s.reviewCount + 1,
-      lastReviewedAt: Date.now(),
-      interval: newInterval,
-      easeFactor: newEaseFactor,
-      nextReviewAt,
+      lastReviewedAt: now,
+      srsStage: newStage,
+      stageProgress: newProgress,
+      interval: stageIntervalDays(newStage),
+      nextReviewAt: now + stageIntervalDays(newStage) * 24 * 60 * 60 * 1000,
     }
 
     if (quality >= 3) {
@@ -213,7 +213,7 @@ export async function recordSentenceReview(sentenceId: number, quality: number) 
       changes.streak = 0
     }
 
-    if (newInterval >= 21) {
+    if (isLearned) {
       changes.isLearned = 1
     }
 
@@ -228,6 +228,8 @@ export async function markSentenceLearned(id: number) {
   if (!s) return
   await db.sentences.update(id, {
     isLearned: 1,
+    srsStage: MAX_STAGE,
+    stageProgress: 0,
     interval: 365,
     streak: Math.max(5, s.streak),
     easeFactor: Math.max(2.5, s.easeFactor),
@@ -245,6 +247,8 @@ export async function unmarkSentenceLearned(id: number) {
   if (!s || s.isLearned === 0) return
   await db.sentences.update(id, {
     isLearned: 0,
+    srsStage: 1,
+    stageProgress: 0,
     interval: 1,
     streak: 0,
     easeFactor: 2.5,
@@ -290,6 +294,8 @@ export async function bulkMarkSentenceLearned(ids: number[]) {
       if (!s || s.isLearned === 1) continue
       await db.sentences.update(id, {
         isLearned: 1,
+        srsStage: MAX_STAGE,
+        stageProgress: 0,
         interval: 365,
         streak: Math.max(5, s.streak),
         easeFactor: Math.max(2.5, s.easeFactor),

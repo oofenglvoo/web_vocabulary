@@ -24,6 +24,7 @@ const Sentences = lazy(() => import('./pages/Sentences').then((m) => ({ default:
 const AddSentence = lazy(() => import('./pages/AddSentence').then((m) => ({ default: m.AddSentence })))
 const SentenceDetail = lazy(() => import('./pages/SentenceDetail').then((m) => ({ default: m.SentenceDetail })))
 const SentenceStudy = lazy(() => import('./pages/SentenceStudy').then((m) => ({ default: m.SentenceStudy })))
+const CheckIn = lazy(() => import('./pages/CheckIn').then((m) => ({ default: m.CheckIn })))
 
 function PageFallback() {
   return (
@@ -40,7 +41,8 @@ function App() {
   return (
     <ErrorBoundary>
       <ToastProvider>
-        <BrowserRouter basename="/web_vocabulary">
+        {/* basename 默认按 GitHub Pages 部署;安卓 APK 打包时由 vite.config.ts 注入为 '/' */}
+        <BrowserRouter basename={import.meta.env.VITE_APP_BASE || '/web_vocabulary'}>
           <Layout>
             <Suspense fallback={<PageFallback />}>
               <Routes>
@@ -61,6 +63,7 @@ function App() {
                 <Route path="/plan" element={<StudyPlanPage />} />
                 <Route path="/plan/:id/words" element={<PlanWordList />} />
                 <Route path="/stats" element={<Stats />} />
+                <Route path="/checkin" element={<CheckIn />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

@@ -28,6 +28,9 @@ export interface Word {
   easeFactor: number
   interval: number
   nextReviewAt: number
+  // 艾宾浩斯 7 周期制:0=未学, 1-6=学习中周期, 7=已掌握；stageProgress=当前周期内连续答对数
+  srsStage: number
+  stageProgress: number
   isLearned: Flag
   isFavorite: Flag
   notes: string
@@ -51,6 +54,9 @@ export interface Sentence {
   easeFactor: number
   interval: number
   nextReviewAt: number
+  // 艾宾浩斯 7 周期制:0=未学, 1-6=学习中周期, 7=已掌握；stageProgress=当前周期内连续答对数
+  srsStage: number
+  stageProgress: number
   isLearned: Flag
   isFavorite: Flag
   notes: string
@@ -68,6 +74,8 @@ export interface Category {
 // 复习结果与模式：收紧为字面量联合，避免脏数据 / 拼写错误静默通过
 export type StudyResult = 'correct' | 'hint' | 'incorrect' | 'mastered'
 export type StudySessionMode = StudyMode | 'mark-learned'
+// 新学 vs 复习（打卡双圈与统计区分用）
+export type StudyKind = 'new' | 'review'
 
 export interface StudySession {
   id?: number
@@ -76,6 +84,7 @@ export interface StudySession {
   result: StudyResult
   durationMs: number
   timestamp: number
+  kind: StudyKind
 }
 
 export type StudyMode = 'flashcard' | 'quiz' | 'spelling'
