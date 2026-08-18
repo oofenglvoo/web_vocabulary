@@ -141,6 +141,7 @@ export function StudyPlanPage() {
                 progress={progress}
                 newWordCount={newWordCount}
                 onStart={() => navigate(`/study?plan=${activePlan.id}`)}
+                onExtraStart={() => navigate(`/study?plan=${activePlan.id}&mode=learn&extra=1`)}
                 onReview={() => navigate(`/study?plan=${activePlan.id}&mode=review`)}
                 onSync={async () => {
                   setSyncing(true)
@@ -190,6 +191,7 @@ export function StudyPlanPage() {
                 progress={sentenceProgress}
                 newWordCount={newSentenceCount}
                 onStart={() => navigate(`/sentences/study?plan=${activeSentencePlan.id}`)}
+                onExtraStart={() => navigate(`/sentences/study?plan=${activeSentencePlan.id}&mode=learn&extra=1`)}
                 onReview={() => navigate(`/sentences/study?plan=${activeSentencePlan.id}&mode=review`)}
                 onSync={async () => {
                   setSyncingS(true)
@@ -279,6 +281,7 @@ function ActivePlanCard({
   progress,
   newWordCount,
   onStart,
+  onExtraStart,
   onReview,
   onSync,
   syncing,
@@ -287,19 +290,25 @@ function ActivePlanCard({
   progress: ReturnType<typeof usePlanProgress>
   newWordCount: number
   onStart: () => void
+  onExtraStart: () => void
   onReview: () => void
   onSync: () => void
   syncing: boolean
 }) {
-  const newDone = Math.min(progress.todayNewDone, progress.todayNewTarget)
+  // 今日新词展示 = 配额内完成 + 加学完成(如 20/10)；进度条按配额封顶 100%
+  const newDone = progress.todayNewDisplay
   const reviewDone = Math.min(progress.todayReviewDone, progress.dueReview)
-  const newPct = progress.todayNewTarget > 0 ? (newDone / progress.todayNewTarget) * 100 : 0
+  const newPct = progress.todayNewTarget > 0 ? Math.min(100, (newDone / progress.todayNewTarget) * 100) : 0
   const reviewPct = progress.dueReview > 0 ? (reviewDone / progress.dueReview) * 100 : 0
 
   const sourceLabel =
     plan.sourceKind === 'category'
       ? plan.sourceCategory
       : SOURCE_LABEL[plan.sourceKind]
+
+  // 今日新词是否已学满(配额内)，且还有未掌握可学的词 → 点"学习"需确认是否加学
+  const newQuotaDone = progress.todayNewRemaining === 0 && progress.remainingNew > 0
+  const [confirmExtra, setConfirmExtra] = useState(false)
 
   return (
     <motion.div
@@ -318,17 +327,20 @@ function ActivePlanCard({
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <button onClick={onStart} className="btn-primary flex items-center gap-1.5 shrink-0">
+          <button
+            onClick={() => (newQuotaDone ? setConfirmExtra(true) : onStart())}
+            className="btn-primary flex items-center gap-1.5 shrink-0"
+          >
             <Play size={16} /> 学习
           </button>
           <button
             onClick={onReview}
             className={`flex items-center gap-1.5 shrink-0 px-3 py-1.5 rounded-xl text-sm font-medium transition-all ${
-              progress.dueReview > 0
+              progress.todayReviewRemaining > 0
                 ? 'bg-accent-500 text-white shadow-glow'
                 : 'btn-secondary opacity-50'
             }`}
-            disabled={progress.dueReview === 0}
+            disabled={progress.todayReviewRemaining === 0}
           >
             <RefreshCw size={16} /> 复习
           </button>
@@ -378,7 +390,7 @@ function ActivePlanCard({
       <div className="grid grid-cols-3 gap-2 mt-3 text-center">
         <MiniStat label="已开始" value={progress.startedWords} />
         <MiniStat label="已掌握" value={progress.learnedWords} />
-        <MiniStat label="待复习" value={progress.dueReview} highlight={progress.dueReview > 0} />
+        <MiniStat label="待复习" value={progress.todayReviewRemaining} highlight={progress.todayReviewRemaining > 0} />
       </div>
 
       {/* 同步新单词提示 */}
@@ -391,6 +403,43 @@ function ActivePlanCard({
           <RefreshCcw size={14} className={syncing ? 'animate-spin' : ''} />
           {syncing ? '同步中...' : `有 ${newWordCount} 个新单词可同步到计划`}
         </button>
+      )}
+
+      {/* 今日新词学满 → 确认是否加学 */}
+      {confirmExtra && (
+        <div className="modal-overlay">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className="modal-content max-w-xs text-center"
+          >
+            <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-warn flex items-center justify-center shadow-glow">
+              <Sparkles size={28} className="text-white" />
+            </div>
+            <h3 className="font-bold text-lg mb-1 dark:text-gray-100">今日新词已学满</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              本日配额已用完（{progress.todayNewDisplay}/{progress.todayNewTarget}）
+            </p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mb-5">
+              是否继续额外学习？（不计入今日配额）
+            </p>
+            <div className="flex gap-2">
+              <button onClick={() => setConfirmExtra(false)} className="btn-secondary flex-1">
+                取消
+              </button>
+              <button
+                onClick={() => {
+                  setConfirmExtra(false)
+                  onExtraStart()
+                }}
+                className="btn-primary flex-1"
+              >
+                额外学习
+              </button>
+            </div>
+          </motion.div>
+        </div>
       )}
     </motion.div>
   )
@@ -808,6 +857,7 @@ function ActiveSentencePlanCard({
   progress,
   newWordCount,
   onStart,
+  onExtraStart,
   onReview,
   onSync,
   syncing,
@@ -816,13 +866,15 @@ function ActiveSentencePlanCard({
   progress: ReturnType<typeof useSentencePlanProgress>
   newWordCount: number
   onStart: () => void
+  onExtraStart: () => void
   onReview: () => void
   onSync: () => void
   syncing: boolean
 }) {
-  const newDone = Math.min(progress.todayNewDone, progress.todayNewTarget)
+  // 今日新词展示 = 配额内完成 + 加学完成(如 20/10)；进度条按配额封顶 100%
+  const newDone = progress.todayNewDisplay
   const reviewDone = Math.min(progress.todayReviewDone, progress.dueReview)
-  const newPct = progress.todayNewTarget > 0 ? (newDone / progress.todayNewTarget) * 100 : 0
+  const newPct = progress.todayNewTarget > 0 ? Math.min(100, (newDone / progress.todayNewTarget) * 100) : 0
   const reviewPct = progress.dueReview > 0 ? (reviewDone / progress.dueReview) * 100 : 0
 
   const sourceLabel =
@@ -831,6 +883,10 @@ function ActiveSentencePlanCard({
       : plan.sourceKind === 'favorites'
       ? '收藏夹'
       : '全部短句'
+
+  // 今日新句是否已学满(配额内)，且还有未掌握可学的词 → 点"学习"需确认是否加学
+  const newQuotaDone = progress.todayNewRemaining === 0 && progress.remainingNew > 0
+  const [confirmExtra, setConfirmExtra] = useState(false)
 
   return (
     <motion.div
@@ -849,17 +905,20 @@ function ActiveSentencePlanCard({
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <button onClick={onStart} className="btn-primary flex items-center gap-1.5 shrink-0">
+          <button
+            onClick={() => (newQuotaDone ? setConfirmExtra(true) : onStart())}
+            className="btn-primary flex items-center gap-1.5 shrink-0"
+          >
             <Play size={16} /> 学习
           </button>
           <button
             onClick={onReview}
             className={`flex items-center gap-1.5 shrink-0 px-3 py-1.5 rounded-xl text-sm font-medium transition-all ${
-              progress.dueReview > 0
+              progress.todayReviewRemaining > 0
                 ? 'bg-accent-500 text-white shadow-glow'
                 : 'btn-secondary opacity-50'
             }`}
-            disabled={progress.dueReview === 0}
+            disabled={progress.todayReviewRemaining === 0}
           >
             <RefreshCw size={16} /> 复习
           </button>
@@ -903,7 +962,7 @@ function ActiveSentencePlanCard({
       <div className="grid grid-cols-3 gap-2 mt-3 text-center">
         <MiniStat label="已开始" value={progress.startedSentences} />
         <MiniStat label="已掌握" value={progress.learnedSentences} />
-        <MiniStat label="待复习" value={progress.dueReview} highlight={progress.dueReview > 0} />
+        <MiniStat label="待复习" value={progress.todayReviewRemaining} highlight={progress.todayReviewRemaining > 0} />
       </div>
 
       {newWordCount > 0 && (
@@ -915,6 +974,43 @@ function ActiveSentencePlanCard({
           <RefreshCcw size={14} className={syncing ? 'animate-spin' : ''} />
           {syncing ? '同步中...' : `有 ${newWordCount} 个新短句可同步到计划`}
         </button>
+      )}
+
+      {/* 今日新句学满 → 确认是否加学 */}
+      {confirmExtra && (
+        <div className="modal-overlay">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className="modal-content max-w-xs text-center"
+          >
+            <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-warn flex items-center justify-center shadow-glow">
+              <Sparkles size={28} className="text-white" />
+            </div>
+            <h3 className="font-bold text-lg mb-1 dark:text-gray-100">今日新句已学满</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+              本日配额已用完（{progress.todayNewDisplay}/{progress.todayNewTarget}）
+            </p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mb-5">
+              是否继续额外学习？（不计入今日配额）
+            </p>
+            <div className="flex gap-2">
+              <button onClick={() => setConfirmExtra(false)} className="btn-secondary flex-1">
+                取消
+              </button>
+              <button
+                onClick={() => {
+                  setConfirmExtra(false)
+                  onExtraStart()
+                }}
+                className="btn-primary flex-1"
+              >
+                额外学习
+              </button>
+            </div>
+          </motion.div>
+        </div>
       )}
     </motion.div>
   )

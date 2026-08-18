@@ -248,9 +248,13 @@ export function Study() {
 
   // 快速自测批量提交
   async function handleQuickSubmit(results: QuickRating[]) {
-    for (const { item, quality } of results) {
+    for (const { item, quality, mastered } of results) {
       try {
         await recordReview(item.id, quality, 0, item.isReview ? 'review' : 'new')
+        // "掌握" → 永久标记已掌握
+        if (mastered) {
+          await markWordLearned(item.id)
+        }
       } catch (e) {
         toast('error', '记录失败: ' + (e as Error).message)
       }

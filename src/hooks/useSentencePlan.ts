@@ -27,6 +27,8 @@ export interface SentencePlanProgress {
   todayReviewRemaining: number
   overallPercent: number
   estimatedDaysLeft: number
+  // 今日新句展示数 = 配额内完成 + 加学完成
+  todayNewDisplay: number
 }
 
 export function useActiveSentencePlan(): StudyPlan | undefined {
@@ -87,6 +89,7 @@ export function useSentencePlanProgress(plan: StudyPlan | undefined): SentencePl
       todayReviewRemaining: 0,
       overallPercent: 0,
       estimatedDaysLeft: 0,
+      todayNewDisplay: 0,
     }
   }
   const now = Date.now()
@@ -103,6 +106,9 @@ export function useSentencePlanProgress(plan: StudyPlan | undefined): SentencePl
   const isToday = plan.todayDate === today
   const todayNewDone = isToday ? plan.todayNewDone : 0
   const todayReviewDone = isToday ? plan.todayReviewDone : 0
+  const todayExtraDone = isToday ? plan.todayExtraDone ?? 0 : 0
+  // 今日新句展示数 = 配额内完成 + 加学完成
+  const todayNewDisplay = todayNewDone + todayExtraDone
   const overallPercent =
     sentences.length > 0 ? Math.round((learned / sentences.length) * 100) : 0
   const estimatedDaysLeft =
@@ -128,6 +134,7 @@ export function useSentencePlanProgress(plan: StudyPlan | undefined): SentencePl
     todayReviewRemaining,
     overallPercent,
     estimatedDaysLeft,
+    todayNewDisplay,
   }
 }
 
@@ -186,6 +193,7 @@ export async function createSentencePlan(input: {
         todayDate: todayStr(),
         todayNewDone: 0,
         todayReviewDone: 0,
+        todayExtraDone: 0,
       } as StudyPlan)
     )
   })
@@ -275,11 +283,24 @@ export async function getExtraNewSentences(plan: StudyPlan): Promise<Sentence[]>
     .slice(0, plan.newPerDay)
 }
 
-// 加学中标记短句已学：只写入 startedIds，不计入今日配额
+// 加学中标记短句已学：写入 startedIds + 今日加学完成数(todayExtraDone)+1，不计入配额(todayNewDone)
 export async function markExtraSentenceStarted(planId: number, sentenceId: number) {
   await withPlanUpdate(planId, (plan) => {
     if (plan.startedIds.includes(sentenceId)) return {}
-    return { startedIds: [...plan.startedIds, sentenceId] }
+    const today = todayStr()
+    const isToday = plan.todayDate === today
+    const changes: Partial<StudyPlan> = {
+      startedIds: [...plan.startedIds, sentenceId],
+    }
+    if (!isToday) {
+      changes.todayDate = today
+      changes.todayNewDone = 0
+      changes.todayReviewDone = 0
+      changes.todayExtraDone = 1
+    } else {
+      changes.todayExtraDone = (plan.todayExtraDone ?? 0) + 1
+    }
+    return changes
   })
 }
 
@@ -289,11 +310,15 @@ export async function getTodayReviewSentences(plan: StudyPlan): Promise<Sentence
   const startedSet = new Set(plan.startedIds)
   const candidates = plan.wordIds.filter((id) => startedSet.has(id))
   const sentences = await db.sentences.bulkGet(candidates)
+  const today = todayStr()
+  const isToday = plan.todayDate === today
+  const todayReviewDone = isToday ? plan.todayReviewDone : 0
+  const remaining = Math.max(0, plan.reviewPerDay - todayReviewDone)
   return sentences
     .filter((s): s is Sentence => !!s)
     .filter((s) => s.isLearned === 0 && s.nextReviewAt <= now)
     .sort((a, b) => a.nextReviewAt - b.nextReviewAt)
-    .slice(0, plan.reviewPerDay)
+    .slice(0, remaining)
 }
 
 // 事务内读取-计算-写入计划更新，避免并发互相覆盖
@@ -348,7 +373,7 @@ export async function ensureSentenceTodayReset(planId: number) {
   await withPlanUpdate(planId, (plan) => {
     const today = todayStr()
     if (plan.todayDate !== today) {
-      return { todayDate: today, todayNewDone: 0, todayReviewDone: 0 }
+      return { todayDate: today, todayNewDone: 0, todayReviewDone: 0, todayExtraDone: 0 }
     }
     return {}
   })
