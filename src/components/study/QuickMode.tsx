@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Check, ChevronRight } from 'lucide-react'
+import { Check, ChevronRight, Star, Volume2, X as XIcon } from 'lucide-react'
 import { StudyItem } from './types'
-import { FlipCard } from './FlipCard'
 
 export interface QuickRating {
   item: StudyItem
-  quality: number // 认识=3(推进周期), 忘记=1(停留)
+  quality: number // 1=忘记, 3=记得, 5=掌握
+  mastered: boolean // 是否标记为已掌握
 }
 
 interface QuickModeProps {
@@ -14,109 +14,168 @@ interface QuickModeProps {
   onSpeak: (item: StudyItem) => void
 }
 
-/** 快速自测：逐条翻卡，全部看完后一次性提交（每条默认"认识"，可点按改为"忘记"） */
+/** 快速自测：列表视图，所有词同时列出，点击展开释义 + 忘记/记得/掌握三选项，全部评完后统一提交 */
 export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
-  const [index, setIndex] = useState(0)
-  const [flipped, setFlipped] = useState(false)
-  const [done, setDone] = useState(false)
-  const [ratings, setRatings] = useState<Record<number, number>>({})
+  const [ratings, setRatings] = useState<Record<number, QuickRating>>({})
+  const [expanded, setExpanded] = useState<Set<number>>(new Set())
+  const [submitted, setSubmitted] = useState(false)
 
-  const current = items[index]
-  const isLast = index === items.length - 1
+  const allRated = items.every((item) => ratings[item.id] !== undefined)
+  const total = items.length
+  const ratedCount = Object.keys(ratings).length
 
-  const handleFlip = () => setFlipped((f) => !f)
-
-  const next = () => {
-    if (isLast) {
-      setDone(true)
-    } else {
-      setIndex((i) => i + 1)
-      setFlipped(false)
-    }
+  const setRating = (item: StudyItem, quality: number, mastered: boolean) => {
+    setRatings((prev) => {
+      const next = { ...prev, [item.id]: { item, quality, mastered } }
+      // 收起当前词，展开下一个未评的词
+      const currentIdx = items.findIndex((x) => x.id === item.id)
+      if (currentIdx >= 0) {
+        const nextUnrated = items.find(
+          (x, i) => i > currentIdx && !next[x.id]
+        )
+        setExpanded(new Set(nextUnrated ? [nextUnrated.id] : []))
+      }
+      return next
+    })
   }
 
-  // 完成页：逐条点按切换 认识/忘记，然后批量提交
-  if (done) {
-    return (
-      <div className="card flex-1 flex flex-col p-5 overflow-auto">
-        <h3 className="font-bold text-lg mb-3 dark:text-gray-100">已全部看完，确认掌握情况</h3>
-        <div className="space-y-2 flex-1 overflow-auto">
-          {items.map((item) => {
-            const quality = ratings[item.id] ?? 3 // 默认认识
-            return (
+  const toggleExpand = (id: number) => {
+    setExpanded((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const handleSubmit = () => {
+    if (submitted) return
+    setSubmitted(true)
+    onRateAll(items.map((item) => ratings[item.id] ?? { item, quality: 1, mastered: false }))
+  }
+
+  return (
+    <div className="card flex-1 flex flex-col p-4 overflow-auto">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-bold text-lg dark:text-gray-100">快速自测</h3>
+        <span className="text-sm text-gray-500 dark:text-gray-400">
+          {ratedCount} / {total}
+        </span>
+      </div>
+
+      <div className="space-y-2 flex-1 overflow-auto">
+        {items.map((item) => {
+          const isExpanded = expanded.has(item.id)
+          const rating = ratings[item.id]
+          const isRated = rating !== undefined
+
+          return (
+            <div
+              key={item.id}
+              className="rounded-xl border dark:border-slate-700 overflow-hidden transition-all"
+            >
               <button
-                key={item.id}
                 type="button"
-                onClick={() => setRatings((r) => ({ ...r, [item.id]: quality === 3 ? 1 : 3 }))}
-                className={`w-full flex items-center gap-2 p-3 rounded-xl border text-left transition-colors ${
-                  quality === 3
-                    ? 'bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800'
-                    : 'bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800'
-                }`}
+                onClick={() => toggleExpand(item.id)}
+                className="w-full flex items-center gap-3 p-3 text-left bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
               >
                 <span className="flex-1 min-w-0">
-                  <span className="block font-medium truncate dark:text-gray-100">{item.title}</span>
-                  <span className="block text-xs text-gray-500 dark:text-gray-400 truncate">
-                    {item.primaryTranslation}
-                  </span>
-                </span>
-                <span className="text-xs shrink-0 flex items-center gap-1">
-                  {quality === 3 ? (
-                    <>
-                      <Check size={14} className="text-success-600" /> 认识
-                    </>
-                  ) : (
-                    <>
-                      <XCircleIcon /> 忘记
-                    </>
+                  <span className="font-medium dark:text-gray-100">{item.title}</span>
+                  {item.phonetic && (
+                    <span className="text-xs text-gray-400 dark:text-gray-500 ml-2">{item.phonetic}</span>
                   )}
                 </span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onSpeak(item)
+                  }}
+                  className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors shrink-0"
+                  aria-label="发音"
+                >
+                  <Volume2 size={16} className="text-gray-400" />
+                </button>
+                {/* 已评状态图标 */}
+                {isRated && (
+                  <span className="shrink-0">
+                    {rating.quality === 1 ? (
+                      <XIcon size={18} className="text-red-500" />
+                    ) : rating.quality === 5 ? (
+                      <Star size={18} className="text-amber-500 fill-amber-500" />
+                    ) : (
+                      <Check size={18} className="text-success-500" />
+                    )}
+                  </span>
+                )}
+                <ChevronRight
+                  size={16}
+                  className={`text-gray-400 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                />
               </button>
-            )
-          })}
-        </div>
+
+              {/* 展开区域：释义 + 三选项 */}
+              {isExpanded && (
+                <div className="px-3 pb-3 bg-gray-50 dark:bg-slate-700/40">
+                  <div className="text-sm text-gray-600 dark:text-gray-300 mb-3 pt-2">
+                    {item.renderDefs()}
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setRating(item, 1, false)}
+                      className={`flex flex-col items-center gap-1 py-2 rounded-xl text-sm font-medium transition-all ${
+                        isRated && rating.quality === 1
+                          ? 'bg-red-500 text-white shadow-glow'
+                          : 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50'
+                      }`}
+                    >
+                      <XIcon size={16} />
+                      忘记
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRating(item, 3, false)}
+                      className={`flex flex-col items-center gap-1 py-2 rounded-xl text-sm font-medium transition-all ${
+                        isRated && rating.quality === 3
+                          ? 'bg-success-500 text-white shadow-glow'
+                          : 'bg-emerald-50 dark:bg-emerald-900/30 text-success-600 dark:text-success-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/50'
+                      }`}
+                    >
+                      <Check size={16} />
+                      记得
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRating(item, 5, true)}
+                      className={`flex flex-col items-center gap-1 py-2 rounded-xl text-sm font-medium transition-all ${
+                        isRated && rating.quality === 5
+                          ? 'bg-amber-500 text-white shadow-glow'
+                          : 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/50'
+                      }`}
+                    >
+                      <Star size={16} />
+                      掌握
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {/* 提交按钮 */}
+      {allRated && !submitted && (
         <button
           type="button"
-          onClick={() =>
-            onRateAll(items.map((item) => ({ item, quality: ratings[item.id] ?? 3 })))
-          }
+          onClick={handleSubmit}
           className="mt-4 w-full py-3 rounded-xl bg-gradient-primary text-white font-medium flex items-center justify-center gap-1.5 active:scale-95 transition-all"
         >
-          提交 ({items.length}) <ChevronRight size={16} />
+          提交 ({total}) <ChevronRight size={16} />
         </button>
-      </div>
-    )
-  }
-
-  return (
-    <FlipCard item={current} flipped={flipped} onSpeak={() => onSpeak(current)}>
-      <button
-        type="button"
-        onClick={handleFlip}
-        className="mt-4 w-full py-2.5 rounded-xl bg-gradient-primary text-white text-sm font-medium shadow-soft active:scale-95 transition-all"
-      >
-        {flipped ? '收起释义' : '翻转查看释义'}
-      </button>
-      <button
-        type="button"
-        onClick={next}
-        className="mt-2 w-full py-2.5 rounded-xl border dark:border-slate-700 text-sm font-medium dark:text-gray-200 active:scale-95 transition-all"
-      >
-        {isLast ? '完成本轮' : `下一张 (${index + 1} / ${items.length})`}
-      </button>
-      <p className="mt-2 text-center text-xs text-gray-400 dark:text-gray-500">
-        逐条翻卡浏览，全部看完后一次性提交掌握情况
-      </p>
-    </FlipCard>
-  )
-}
-
-function XCircleIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-500">
-      <circle cx="12" cy="12" r="10" />
-      <path d="m15 9-6 6" />
-      <path d="m9 9 6 6" />
-    </svg>
+      )}
+    </div>
   )
 }

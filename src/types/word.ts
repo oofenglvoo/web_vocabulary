@@ -120,4 +120,6 @@ export interface StudyPlan {
   todayDate: string
   todayNewDone: number
   todayReviewDone: number
+  // 今日加学完成数(学满配额后的额外学习,不计入 todayNewDone,但统计显示叠加)
+  todayExtraDone: number
 }

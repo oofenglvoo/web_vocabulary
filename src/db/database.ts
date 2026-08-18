@@ -92,6 +92,19 @@ class VocabularyDatabase extends Dexie {
         if (!s.kind) s.kind = 'review'
       })
     })
+    // v7: 计划增加 todayExtraDone(今日加学完成数),用于统计显示"配额内+加学"总数。
+    //     已有计划的 todayExtraDone 默认补 0。
+    this.version(7).stores({
+      words: '++id, word, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      sentences: '++id, sentence, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      categories: '++id, name',
+      studySessions: '++id, wordId, timestamp, kind',
+      studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
+    }).upgrade(async (tx) => {
+      await tx.table('studyPlans').toCollection().modify((p: any) => {
+        if (typeof p.todayExtraDone !== 'number') p.todayExtraDone = 0
+      })
+    })
   }
 }
 

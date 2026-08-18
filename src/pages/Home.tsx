@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -32,6 +33,9 @@ export function Home() {
 
   const todayNewRemaining = planProgress.todayNewRemaining
   const todayReviewRemaining = planProgress.todayReviewRemaining
+  // 今日新词是否学满(配额内)且还有未掌握可学 → 点"学习"弹确认
+  const newQuotaDone = todayNewRemaining === 0 && planProgress.remainingNew > 0
+  const [confirmExtra, setConfirmExtra] = useState(false)
 
   return (
     <div className="pb-2">
@@ -124,7 +128,7 @@ export function Home() {
 
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => navigate(`/study?plan=${activePlan.id}&mode=learn`)}
+                onClick={() => (newQuotaDone ? setConfirmExtra(true) : navigate(`/study?plan=${activePlan.id}&mode=learn`))}
                 className="btn-primary py-2.5 text-sm gap-1.5"
               >
                 <Play size={14} fill="currentColor" /> 学习
@@ -142,14 +146,41 @@ export function Home() {
               </button>
             </div>
 
-            {/* 今日新词学满后出现"加学"入口：独立一轮,不计入今日配额 */}
-            {todayNewRemaining === 0 && (
-              <button
-                onClick={() => navigate(`/study?plan=${activePlan.id}&mode=learn&extra=1`)}
-                className="mt-2 w-full py-2.5 text-sm flex items-center justify-center gap-1.5 rounded-xl bg-warn-50 dark:bg-warn-900/30 text-warn-600 dark:text-warn-400 font-medium hover:bg-warn-100 dark:hover:bg-warn-900/50 transition-colors"
-              >
-                <Sparkles size={14} /> 加学今日新词
-              </button>
+            {/* 今日新词学满 → 确认是否加学 */}
+            {confirmExtra && (
+              <div className="modal-overlay">
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                  className="modal-content max-w-xs text-center"
+                >
+                  <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-warn flex items-center justify-center shadow-glow">
+                    <Sparkles size={28} className="text-white" />
+                  </div>
+                  <h3 className="font-bold text-lg mb-1 dark:text-gray-100">今日新词已学满</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                    本日配额已用完（{planProgress.todayNewDisplay}/{planProgress.todayNewTarget}）
+                  </p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mb-5">
+                    是否继续额外学习？（不计入今日配额）
+                  </p>
+                  <div className="flex gap-2">
+                    <button onClick={() => setConfirmExtra(false)} className="btn-secondary flex-1">
+                      取消
+                    </button>
+                    <button
+                      onClick={() => {
+                        setConfirmExtra(false)
+                        navigate(`/study?plan=${activePlan.id}&mode=learn&extra=1`)
+                      }}
+                      className="btn-primary flex-1"
+                    >
+                      额外学习
+                    </button>
+                  </div>
+                </motion.div>
+              </div>
             )}
           </motion.div>
         )}

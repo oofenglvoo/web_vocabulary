@@ -25,6 +25,8 @@ export interface PlanProgress {
   todayReviewRemaining: number
   overallPercent: number
   estimatedDaysLeft: number
+  // 今日新词展示数 = 配额内完成 + 加学完成(如 20/10)
+  todayNewDisplay: number
 }
 
 export function useActivePlan(): StudyPlan | undefined {
@@ -87,6 +89,7 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
       todayReviewRemaining: 0,
       overallPercent: 0,
       estimatedDaysLeft: 0,
+      todayNewDisplay: 0,
     }
   }
   const now = Date.now()
@@ -103,6 +106,9 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
   const isToday = plan.todayDate === today
   const todayNewDone = isToday ? plan.todayNewDone : 0
   const todayReviewDone = isToday ? plan.todayReviewDone : 0
+  const todayExtraDone = isToday ? plan.todayExtraDone ?? 0 : 0
+  // 今日新词展示数 = 配额内完成 + 加学完成
+  const todayNewDisplay = todayNewDone + todayExtraDone
   const overallPercent =
     words.length > 0 ? Math.round((learned / words.length) * 100) : 0
   const estimatedDaysLeft =
@@ -130,6 +136,7 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
     todayReviewRemaining,
     overallPercent,
     estimatedDaysLeft,
+    todayNewDisplay,
   }
 }
 
@@ -189,6 +196,7 @@ export async function createPlan(input: {
         todayDate: todayStr(),
         todayNewDone: 0,
         todayReviewDone: 0,
+        todayExtraDone: 0,
       } as StudyPlan)
     )
   })
@@ -282,26 +290,45 @@ export async function getExtraNewWords(plan: StudyPlan): Promise<Word[]> {
     .slice(0, plan.newPerDay)
 }
 
-// 加学中标记词已学：只写入 startedIds，不计入今日配额(todayNewDone)
+// 加学中标记词已学：写入 startedIds + 今日加学完成数(todayExtraDone)+1，不计入配额(todayNewDone)
 export async function markExtraWordStarted(planId: number, wordId: number) {
   await withPlanUpdate(planId, (plan) => {
     if (plan.startedIds.includes(wordId)) return {}
-    return { startedIds: [...plan.startedIds, wordId] }
+    const today = todayStr()
+    const isToday = plan.todayDate === today
+    const changes: Partial<StudyPlan> = {
+      startedIds: [...plan.startedIds, wordId],
+    }
+    // 跨日则重置今日各计数
+    if (!isToday) {
+      changes.todayDate = today
+      changes.todayNewDone = 0
+      changes.todayReviewDone = 0
+      changes.todayExtraDone = 1
+    } else {
+      changes.todayExtraDone = (plan.todayExtraDone ?? 0) + 1
+    }
+    return changes
   })
 }
 
 // 获取今日应复习的单词队列:已 started 且未掌握且到期
+// 减去今日已完成的复习数，与 todayReviewRemaining 口径一致
 export async function getTodayReviewWords(plan: StudyPlan): Promise<Word[]> {
   if (plan.wordIds.length === 0) return []
   const now = Date.now()
   const startedSet = new Set(plan.startedIds)
   const candidates = plan.wordIds.filter((id) => startedSet.has(id))
   const words = await db.words.bulkGet(candidates)
+  const today = todayStr()
+  const isToday = plan.todayDate === today
+  const todayReviewDone = isToday ? plan.todayReviewDone : 0
+  const remaining = Math.max(0, plan.reviewPerDay - todayReviewDone)
   return words
     .filter((w): w is Word => !!w)
     .filter((w) => w.isLearned === 0 && w.nextReviewAt <= now)
     .sort((a, b) => a.nextReviewAt - b.nextReviewAt)
-    .slice(0, plan.reviewPerDay)
+    .slice(0, remaining)
 }
 
 // 事务内读取-计算-写入计划更新，避免并发(如跨午夜重置与新词计数)互相覆盖
@@ -359,7 +386,7 @@ export async function ensureTodayReset(planId: number) {
   await withPlanUpdate(planId, (plan) => {
     const today = todayStr()
     if (plan.todayDate !== today) {
-      return { todayDate: today, todayNewDone: 0, todayReviewDone: 0 }
+      return { todayDate: today, todayNewDone: 0, todayReviewDone: 0, todayExtraDone: 0 }
     }
     return {}
   })
