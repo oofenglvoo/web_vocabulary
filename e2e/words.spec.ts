@@ -33,9 +33,13 @@ test('搜索能过滤单词', async ({ page }) => {
     await page.getByPlaceholder('输入英文单词').fill(word)
     await page.getByPlaceholder(/中文翻译/).first().fill(trans)
     await page.getByRole('button', { name: '保存', exact: true }).click()
+    // 等每次保存后跳转完成，确保写入
+    await page.waitForURL(/\/words/)
   }
 
   await page.goto(url('/words'))
+  // 等列表出现后再搜索
+  await expect(page.getByText('apple', { exact: true })).toBeVisible()
   await page.getByPlaceholder(/搜索单词/).fill('apple')
   await expect(page.getByText('apple', { exact: true })).toBeVisible()
   await expect(page.getByText('banana', { exact: true })).toHaveCount(0)
