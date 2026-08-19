@@ -44,6 +44,11 @@ export function SentenceStudy() {
   const [learnStats, setLearnStats] = useState({ newDone: 0, reviewDone: 0 })
   const [confirmMaster, setConfirmMaster] = useState(false)
   const [done, setDone] = useState(false)
+  // 题型版本号：切题型时递增，强制重渲染让 studyType 重新读 localStorage
+  const [studyTypeVersion, setStudyTypeVersion] = useState(0)
+  // 依赖 studyTypeVersion，切题型后重新读 localStorage
+  const studyType = getStudyType(isReviewMode) // eslint-disable-line react-hooks/exhaustive-deps
+  void studyTypeVersion
   const [choiceDistractors, setChoiceDistractors] = useState<string[]>([])
 
   const allTranslationsRef = useRef<string[] | null>(null)
@@ -53,7 +58,6 @@ export function SentenceStudy() {
     // 组件卸载时无需清理(无 setInterval)；保留结构以对齐 Study.tsx
   }, [])
 
-  const studyType = getStudyType(isReviewMode)
 
   useEffect(() => {
     startStudy()
@@ -422,7 +426,7 @@ export function SentenceStudy() {
               ? `剩余 ${queue.length}`
               : `${Math.min(index + 1, total)} / ${total}`}
           </span>
-          <StudyTypeSettings onChange={() => setDone(false)} />
+          <StudyTypeSettings onChange={() => { setDone(false); setStudyTypeVersion((v) => v + 1) }} />
         </div>
       </div>
 

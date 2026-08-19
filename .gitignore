@@ -9,6 +9,10 @@ dist-ssr/
 # Vite cache
 .vite/
 
+# Playwright 测试产物
+test-results/
+playwright-report/
+
 # Logs
 *.log
 npm-debug.log*
