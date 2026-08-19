@@ -4,7 +4,7 @@ import { defineConfig, devices } from '@playwright/test'
 const BASE_URL = process.env.PW_BASE_URL || 'http://127.0.0.1:5199/web_vocabulary/'
 
 export default defineConfig({
-  testDir: './e2e',
+  testDir: './tests',
   timeout: 30000,
   fullyParallel: false,
   workers: 1, // 串行，避免 IndexedDB 数据互相干扰
