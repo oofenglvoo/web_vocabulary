@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { Check, ChevronRight, Star, Volume2, X as XIcon } from 'lucide-react'
 import { StudyItem } from './types'
 
@@ -26,14 +26,24 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
 
   const setRating = (item: StudyItem, quality: number, mastered: boolean) => {
     setRatings((prev) => ({ ...prev, [item.id]: { item, quality, mastered } }))
+    // 三选项（忘记/记得/掌握）选完都自动收起当前词，并展开下一个未评词
+    setExpanded((prevExpanded) => {
+      const next = new Set(prevExpanded)
+      next.delete(item.id) // 收起当前词
+      // 找当前词之后第一个尚未评的词
+      // （此处闭包里的 ratings 是旧值，不含本次刚评的词，所以当前词必然"已评"被跳过）
+      const idx = items.findIndex((i) => i.id === item.id)
+      let target: StudyItem | null = null
+      for (let i = idx + 1; i < items.length; i++) {
+        if (ratings[items[i].id] === undefined) {
+          target = items[i]
+          break
+        }
+      }
+      if (target) next.add(target.id)
+      return next
+    })
   }
-
-  // 若手动收起导致没有展开任何词，自动展开第一个未评词
-  const prevRatedCount = useRef(0)
-  useEffect(() => {
-    if (prevRatedCount.current === 0 && ratedCount === 0) return
-    prevRatedCount.current = ratedCount
-  }, [ratedCount])
 
   const toggleExpand = (id: number) => {
     setExpanded((prev) => {
