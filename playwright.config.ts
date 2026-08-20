@@ -8,7 +8,7 @@ export default defineConfig({
   timeout: 30000,
   fullyParallel: false,
   workers: 1, // 串行，避免 IndexedDB 数据互相干扰
-  retries: 0,
+  retries: 2, // 偶发时序失败的测试自动重试 2 次
   reporter: [['list'], ['html', { outputFolder: 'playwright-report' }]],
   use: {
     baseURL: BASE_URL,

@@ -149,9 +149,9 @@ test('TC-LIST-004: 分类筛选', async ({ page }) => {
   await page.waitForURL(/\/words/)
 
   await page.goto(url('/words'))
-  // 点击 "CET-4" 分类
-  await page.getByRole('button', { name: '全部' }).click()
-  await page.getByRole('button', { name: 'CET-4' }).click()
+  // 点击 "CET-4" 分类（第一个 CET-4 是分类 chip，不是卡片）
+  await page.getByRole('button', { name: '全部', exact: true }).first().click()
+  await page.getByRole('button', { name: 'CET-4', exact: true }).first().click()
   await expect(page.getByText('apple', { exact: true })).toBeVisible()
 })
 
@@ -187,10 +187,11 @@ test('TC-LIST-007: 批量删除', async ({ page }) => {
   await page.getByRole('button', { name: /多选/ }).click()
   // 全选
   await page.getByRole('button', { name: /全选/ }).click()
-  // 点删除
-  await page.getByRole('button', { name: /删除/ }).click()
-  // 确认删除
-  await page.getByRole('button', { name: /删除/ }).last().click()
+  // 点批量操作栏的"删除"（有可见文本，非 card 图标按钮）
+  await page.getByText('删除').first().click()
+  // 确认删除（ConfirmModal 的确认按钮，文本是"删除"）
+  await page.getByRole('button', { name: '删除', exact: true }).last().click()
+  await page.waitForTimeout(500)
   // 列表应空
   await expect(page.getByText(/暂无单词/)).toBeVisible()
 })
@@ -270,7 +271,9 @@ test('TC-DTL-005: 删除单词', async ({ page }) => {
   await page.getByText('delete', { exact: true }).click()
   await page.getByRole('button', { name: /删除单词/ }).click()
   await page.getByRole('button', { name: /删除/ }).last().click()
-  await page.goto(url('/words'))
+  // 等跳转回列表
+  await page.waitForURL(/\/words/)
+  await page.waitForTimeout(500)
   await expect(page.getByText('delete', { exact: true })).toHaveCount(0)
 })
 
@@ -283,9 +286,10 @@ test('TC-DTL-006: 上下切换', async ({ page }) => {
     await page.waitForURL(/\/words/)
   }
   await page.goto(url('/words'))
-  await page.getByText('first', { exact: true }).click()
+  // 点 second（最新创建，在列表最前，有下一个）
+  await page.getByText('second', { exact: true }).click()
   await page.getByRole('button', { name: /下一个/ }).click()
-  await expect(page.getByText('second')).toBeVisible()
+  await expect(page.getByText('first')).toBeVisible()
 })
 
 test('TC-DTL-008: 边界不可切换', async ({ page }) => {

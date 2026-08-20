@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CheckCircle, Sparkles, Target, RefreshCw } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -47,8 +47,10 @@ export function SentenceStudy() {
   // 题型版本号：切题型时递增，强制重渲染让 studyType 重新读 localStorage
   const [studyTypeVersion, setStudyTypeVersion] = useState(0)
   // 依赖 studyTypeVersion，切题型后重新读 localStorage
-  const studyType = getStudyType(isReviewMode) // eslint-disable-line react-hooks/exhaustive-deps
-  void studyTypeVersion
+  const studyType = useMemo(
+    () => getStudyType(isReviewMode),
+    [studyTypeVersion, isReviewMode] // eslint-disable-line react-hooks/exhaustive-deps
+  )
   const [choiceDistractors, setChoiceDistractors] = useState<string[]>([])
 
   const allTranslationsRef = useRef<string[] | null>(null)

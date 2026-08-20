@@ -104,6 +104,7 @@ export function StudyPlanPage() {
           <button
             onClick={() => tab === 'word' ? setShowCreate(true) : setShowCreateSentence(true)}
             className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+            aria-label="新建计划"
           >
             <Plus size={22} className="text-primary-600 dark:text-primary-400" />
           </button>

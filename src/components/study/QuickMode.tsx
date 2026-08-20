@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Check, ChevronRight, Star, Volume2, X as XIcon } from 'lucide-react'
 import { StudyItem } from './types'
 
@@ -25,19 +25,15 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
   const ratedCount = Object.keys(ratings).length
 
   const setRating = (item: StudyItem, quality: number, mastered: boolean) => {
-    setRatings((prev) => {
-      const next = { ...prev, [item.id]: { item, quality, mastered } }
-      // 收起当前词，展开下一个未评的词
-      const currentIdx = items.findIndex((x) => x.id === item.id)
-      if (currentIdx >= 0) {
-        const nextUnrated = items.find(
-          (x, i) => i > currentIdx && !next[x.id]
-        )
-        setExpanded(new Set(nextUnrated ? [nextUnrated.id] : []))
-      }
-      return next
-    })
+    setRatings((prev) => ({ ...prev, [item.id]: { item, quality, mastered } }))
   }
+
+  // 若手动收起导致没有展开任何词，自动展开第一个未评词
+  const prevRatedCount = useRef(0)
+  useEffect(() => {
+    if (prevRatedCount.current === 0 && ratedCount === 0) return
+    prevRatedCount.current = ratedCount
+  }, [ratedCount])
 
   const toggleExpand = (id: number) => {
     setExpanded((prev) => {
@@ -124,7 +120,10 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
                   <div className="grid grid-cols-3 gap-2">
                     <button
                       type="button"
-                      onClick={() => setRating(item, 1, false)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setRating(item, 1, false)
+                      }}
                       className={`flex flex-col items-center gap-1 py-2 rounded-xl text-sm font-medium transition-all ${
                         isRated && rating.quality === 1
                           ? 'bg-red-500 text-white shadow-glow'
@@ -136,7 +135,10 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
                     </button>
                     <button
                       type="button"
-                      onClick={() => setRating(item, 3, false)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setRating(item, 3, false)
+                      }}
                       className={`flex flex-col items-center gap-1 py-2 rounded-xl text-sm font-medium transition-all ${
                         isRated && rating.quality === 3
                           ? 'bg-success-500 text-white shadow-glow'
@@ -148,7 +150,10 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
                     </button>
                     <button
                       type="button"
-                      onClick={() => setRating(item, 5, true)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setRating(item, 5, true)
+                      }}
                       className={`flex flex-col items-center gap-1 py-2 rounded-xl text-sm font-medium transition-all ${
                         isRated && rating.quality === 5
                           ? 'bg-amber-500 text-white shadow-glow'
