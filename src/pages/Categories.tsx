@@ -30,6 +30,7 @@ export function Categories() {
         <button
           onClick={() => setShowAdd(true)}
           className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+          aria-label="新建分类"
         >
           <FolderPlus size={20} />
         </button>

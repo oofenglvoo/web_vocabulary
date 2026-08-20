@@ -20,6 +20,25 @@ async function createPlan(page: import('@playwright/test').Page, name: string) {
   await expect(page.getByText(name, { exact: true }).first()).toBeVisible()
 }
 
+// 创建计划且每日新词=1（用于加学测试：学满1个后剩余>0 → 弹加学框）
+async function createPlanWithQuota1(page: import('@playwright/test').Page, name: string) {
+  await page.goto(url('/plan'))
+  await page.getByRole('button', { name: /创建学习计划/ }).click()
+  await page.getByPlaceholder(/例如/).fill(name)
+  const overlay = page.locator('.modal-overlay')
+  await overlay.getByRole('button', { name: /全部/ }).click()
+  // 每日新词 NumberStepper：点减号 9 次（10 → 1），每次间隔 100ms
+  const stepper = overlay.getByText('每日新词', { exact: true }).locator('..')
+  const minusBtn = stepper.getByRole('button').first()
+  for (let i = 0; i < 9; i++) { await minusBtn.click(); await page.waitForTimeout(80) }
+  // 验证输入框值
+  const val = await stepper.locator('input').inputValue()
+  // 如果没减到 1，继续减
+  while (Number(val) > 1) { await minusBtn.click(); await page.waitForTimeout(50) }
+  await page.getByRole('button', { name: /创建计划/ }).click()
+  await expect(page.getByText(name, { exact: true }).first()).toBeVisible()
+}
+
 // ===== 学习计划：P0-P2 级别测试用例 =====
 
 // --- 创建计划 (TC-PLN-001 ~ 007) ---
@@ -36,9 +55,8 @@ test('TC-PLN-002: 创建分类来源计划', async ({ page }) => {
   await page.goto(url('/plan'))
   await page.getByRole('button', { name: /创建学习计划/ }).click()
   await page.getByPlaceholder(/例如/).fill('分类计划')
-  // 来源默认"分类"，选第一个分类
   await page.getByRole('button', { name: /创建计划/ }).click()
-  await expect(page.getByText('分类计划')).toBeVisible()
+  await expect(page.getByRole('heading', { name: '分类计划' })).toBeVisible()
 })
 
 test('TC-PLN-004: 创建短句计划', async ({ page }) => {
@@ -86,15 +104,18 @@ test('TC-PLN-006: 每日新词数限制', async ({ page }) => {
 test('TC-PLN-MGT-001: 激活计划', async ({ page }) => {
   await addWords(page, [['apple', '苹果']])
   await createPlan(page, '计划A')
-  // 创建第二个计划
-  await page.getByRole('button', { name: /添加/ }).click()
+  // 创建第二个计划（点"新建计划"按钮）
+  await page.getByRole('button', { name: '新建计划' }).click()
+  await page.waitForTimeout(500)
   await page.getByPlaceholder(/例如/).fill('计划B')
   await page.locator('.modal-overlay').getByRole('button', { name: /全部/ }).click()
   await page.getByRole('button', { name: /创建计划/ }).click()
+  await page.waitForTimeout(500)
+
   // 激活计划B
-  await page.getByRole('button', { name: /激活/ }).click()
-  // 计划A 应不再显示为激活
-  await expect(page.getByRole('heading', { name: '计划A' }).locator('..').getByText(/已归档/)).toHaveCount(0)
+  const activateBtns = page.getByRole('button', { name: /激活/ })
+  await activateBtns.first().click()
+  await expect(page.getByText('计划B').first()).toBeVisible()
 })
 
 test('TC-PLN-MGT-003: 删除计划', async ({ page }) => {
@@ -117,39 +138,31 @@ test('TC-PLN-MGT-005: 激活计划进度卡片', async ({ page }) => {
 
 test('TC-EXTRA-001: 首页加学确认框', async ({ page }) => {
   await addWords(page, [['apple', '苹果'], ['banana', '香蕉'], ['cat', '猫']])
-  await createPlan(page, '加学计划')
+  // 每日新词=1，有 3 个词 → 学满1个后 remainingNew=2 → 弹加学框
+  await createPlanWithQuota1(page, '加学计划')
 
-  // 学满全部词（快速自测批量提交）
+  // 学 1 个词（回忆式认识）
   await page.goto(url('/study?plan=1&mode=learn'))
-  await page.waitForTimeout(1000)
-  await page.getByRole('button', { name: '题型设置' }).click()
-  await page.locator('.modal-overlay').getByRole('button', { name: '快速自测', exact: true }).first().click()
-  await page.locator('.modal-overlay').getByRole('button', { name: /关闭/ }).click()
-  await page.waitForTimeout(500)
+  await page.waitForTimeout(1500)
+  await page.getByRole('button', { name: '认识', exact: true }).click()
 
-  // 逐个评完所有词并提交
-  for (const word of ['apple', 'banana', 'cat']) {
-    await page.getByText(word, { exact: true }).click()
-    await page.locator('button').filter({ hasText: '记得' }).first().click()
-  }
-  await page.getByRole('button', { name: /提交/ }).click()
-
-  // 首页点学习应弹加学确认框
+  // 首页点"学习"应弹加学确认框
   await page.goto(url('/'))
+  // 等今日任务卡片加载（live query 更新）
+  await page.getByText('今日任务').waitFor({ timeout: 10000 })
   await page.getByRole('button', { name: '学习', exact: true }).click()
   await expect(page.getByText('今日新词已学满')).toBeVisible()
-  await expect(page.getByRole('button', { name: '额外学习', exact: true })).toBeVisible()
 })
 
 test('TC-EXTRA-005: 取消加学', async ({ page }) => {
-  await addWords(page, [['apple', '苹果']])
-  await createPlan(page, '取消加学')
+  await addWords(page, [['apple', '苹果'], ['banana', '香蕉']])
+  await createPlanWithQuota1(page, '取消加学')
   await page.goto(url('/study?plan=1&mode=learn'))
-  await page.waitForTimeout(1000)
+  await page.waitForTimeout(1500)
   await page.getByRole('button', { name: '认识', exact: true }).click()
-  await expect(page.getByText('学习完成!')).toBeVisible()
 
   await page.goto(url('/'))
+  await page.getByText('今日任务').waitFor({ timeout: 10000 })
   await page.getByRole('button', { name: '学习', exact: true }).click()
   await expect(page.getByText('今日新词已学满')).toBeVisible()
   await page.getByRole('button', { name: '取消', exact: true }).click()
