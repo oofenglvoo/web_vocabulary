@@ -109,6 +109,7 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
   const [color, setColor] = useState(category?.color ?? PRESET_COLORS[0])
   const [error, setError] = useState('')
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleSave = async () => {
     const n = name.trim()
@@ -132,9 +133,15 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
 
   const handleDelete = async () => {
     if (!category?.id) return
-    await deleteCategory(category.id)
-    toast('success', `分类「${category.name}」已删除`)
-    onClose()
+    setIsDeleting(true)
+    try {
+      await deleteCategory(category.id)
+      toast('success', `分类「${category.name}」已删除`)
+      onClose()
+    } catch (e) {
+      setError((e as Error).message || '删除失败，请重试')
+      setIsDeleting(false)
+    }
   }
 
   return (
@@ -210,21 +217,24 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
               分类: <span className="font-medium text-gray-700 dark:text-gray-200">{category?.name}</span>
             </p>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mb-5">
-              其中的单词和短句将移到其他分类
+            <p className="text-xs text-red-500 dark:text-red-400 font-medium mb-5">
+              该分类下的所有单词和短句将一并删除!
             </p>
+
+            {error && (
+              <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-2.5 rounded-xl mb-3 text-sm">{error}</div>
+            )}
+
             <div className="flex gap-2">
               <button onClick={() => setConfirmDelete(false)} className="btn-secondary flex-1">
                 取消
               </button>
               <button
-                onClick={() => {
-                  setConfirmDelete(false)
-                  handleDelete()
-                }}
+                onClick={handleDelete}
                 className="btn-danger flex-1"
+                disabled={isDeleting}
               >
-                确认删除
+                {isDeleting ? '删除中...' : '确认删除'}
               </button>
             </div>
           </div>

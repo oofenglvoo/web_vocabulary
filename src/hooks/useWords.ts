@@ -409,8 +409,15 @@ export async function addCategory(name: string, description = '', color = '#8b5c
 }
 
 export async function updateCategory(id: number, changes: Partial<Category>) {
-  // 如果改名,需要把已有单词和短句的 category 字段同步更新
+  // 如果改名的同时新名称已存在 → 拒绝
   if (changes.name) {
+    const trimmed = changes.name.trim()
+    if (!trimmed) throw new Error('分类名称不能为空')
+    const existing = await db.categories.where('name').equalsIgnoreCase(trimmed).first()
+    if (existing && existing.id !== id) {
+      throw new DuplicateCategoryError(existing.name)
+    }
+    changes.name = trimmed
     const old = await db.categories.get(id)
     if (old && old.name !== changes.name) {
       const newName = changes.name
@@ -428,28 +435,49 @@ export async function updateCategory(id: number, changes: Partial<Category>) {
 
 export async function deleteCategory(
   id: number,
-  options: { reassignTo?: string } = {}
 ) {
   const cat = await db.categories.get(id)
   if (!cat) return
 
-  // 确定目标分类：优先使用指定分类，否则选择另一个现存分类
-  let target = options.reassignTo
-  if (!target) {
-    const others = await db.categories.where('id').notEqual(id).toArray()
-    if (others.length > 0) {
-      target = others[0].name
-    } else {
-      // 删除的是最后一个分类 → 删后自动重建"默认"
-      target = '默认'
+  await db.transaction('rw', db.words, db.sentences, db.studySessions, db.studyPlans, db.categories, async () => {
+    // 找出该分类下所有单词，逐一带上级联清理（学习记录 + 计划引用）
+    const words = await db.words.where('category').equals(cat.name).toArray()
+    const wordIds = words.map((w) => w.id!)
+    for (const wid of wordIds) {
+      await db.studySessions.where('wordId').equals(wid).delete()
     }
-  }
-
-  await db.transaction('rw', db.words, db.sentences, db.categories, async () => {
-    // 将该分类下的单词移到目标分类
-    await db.words.where('category').equals(cat.name).modify({ category: target })
-    // 将该分类下的短句也移到目标分类
-    await db.sentences.where('category').equals(cat.name).modify({ category: target })
+    // 从计划中清除这些单词 ID
+    const plans = await db.studyPlans.toArray()
+    for (const p of plans) {
+      const wordIdsFiltered = (p.wordIds ?? []).filter((w) => !wordIds.includes(w))
+      const startedIdsFiltered = (p.startedIds ?? []).filter((w) => !wordIds.includes(w))
+      if (
+        wordIdsFiltered.length !== (p.wordIds ?? []).length ||
+        startedIdsFiltered.length !== (p.startedIds ?? []).length
+      ) {
+        await db.studyPlans.update(p.id!, { wordIds: wordIdsFiltered, startedIds: startedIdsFiltered })
+      }
+    }
+    // 删除该分类下的所有单词
+    await db.words.where('category').equals(cat.name).delete()
+    // 短句同理
+    const sentences = await db.sentences.where('category').equals(cat.name).toArray()
+    const sentenceIds = sentences.map((s) => s.id!)
+    for (const sid of sentenceIds) {
+      await db.studySessions.where('wordId').equals(sid).delete()
+    }
+    // 从计划中清除短句 ID
+    for (const p of plans) {
+      const wordIdsFiltered = (p.wordIds ?? []).filter((w) => !sentenceIds.includes(w))
+      const startedIdsFiltered = (p.startedIds ?? []).filter((w) => !sentenceIds.includes(w))
+      if (
+        wordIdsFiltered.length !== (p.wordIds ?? []).length ||
+        startedIdsFiltered.length !== (p.startedIds ?? []).length
+      ) {
+        await db.studyPlans.update(p.id!, { wordIds: wordIdsFiltered, startedIds: startedIdsFiltered })
+      }
+    }
+    await db.sentences.where('category').equals(cat.name).delete()
     // 删除分类
     await db.categories.delete(id)
     // 如果删除后没有任何分类，自动重建"默认"
