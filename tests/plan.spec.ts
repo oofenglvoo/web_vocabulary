@@ -30,11 +30,10 @@ async function createPlanWithQuota1(page: import('@playwright/test').Page, name:
   // 每日新词 NumberStepper：点减号 9 次（10 → 1），每次间隔 100ms
   const stepper = overlay.getByText('每日新词', { exact: true }).locator('..')
   const minusBtn = stepper.getByRole('button').first()
-  for (let i = 0; i < 9; i++) { await minusBtn.click(); await page.waitForTimeout(80) }
-  // 验证输入框值
-  const val = await stepper.locator('input').inputValue()
-  // 如果没减到 1，继续减
-  while (Number(val) > 1) { await minusBtn.click(); await page.waitForTimeout(50) }
+  for (let i = 0; i < 9; i++) {
+    await minusBtn.click()
+    await page.waitForTimeout(100)
+  }
   await page.getByRole('button', { name: /创建计划/ }).click()
   await expect(page.getByText(name, { exact: true }).first()).toBeVisible()
 }
@@ -141,10 +140,11 @@ test('TC-EXTRA-001: 首页加学确认框', async ({ page }) => {
   // 每日新词=1，有 3 个词 → 学满1个后 remainingNew=2 → 弹加学框
   await createPlanWithQuota1(page, '加学计划')
 
-  // 学 1 个词（回忆式认识）
+  // 学 1 个词（回忆式认识）。等完成页出现 → 确保 markWordStarted 已写入 DB
   await page.goto(url('/study?plan=1&mode=learn'))
-  await page.waitForTimeout(1500)
+  await page.locator('h2').first().waitFor({ timeout: 10000 })
   await page.getByRole('button', { name: '认识', exact: true }).click()
+  await expect(page.getByText('今日学习已完成!')).toBeVisible({ timeout: 10000 })
 
   // 首页点"学习"应弹加学确认框
   await page.goto(url('/'))
@@ -158,8 +158,9 @@ test('TC-EXTRA-005: 取消加学', async ({ page }) => {
   await addWords(page, [['apple', '苹果'], ['banana', '香蕉']])
   await createPlanWithQuota1(page, '取消加学')
   await page.goto(url('/study?plan=1&mode=learn'))
-  await page.waitForTimeout(1500)
+  await page.locator('h2').first().waitFor({ timeout: 10000 })
   await page.getByRole('button', { name: '认识', exact: true }).click()
+  await expect(page.getByText('今日学习已完成!')).toBeVisible({ timeout: 10000 })
 
   await page.goto(url('/'))
   await page.getByText('今日任务').waitFor({ timeout: 10000 })

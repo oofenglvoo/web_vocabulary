@@ -23,9 +23,11 @@ test('TC-ADD-002: 添加多释义单词', async ({ page }) => {
   await expect(page.getByPlaceholder(/中文翻译/).nth(1)).toBeVisible()
   await page.getByPlaceholder(/中文翻译/).nth(1).fill('河岸')
   await page.getByRole('button', { name: '保存', exact: true }).click()
+  await page.waitForURL(/\/words/)
 
   // 详情页应显示两个释义
   await page.goto(url('/words'))
+  await page.getByText('bank', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('bank', { exact: true }).click()
   await expect(page.getByText('银行')).toBeVisible()
   await expect(page.getByText('河岸')).toBeVisible()
@@ -41,8 +43,10 @@ test('TC-ADD-003: 添加带词性的释义', async ({ page }) => {
   await page.getByPlaceholder(/中文翻译/).nth(1).fill('奔跑')
   await page.locator('select').nth(1).selectOption('n.')
   await page.getByRole('button', { name: '保存', exact: true }).click()
+  await page.waitForURL(/\/words/)
 
   await page.goto(url('/words'))
+  await page.getByText('run', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('run', { exact: true }).click()
   await expect(page.getByText('v.')).toBeVisible()
   await expect(page.getByText('n.')).toBeVisible()
@@ -223,6 +227,7 @@ test('TC-DTL-001: 显示单词详情', async ({ page }) => {
   await page.waitForURL(/\/words/)
 
   await page.goto(url('/words'))
+  await page.getByText('apple', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('apple', { exact: true }).click()
   await expect(page.getByText('apple')).toBeVisible()
   await expect(page.getByText('苹果')).toBeVisible()
@@ -237,6 +242,7 @@ test('TC-DTL-002: 收藏/取消收藏', async ({ page }) => {
   await page.waitForURL(/\/words/)
 
   await page.goto(url('/words'))
+  await page.getByText('star', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('star', { exact: true }).click()
   await page.getByRole('button', { name: '收藏', exact: true }).click()
   await expect(page.getByText('已收藏')).toBeVisible()
@@ -253,6 +259,7 @@ test('TC-DTL-003: 编辑释义', async ({ page }) => {
   await page.waitForURL(/\/words/)
 
   await page.goto(url('/words'))
+  await page.getByText('edit', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('edit', { exact: true }).click()
   await page.getByRole('button', { name: /编辑释义/ }).click()
   await page.getByPlaceholder(/中文翻译/).first().fill('修订')
@@ -268,6 +275,7 @@ test('TC-DTL-005: 删除单词', async ({ page }) => {
   await page.waitForURL(/\/words/)
 
   await page.goto(url('/words'))
+  await page.getByText('delete', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('delete', { exact: true }).click()
   await page.getByRole('button', { name: /删除单词/ }).click()
   await page.getByRole('button', { name: /删除/ }).last().click()
@@ -287,6 +295,7 @@ test('TC-DTL-006: 上下切换', async ({ page }) => {
   }
   await page.goto(url('/words'))
   // 点 second（最新创建，在列表最前，有下一个）
+  await page.getByText('second', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('second', { exact: true }).click()
   await page.getByRole('button', { name: /下一个/ }).click()
   await expect(page.getByText('first')).toBeVisible()
@@ -300,6 +309,7 @@ test('TC-DTL-008: 边界不可切换', async ({ page }) => {
   await page.waitForURL(/\/words/)
 
   await page.goto(url('/words'))
+  await page.getByText('only', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('only', { exact: true }).click()
   await expect(page.getByText(/已是第一个/)).toBeVisible()
   await expect(page.getByText(/已是最后一个/)).toBeVisible()
@@ -313,6 +323,7 @@ test('TC-DTL-009: 编辑释义取消', async ({ page }) => {
   await page.waitForURL(/\/words/)
 
   await page.goto(url('/words'))
+  await page.getByText('undo', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('undo', { exact: true }).click()
   await page.getByRole('button', { name: /编辑释义/ }).click()
   await page.getByPlaceholder(/中文翻译/).first().fill('新的')
@@ -328,6 +339,7 @@ test('TC-DTL-010: 编辑空释义验证', async ({ page }) => {
   await page.waitForURL(/\/words/)
 
   await page.goto(url('/words'))
+  await page.getByText('empty', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('empty', { exact: true }).click()
   await page.getByRole('button', { name: /编辑释义/ }).click()
   await page.getByPlaceholder(/中文翻译/).first().fill('')
