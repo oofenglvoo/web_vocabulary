@@ -59,9 +59,14 @@ npm run dev
 # 构建生产版本（Web，GitHub Pages）
 npm run build
 
+# 运行 E2E 测试（73 用例，覆盖全功能模块）
+npm run test:e2e
+
 # 安卓 APK 打包（需先配置 Capacitor）
 npm run build:android   # VITE_ANDROID=1 tsc && vite build
 ```
+
+> 测试说明见 [`tests/TESTING.md`](tests/TESTING.md)，覆盖单词/短句/学习/计划/打卡/导入/分类/收藏等全功能模块。
 
 ## 部署
 
