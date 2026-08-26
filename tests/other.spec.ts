@@ -174,3 +174,17 @@ test('TC-STAT-003: 深色模式切换', async ({ page }) => {
   await page.getByText('深色模式').locator('..').locator('button').click()
   await expect(page.locator('html.dark')).toBeVisible()
 })
+
+test('TC-DATA-011: 完整备份与恢复入口', async ({ page }) => {
+  await page.goto(url('/stats'))
+  await expect(page.getByText('完整数据备份')).toBeVisible()
+  const fileChooserPromise = page.waitForEvent('filechooser')
+  await page.getByText('恢复备份').click()
+  const fileChooser = await fileChooserPromise
+  await fileChooser.setFiles({
+    name: 'invalid-backup.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from('{"format":"invalid"}'),
+  })
+  await expect(page.getByText(/不支持的备份文件格式/)).toBeVisible()
+})

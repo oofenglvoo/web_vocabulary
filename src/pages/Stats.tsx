@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Download, Upload, FileUp, Volume2, BarChart3, Moon, Sun } from 'lucide-react'
+import { Download, Upload, FileUp, Volume2, BarChart3, Moon, Sun, DatabaseBackup, FileJson } from 'lucide-react'
 import { useStats, useAllWords, useCategories, addCategory } from '../hooks/useWords'
 import { useAllSentences, useSentenceStats } from '../hooks/useSentences'
 import { StatCard } from '../components/StatCard'
@@ -19,6 +19,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { isDarkMode, toggleDarkMode } from '../utils/theme'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
+import { BackupPreview, downloadBackup, parseBackup, restoreBackup } from '../utils/backup'
 
 export function Stats() {
   const { toast } = useToast()
@@ -32,6 +33,9 @@ export function Stats() {
   const [accent, setAccentState] = useState<Accent>(getAccent())
   const [provider, setProviderState] = useState<TtsProvider>(getProvider())
   const [dark, setDarkState] = useState(isDarkMode())
+  const [backupPreview, setBackupPreview] = useState<BackupPreview | null>(null)
+  const [backupPayload, setBackupPayload] = useState<Parameters<typeof restoreBackup>[0] | null>(null)
+  const [restoring, setRestoring] = useState(false)
 
   const handleAccentChange = (value: Accent) => {
     setAccent(value)
@@ -95,6 +99,30 @@ export function Stats() {
       setShowAddCat(false)
     } catch (e) {
       toast('error', (e as Error).message || '创建失败')
+    }
+  }
+
+  const handleBackupFile = async (file: File) => {
+    try {
+      const parsed = parseBackup(await file.text())
+      setBackupPayload(parsed.payload)
+      setBackupPreview(parsed.preview)
+    } catch (e) {
+      toast('error', (e as Error).message)
+    }
+  }
+
+  const handleRestore = async () => {
+    if (!backupPayload) return
+    setRestoring(true)
+    try {
+      await restoreBackup(backupPayload)
+      toast('success', '数据已恢复，页面将刷新')
+      window.setTimeout(() => window.location.reload(), 300)
+    } catch (e) {
+      toast('error', '恢复失败: ' + (e as Error).message)
+    } finally {
+      setRestoring(false)
     }
   }
 
@@ -251,6 +279,28 @@ export function Stats() {
       <div>
         <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">数据导入/导出</h2>
 
+        <div className="card p-4 mb-4 border-primary-100 dark:border-primary-900/40">
+          <div className="flex items-start gap-3 mb-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-primary text-white flex items-center justify-center shrink-0">
+              <DatabaseBackup size={19} />
+            </div>
+            <div>
+              <h3 className="font-medium dark:text-gray-200">完整数据备份</h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">备份单词、短句、计划、学习记录和设置，数据只保存在你的设备中。</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <button onClick={() => downloadBackup().then(() => toast('success', '完整备份已下载')).catch((e) => toast('error', '备份失败: ' + e.message))} className="btn-primary py-2.5 text-sm">
+              <Download size={16} /> 导出完整备份
+            </button>
+            <label className="btn-secondary py-2.5 text-sm cursor-pointer">
+              <FileJson size={16} /> 恢复备份
+              <input type="file" accept="application/json,.json" className="hidden" onChange={(e) => e.target.files?.[0] && handleBackupFile(e.target.files[0])} />
+            </label>
+          </div>
+          <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-2">恢复前会显示数据数量并要求确认，恢复会替换当前本地数据。</p>
+        </div>
+
         {/* 单词 */}
         <div className="mb-3">
           <h3 className="text-sm font-medium mb-2 dark:text-gray-300">单词</h3>
@@ -304,6 +354,26 @@ export function Stats() {
             <div className="flex gap-3">
               <button onClick={() => setShowAddCat(false)} className="btn-secondary flex-1">取消</button>
               <button onClick={handleAddCategory} className="btn-primary flex-1">添加</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {backupPreview && backupPayload && (
+        <div className="modal-overlay">
+          <div className="modal-content max-w-sm">
+            <h3 className="font-bold text-lg mb-2 dark:text-gray-100">确认恢复备份</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">备份时间：{new Date(backupPreview.exportedAt).toLocaleString()}</p>
+            <div className="grid grid-cols-2 gap-2 text-sm mb-4">
+              <Row label="单词" value={backupPreview.counts.words} />
+              <Row label="短句" value={backupPreview.counts.sentences} />
+              <Row label="学习记录" value={backupPreview.counts.studySessions} />
+              <Row label="学习计划" value={backupPreview.counts.studyPlans} />
+            </div>
+            <p className="text-xs text-red-500 mb-4">恢复会替换当前所有本地数据，建议先导出当前备份。</p>
+            <div className="flex gap-2">
+              <button onClick={() => { setBackupPreview(null); setBackupPayload(null) }} className="btn-secondary flex-1">取消</button>
+              <button onClick={handleRestore} disabled={restoring} className="btn-danger flex-1">{restoring ? '恢复中...' : '确认恢复'}</button>
             </div>
           </div>
         </div>
