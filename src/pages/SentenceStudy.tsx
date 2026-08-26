@@ -175,7 +175,7 @@ export function SentenceStudy() {
 
   async function handleRate(item: StudyItem, quality: number) {
     try {
-      await recordSentenceReview(item.id, quality)
+      await recordSentenceReview(item.id, quality, 0, item.isReview ? 'review' : 'new')
     } catch (e) {
       toast('error', '记录失败: ' + (e as Error).message)
       return
@@ -243,7 +243,7 @@ export function SentenceStudy() {
   async function handleQuickSubmit(results: QuickRating[]): Promise<boolean> {
     for (const { item, quality, mastered } of results) {
       try {
-        await recordSentenceReview(item.id, quality)
+        await recordSentenceReview(item.id, quality, 0, item.isReview ? 'review' : 'new')
         // "掌握" → 永久标记已掌握
         if (mastered) {
           await markSentenceLearned(item.id)

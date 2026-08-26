@@ -105,6 +105,20 @@ class VocabularyDatabase extends Dexie {
         if (typeof p.todayExtraDone !== 'number') p.todayExtraDone = 0
       })
     })
+    // v8: 学习会话区分单词/短句，避免两个表的自增 ID 冲突。
+    this.version(8).stores({
+      words: '++id, word, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      sentences: '++id, sentence, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      categories: '++id, name',
+      studySessions: '++id, wordId, entityId, entityType, timestamp, kind',
+      studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
+    }).upgrade(async (tx) => {
+      // v7 之前只有单词学习会话；短句学习在 v8 才开始写入会话表。
+      await tx.table('studySessions').toCollection().modify((s: any) => {
+        s.entityType = 'word'
+        s.entityId = s.wordId
+      })
+    })
   }
 }
 
