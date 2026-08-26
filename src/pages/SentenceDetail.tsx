@@ -302,7 +302,7 @@ export function SentenceDetail() {
                     value={d.def}
                     onChange={(e) => updateEditDefinition(i, 'def', e.target.value)}
                     className="input-field text-sm"
-                    placeholder="英文释义（可选）"
+                    placeholder="释义（可选）"
                   />
                 </div>
               ))}

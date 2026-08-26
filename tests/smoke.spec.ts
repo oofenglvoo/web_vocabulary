@@ -10,7 +10,7 @@ test('首页能加载', async ({ page }) => {
 
 test('能添加单词并出现在列表', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('apple')
+  await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
 

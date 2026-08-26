@@ -6,7 +6,7 @@ import { useToast } from '../components/Toast'
 import { BackButton } from '../components/BackButton'
 import { Definition } from '../types/word'
 
-const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.']
+const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
 
 export function AddWord() {
   const navigate = useNavigate()
@@ -113,7 +113,7 @@ export function AddWord() {
             value={form.word}
             onChange={(e) => setForm({ ...form, word: e.target.value })}
             className="input-field"
-            placeholder="输入英文单词"
+            placeholder="输入单词（英/日）"
           />
         </div>
 
@@ -169,7 +169,7 @@ export function AddWord() {
                     value={d.def}
                     onChange={(e) => updateDefinition(i, 'def', e.target.value)}
                     className="input-field flex-1 text-sm"
-                    placeholder="英文释义"
+                    placeholder="释义（英/日）"
                   />
                 </div>
                 <input

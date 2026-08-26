@@ -33,8 +33,9 @@ export function setProvider(provider: TtsProvider) {
 let synth: SpeechSynthesis | null = null
 let voices: SpeechSynthesisVoice[] = []
 
-// 平假名/片假名/假名扩展：用于自动检测日语
-const JA_RE = /[぀-ヿㇰ-ㇿ・]/
+// 平假名/片假名/假名扩展/长音符/日文引号/小写假名：用于自动检测日语
+// 注：纯汉字(如「日本」)无法可靠区分中文/日文，此处只覆盖含假名或日文特有字符的词
+const JA_RE = /[぀-ヿㇰ-ㇿ・ー「」『』ぁぃぅぇぉゃゅょゎゕゖっんゔ]/
 
 export function isJapanese(text: string): boolean {
   return JA_RE.test(text)

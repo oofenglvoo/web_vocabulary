@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Volume2, CheckCircle, XCircle, RotateCcw } from 'lucide-react'
 import { StudyItem } from './types'
@@ -14,13 +14,20 @@ interface ChoiceModeProps {
 
 /** 选择题：看词选义(四选一)，答对后推进，答错重排 */
 export function ChoiceMode({ item, distractors, onRate, onMaster, onSpeak }: ChoiceModeProps) {
-  const [options] = useState<string[]>(() => {
-    const opts = [item.primaryTranslation, ...distractors.slice(0, 3)]
-    return opts.sort(() => Math.random() - 0.5)
-  })
+  const [options, setOptions] = useState<string[]>([])
   const [selected, setSelected] = useState<string | null>(null)
   const [revealed, setRevealed] = useState(false)
   const submittedRef = useRef(false)
+  const timerRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    const opts = [...new Set([item.primaryTranslation, ...distractors.slice(0, 3)])]
+    setOptions(opts.sort(() => Math.random() - 0.5))
+  }, [item.id, item.primaryTranslation, distractors])
+
+  useEffect(() => () => {
+    if (timerRef.current !== null) window.clearTimeout(timerRef.current)
+  }, [])
 
   const handleSelect = (option: string) => {
     if (revealed || submittedRef.current) return
@@ -28,12 +35,14 @@ export function ChoiceMode({ item, distractors, onRate, onMaster, onSpeak }: Cho
     setRevealed(true)
     const correct = option === item.primaryTranslation
     // 延迟展示结果后再回调父级推进/重排
-    window.setTimeout(() => {
+    timerRef.current = window.setTimeout(() => {
       if (submittedRef.current) return
       submittedRef.current = true
       onRate(correct ? 5 : 1)
     }, 900)
   }
+
+  const optionsReady = options.length > 0
 
   return (
     <div className="card flex-1 flex flex-col items-center justify-center p-6">
@@ -51,6 +60,7 @@ export function ChoiceMode({ item, distractors, onRate, onMaster, onSpeak }: Cho
       {item.phonetic && <p className="text-gray-500 dark:text-gray-400 mb-4">{item.phonetic}</p>}
       <p className="text-gray-500 dark:text-gray-400 mb-6">选择正确的中文释义</p>
       <div className="w-full max-w-sm space-y-2.5">
+        {!optionsReady && <div className="text-sm text-gray-400 text-center">正在准备选项...</div>}
         {options.map((option) => {
           const isCorrect = option === item.primaryTranslation
           const isSelected = selected === option
@@ -69,7 +79,7 @@ export function ChoiceMode({ item, distractors, onRate, onMaster, onSpeak }: Cho
             <motion.button
               key={option}
               onClick={() => handleSelect(option)}
-              disabled={revealed}
+              disabled={revealed || !optionsReady}
               className={btnClass}
               whileTap={{ scale: 0.97 }}
             >

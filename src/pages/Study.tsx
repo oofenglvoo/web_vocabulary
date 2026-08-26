@@ -103,7 +103,7 @@ export function Study() {
             ))
           ) : (
             <>
-              {word.definition && <InfoBlock title="英文释义" content={word.definition} />}
+              {word.definition && <InfoBlock title="释义" content={word.definition} />}
               {word.translation && <InfoBlock title="中文翻译" content={word.translation} />}
             </>
           )}
@@ -186,6 +186,7 @@ export function Study() {
       await recordReview(item.id, quality, 0, item.isReview ? 'review' : 'new')
     } catch (e) {
       toast('error', '记录失败: ' + (e as Error).message)
+      return
     }
     // 回忆式(Moji)：认识(quality>=3) → 计数 + 从队列移除(通过不再出现)；模糊/忘记(quality<3) → 重排到队尾，重复直到认识
     if (studyType === 'recall') {
@@ -212,6 +213,7 @@ export function Study() {
           }
         } catch (e) {
           toast('error', '记录失败: ' + (e as Error).message)
+          return
         }
       }
       // 认识 → 移除当前词；index 不推进（下一个词顶到当前位置，避免跳过）
@@ -232,6 +234,7 @@ export function Study() {
         }
       } catch (e) {
         toast('error', '记录失败: ' + (e as Error).message)
+        return
       }
     }
     // 复习答错 → 重排到队尾(每轮一次)
@@ -252,7 +255,7 @@ export function Study() {
   }
 
   // 快速自测批量提交
-  async function handleQuickSubmit(results: QuickRating[]) {
+  async function handleQuickSubmit(results: QuickRating[]): Promise<boolean> {
     for (const { item, quality, mastered } of results) {
       try {
         await recordReview(item.id, quality, 0, item.isReview ? 'review' : 'new')
@@ -262,6 +265,7 @@ export function Study() {
         }
       } catch (e) {
         toast('error', '记录失败: ' + (e as Error).message)
+        return false
       }
       if (planIdNum) {
         try {
@@ -277,6 +281,7 @@ export function Study() {
           }
         } catch (e) {
           toast('error', '记录失败: ' + (e as Error).message)
+          return false
         }
       }
     }
@@ -287,6 +292,7 @@ export function Study() {
       origin: { y: 0.7 },
       colors: ['#6366f1', '#8b5cf6', '#ec4899', '#10b981'],
     })
+    return true
   }
 
   async function handleMaster(item: StudyItem) {

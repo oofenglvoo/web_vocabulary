@@ -104,12 +104,12 @@ export function AddSentence() {
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">英文短句 *</label>
+          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">短句/短语 *</label>
           <textarea
             value={form.sentence}
             onChange={(e) => setForm({ ...form, sentence: e.target.value })}
             className="input-field min-h-[70px]"
-            placeholder="输入英文短句或短语"
+            placeholder="输入短句或短语（英/日）"
           />
         </div>
 
@@ -151,7 +151,7 @@ export function AddSentence() {
                   value={d.def}
                   onChange={(e) => updateDefinition(i, 'def', e.target.value)}
                   className="input-field text-sm"
-                  placeholder="英文释义（可选）"
+                  placeholder="释义（可选）"
                 />
               </div>
             ))}

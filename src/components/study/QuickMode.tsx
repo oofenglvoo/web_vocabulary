@@ -10,7 +10,7 @@ export interface QuickRating {
 
 interface QuickModeProps {
   items: StudyItem[]
-  onRateAll: (results: QuickRating[]) => void
+  onRateAll: (results: QuickRating[]) => Promise<boolean> | boolean | void
   onSpeak: (item: StudyItem) => void
 }
 
@@ -19,6 +19,7 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
   const [ratings, setRatings] = useState<Record<number, QuickRating>>({})
   const [expanded, setExpanded] = useState<Set<number>>(new Set())
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   const allRated = items.every((item) => ratings[item.id] !== undefined)
   const total = items.length
@@ -34,9 +35,10 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
       // （此处闭包里的 ratings 是旧值，不含本次刚评的词，所以当前词必然"已评"被跳过）
       const idx = items.findIndex((i) => i.id === item.id)
       let target: StudyItem | null = null
-      for (let i = idx + 1; i < items.length; i++) {
-        if (ratings[items[i].id] === undefined) {
-          target = items[i]
+      const ordered = [...items.slice(idx + 1), ...items.slice(0, idx)]
+      for (const candidate of ordered) {
+        if (candidate.id !== item.id && ratings[candidate.id] === undefined) {
+          target = candidate
           break
         }
       }
@@ -54,10 +56,15 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
     })
   }
 
-  const handleSubmit = () => {
-    if (submitted) return
-    setSubmitted(true)
-    onRateAll(items.map((item) => ratings[item.id] ?? { item, quality: 1, mastered: false }))
+  const handleSubmit = async () => {
+    if (submitted || submitting) return
+    setSubmitting(true)
+    try {
+      const success = await onRateAll(items.map((item) => ratings[item.id] ?? { item, quality: 1, mastered: false }))
+      if (success !== false) setSubmitted(true)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -80,31 +87,39 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
               key={item.id}
               className="rounded-xl border dark:border-slate-700 overflow-hidden transition-all"
             >
-              <button
-                type="button"
-                onClick={() => toggleExpand(item.id)}
-                className="w-full flex items-center gap-3 p-3 text-left bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+              <div
+                role="group"
+                aria-label={`${item.title} 操作`}
+                className="w-full flex items-center gap-3 p-3 text-left bg-white dark:bg-slate-800"
               >
-                <span className="flex-1 min-w-0">
-                  <span className="font-medium dark:text-gray-100">{item.title}</span>
-                  {item.phonetic && (
-                    <span className="text-xs text-gray-400 dark:text-gray-500 ml-2">{item.phonetic}</span>
-                  )}
-                </span>
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onSpeak(item)
-                  }}
-                  className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors shrink-0"
+                  aria-expanded={isExpanded}
+                  aria-controls={`quick-definition-${item.id}`}
+                  onClick={() => toggleExpand(item.id)}
+                  className="flex-1 min-w-0 flex items-center gap-3 text-left hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+                >
+                  <span className="flex-1 min-w-0">
+                    <span className="font-medium dark:text-gray-100">{item.title}</span>
+                    {item.phonetic && (
+                      <span className="text-xs text-gray-400 dark:text-gray-500 ml-2">{item.phonetic}</span>
+                    )}
+                  </span>
+                  <ChevronRight
+                    size={16}
+                    className={`text-gray-400 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                  />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onSpeak(item)}
+                  className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors shrink-0"
                   aria-label="发音"
                 >
                   <Volume2 size={16} className="text-gray-400" />
                 </button>
-                {/* 已评状态图标 */}
                 {isRated && (
-                  <span className="shrink-0">
+                  <span className="shrink-0" aria-label={rating.quality === 1 ? '忘记' : rating.quality === 5 ? '掌握' : '记得'}>
                     {rating.quality === 1 ? (
                       <XIcon size={18} className="text-red-500" />
                     ) : rating.quality === 5 ? (
@@ -114,15 +129,11 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
                     )}
                   </span>
                 )}
-                <ChevronRight
-                  size={16}
-                  className={`text-gray-400 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-                />
-              </button>
+              </div>
 
               {/* 展开区域：释义 + 三选项 */}
               {isExpanded && (
-                <div className="px-3 pb-3 bg-gray-50 dark:bg-slate-700/40">
+                <div id={`quick-definition-${item.id}`} className="px-3 pb-3 bg-gray-50 dark:bg-slate-700/40">
                   <div className="text-sm text-gray-600 dark:text-gray-300 mb-3 pt-2">
                     {item.renderDefs()}
                   </div>
@@ -186,9 +197,10 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
         <button
           type="button"
           onClick={handleSubmit}
-          className="mt-4 w-full py-3 rounded-xl bg-gradient-primary text-white font-medium flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+          disabled={submitting}
+          className="mt-4 w-full py-3 rounded-xl bg-gradient-primary text-white font-medium flex items-center justify-center gap-1.5 active:scale-95 transition-all disabled:opacity-60"
         >
-          提交 ({total}) <ChevronRight size={16} />
+          {submitting ? '提交中...' : `提交 (${total})`} {!submitting && <ChevronRight size={16} />}
         </button>
       )}
     </div>

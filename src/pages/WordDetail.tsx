@@ -30,7 +30,7 @@ import { useToast } from '../components/Toast'
 import { SkeletonCard } from '../components/Skeleton'
 import { Definition } from '../types/word'
 
-const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.']
+const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
 
 // 浏览来源:从哪个列表进入了这个详情页 → 决定上一个/下一个的取数集
 type Scope = 'all' | 'favorites' | 'category'
@@ -327,7 +327,7 @@ export function WordDetail() {
                       value={d.def}
                       onChange={(e) => updateEditDefinition(i, 'def', e.target.value)}
                       className="input-field flex-1 text-sm"
-                      placeholder="英文释义"
+                      placeholder="释义（英/日）"
                     />
                   </div>
                   <input
