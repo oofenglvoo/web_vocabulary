@@ -7,7 +7,7 @@ import { url } from './helpers'
 
 test('TC-ADD-001: 正常添加单词', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('apple')
+  await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
 
@@ -17,7 +17,7 @@ test('TC-ADD-001: 正常添加单词', async ({ page }) => {
 
 test('TC-ADD-002: 添加多释义单词', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('bank')
+  await page.getByPlaceholder(/输入单词/).fill('bank')
   await page.getByPlaceholder(/中文翻译/).first().fill('银行')
   await page.getByRole('button', { name: /添加释义/ }).click()
   await expect(page.getByPlaceholder(/中文翻译/).nth(1)).toBeVisible()
@@ -35,7 +35,7 @@ test('TC-ADD-002: 添加多释义单词', async ({ page }) => {
 
 test('TC-ADD-003: 添加带词性的释义', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('run')
+  await page.getByPlaceholder(/输入单词/).fill('run')
   await page.getByPlaceholder(/中文翻译/).first().fill('跑步')
   // 选词性 v.
   await page.locator('select').first().selectOption('v.')
@@ -62,7 +62,7 @@ test('TC-ADD-004: 单词为空校验', async ({ page }) => {
 
 test('TC-ADD-005: 释义为空校验', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('test')
+  await page.getByPlaceholder(/输入单词/).fill('test')
   // 不填释义直接保存
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await expect(page.getByText(/至少需要一个释义/)).toBeVisible()
@@ -70,13 +70,13 @@ test('TC-ADD-005: 释义为空校验', async ({ page }) => {
 
 test('TC-ADD-006: 重复单词检测', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('apple')
+  await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
 
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('apple')
+  await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await expect(page.getByText(/已存在/)).toBeVisible()
@@ -84,7 +84,7 @@ test('TC-ADD-006: 重复单词检测', async ({ page }) => {
 
 test('TC-ADD-007: 删除释义', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('multi')
+  await page.getByPlaceholder(/输入单词/).fill('multi')
   await page.getByPlaceholder(/中文翻译/).first().fill('多')
   await page.getByRole('button', { name: /添加释义/ }).click()
   await page.getByPlaceholder(/中文翻译/).nth(1).fill('重')
@@ -99,7 +99,7 @@ test('TC-ADD-007: 删除释义', async ({ page }) => {
 
 test('TC-ADD-010: 单词仅空格', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('   ')
+  await page.getByPlaceholder(/输入单词/).fill('   ')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await expect(page.getByText(/单词不能为空/)).toBeVisible()
 })
@@ -109,7 +109,7 @@ test('TC-ADD-010: 单词仅空格', async ({ page }) => {
 test('TC-LIST-001: 搜索精确匹配', async ({ page }) => {
   for (const [word, trans] of [['apple', '苹果'], ['banana', '香蕉']]) {
     await page.goto(url('/add'))
-    await page.getByPlaceholder('输入英文单词').fill(word)
+    await page.getByPlaceholder(/输入单词/).fill(word)
     await page.getByPlaceholder(/中文翻译/).first().fill(trans)
     await page.getByRole('button', { name: '保存', exact: true }).click()
     await page.waitForURL(/\/words/)
@@ -122,7 +122,7 @@ test('TC-LIST-001: 搜索精确匹配', async ({ page }) => {
 
 test('TC-LIST-002: 搜索模糊匹配', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('apple')
+  await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
@@ -134,7 +134,7 @@ test('TC-LIST-002: 搜索模糊匹配', async ({ page }) => {
 
 test('TC-LIST-003: 搜索中文翻译', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('apple')
+  await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
@@ -146,7 +146,7 @@ test('TC-LIST-003: 搜索中文翻译', async ({ page }) => {
 
 test('TC-LIST-004: 分类筛选', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('apple')
+  await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.locator('select').filter({ hasText: /默认|CET|雅思/ }).selectOption('CET-4')
   await page.getByRole('button', { name: '保存', exact: true }).click()
@@ -161,13 +161,13 @@ test('TC-LIST-004: 分类筛选', async ({ page }) => {
 
 test('TC-LIST-005: 多选模式', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('apple')
+  await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
 
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('banana')
+  await page.getByPlaceholder(/输入单词/).fill('banana')
   await page.getByPlaceholder(/中文翻译/).first().fill('香蕉')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
@@ -182,7 +182,7 @@ test('TC-LIST-005: 多选模式', async ({ page }) => {
 test('TC-LIST-007: 批量删除', async ({ page }) => {
   for (const w of [['a1', 'a1'], ['b2', 'b2']]) {
     await page.goto(url('/add'))
-    await page.getByPlaceholder('输入英文单词').fill(w[0])
+    await page.getByPlaceholder(/输入单词/).fill(w[0])
     await page.getByPlaceholder(/中文翻译/).first().fill(w[1])
     await page.getByRole('button', { name: '保存', exact: true }).click()
     await page.waitForURL(/\/words/)
@@ -207,7 +207,7 @@ test('TC-LIST-009: 空列表', async ({ page }) => {
 
 test('TC-LIST-010: 搜索无结果', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('apple')
+  await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
@@ -221,7 +221,7 @@ test('TC-LIST-010: 搜索无结果', async ({ page }) => {
 
 test('TC-DTL-001: 显示单词详情', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('apple')
+  await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
@@ -236,7 +236,7 @@ test('TC-DTL-001: 显示单词详情', async ({ page }) => {
 
 test('TC-DTL-002: 收藏/取消收藏', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('star')
+  await page.getByPlaceholder(/输入单词/).fill('star')
   await page.getByPlaceholder(/中文翻译/).first().fill('星星')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
@@ -253,7 +253,7 @@ test('TC-DTL-002: 收藏/取消收藏', async ({ page }) => {
 
 test('TC-DTL-003: 编辑释义', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('edit')
+  await page.getByPlaceholder(/输入单词/).fill('edit')
   await page.getByPlaceholder(/中文翻译/).first().fill('编辑')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
@@ -269,7 +269,7 @@ test('TC-DTL-003: 编辑释义', async ({ page }) => {
 
 test('TC-DTL-005: 删除单词', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('delete')
+  await page.getByPlaceholder(/输入单词/).fill('delete')
   await page.getByPlaceholder(/中文翻译/).first().fill('删除')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
@@ -288,7 +288,7 @@ test('TC-DTL-005: 删除单词', async ({ page }) => {
 test('TC-DTL-006: 上下切换', async ({ page }) => {
   for (const [w, t] of [['first', '第一'], ['second', '第二']]) {
     await page.goto(url('/add'))
-    await page.getByPlaceholder('输入英文单词').fill(w)
+    await page.getByPlaceholder(/输入单词/).fill(w)
     await page.getByPlaceholder(/中文翻译/).first().fill(t)
     await page.getByRole('button', { name: '保存', exact: true }).click()
     await page.waitForURL(/\/words/)
@@ -303,7 +303,7 @@ test('TC-DTL-006: 上下切换', async ({ page }) => {
 
 test('TC-DTL-008: 边界不可切换', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('only')
+  await page.getByPlaceholder(/输入单词/).fill('only')
   await page.getByPlaceholder(/中文翻译/).first().fill('唯一')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
@@ -317,7 +317,7 @@ test('TC-DTL-008: 边界不可切换', async ({ page }) => {
 
 test('TC-DTL-009: 编辑释义取消', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('undo')
+  await page.getByPlaceholder(/输入单词/).fill('undo')
   await page.getByPlaceholder(/中文翻译/).first().fill('撤销')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
@@ -333,7 +333,7 @@ test('TC-DTL-009: 编辑释义取消', async ({ page }) => {
 
 test('TC-DTL-010: 编辑空释义验证', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('empty')
+  await page.getByPlaceholder(/输入单词/).fill('empty')
   await page.getByPlaceholder(/中文翻译/).first().fill('空')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)

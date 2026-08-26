@@ -178,6 +178,7 @@ export function SentenceStudy() {
       await recordSentenceReview(item.id, quality)
     } catch (e) {
       toast('error', '记录失败: ' + (e as Error).message)
+      return
     }
     // 回忆式(Moji)：认识(quality>=3) → 计数 + 从队列移除(通过不再出现)；模糊/忘记(quality<3) → 重排到队尾，重复直到认识
     if (studyType === 'recall') {
@@ -203,6 +204,7 @@ export function SentenceStudy() {
           }
         } catch (e) {
           toast('error', '记录失败: ' + (e as Error).message)
+          return
         }
       }
       // 认识 → 移除当前词；index 不推进（下一个词顶到当前位置，避免跳过）
@@ -223,6 +225,7 @@ export function SentenceStudy() {
         }
       } catch (e) {
         toast('error', '记录失败: ' + (e as Error).message)
+        return
       }
     }
     if (item.isReview && quality < 3 && !requeuedRef.current.has(item.id)) {
@@ -237,7 +240,7 @@ export function SentenceStudy() {
     setIndex((i) => i + 1)
   }
 
-  async function handleQuickSubmit(results: QuickRating[]) {
+  async function handleQuickSubmit(results: QuickRating[]): Promise<boolean> {
     for (const { item, quality, mastered } of results) {
       try {
         await recordSentenceReview(item.id, quality)
@@ -247,6 +250,7 @@ export function SentenceStudy() {
         }
       } catch (e) {
         toast('error', '记录失败: ' + (e as Error).message)
+        return false
       }
       if (planIdNum) {
         try {
@@ -262,6 +266,7 @@ export function SentenceStudy() {
           }
         } catch (e) {
           toast('error', '记录失败: ' + (e as Error).message)
+          return false
         }
       }
     }
@@ -272,6 +277,7 @@ export function SentenceStudy() {
       origin: { y: 0.7 },
       colors: ['#6366f1', '#8b5cf6', '#ec4899', '#10b981'],
     })
+    return true
   }
 
   async function handleMaster(item: StudyItem) {

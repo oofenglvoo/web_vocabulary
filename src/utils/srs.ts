@@ -45,7 +45,8 @@ export function applyStageReview(
       return {
         newStage: Math.min(newStage, MAX_STAGE),
         newProgress: 0,
-        isLearned: newStage > MAX_STAGE,
+        // 第 7 周期就是最终掌握状态。
+        isLearned: newStage >= MAX_STAGE,
       }
     }
     return { newStage: stage, newProgress: progress, isLearned: false }

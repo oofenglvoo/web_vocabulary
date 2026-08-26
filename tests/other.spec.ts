@@ -38,7 +38,7 @@ test('TC-GLB-004: 深色模式持久化', async ({ page }) => {
 
 test('TC-SNT-001: 正常添加短句', async ({ page }) => {
   await page.goto(url('/sentences/add'))
-  await page.getByPlaceholder(/输入英文短句/).fill('Hello')
+  await page.getByPlaceholder(/输入短句/).fill('Hello')
   await page.getByPlaceholder(/中文翻译/).first().fill('你好')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/sentences/)
@@ -53,7 +53,7 @@ test('TC-SNT-002: 空短句校验', async ({ page }) => {
 
 test('TC-SNT-LIST-001: 短句列表显示', async ({ page }) => {
   await page.goto(url('/sentences/add'))
-  await page.getByPlaceholder(/输入英文短句/).fill('How are you')
+  await page.getByPlaceholder(/输入短句/).fill('How are you')
   await page.getByPlaceholder(/中文翻译/).first().fill('你好吗')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/sentences/)
@@ -86,7 +86,7 @@ test('TC-IMP-W-004: 仅 definitions 数组的 JSON 导入', async ({ page }) => 
 
 test('TC-IMP-W-006: 跳过重复', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('apple')
+  await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
@@ -144,7 +144,7 @@ test('TC-CHK-001: 打卡页加载', async ({ page }) => {
 
 test('TC-CHK-002: 学习后打卡天数增加', async ({ page }) => {
   await page.goto(url('/add'))
-  await page.getByPlaceholder('输入英文单词').fill('test')
+  await page.getByPlaceholder(/输入单词/).fill('test')
   await page.getByPlaceholder(/中文翻译/).first().fill('测试')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)

@@ -4,7 +4,7 @@ import { url } from './helpers'
 async function addWords(page: import('@playwright/test').Page, words: [string, string][]) {
   for (const [word, trans] of words) {
     await page.goto(url('/add'))
-    await page.getByPlaceholder('输入英文单词').fill(word)
+    await page.getByPlaceholder(/输入单词/).fill(word)
     await page.getByPlaceholder(/中文翻译/).first().fill(trans)
     await page.getByRole('button', { name: '保存', exact: true }).click()
     await page.waitForURL(/\/words/)
@@ -60,7 +60,7 @@ test('TC-PLN-002: 创建分类来源计划', async ({ page }) => {
 
 test('TC-PLN-004: 创建短句计划', async ({ page }) => {
   await page.goto(url('/sentences/add'))
-  await page.getByPlaceholder(/输入英文短句/).fill('hello')
+  await page.getByPlaceholder(/输入短句/).fill('hello')
   await page.getByPlaceholder(/中文翻译/).first().fill('你好')
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/sentences/)

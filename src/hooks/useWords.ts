@@ -379,6 +379,10 @@ export async function initDefaultCategories(): Promise<void> {
     { name: 'GRE', description: 'GRE词汇', color: '#a855f7', wordCount: 0, createdAt: Date.now() },
     { name: '商务英语', description: '商务场景词汇', color: '#eab308', wordCount: 0, createdAt: Date.now() },
     { name: '日常用语', description: '日常生活常用词', color: '#6366f1', wordCount: 0, createdAt: Date.now() },
+    { name: 'N5', description: '日语N5基础', color: '#ec4899', wordCount: 0, createdAt: Date.now() },
+    { name: 'N4', description: '日语N4进阶', color: '#f43f5e', wordCount: 0, createdAt: Date.now() },
+    { name: 'N3', description: '日语N3中级', color: '#14b8a6', wordCount: 0, createdAt: Date.now() },
+    { name: '标准日本语', description: '标准日本语教材词汇', color: '#8b5cf6', wordCount: 0, createdAt: Date.now() },
   ]
 
   await db.categories.bulkAdd(defaults)
