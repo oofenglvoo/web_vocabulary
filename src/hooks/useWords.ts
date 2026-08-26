@@ -233,7 +233,7 @@ export async function updateWord(id: number, changes: Partial<Word>) {
 export async function deleteWord(id: number) {
   await db.transaction('rw', db.words, db.studySessions, db.studyPlans, async () => {
     await db.words.delete(id)
-    await db.studySessions.where('wordId').equals(id).delete()
+    await db.studySessions.where('entityType').equals('word').filter((s) => s.entityId === id).delete()
     await pruneWordIdFromPlans(id)
   })
 }
@@ -268,6 +268,8 @@ export async function recordReview(
 
     await db.studySessions.add({
       wordId,
+      entityId: wordId,
+      entityType: 'word',
       mode: 'flashcard',
       result,
       durationMs,
@@ -331,6 +333,8 @@ export async function markWordLearned(id: number) {
     })
     await db.studySessions.add({
       wordId: id,
+      entityId: id,
+      entityType: 'word',
       mode: 'mark-learned',
       result: 'mastered',
       durationMs: 0,
@@ -448,7 +452,7 @@ export async function deleteCategory(
     const words = await db.words.where('category').equals(cat.name).toArray()
     const wordIds = words.map((w) => w.id!)
     for (const wid of wordIds) {
-      await db.studySessions.where('wordId').equals(wid).delete()
+      await db.studySessions.where('entityType').equals('word').filter((s) => s.entityId === wid).delete()
     }
     // 从计划中清除这些单词 ID
     const plans = await db.studyPlans.toArray()
@@ -468,7 +472,7 @@ export async function deleteCategory(
     const sentences = await db.sentences.where('category').equals(cat.name).toArray()
     const sentenceIds = sentences.map((s) => s.id!)
     for (const sid of sentenceIds) {
-      await db.studySessions.where('wordId').equals(sid).delete()
+      await db.studySessions.where('entityType').equals('sentence').filter((s) => s.entityId === sid).delete()
     }
     // 从计划中清除短句 ID
     for (const p of plans) {
@@ -538,6 +542,8 @@ export async function bulkMarkLearned(ids: number[]) {
       })
       await db.studySessions.add({
         wordId: id,
+        entityId: id,
+        entityType: 'word',
         mode: 'mark-learned',
         result: 'mastered',
         durationMs: 0,
@@ -553,7 +559,7 @@ export async function bulkDeleteWords(ids: number[]) {
   await db.transaction('rw', db.words, db.studySessions, db.studyPlans, async () => {
     await db.words.bulkDelete(ids)
     for (const id of ids) {
-      await db.studySessions.where('wordId').equals(id).delete()
+      await db.studySessions.where('entityType').equals('word').filter((s) => s.entityId === id).delete()
       await pruneWordIdFromPlans(id)
     }
   })

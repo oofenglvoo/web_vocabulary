@@ -79,7 +79,10 @@ export type StudyKind = 'new' | 'review'
 
 export interface StudySession {
   id?: number
-  wordId: number
+  /** 旧字段，保留用于读取旧数据库记录；新记录使用 entityId/entityType。 */
+  wordId?: number
+  entityId: number
+  entityType: 'word' | 'sentence'
   mode: StudySessionMode
   result: StudyResult
   durationMs: number

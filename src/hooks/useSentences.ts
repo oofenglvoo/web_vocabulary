@@ -173,9 +173,10 @@ async function pruneSentenceIdFromPlans(id: number) {
 }
 
 export async function deleteSentence(id: number) {
-  // 删除短句时级联清理：计划里的失效 ID
-  await db.transaction('rw', db.sentences, db.studyPlans, async () => {
+  // 删除短句时级联清理：学习记录和计划里的失效 ID
+  await db.transaction('rw', db.sentences, db.studySessions, db.studyPlans, async () => {
     await db.sentences.delete(id)
+    await db.studySessions.where('entityType').equals('sentence').filter((s) => s.entityId === id).delete()
     await pruneSentenceIdFromPlans(id)
   })
 }
@@ -185,9 +186,14 @@ export async function toggleSentenceFavorite(id: number, current: number) {
 }
 
 // 记录一次短句复习(SRS 同单词逻辑,只改 sentences 表)
-export async function recordSentenceReview(sentenceId: number, quality: number) {
+export async function recordSentenceReview(
+  sentenceId: number,
+  quality: number,
+  durationMs = 0,
+  kind: 'new' | 'review' = 'review'
+) {
   // 读-改-写放进事务，避免并发丢失计数
-  await db.transaction('rw', db.sentences, async () => {
+  await db.transaction('rw', db.sentences, db.studySessions, async () => {
     const s = await db.sentences.get(sentenceId)
     if (!s) return
 
@@ -205,6 +211,16 @@ export async function recordSentenceReview(sentenceId: number, quality: number) 
       interval: stageIntervalDays(newStage),
       nextReviewAt: now + stageIntervalDays(newStage) * 24 * 60 * 60 * 1000,
     }
+
+    await db.studySessions.add({
+      entityId: sentenceId,
+      entityType: 'sentence',
+      mode: 'flashcard',
+      result: quality >= 3 ? 'correct' : quality > 0 ? 'hint' : 'incorrect',
+      durationMs,
+      timestamp: now,
+      kind,
+    })
 
     if (quality >= 3) {
       changes.correctCount = s.correctCount + 1
@@ -224,9 +240,10 @@ export async function recordSentenceReview(sentenceId: number, quality: number) 
 // 标记短句为已掌握
 export async function markSentenceLearned(id: number) {
   const now = Date.now()
-  const s = await db.sentences.get(id)
-  if (!s) return
-  await db.sentences.update(id, {
+  await db.transaction('rw', db.sentences, db.studySessions, async () => {
+    const s = await db.sentences.get(id)
+    if (!s) return
+    await db.sentences.update(id, {
     isLearned: 1,
     srsStage: MAX_STAGE,
     stageProgress: 0,
@@ -237,6 +254,16 @@ export async function markSentenceLearned(id: number) {
     nextReviewAt: now + 365 * 24 * 60 * 60 * 1000,
     reviewCount: s.reviewCount + 1,
     correctCount: s.correctCount + 1,
+    })
+    await db.studySessions.add({
+      entityId: id,
+      entityType: 'sentence',
+      mode: 'mark-learned',
+      result: 'mastered',
+      durationMs: 0,
+      timestamp: now,
+      kind: 'review',
+    })
   })
 }
 
@@ -269,7 +296,7 @@ export async function getRandomSentences(limit: number): Promise<Sentence[]> {
 // ---------- 批量操作 ----------
 export async function bulkSetSentenceCategory(ids: number[], category: string) {
   if (ids.length === 0) return
-  await db.transaction('rw', db.sentences, async () => {
+  await db.transaction('rw', db.sentences, db.studySessions, async () => {
     for (const id of ids) {
       await db.sentences.update(id, { category })
     }
@@ -278,7 +305,7 @@ export async function bulkSetSentenceCategory(ids: number[], category: string) {
 
 export async function bulkSetSentenceFavorite(ids: number[], favorite: boolean) {
   if (ids.length === 0) return
-  await db.transaction('rw', db.sentences, async () => {
+  await db.transaction('rw', db.sentences, db.studySessions, async () => {
     for (const id of ids) {
       await db.sentences.update(id, { isFavorite: favorite ? 1 : 0 })
     }
@@ -292,17 +319,26 @@ export async function bulkMarkSentenceLearned(ids: number[]) {
     for (const id of ids) {
       const s = await db.sentences.get(id)
       if (!s || s.isLearned === 1) continue
-      await db.sentences.update(id, {
-        isLearned: 1,
-        srsStage: MAX_STAGE,
-        stageProgress: 0,
-        interval: 365,
-        streak: Math.max(5, s.streak),
-        easeFactor: Math.max(2.5, s.easeFactor),
-        lastReviewedAt: now,
-        nextReviewAt: now + 365 * 24 * 60 * 60 * 1000,
-        reviewCount: s.reviewCount + 1,
-        correctCount: s.correctCount + 1,
+    await db.sentences.update(id, {
+      isLearned: 1,
+      srsStage: MAX_STAGE,
+      stageProgress: 0,
+      interval: 365,
+      streak: Math.max(5, s.streak),
+      easeFactor: Math.max(2.5, s.easeFactor),
+      lastReviewedAt: now,
+      nextReviewAt: now + 365 * 24 * 60 * 60 * 1000,
+      reviewCount: s.reviewCount + 1,
+      correctCount: s.correctCount + 1,
+      })
+      await db.studySessions.add({
+        entityId: id,
+        entityType: 'sentence',
+        mode: 'mark-learned',
+        result: 'mastered',
+        durationMs: 0,
+        timestamp: now,
+        kind: 'review',
       })
     }
   })
@@ -310,9 +346,10 @@ export async function bulkMarkSentenceLearned(ids: number[]) {
 
 export async function bulkDeleteSentences(ids: number[]) {
   if (ids.length === 0) return
-  await db.transaction('rw', db.sentences, db.studyPlans, async () => {
+  await db.transaction('rw', db.sentences, db.studySessions, db.studyPlans, async () => {
     await db.sentences.bulkDelete(ids)
     for (const id of ids) {
+      await db.studySessions.where('entityType').equals('sentence').filter((s) => s.entityId === id).delete()
       await pruneSentenceIdFromPlans(id)
     }
   })

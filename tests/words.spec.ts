@@ -12,6 +12,7 @@ test('TC-ADD-001: 正常添加单词', async ({ page }) => {
   await page.getByRole('button', { name: '保存', exact: true }).click()
 
   await page.goto(url('/words'))
+  await page.getByText('apple', { exact: true }).waitFor({ timeout: 10000 })
   await expect(page.getByText('apple', { exact: true })).toBeVisible()
 })
 
