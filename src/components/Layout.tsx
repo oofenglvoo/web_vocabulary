@@ -24,8 +24,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* 不用 key={pathname} 包裹：避免同组件路由变化(如 /word/1 → /word/2)时整页重挂、状态丢失 */}
       <main className="flex-1 pb-24 animate-fade-in">{children}</main>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
-        <div className="max-w-md mx-auto px-3 pb-3 pointer-events-auto">
+      <nav aria-label="主导航" className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
+        <div className="max-w-md mx-auto px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pointer-events-auto">
           <div className="bg-white/80 dark:bg-slate-800/90 backdrop-blur-xl border border-gray-200/50 dark:border-slate-700/50 shadow-card rounded-2xl">
             <div className="flex justify-around py-1.5">
               {navItems.map((item) => {
@@ -63,4 +63,3 @@ export function Layout({ children }: { children: React.ReactNode }) {
     </div>
   )
 }
-

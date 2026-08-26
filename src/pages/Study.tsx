@@ -368,7 +368,11 @@ export function Study() {
           </h2>
           <p className="text-gray-500 dark:text-gray-400 mb-5">
             {plan?.name && `「${plan.name}」`}
-            {isReviewMode ? '当前没有需要复习的内容' : '本日新词与复习均已结束'}
+            {isReviewMode
+              ? '当前没有需要复习的内容'
+              : planIdNum
+                ? '本日新词与复习均已结束'
+                : '暂无可学习的单词，请先添加单词'}
           </p>
           <div className="flex gap-3">
             <button onClick={() => navigate('/plan')} className="btn-secondary flex-1">
@@ -406,7 +410,7 @@ export function Study() {
             <CheckCircle size={28} className="text-white" />
           </div>
           <h2 className="text-2xl font-bold mb-1">{isReviewMode ? '复习完成!' : '学习完成!'}</h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-5">本轮共 {total} 个词条</p>
+          <p className="text-gray-500 dark:text-gray-400 mb-5">本轮共 {startTotal} 个词条</p>
 
           {planIdNum && (learnStats.newDone > 0 || learnStats.reviewDone > 0) && (
             <div className="grid grid-cols-2 gap-2 mb-5">

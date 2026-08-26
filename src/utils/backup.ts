@@ -65,10 +65,11 @@ export function parseBackup(content: string): { payload: BackupPayload; preview:
     counts: Object.fromEntries(tableNames.map((name) => [name, payload.data![name].length])) as BackupPreview['counts'],
     preferenceCount: Object.values(preferences).filter((value) => value != null).length,
   }
-  return { payload: payload as BackupPayload, preview }
+  return { payload: { ...payload, preferences } as BackupPayload, preview }
 }
 
 export async function restoreBackup(payload: BackupPayload): Promise<void> {
+  const preferences = payload.preferences ?? {}
   await db.transaction('rw', db.words, db.sentences, db.categories, db.studySessions, db.studyPlans, async () => {
     await Promise.all([
       db.words.clear(),
@@ -84,13 +85,13 @@ export async function restoreBackup(payload: BackupPayload): Promise<void> {
     await db.studyPlans.bulkAdd(payload.data.studyPlans as any[])
   })
   for (const key of PREF_KEYS) {
-    const value = payload.preferences[key]
+    const value = preferences[key]
     if (value == null) localStorage.removeItem(key)
     else localStorage.setItem(key, value)
   }
   // The next boot will apply the restored theme; update it immediately too.
-  if (payload.preferences[DARK_KEY] === 'true') document.documentElement.classList.add('dark')
-  if (payload.preferences[DARK_KEY] === 'false') document.documentElement.classList.remove('dark')
+  if (preferences[DARK_KEY] === 'true') document.documentElement.classList.add('dark')
+  if (preferences[DARK_KEY] === 'false') document.documentElement.classList.remove('dark')
 }
 
 export async function downloadBackup(): Promise<void> {
