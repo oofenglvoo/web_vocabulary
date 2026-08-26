@@ -33,6 +33,7 @@ export function Stats() {
   const [accent, setAccentState] = useState<Accent>(getAccent())
   const [provider, setProviderState] = useState<TtsProvider>(getProvider())
   const [dark, setDarkState] = useState(isDarkMode())
+  const [tab, setTab] = useState<'stats' | 'settings' | 'data'>('stats')
   const [backupPreview, setBackupPreview] = useState<BackupPreview | null>(null)
   const [backupPayload, setBackupPayload] = useState<Parameters<typeof restoreBackup>[0] | null>(null)
   const [restoring, setRestoring] = useState(false)
@@ -134,6 +135,34 @@ export function Stats() {
         <div className="w-10" />
       </div>
 
+      <div
+        className="grid grid-cols-3 gap-2 rounded-xl bg-gray-100/80 dark:bg-slate-800 p-1"
+        role="tablist"
+        aria-label="统计与设置分区"
+      >
+        {([
+          ['stats', '学习统计'],
+          ['settings', '设置'],
+          ['data', '数据管理'],
+        ] as const).map(([value, label]) => (
+          <button
+            key={value}
+            type="button"
+            role="tab"
+            aria-selected={tab === value}
+            onClick={() => setTab(value)}
+            className={`py-2 rounded-lg text-xs font-medium transition-all ${
+              tab === value
+                ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400 shadow-soft'
+                : 'text-gray-500 dark:text-gray-400'
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <section hidden={tab !== 'stats'} aria-label="学习统计" className="space-y-6">
       <div>
         <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">学习统计</h2>
         <div className="grid grid-cols-3 gap-3">
@@ -171,7 +200,9 @@ export function Stats() {
           <StatCard title="已掌握" value={sentenceStats.learned} color="text-success-600" />
         </div>
       </div>
+      </section>
 
+      <section hidden={tab !== 'data'} aria-label="分类管理">
       <div>
         <div className="flex items-center justify-between mb-3">
           <h2 className="font-semibold text-lg dark:text-gray-200">分类管理</h2>
@@ -194,8 +225,10 @@ export function Stats() {
           ))}
         </div>
       </div>
+      </section>
 
       {/* 深色模式切换 */}
+      <section hidden={tab !== 'settings'} aria-label="设置" className="space-y-6">
       <div>
         <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">外观</h2>
         <div className="card p-4 space-y-4">
@@ -217,8 +250,10 @@ export function Stats() {
           </div>
         </div>
       </div>
+      </section>
 
       {/* 发音设置 */}
+      <section hidden={tab !== 'settings'} aria-label="发音设置">
       <div>
         <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">发音设置</h2>
         <div className="card p-4 space-y-4">
@@ -275,7 +310,9 @@ export function Stats() {
           </button>
         </div>
       </div>
+      </section>
 
+      <section hidden={tab !== 'data'} aria-label="数据导入导出">
       <div>
         <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">数据导入/导出</h2>
 
@@ -339,6 +376,7 @@ export function Stats() {
           </div>
         </div>
       </div>
+      </section>
 
       {showAddCat && (
         <div className="modal-overlay">

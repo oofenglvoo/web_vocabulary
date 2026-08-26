@@ -30,6 +30,7 @@ test('TC-GLB-002: 子路由高亮父导航', async ({ page }) => {
 
 test('TC-GLB-004: 深色模式持久化', async ({ page }) => {
   await page.goto(url('/stats'))
+  await page.getByRole('tab', { name: '设置', exact: true }).click()
   await page.getByText('深色模式').locator('..').locator('button').click()
   await expect(page.locator('html.dark')).toBeVisible()
   await page.reload()
@@ -165,18 +166,20 @@ test('TC-ACHV-001: 勋章墙显示', async ({ page }) => {
 
 test('TC-STAT-001: 学习统计显示', async ({ page }) => {
   await page.goto(url('/stats'))
-  await expect(page.getByText('学习统计')).toBeVisible()
+  await expect(page.getByRole('heading', { name: '学习统计', exact: true })).toBeVisible()
   await expect(page.getByText('总单词')).toBeVisible()
 })
 
 test('TC-STAT-003: 深色模式切换', async ({ page }) => {
   await page.goto(url('/stats'))
+  await page.getByRole('tab', { name: '设置', exact: true }).click()
   await page.getByText('深色模式').locator('..').locator('button').click()
   await expect(page.locator('html.dark')).toBeVisible()
 })
 
 test('TC-DATA-011: 完整备份与恢复入口', async ({ page }) => {
   await page.goto(url('/stats'))
+  await page.getByRole('tab', { name: '数据管理', exact: true }).click()
   await expect(page.getByText('完整数据备份')).toBeVisible()
   const fileChooserPromise = page.waitForEvent('filechooser')
   await page.getByText('恢复备份').click()
@@ -187,4 +190,15 @@ test('TC-DATA-011: 完整备份与恢复入口', async ({ page }) => {
     buffer: Buffer.from('{"format":"invalid"}'),
   })
   await expect(page.getByText(/不支持的备份文件格式/)).toBeVisible()
+})
+
+test('TC-STAT-011: 统计设置数据分区切换', async ({ page }) => {
+  await page.goto(url('/stats'))
+  await expect(page.getByRole('heading', { name: '学习统计' })).toBeVisible()
+  await page.getByRole('tab', { name: '设置' }).click()
+  await expect(page.getByRole('region', { name: '设置', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '学习统计' })).toBeHidden()
+  await page.getByRole('tab', { name: '数据管理' }).click()
+  await expect(page.getByRole('region', { name: '数据导入导出' })).toBeVisible()
+  await expect(page.getByText('完整数据备份')).toBeVisible()
 })
