@@ -125,6 +125,17 @@ test('TC-PLN-MGT-003: 删除计划', async ({ page }) => {
   await expect(page.getByText('待删除')).toHaveCount(0)
 })
 
+test('TC-PLN-MGT-007: 编辑计划设置', async ({ page }) => {
+  await addWords(page, [['edit-plan', '编辑计划']])
+  await createPlan(page, '原计划')
+  await page.getByRole('button', { name: '编辑' }).first().click()
+  await expect(page.getByText('编辑学习计划')).toBeVisible()
+  await page.locator('.modal-overlay input').first().fill('新计划')
+  await page.getByRole('button', { name: '保存修改' }).click()
+  await expect(page.getByRole('heading', { name: '新计划', exact: true })).toBeVisible()
+  await expect(page.getByText('原计划', { exact: true })).toHaveCount(0)
+})
+
 test('TC-PLN-MGT-005: 激活计划进度卡片', async ({ page }) => {
   await addWords(page, [['apple', '苹果'], ['banana', '香蕉']])
   await createPlan(page, '进度计划')
@@ -150,7 +161,7 @@ test('TC-EXTRA-001: 首页加学确认框', async ({ page }) => {
   await page.goto(url('/'))
   // 等今日任务卡片加载（live query 更新）
   await page.getByText('今日任务').waitFor({ timeout: 10000 })
-  await page.getByRole('button', { name: '学习', exact: true }).click()
+  await page.getByRole('button', { name: /学习|额外学习/, exact: true }).click()
   await expect(page.getByText('今日新词已学满')).toBeVisible()
 })
 
@@ -164,7 +175,7 @@ test('TC-EXTRA-005: 取消加学', async ({ page }) => {
 
   await page.goto(url('/'))
   await page.getByText('今日任务').waitFor({ timeout: 10000 })
-  await page.getByRole('button', { name: '学习', exact: true }).click()
+  await page.getByRole('button', { name: /学习|额外学习/, exact: true }).click()
   await expect(page.getByText('今日新词已学满')).toBeVisible()
   await page.getByRole('button', { name: '取消', exact: true }).click()
   await expect(page.getByText('今日新词已学满')).toHaveCount(0)

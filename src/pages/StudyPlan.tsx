@@ -21,6 +21,7 @@ import {
   RotateCcw,
   RefreshCw,
   RefreshCcw,
+  Pencil,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import {
@@ -37,6 +38,7 @@ import {
   markPlanWordLearned,
   refreshPlanWords,
   getPlanNewWordCount,
+  updatePlanSettings,
 } from '../hooks/useStudyPlan'
 import {
   useActiveSentencePlan,
@@ -49,6 +51,7 @@ import {
   ensureSentenceTodayReset,
   refreshSentencePlanWords,
   getSentencePlanNewWordCount,
+  updateSentencePlanSettings,
 } from '../hooks/useSentencePlan'
 import { useCategories, useCategoryStats, useStats, useFavoriteWords, bulkMarkLearned, unmarkWordLearned } from '../hooks/useWords'
 import { useSentenceStats, useFavoriteSentences, useSentenceCategoryStats } from '../hooks/useSentences'
@@ -78,6 +81,7 @@ export function StudyPlanPage() {
   const [newWordCount, setNewWordCount] = useState(0)
   const [syncingS, setSyncingS] = useState(false)
   const [newSentenceCount, setNewSentenceCount] = useState(0)
+  const [editingPlan, setEditingPlan] = useState<PlanType | null>(null)
 
   useEffect(() => {
     if (activePlan?.id) {
@@ -177,6 +181,7 @@ export function StudyPlanPage() {
                         onActivate={() => activatePlan(p.id!)}
                         onArchive={() => archivePlan(p.id!)}
                         onDelete={() => deletePlan(p.id!)}
+                        onEdit={() => setEditingPlan(p)}
                       />
                     </motion.div>
                   ))}
@@ -227,6 +232,7 @@ export function StudyPlanPage() {
                         onActivate={() => activateSentencePlan(p.id!)}
                         onArchive={() => archiveSentencePlan(p.id!)}
                         onDelete={() => deleteSentencePlan(p.id!)}
+                        onEdit={() => setEditingPlan(p)}
                       />
                     </motion.div>
                   ))}
@@ -248,6 +254,13 @@ export function StudyPlanPage() {
         <CreateSentencePlanModal
           onClose={() => setShowCreateSentence(false)}
           onCreated={() => setShowCreateSentence(false)}
+        />
+      )}
+      {editingPlan && (
+        <EditPlanModal
+          plan={editingPlan}
+          onClose={() => setEditingPlan(null)}
+          onSaved={() => setEditingPlan(null)}
         />
       )}
     </div>
@@ -507,12 +520,14 @@ function PlanRow({
   onActivate,
   onArchive,
   onDelete,
+  onEdit,
 }: {
   plan: PlanType
   isActive: boolean
   onActivate: () => void
   onArchive: () => void
   onDelete: () => void
+  onEdit: () => void
 }) {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const sourceLabel =
@@ -540,6 +555,13 @@ function PlanRow({
         </div>
       </div>
       <div className="flex items-center gap-1">
+        <button
+          onClick={onEdit}
+          className="p-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/30 text-gray-400 hover:text-primary-600"
+          aria-label="编辑"
+        >
+          <Pencil size={16} />
+        </button>
         {!isActive && plan.isArchived === 0 && (
           <button
             onClick={onActivate}
@@ -602,6 +624,78 @@ function PlanRow({
           </motion.div>
         </div>
       )}
+    </div>
+  )
+}
+
+function EditPlanModal({
+  plan,
+  onClose,
+  onSaved,
+}: {
+  plan: PlanType
+  onClose: () => void
+  onSaved: () => void
+}) {
+  const { toast } = useToast()
+  const [name, setName] = useState(plan.name)
+  const [newPerDay, setNewPerDay] = useState(plan.newPerDay)
+  const [reviewPerDay, setReviewPerDay] = useState(plan.reviewPerDay)
+  const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  const save = async () => {
+    const trimmed = name.trim()
+    if (!trimmed) {
+      setError('请填写计划名称')
+      return
+    }
+    if (newPerDay < 1 || reviewPerDay < 0) {
+      setError('每日新词数至少为 1')
+      return
+    }
+    setSaving(true)
+    try {
+      const changes = { name: trimmed, newPerDay, reviewPerDay }
+      if ((plan.entityType ?? 'word') === 'sentence') await updateSentencePlanSettings(plan.id!, changes)
+      else await updatePlanSettings(plan.id!, changes)
+      toast('success', `计划「${trimmed}」已更新`)
+      onSaved()
+    } catch (e) {
+      setError((e as Error).message || '保存失败，请重试')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <div className="modal-overlay" style={{ alignItems: 'flex-end' }}>
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-3xl w-full max-w-md"
+      >
+        <div className="px-5 pt-5 pb-3 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between">
+          <h3 className="font-bold text-lg dark:text-gray-100">编辑学习计划</h3>
+          <button onClick={onClose} className="text-gray-400 text-sm">取消</button>
+        </div>
+        <div className="p-5 space-y-4">
+          {error && <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-2.5 rounded-xl text-sm">{error}</div>}
+          <div>
+            <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">计划名称</label>
+            <input value={name} onChange={(e) => setName(e.target.value)} className="input-field" autoFocus />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <NumberStepper label="每日新词" value={newPerDay} onChange={setNewPerDay} min={1} max={50} icon={Sparkles} />
+            <NumberStepper label="每日复习" value={reviewPerDay} onChange={setReviewPerDay} min={0} max={100} icon={TrendingUp} />
+          </div>
+          <p className="text-xs text-gray-500 dark:text-gray-400">修改配额只影响之后的每日任务，不会重置已学习进度。</p>
+        </div>
+        <div className="px-5 py-3 border-t border-gray-100 dark:border-slate-700 flex gap-2">
+          <button onClick={onClose} className="btn-secondary flex-1">取消</button>
+          <button onClick={save} disabled={saving} className="btn-primary flex-1">{saving ? '保存中...' : '保存修改'}</button>
+        </div>
+      </motion.div>
     </div>
   )
 }

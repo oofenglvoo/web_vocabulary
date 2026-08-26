@@ -33,6 +33,8 @@ export function Home() {
 
   const todayNewRemaining = planProgress.todayNewRemaining
   const todayReviewRemaining = planProgress.todayReviewRemaining
+  const taskCount = todayNewRemaining + todayReviewRemaining
+  const estimatedMinutes = taskCount > 0 ? Math.max(1, Math.ceil(taskCount * 0.5)) : 0
   // 今日新词是否学满(配额内)且还有未掌握可学 → 点"学习"弹确认
   const newQuotaDone = todayNewRemaining === 0 && planProgress.remainingNew > 0
   const [confirmExtra, setConfirmExtra] = useState(false)
@@ -107,6 +109,21 @@ export function Home() {
               </div>
             </div>
 
+            <div className="rounded-xl bg-primary-50 dark:bg-primary-900/30 p-3 mb-3">
+              <div className="flex items-end justify-between gap-3">
+                <div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">今天还需要完成</div>
+                  <div className="flex items-baseline gap-2 mt-0.5">
+                    <span className="text-2xl font-bold text-gradient">{taskCount}</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">个任务</span>
+                  </div>
+                </div>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  {estimatedMinutes > 0 ? `约 ${estimatedMinutes} 分钟` : '今日已完成'}
+                </span>
+              </div>
+            </div>
+
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div className="bg-primary-50 dark:bg-primary-900/30 rounded-xl p-3">
                 <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">待学新词</div>
@@ -131,7 +148,7 @@ export function Home() {
                 onClick={() => (newQuotaDone ? setConfirmExtra(true) : navigate(`/study?plan=${activePlan.id}&mode=learn`))}
                 className="btn-primary py-2.5 text-sm gap-1.5"
               >
-                <Play size={14} fill="currentColor" /> 学习
+                <Play size={14} fill="currentColor" /> {todayNewRemaining > 0 ? '开始学习' : '额外学习'}
               </button>
               <button
                 onClick={() => navigate(`/study?plan=${activePlan.id}&mode=review`)}
@@ -142,7 +159,7 @@ export function Home() {
                 }`}
                 disabled={todayReviewRemaining === 0}
               >
-                <RefreshCw size={14} /> 复习
+                <RefreshCw size={14} /> {todayReviewRemaining > 0 ? '开始复习' : '已完成复习'}
               </button>
             </div>
 

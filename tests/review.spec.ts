@@ -26,9 +26,9 @@ test('创建计划后学习入口可用', async ({ page }) => {
 
   // 首页应有学习按钮
   await page.goto(url('/'))
-  await expect(page.getByRole('button', { name: '学习', exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: /开始学习|额外学习/, exact: true })).toBeVisible()
   // 复习按钮（无到期词时禁用）
-  const reviewBtn = page.getByRole('button', { name: '复习', exact: true })
+  const reviewBtn = page.getByRole('button', { name: /开始复习|已完成复习/, exact: true })
   await expect(reviewBtn).toBeVisible()
 })
 
@@ -44,5 +44,5 @@ test('学习后复习入口可用', async ({ page }) => {
   // 回首页，复习按钮应可用（有已学词）
   await page.goto(url('/'))
   // 复习按钮存在（可能因 nextReviewAt 未到期而禁用，但按钮在）
-  await expect(page.getByRole('button', { name: '复习', exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: /开始复习|已完成复习/, exact: true })).toBeVisible()
 })
