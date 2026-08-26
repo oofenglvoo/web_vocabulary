@@ -52,6 +52,20 @@ test('TC-SNT-002: 空短句校验', async ({ page }) => {
   await expect(page.getByText(/短句不能为空/)).toBeVisible()
 })
 
+test('TC-SNT-003: 重复短句检测', async ({ page }) => {
+  await page.goto(url('/sentences/add'))
+  await page.getByPlaceholder(/输入短句/).fill('Nice to meet you')
+  await page.getByPlaceholder(/中文翻译/).first().fill('很高兴认识你')
+  await page.getByRole('button', { name: '保存', exact: true }).click()
+  await page.waitForURL(/\/sentences/)
+
+  await page.goto(url('/sentences/add'))
+  await page.getByPlaceholder(/输入短句/).fill('nice to meet you')
+  await page.getByPlaceholder(/中文翻译/).first().fill('很高兴认识你')
+  await page.getByRole('button', { name: '保存', exact: true }).click()
+  await expect(page.getByText(/已存在/)).toBeVisible()
+})
+
 test('TC-SNT-LIST-001: 短句列表显示', async ({ page }) => {
   await page.goto(url('/sentences/add'))
   await page.getByPlaceholder(/输入短句/).fill('How are you')

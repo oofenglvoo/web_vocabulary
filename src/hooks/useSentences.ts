@@ -4,6 +4,13 @@ import { Sentence } from '../types/word'
 import { applyStageReview, stageIntervalDays, MAX_STAGE } from '../utils/srs'
 import { useNow } from './useNow'
 
+export class DuplicateSentenceError extends Error {
+  constructor(sentence: string) {
+    super(`短句「${sentence}」已存在`)
+    this.name = 'DuplicateSentenceError'
+  }
+}
+
 // ---------- 读取 hooks ----------
 export function useAllSentences() {
   return useLiveQuery(() => db.sentences.orderBy('createdAt').reverse().toArray(), []) ?? []
@@ -78,7 +85,11 @@ export function useSentenceCategoryStats() {
 
 // ---------- 写入 ----------
 export async function addSentence(s: Omit<Sentence, 'id' | 'createdAt'>): Promise<number> {
-  const id = await db.sentences.add({ ...s, createdAt: Date.now() } as Sentence)
+  const sentence = s.sentence.trim()
+  if (!sentence) throw new Error('短句不能为空')
+  const existing = await db.sentences.where('sentence').equalsIgnoreCase(sentence).first()
+  if (existing) throw new DuplicateSentenceError(existing.sentence)
+  const id = await db.sentences.add({ ...s, sentence, createdAt: Date.now() } as Sentence)
   return Number(id)
 }
 
@@ -97,6 +108,7 @@ export async function bulkAddSentences(
     forceFavorite?: boolean
   } = { skipDuplicates: true }
 ): Promise<BulkAddSentenceResult> {
+  options = { skipDuplicates: true, ...options }
   const result: BulkAddSentenceResult = {
     added: 0,
     skipped: 0,
@@ -109,7 +121,7 @@ export async function bulkAddSentences(
   const seenInBatch = new Set<string>()
   const toInsert: Sentence[] = []
   for (const s of items) {
-    const key = s.sentence.toLowerCase()
+    const key = s.sentence.trim().toLowerCase()
     if (seenInBatch.has(key)) {
       result.skipped++
       result.skippedSentences.push(s.sentence)
@@ -118,6 +130,7 @@ export async function bulkAddSentences(
     seenInBatch.add(key)
     const finalSentence: Sentence = {
       ...s,
+      sentence: s.sentence.trim(),
       category: options.overrideCategory ?? s.category,
       isFavorite: options.forceFavorite ? 1 : s.isFavorite,
       createdAt: Date.now(),
@@ -130,11 +143,11 @@ export async function bulkAddSentences(
     await db.transaction('rw', db.sentences, async () => {
       let candidates = toInsert
       if (options.skipDuplicates) {
-        const keys = await db.sentences.orderBy('sentence').keys()
-        const existing = new Set(keys.map((k) => String(k).toLowerCase()))
+        const existingSentences = await db.sentences.toArray()
+        const existing = new Set(existingSentences.map((s) => s.sentence.trim().toLowerCase()))
         const filtered: Sentence[] = []
         for (const s of toInsert) {
-          const key = s.sentence.toLowerCase()
+          const key = s.sentence.trim().toLowerCase()
           if (existing.has(key)) {
             result.skipped++
             result.skippedSentences.push(s.sentence)

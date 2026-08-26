@@ -73,8 +73,10 @@ export function useStats() {
   const learned = useLiveQuery(() => db.words.where('isLearned').equals(1).count(), []) ?? 0
   const due = useDueCount()
 
-  const dayAgo = Date.now() - DAY_MS
-  const todaySessions = useLiveQuery(() => db.studySessions.where('timestamp').above(dayAgo).toArray(), []) ?? []
+  const todayStart = new Date()
+  todayStart.setHours(0, 0, 0, 0)
+  const todayStartMs = todayStart.getTime()
+  const todaySessions = useLiveQuery(() => db.studySessions.where('timestamp').aboveOrEqual(todayStartMs).toArray(), [todayStartMs]) ?? []
 
   const weekAgo = Date.now() - 7 * DAY_MS
   const weekSessions = useLiveQuery(() => db.studySessions.where('timestamp').above(weekAgo).toArray(), []) ?? []
@@ -172,6 +174,7 @@ export async function bulkAddWords(
     forceFavorite?: boolean
   } = { skipDuplicates: true }
 ): Promise<BulkAddResult> {
+  options = { skipDuplicates: true, ...options }
   const result: BulkAddResult = { added: 0, skipped: 0, skippedWords: [], addedIds: [] }
   if (words.length === 0) return result
 
@@ -179,7 +182,7 @@ export async function bulkAddWords(
   const seenInBatch = new Set<string>()
   const toInsert: Word[] = []
   for (const w of words) {
-    const key = w.word.toLowerCase()
+    const key = w.word.trim().toLowerCase()
     if (seenInBatch.has(key)) {
       result.skipped++
       result.skippedWords.push(w.word)
@@ -200,12 +203,11 @@ export async function bulkAddWords(
     await db.transaction('rw', db.words, async () => {
       let candidates = toInsert
       if (options.skipDuplicates) {
-        // 只物化 word 键（轻量字符串数组），不再把整张表 load 进内存
-        const keys = await db.words.orderBy('word').keys()
-        const existing = new Set(keys.map((k) => String(k).toLowerCase()))
+        const existingWords = await db.words.toArray()
+        const existing = new Set(existingWords.map((w) => w.word.trim().toLowerCase()))
         const filtered: Word[] = []
         for (const w of toInsert) {
-          const key = w.word.toLowerCase()
+          const key = w.word.trim().toLowerCase()
           if (existing.has(key)) {
             result.skipped++
             result.skippedWords.push(w.word)
