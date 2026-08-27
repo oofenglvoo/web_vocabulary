@@ -311,13 +311,17 @@ test('TC-FAV-FOLD-001: 学习页点心形收藏进新夹', async ({ page }) => {
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
 
-  // 学习页（回忆式卡片正面）点心形 → 面板新建夹并勾选
+  // 学习页（回忆式卡片正面）点心形 → 默认进上次目录，成功提示可进入其他目录
   await page.goto(url('/study'))
   await page.waitForTimeout(1200)
   await page.getByRole('button', { name: /加入收藏|编辑收藏/ }).first().click()
+  await expect(page.getByRole('button', { name: '收藏到其他目录' })).toBeVisible()
+  await page.getByRole('button', { name: '收藏到其他目录' }).click()
   await page.getByRole('button', { name: /新建收藏夹/ }).click()
   await page.getByPlaceholder('收藏夹名称').fill('重点词')
   await page.getByRole('button', { name: /创建并勾选/ }).click()
+  // 改为只收藏到新建目录
+  await page.getByText('默认', { exact: true }).locator('..').getByRole('checkbox').uncheck()
   await page.getByRole('button', { name: /确定 \(1\)/ }).click()
 
   // 收藏页出现"重点词"chip，选中后列表含 favword
@@ -361,10 +365,7 @@ test('TC-FAV-MIG-001: 详情页心形面板多归属与默认夹迁移', async (
   await page.getByText('foldw', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('foldw', { exact: true }).click()
   await page.getByRole('button', { name: /加入收藏/ }).click()
-  // 默认夹应已存在且可勾选
-  await page.getByRole('checkbox').first().check()
-  await page.getByRole('button', { name: /确定 \(1\)/ }).click()
-
-  // 已收藏徽标
-  await expect(page.getByText('已收藏')).toBeVisible()
+  // 首次点击直接收藏，成功提示提供改收藏目录入口
+  await expect(page.getByRole('button', { name: '收藏到其他目录' })).toBeVisible()
+  await expect(page.getByText('已收藏', { exact: true })).toBeVisible()
 })

@@ -257,11 +257,10 @@ test('TC-DTL-002: 收藏/取消收藏', async ({ page }) => {
   await page.goto(url('/words'))
   await page.getByText('star', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('star', { exact: true }).click()
-  // 心形按钮 → 面板勾选默认夹 → 确定
+  // 心形按钮直接收藏到上次使用的目录
   await page.getByRole('button', { name: '加入收藏' }).click()
-  await page.getByRole('checkbox').first().check()
-  await page.getByRole('button', { name: /确定 \(1\)/ }).click()
-  await expect(page.getByText('已收藏')).toBeVisible()
+  await expect(page.getByRole('button', { name: '收藏到其他目录' })).toBeVisible()
+  await expect(page.getByText('已收藏', { exact: true })).toBeVisible()
 
   await page.goto(url('/favorites'))
   await expect(page.getByText('star', { exact: true })).toBeVisible()
