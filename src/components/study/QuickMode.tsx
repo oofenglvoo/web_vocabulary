@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Check, ChevronRight, Star, Volume2, X as XIcon } from 'lucide-react'
 import { StudyItem } from './types'
 
@@ -20,6 +20,8 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
   const [expanded, setExpanded] = useState<Set<number>>(new Set())
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const itemRefs = useRef<Record<number, HTMLDivElement | null>>({})
+  const autoScrollId = useRef<number | null>(null)
 
   const allRated = items.every((item) => ratings[item.id] !== undefined)
   const total = items.length
@@ -42,10 +44,23 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
           break
         }
       }
-      if (target) next.add(target.id)
-      return next
+       if (target) next.add(target.id)
+       if (target) autoScrollId.current = target.id
+       return next
+     })
+   }
+
+  // 自动展开下一项后，把它滚到可视区域；nearest 会只滚动必要距离，
+  // 因此不会把列表跳回顶部，也能让展开内容尽量完整地出现在视口内。
+  useEffect(() => {
+    const id = autoScrollId.current
+    if (id === null) return
+    autoScrollId.current = null
+    const frame = window.requestAnimationFrame(() => {
+      itemRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     })
-  }
+    return () => window.cancelAnimationFrame(frame)
+  }, [expanded])
 
   const toggleExpand = (id: number) => {
     setExpanded((prev) => {
@@ -85,6 +100,7 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
           return (
             <div
               key={item.id}
+              ref={(element) => { itemRefs.current[item.id] = element }}
               className="rounded-xl border dark:border-slate-700 overflow-hidden transition-all"
             >
               <div
