@@ -136,13 +136,7 @@ body {
     @apply text-xl font-bold tracking-tight relative;
   }
   .page-title-accent::after {
-    content: '';
-    display: block;
-    width: 32px;
-    height: 3px;
-    border-radius: 9999px;
-    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
-    margin-top: 4px;
+    content: none;
   }
 
   /* 渐变文字 */
