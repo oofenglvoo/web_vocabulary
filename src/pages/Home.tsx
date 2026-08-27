@@ -294,7 +294,7 @@ export function Home() {
                 </div>
                 <div>
                   <div className="text-sm font-bold text-primary-600 dark:text-primary-400">
-                    {planProgress.startedWords - planProgress.learnedWords}
+                     {planProgress.learningWords}
                   </div>
                   <div className="text-[10px] text-gray-500 dark:text-gray-400">学习中</div>
                 </div>

@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
 import { StudyPlan, Word } from '../types/word'
+import { getTodayReviewCutoff } from '../utils/srs'
 
 // 当日日期字符串 (本地时区 yyyy-mm-dd)
 function todayStr(): string {
@@ -15,6 +16,7 @@ export interface PlanProgress {
   totalWords: number
   startedWords: number
   learnedWords: number
+  learningWords: number
   remainingNew: number
   dueReview: number
   todayNewDone: number
@@ -79,6 +81,7 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
       totalWords: 0,
       startedWords: 0,
       learnedWords: 0,
+      learningWords: 0,
       remainingNew: 0,
       dueReview: 0,
       todayNewDone: 0,
@@ -92,15 +95,19 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
       todayNewDisplay: 0,
     }
   }
-  const now = Date.now()
+  const reviewCutoff = getTodayReviewCutoff()
   const startedSet = new Set(plan.startedIds)
+  // 只统计当前计划中仍然存在的词，避免删除单词后遗留的 ID 污染首页数字。
+  const startedWords = words.filter((w) => startedSet.has(w.id!))
+  // “学习中”必须同时满足：已加入本计划且尚未掌握。
   const learned = words.filter((w) => w.isLearned === 1).length
+  const learning = startedWords.filter((w) => w.isLearned === 0).length
   // 剩余新词：未 start 且未掌握（与 getTodayNewWords 口径一致，已掌握不算新词）
   const remainingNew = words.filter(
     (w) => !startedSet.has(w.id!) && w.isLearned === 0
   ).length
   const dueReview = words.filter(
-    (w) => startedSet.has(w.id!) && w.isLearned === 0 && w.nextReviewAt <= now
+    (w) => startedSet.has(w.id!) && w.isLearned === 0 && w.nextReviewAt < reviewCutoff
   ).length
   const today = todayStr()
   const isToday = plan.todayDate === today
@@ -124,8 +131,9 @@ export function usePlanProgress(plan: StudyPlan | undefined): PlanProgress {
 
   return {
     totalWords: words.length,
-    startedWords: plan.startedIds.length,
+    startedWords: startedWords.length,
     learnedWords: learned,
+    learningWords: learning,
     remainingNew,
     dueReview,
     todayNewDone,
@@ -316,7 +324,7 @@ export async function markExtraWordStarted(planId: number, wordId: number) {
 // 减去今日已完成的复习数，与 todayReviewRemaining 口径一致
 export async function getTodayReviewWords(plan: StudyPlan): Promise<Word[]> {
   if (plan.wordIds.length === 0) return []
-  const now = Date.now()
+  const reviewCutoff = getTodayReviewCutoff()
   const startedSet = new Set(plan.startedIds)
   const candidates = plan.wordIds.filter((id) => startedSet.has(id))
   const words = await db.words.bulkGet(candidates)
@@ -326,7 +334,7 @@ export async function getTodayReviewWords(plan: StudyPlan): Promise<Word[]> {
   const remaining = Math.max(0, plan.reviewPerDay - todayReviewDone)
   return words
     .filter((w): w is Word => !!w)
-    .filter((w) => w.isLearned === 0 && w.nextReviewAt <= now)
+    .filter((w) => w.isLearned === 0 && w.nextReviewAt < reviewCutoff)
     .sort((a, b) => a.nextReviewAt - b.nextReviewAt)
     .slice(0, remaining)
 }

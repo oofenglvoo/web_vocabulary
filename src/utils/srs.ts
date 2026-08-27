@@ -14,6 +14,16 @@ export const STAGE_CLEAN_NEEDED = 2
 
 export const MAX_STAGE = 7
 
+/**
+ * 复习按本地自然日计算，而不是要求恰好经过 24 小时。
+ * 例如昨天晚上学习的词，今天就应该出现在“今日待复习”。
+ */
+export function getTodayReviewCutoff(now = new Date()): number {
+  const tomorrow = new Date(now)
+  tomorrow.setHours(24, 0, 0, 0)
+  return tomorrow.getTime()
+}
+
 export interface StageState {
   srsStage: number // 0=未学, 1-6 学习中, 7=已掌握
   stageProgress: number // 当前周期内连续答对数
@@ -62,9 +72,9 @@ export function stageIntervalDays(stage: number): number {
 }
 
 export function getDueWords(words: Word[]): Word[] {
-  const now = Date.now()
+  const cutoff = getTodayReviewCutoff()
   return words
-    .filter((w) => !w.isLearned && w.nextReviewAt <= now)
+    .filter((w) => !w.isLearned && w.nextReviewAt < cutoff)
     .sort((a, b) => a.nextReviewAt - b.nextReviewAt)
 }
 

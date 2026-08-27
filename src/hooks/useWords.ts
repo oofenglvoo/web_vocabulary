@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
 import { Word, Category, Flag, StudyKind } from '../types/word'
-import { applyStageReview, stageIntervalDays, MAX_STAGE } from '../utils/srs'
+import { applyStageReview, stageIntervalDays, MAX_STAGE, getTodayReviewCutoff } from '../utils/srs'
 import { useNow } from './useNow'
 
 export function useAllWords() {
@@ -11,22 +11,24 @@ export function useAllWords() {
 export function useDueWords() {
   // 用自动刷新的 now 作依赖，让到期词能随时间流逝自动出现在列表里
   const now = useNow()
+  const cutoff = getTodayReviewCutoff(new Date(now))
   return useLiveQuery(
     () =>
       db.words
         .where('nextReviewAt')
-        .belowOrEqual(now)
+        .below(cutoff)
         .filter((w) => w.isLearned === 0 && w.reviewCount > 0)
         .sortBy('nextReviewAt'),
-    [now]
+    [now, cutoff]
   ) ?? []
 }
 
 export function useDueCount() {
   const now = useNow()
+  const cutoff = getTodayReviewCutoff(new Date(now))
   return useLiveQuery(
-    () => db.words.where('nextReviewAt').belowOrEqual(now).filter((w) => w.isLearned === 0 && w.reviewCount > 0).count(),
-    [now]
+    () => db.words.where('nextReviewAt').below(cutoff).filter((w) => w.isLearned === 0 && w.reviewCount > 0).count(),
+    [now, cutoff]
   ) ?? 0
 }
 
