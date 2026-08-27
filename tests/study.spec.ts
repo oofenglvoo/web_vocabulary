@@ -163,6 +163,28 @@ test('TC-STUDY-QCK-008: 全部评完出现提交', async ({ page }) => {
   await expect(page.getByRole('button', { name: /提交/ })).toBeVisible()
 })
 
+test('TC-STUDY-QCK-009: 自动展开下一词并滚动到可见区域', async ({ page }) => {
+  await addWords(page, Array.from({ length: 8 }, (_, i) => [`scroll-${i}`, `释义${i}`]))
+  await page.goto(url('/study'))
+  await page.waitForTimeout(1000)
+  await switchToQuick(page)
+
+  const list = page.locator('.card').filter({ hasText: '快速自测' }).locator('.space-y-2').first()
+  const first = list.locator('button').filter({ hasText: 'scroll-0' }).first()
+  await first.click()
+  await page.getByRole('button', { name: '记得', exact: true }).click()
+
+  const next = list.locator('button').filter({ hasText: 'scroll-1' }).first()
+  await expect(next).toBeVisible()
+  const nextCard = next.locator('..').locator('..')
+  await expect(nextCard).toHaveAttribute('class', /overflow-hidden/)
+  const isVisible = await nextCard.evaluate((element) => {
+    const rect = element.getBoundingClientRect()
+    return rect.top >= 0 && rect.bottom <= window.innerHeight
+  })
+  expect(isVisible).toBeTruthy()
+})
+
 // ===== 题型切换 =====
 
 test('TC-STUDY-SWITCH-001: 新学题型切换', async ({ page }) => {
