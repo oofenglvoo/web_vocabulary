@@ -44,37 +44,54 @@ export function Categories() {
         />
       ) : (
         <div className="space-y-2">
-          {cats.map((cat, index) => (
-            <div
-              key={cat.id}
-              className="card p-3 flex items-center gap-3 stagger-item card-hover"
-              style={{ '--stagger-index': index } as React.CSSProperties}
-            >
-              <Link
-                to={`/categories/${encodeURIComponent(cat.name)}`}
-                className="flex-1 flex items-center gap-3 min-w-0"
+          {cats.map((cat, index) => {
+            const isSentence = cat.entityType === 'sentence'
+            const countLabel = isSentence ? `${cat.sentenceCount ?? 0} 句` : `${cat.wordCount} 词`
+            return (
+              <div
+                key={cat.id}
+                className="card p-3 flex items-center gap-3 stagger-item card-hover"
+                style={{ '--stagger-index': index } as React.CSSProperties}
               >
-                <div
-                  className="w-4 h-4 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: cat.color }}
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="font-medium truncate dark:text-gray-200">{cat.name}</div>
-                  {cat.description && (
-                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{cat.description}</div>
-                  )}
-                </div>
-                <span className="text-sm text-gray-400 dark:text-gray-500">{cat.wordCount} 词</span>
-              </Link>
-              <button
-                onClick={() => setEditing(cat)}
-                className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
-                aria-label="编辑"
-              >
-                <Pencil size={16} className="text-gray-400" />
-              </button>
-            </div>
-          ))}
+                <Link
+                  to={`/categories/${encodeURIComponent(cat.name)}`}
+                  className="flex-1 flex items-center gap-3 min-w-0"
+                >
+                  <div
+                    className="w-4 h-4 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: cat.color }}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="font-medium truncate dark:text-gray-200">{cat.name}</span>
+                      {cat.entityType && (
+                        <span
+                          className={`chip shrink-0 ${
+                            cat.entityType === 'word'
+                              ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-300'
+                              : 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-300'
+                          }`}
+                        >
+                          {cat.entityType === 'word' ? '单词' : '短句'}
+                        </span>
+                      )}
+                    </div>
+                    {cat.description && (
+                      <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{cat.description}</div>
+                    )}
+                  </div>
+                  <span className="text-sm text-gray-400 dark:text-gray-500">{countLabel}</span>
+                </Link>
+                <button
+                  onClick={() => setEditing(cat)}
+                  className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+                  aria-label="编辑"
+                >
+                  <Pencil size={16} className="text-gray-400" />
+                </button>
+              </div>
+            )
+          })}
         </div>
       )}
 
@@ -107,6 +124,9 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
   const [name, setName] = useState(category?.name ?? '')
   const [description, setDescription] = useState(category?.description ?? '')
   const [color, setColor] = useState(category?.color ?? PRESET_COLORS[0])
+  const [type, setType] = useState<'word' | 'sentence'>(
+    category?.entityType ?? 'word'
+  )
   const [error, setError] = useState('')
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -119,7 +139,7 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
     }
     try {
       if (mode === 'add') {
-        await addCategory(n, description.trim(), color)
+        await addCategory(n, description.trim(), color, type)
         toast('success', `分类「${n}」已创建`)
       } else if (category?.id) {
         await updateCategory(category.id, { name: n, description: description.trim(), color })
@@ -165,6 +185,58 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
               autoFocus
             />
           </div>
+
+          {mode === 'add' ? (
+            <div>
+              <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">类型 *</label>
+              <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="分类类型">
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={type === 'word'}
+                  onClick={() => setType('word')}
+                  className={`py-2.5 rounded-xl text-sm font-medium border transition-all ${
+                    type === 'word'
+                      ? 'bg-primary-500 text-white border-primary-500 shadow-glow'
+                      : 'border-gray-200 text-gray-600 dark:border-slate-600 dark:text-gray-300 hover:border-primary-300'
+                  }`}
+                >
+                  单词分类
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={type === 'sentence'}
+                  onClick={() => setType('sentence')}
+                  className={`py-2.5 rounded-xl text-sm font-medium border transition-all ${
+                    type === 'sentence'
+                      ? 'bg-purple-500 text-white border-purple-500 shadow-glow'
+                      : 'border-gray-200 text-gray-600 dark:border-slate-600 dark:text-gray-300 hover:border-purple-300'
+                  }`}
+                >
+                  短句分类
+                </button>
+              </div>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1.5">
+                类型创建后不可更改；每个分类只存放一种内容
+              </p>
+            </div>
+          ) : (
+            category?.entityType && (
+              <div>
+                <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">类型</label>
+                <span
+                  className={`chip ${
+                    category.entityType === 'word'
+                      ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-300'
+                      : 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-300'
+                  }`}
+                >
+                  {category.entityType === 'word' ? '单词分类' : '短句分类'}
+                </span>
+              </div>
+            )
+          )}
 
           <div>
             <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">描述</label>

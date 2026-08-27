@@ -2,6 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
 import { Sentence } from '../types/word'
 import { applyStageReview, stageIntervalDays, MAX_STAGE } from '../utils/srs'
+import { ensureCategoryWritable } from '../utils/categoryType'
 import { useNow } from './useNow'
 
 export class DuplicateSentenceError extends Error {
@@ -87,6 +88,8 @@ export function useSentenceCategoryStats() {
 export async function addSentence(s: Omit<Sentence, 'id' | 'createdAt'>): Promise<number> {
   const sentence = s.sentence.trim()
   if (!sentence) throw new Error('短句不能为空')
+  // 分类类型校验：词型分类禁止写入短句；未定型空分类自动锁定为短句型
+  await ensureCategoryWritable('sentence', s.category)
   const existing = await db.sentences.where('sentence').equalsIgnoreCase(sentence).first()
   if (existing) throw new DuplicateSentenceError(existing.sentence)
   const id = await db.sentences.add({ ...s, sentence, createdAt: Date.now() } as Sentence)
@@ -140,7 +143,11 @@ export async function bulkAddSentences(
 
   if (toInsert.length > 0) {
     // 查重 + 插入放进同一事务，防止并发导入产生重复
-    await db.transaction('rw', db.sentences, async () => {
+    await db.transaction('rw', db.sentences, db.words, db.categories, async () => {
+      // 分类类型校验：批内所有涉及分类需允许写入短句（顺带为未定型空分类盖戳）
+      for (const cat of new Set(toInsert.map((s) => s.category))) {
+        await ensureCategoryWritable('sentence', cat)
+      }
       let candidates = toInsert
       if (options.skipDuplicates) {
         const existingSentences = await db.sentences.toArray()
@@ -309,7 +316,8 @@ export async function getRandomSentences(limit: number): Promise<Sentence[]> {
 // ---------- 批量操作 ----------
 export async function bulkSetSentenceCategory(ids: number[], category: string) {
   if (ids.length === 0) return
-  await db.transaction('rw', db.sentences, db.studySessions, async () => {
+  await db.transaction('rw', db.sentences, db.words, db.categories, async () => {
+    await ensureCategoryWritable('sentence', category)
     for (const id of ids) {
       await db.sentences.update(id, { category })
     }

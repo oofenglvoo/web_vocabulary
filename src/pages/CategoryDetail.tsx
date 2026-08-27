@@ -70,6 +70,29 @@ export function CategoryDetail() {
   const sentenceImportHref = `/sentences/import?category=${encodeURIComponent(decoded)}`
   const sentenceAddHref = `/sentences/add?category=${encodeURIComponent(decoded)}`
 
+  // 分类内容形态：
+  // - 双侧都有内容（旧混合数据 / 异常数据）→ 双 Tab 只读浏览，锁定新增（优先判定）
+  // - 已定型 → 单一视图（无 Tab）
+  // - 未定型 + 空 → 初始选择（选择后写入即定型）
+  // - 未定型 + 单侧有内容 → 按内容渲染
+  const typedView: Tab | undefined =
+    cat?.entityType === 'word' ? 'word' : cat?.entityType === 'sentence' ? 'sentence' : undefined
+  let contentMode: 'word' | 'sentence' | 'choose' | 'mixed'
+  if (words.length > 0 && sentences.length > 0) {
+    contentMode = 'mixed'
+  } else if (typedView) {
+    contentMode = typedView
+  } else if (words.length > 0) {
+    contentMode = 'word'
+  } else if (sentences.length > 0) {
+    contentMode = 'sentence'
+  } else {
+    contentMode = 'choose'
+  }
+  // 混合模式下允许查看两个 Tab，但全部新增入口关闭
+  const canAddWord = contentMode !== 'mixed' && (contentMode !== 'sentence')
+  const canAddSentence = contentMode !== 'mixed' && (contentMode !== 'word')
+
   const handleMoveToWord = async (target: string) => {
     if (target === decoded) {
       setShowMove(false)
@@ -118,125 +141,164 @@ export function CategoryDetail() {
         <div className="w-10" />
       </div>
 
-      {/* 单词 | 短句 切换 */}
-      <div className="flex gap-2 mb-3">
-        <button
-          onClick={() => setTab('word')}
-          className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
-            tab === 'word'
-              ? 'bg-primary-500 text-white'
-              : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
-          }`}
-        >
-          单词 {words.length > 0 && `(${words.length})`}
-        </button>
-        <button
-          onClick={() => setTab('sentence')}
-          className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
-            tab === 'sentence'
-              ? 'bg-primary-500 text-white'
-              : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
-          }`}
-        >
-          短句 {sentences.length > 0 && `(${sentences.length})`}
-        </button>
-      </div>
-
-      {tab === 'word' ? (
-        <>
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm text-gray-500 dark:text-gray-400">共 {words.length} 个单词</span>
-            <div className="flex gap-2">
-              <Link
-                to={addHref}
-                className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
-              >
-                <Plus size={14} /> 添加
-              </Link>
-              <Link
-                to={importHref}
-                className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
-              >
-                <Upload size={14} /> 批量导入
-              </Link>
-            </div>
+      {/* 空分类未定型 → 初始选择，决定第一类内容 */}
+      {contentMode === 'choose' ? (
+        <div className="card p-6 text-center">
+          <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-primary flex items-center justify-center text-white shadow-glow">
+            <FolderOpen size={26} />
           </div>
-
-          <SelectableWordList
-            words={words}
-            search={search}
-            onSearchChange={setSearch}
-            onWordClick={(w) => navigate(`/word/${w.id}?category=${encodeURIComponent(decoded)}`)}
-            onFavorite={(w) => toggleFavorite(w.id!, w.isFavorite)}
-            onDelete={(w) => setConfirmDeleteWordId(w.id!)}
-            emptyText="该分类暂无单词"
-            emptyAction={{ label: '批量导入', href: importHref }}
-            batchActions={{
-              onMoveToCategory: (ids) => {
-                setMoveWordIds(ids)
-                setShowMove(true)
-              },
-              onFavoriteAll: (ids) => {
-                bulkSetFavorite(ids, true)
-                toast('success', `已收藏 ${ids.length} 个单词`)
-              },
-              onDeleteAll: (ids) => {
-                setBatchWordIds(ids)
-                setConfirmBatchWordDelete(true)
-              },
-            }}
-          />
-        </>
+          <h3 className="font-bold text-lg mb-1 dark:text-gray-100">还没有内容</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
+            请先选择要放入本分类的内容类型（选定后只存放这一种）
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            <Link to={addHref} className="btn-primary py-2.5 text-sm">
+              添加单词
+            </Link>
+            <Link
+              to={sentenceAddHref}
+              className="py-2.5 rounded-xl text-sm font-medium border border-purple-300 text-purple-600 dark:border-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all inline-flex items-center justify-center"
+            >
+              添加短句
+            </Link>
+          </div>
+        </div>
       ) : (
         <>
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm text-gray-500 dark:text-gray-400">共 {sentences.length} 个短句</span>
-            <div className="flex gap-2">
-              <Link
-                to={sentenceAddHref}
-                className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
-              >
-                <Plus size={14} /> 添加
-              </Link>
-              <Link
-                to={sentenceImportHref}
-                className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
-              >
-                <Upload size={14} /> 批量导入
-              </Link>
-            </div>
-          </div>
+          {/* 仅混合模式显示 Tab 切换；定型分类直接展示对应区域 */}
+          {contentMode === 'mixed' && (
+            <>
+              <div className="bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 p-3 rounded-xl mb-3 text-xs">
+                此分类同时包含单词与短句（旧数据），已锁定新增。请将其中一类移出后自动定型。
+              </div>
+              <div className="flex gap-2 mb-3">
+                <button
+                  onClick={() => setTab('word')}
+                  className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    tab === 'word'
+                      ? 'bg-primary-500 text-white'
+                      : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
+                  }`}
+                >
+                  单词 {words.length > 0 && `(${words.length})`}
+                </button>
+                <button
+                  onClick={() => setTab('sentence')}
+                  className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    tab === 'sentence'
+                      ? 'bg-primary-500 text-white'
+                      : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300'
+                  }`}
+                >
+                  短句 {sentences.length > 0 && `(${sentences.length})`}
+                </button>
+              </div>
+            </>
+          )}
 
-          <SelectableWordList<Sentence>
-            words={sentences}
-            search={search}
-            onSearchChange={setSearch}
-            onWordClick={(s) =>
-              navigate(`/sentence/${s.id}?scope=category&category=${encodeURIComponent(decoded)}`)
-            }
-            onFavorite={(s) => toggleSentenceFavorite(s.id!, s.isFavorite)}
-            onDelete={(s) => setConfirmDeleteSentenceId(s.id!)}
-            renderItem={renderSentence}
-            matchSearch={(q, s) =>
-              enhancedSearch(q, { word: s.sentence, translation: s.translation, definition: (s.definitions ?? []).map((d: any) => `${d.pos ?? ''} ${d.def ?? ''} ${d.trans ?? ''}`).join(' ') })
-            }
-            emptyText="该分类暂无短句"
-            emptyAction={{ label: '批量导入', href: sentenceImportHref }}
-            batchActions={{
-              onMoveToCategory: (ids) => {
-                setMoveSentenceIds(ids)
-                setShowMove(true)
-              },
-              onFavoriteAll: (ids) => {
-                bulkSetSentenceFavorite(ids, true)
-                toast('success', `已收藏 ${ids.length} 个短句`)
-              },
-              onDeleteAll: (ids) => {
-                setBatchSentenceIds(ids)
-                setConfirmBatchSentenceDelete(true)
-              },
-            }}
-          />
+          {(contentMode === 'word' || (contentMode === 'mixed' && tab === 'word')) && (
+            <>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm text-gray-500 dark:text-gray-400">共 {words.length} 个单词</span>
+                {canAddWord && (
+                  <div className="flex gap-2">
+                    <Link
+                      to={addHref}
+                      className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
+                    >
+                      <Plus size={14} /> 添加
+                    </Link>
+                    <Link
+                      to={importHref}
+                      className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
+                    >
+                      <Upload size={14} /> 批量导入
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              <SelectableWordList
+                words={words}
+                search={search}
+                onSearchChange={setSearch}
+                onWordClick={(w) => navigate(`/word/${w.id}?category=${encodeURIComponent(decoded)}`)}
+                onFavorite={(w) => toggleFavorite(w.id!, w.isFavorite)}
+                onDelete={(w) => setConfirmDeleteWordId(w.id!)}
+                emptyText="该分类暂无单词"
+                emptyAction={canAddWord ? { label: '批量导入', href: importHref } : undefined}
+                batchActions={{
+                  onMoveToCategory: (ids) => {
+                    setMoveWordIds(ids)
+                    setShowMove(true)
+                  },
+                  onFavoriteAll: (ids) => {
+                    bulkSetFavorite(ids, true)
+                    toast('success', `已收藏 ${ids.length} 个单词`)
+                  },
+                  onDeleteAll: (ids) => {
+                    setBatchWordIds(ids)
+                    setConfirmBatchWordDelete(true)
+                  },
+                }}
+              />
+            </>
+          )}
+
+          {(contentMode === 'sentence' || (contentMode === 'mixed' && tab === 'sentence')) && (
+            <>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm text-gray-500 dark:text-gray-400">共 {sentences.length} 个短句</span>
+                {canAddSentence && (
+                  <div className="flex gap-2">
+                    <Link
+                      to={sentenceAddHref}
+                      className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
+                    >
+                      <Plus size={14} /> 添加
+                    </Link>
+                    <Link
+                      to={sentenceImportHref}
+                      className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
+                    >
+                      <Upload size={14} /> 批量导入
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              <SelectableWordList<Sentence>
+                words={sentences}
+                search={search}
+                onSearchChange={setSearch}
+                onWordClick={(s) =>
+                  navigate(`/sentence/${s.id}?scope=category&category=${encodeURIComponent(decoded)}`)
+                }
+                onFavorite={(s) => toggleSentenceFavorite(s.id!, s.isFavorite)}
+                onDelete={(s) => setConfirmDeleteSentenceId(s.id!)}
+                renderItem={renderSentence}
+                matchSearch={(q, s) =>
+                  enhancedSearch(q, { word: s.sentence, translation: s.translation, definition: (s.definitions ?? []).map((d: any) => `${d.pos ?? ''} ${d.def ?? ''} ${d.trans ?? ''}`).join(' ') })
+                }
+                emptyText="该分类暂无短句"
+                emptyAction={canAddSentence ? { label: '批量导入', href: sentenceImportHref } : undefined}
+                batchActions={{
+                  onMoveToCategory: (ids) => {
+                    setMoveSentenceIds(ids)
+                    setShowMove(true)
+                  },
+                  onFavoriteAll: (ids) => {
+                    bulkSetSentenceFavorite(ids, true)
+                    toast('success', `已收藏 ${ids.length} 个短句`)
+                  },
+                  onDeleteAll: (ids) => {
+                    setBatchSentenceIds(ids)
+                    setConfirmBatchSentenceDelete(true)
+                  },
+                }}
+              />
+            </>
+          )}
         </>
       )}
 
@@ -244,9 +306,16 @@ export function CategoryDetail() {
         <div className="modal-overlay">
           <div className="modal-content max-h-[80vh] overflow-auto">
             <h3 className="font-bold text-lg mb-4 dark:text-gray-100">移动到分类</h3>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">
+              仅显示允许{tab === 'word' ? '单词' : '短句'}的分类
+            </p>
             <div className="space-y-2">
               {categories
-                .filter((c) => c.name !== decoded)
+                .filter((c) => {
+                  if (c.name === decoded) return false
+                  // 目标必须未定型，或与本侧内容同类型（混合旧分类禁止再移入）
+                  return !c.entityType || c.entityType === tab
+                })
                 .map((c) => (
                   <button
                     key={c.id}
@@ -257,6 +326,11 @@ export function CategoryDetail() {
                   >
                     <div className="w-4 h-4 rounded-full" style={{ backgroundColor: c.color }} />
                     <span className="dark:text-gray-200">{c.name}</span>
+                    {c.entityType && (
+                      <span className="chip ml-auto text-[10px] bg-gray-100 text-gray-500 dark:bg-slate-700 dark:text-gray-400">
+                        {c.entityType === 'word' ? '单词' : '短句'}
+                      </span>
+                    )}
                   </button>
                 ))}
             </div>

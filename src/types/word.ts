@@ -69,6 +69,11 @@ export interface Category {
   color: string
   wordCount: number
   createdAt: number
+  /**
+   * 分类内容类型：新建时选定；旧数据由迁移按内容推断。
+   * undefined = 未定型（空分类，首次写入时锁定）或旧混合数据（锁定新增）。
+   */
+  entityType?: 'word' | 'sentence'
 }
 
 // 复习结果与模式：收紧为字面量联合，避免脏数据 / 拼写错误静默通过
