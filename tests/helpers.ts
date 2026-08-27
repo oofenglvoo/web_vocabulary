@@ -12,6 +12,50 @@ export function url(path: string): string {
 export { BASE }
 
 /**
+ * 直接改写 IndexedDB 中短句的 category 字段（绕过应用校验层），
+ * 用于在测试中构造“旧混合数据”场景。
+ */
+export async function moveSentencesCategory(page: Page, from: string, to: string) {
+  await page.evaluate(([f, t]) => {
+    return new Promise<void>((resolve, reject) => {
+      const req = indexedDB.open('VocabularyDB_v2')
+      req.onsuccess = () => {
+        const db = req.result
+        let settled = false
+        const done = () => {
+          if (!settled) {
+            settled = true
+            db.close()
+            resolve()
+          }
+        }
+        try {
+          const tx = db.transaction('sentences', 'readwrite')
+          const idx = tx.objectStore('sentences').index('category')
+          const cursorReq = idx.openCursor(IDBKeyRange.only(f as string))
+          cursorReq.onsuccess = () => {
+            const cursor = cursorReq.result
+            if (!cursor) {
+              done()
+              return
+            }
+            const value = { ...(cursor.value as Record<string, unknown>), category: t }
+            cursor.update(value)
+            cursor.continue()
+          }
+          cursorReq.onerror = () => reject(cursorReq.error)
+          tx.oncomplete = done
+          tx.onerror = () => reject(tx.error)
+        } catch (e) {
+          reject(e)
+        }
+      }
+      req.onerror = () => reject(req.error)
+    })
+  }, [from, to])
+}
+
+/**
  * 直接改写 IndexedDB 中所有单词的 nextReviewAt 为过去时间（模拟到期复习）。
  * 绕过 UI 层做时间旅行，用于验证复习队列组装逻辑。
  */

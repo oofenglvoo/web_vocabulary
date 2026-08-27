@@ -197,19 +197,29 @@ export function Favorites() {
         <div className="modal-overlay">
           <div className="modal-content max-h-[80vh] overflow-auto">
             <h3 className="font-bold text-lg mb-4 dark:text-gray-100">移动到分类</h3>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">
+              仅显示允许{tab === 'word' ? '单词' : '短句'}的分类
+            </p>
             <div className="space-y-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() =>
-                    tab === 'word' ? handleMoveToWord(cat.name) : handleMoveToSentence(cat.name)
-                  }
-                  className="w-full flex items-center gap-3 p-3 rounded-xl border dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
-                >
-                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: cat.color }} />
-                  <span className="dark:text-gray-200">{cat.name}</span>
-                </button>
-              ))}
+              {categories
+                .filter((c) => !c.entityType || c.entityType === tab)
+                .map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() =>
+                      tab === 'word' ? handleMoveToWord(cat.name) : handleMoveToSentence(cat.name)
+                    }
+                    className="w-full flex items-center gap-3 p-3 rounded-xl border dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+                  >
+                    <div className="w-4 h-4 rounded-full" style={{ backgroundColor: cat.color }} />
+                    <span className="dark:text-gray-200">{cat.name}</span>
+                    {cat.entityType && (
+                      <span className="chip ml-auto text-[10px] bg-gray-100 text-gray-500 dark:bg-slate-700 dark:text-gray-400">
+                        {cat.entityType === 'word' ? '单词' : '短句'}
+                      </span>
+                    )}
+                  </button>
+                ))}
             </div>
             <button onClick={() => setShowMove(false)} className="btn-secondary w-full mt-4">
               取消

@@ -2,6 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
 import { Word, Category, Flag, StudyKind } from '../types/word'
 import { applyStageReview, stageIntervalDays, MAX_STAGE, getTodayReviewCutoff } from '../utils/srs'
+import { ensureCategoryWritable } from '../utils/categoryType'
 import { useNow } from './useNow'
 
 export function useAllWords() {
@@ -42,16 +43,28 @@ export function useWordsByCategory(category: string) {
 }
 
 export function useCategoryStats() {
-  // 返回每个分类的实际单词数 (基于 words 表 category 字段)
-  // 用 orderBy('category').each 迭代索引键而非 toArray() 物化整表，降低内存占用
+  // 返回每个分类的实际单词/短句数与类型信息（基于 words/sentences 表 category 字段）
+  // 注意：两个 toArray 都在 LiveQuery 观察范围内，任一表变更都会触发重算
   return (
     useLiveQuery(async () => {
-      const cats = await db.categories.toArray()
-      const counts: Record<string, number> = {}
-      await db.words.orderBy('category').each((w) => {
-        counts[w.category] = (counts[w.category] ?? 0) + 1
-      })
-      return cats.map((c) => ({ ...c, wordCount: counts[c.name] ?? 0 }))
+      const [cats, words, sentences] = await Promise.all([
+        db.categories.toArray(),
+        db.words.toArray(),
+        db.sentences.toArray(),
+      ])
+      const wordCounts: Record<string, number> = {}
+      for (const w of words) {
+        wordCounts[w.category] = (wordCounts[w.category] ?? 0) + 1
+      }
+      const sentenceCounts: Record<string, number> = {}
+      for (const s of sentences) {
+        sentenceCounts[s.category] = (sentenceCounts[s.category] ?? 0) + 1
+      }
+      return cats.map((c) => ({
+        ...c,
+        wordCount: wordCounts[c.name] ?? 0,
+        sentenceCount: sentenceCounts[c.name] ?? 0,
+      }))
     }, []) ?? []
   )
 }
@@ -152,6 +165,8 @@ export class DuplicateWordError extends Error {
 export async function addWord(word: Omit<Word, 'id' | 'createdAt'>): Promise<number> {
   const trimmed = word.word.trim()
   if (!trimmed) throw new Error('单词不能为空')
+  // 分类类型校验：句型分类禁止写入单词；未定型空分类自动锁定为单词型
+  await ensureCategoryWritable('word', word.category)
   // 写入前查重（大小写不敏感），避免手动录入重复单词
   const existing = await db.words.where('word').equalsIgnoreCase(trimmed).first()
   if (existing) {
@@ -202,7 +217,11 @@ export async function bulkAddWords(
 
   if (toInsert.length > 0) {
     // 查重 + 插入放进同一事务：防止两个并发导入同时通过查重造成重复
-    await db.transaction('rw', db.words, async () => {
+    await db.transaction('rw', db.words, db.sentences, db.categories, async () => {
+      // 分类类型校验：批内所有涉及分类需允许写入单词（顺带为未定型空分类盖戳）
+      for (const cat of new Set(toInsert.map((w) => w.category))) {
+        await ensureCategoryWritable('word', cat)
+      }
       let candidates = toInsert
       if (options.skipDuplicates) {
         const existingWords = await db.words.toArray()
@@ -404,7 +423,12 @@ export class DuplicateCategoryError extends Error {
   }
 }
 
-export async function addCategory(name: string, description = '', color = '#8b5cf6') {
+export async function addCategory(
+  name: string,
+  description = '',
+  color = '#8b5cf6',
+  entityType?: 'word' | 'sentence'
+) {
   const trimmed = name.trim()
   if (!trimmed) throw new Error('分类名称不能为空')
   const existing = await db.categories.where('name').equalsIgnoreCase(trimmed).first()
@@ -417,6 +441,7 @@ export async function addCategory(name: string, description = '', color = '#8b5c
     color,
     wordCount: 0,
     createdAt: Date.now(),
+    ...(entityType ? { entityType } : {}),
   })
 }
 
@@ -509,7 +534,8 @@ export async function deleteCategory(
 // 批量操作
 export async function bulkSetCategory(ids: number[], category: string) {
   if (ids.length === 0) return
-  await db.transaction('rw', db.words, async () => {
+  await db.transaction('rw', db.words, db.sentences, db.categories, async () => {
+    await ensureCategoryWritable('word', category)
     for (const id of ids) {
       await db.words.update(id, { category })
     }

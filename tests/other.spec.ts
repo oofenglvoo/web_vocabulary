@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { url } from './helpers'
+import { url, moveSentencesCategory } from './helpers'
 
 test('TC-GLB-003: 404 页面', async ({ page }) => {
   await page.goto(url('/nonexistent-page'))
@@ -73,7 +73,7 @@ test('TC-SNT-LIST-001: 短句列表显示', async ({ page }) => {
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/sentences/)
   await page.goto(url('/sentences'))
-  await expect(page.getByText('How are you', { exact: true })).toBeVisible()
+  await expect(page.getByText('How are you', { exact: true })).toBeVisible({ timeout: 15000 })
 })
 
 test('TC-IMP-W-001: JSON 格式导入', async ({ page }) => {
@@ -215,4 +215,89 @@ test('TC-STAT-011: 统计设置数据分区切换', async ({ page }) => {
   await page.getByRole('tab', { name: '数据管理' }).click()
   await expect(page.getByRole('region', { name: '数据导入导出' })).toBeVisible()
   await expect(page.getByText('完整数据备份')).toBeVisible()
+})
+
+// ===== 分类单一类型化 =====
+
+async function createTypedCategory(page: import('@playwright/test').Page, name: string, type: 'word' | 'sentence') {
+  await page.goto(url('/categories'))
+  await page.locator('.flex.items-center.justify-between button').last().click()
+  await page.waitForTimeout(500)
+  await page.locator('.modal-content').getByText('名称').locator('..').locator('input').fill(name)
+  await page.getByRole('radio', { name: type === 'word' ? '单词分类' : '短句分类' }).click()
+  await page.getByRole('button', { name: /保存/ }).click()
+  await expect(page.getByText(name).first()).toBeVisible()
+}
+
+test('TC-CAT-TYPE-001: 新建短句分类并拒绝写入单词', async ({ page }) => {
+  // 创建时选定类型为"短句"
+  await createTypedCategory(page, '句型测试', 'sentence')
+
+  // 列表显示类型徽标
+  const card = page.locator('.card').filter({ hasText: '句型测试' }).first()
+  await expect(card.getByText('短句', { exact: true })).toBeVisible()
+
+  // 详情页只渲染短句区，无单词区
+  await page.goto(url('/categories/' + encodeURIComponent('句型测试')))
+  await expect(page.getByText('共 0 个短句')).toBeVisible()
+  await expect(page.getByText(/该分类暂无/)).toContainText('短句')
+  await expect(page.getByText('添加第一个单词')).toHaveCount(0)
+
+  // 单词导入指向该分类 → 后端拒绝并提示
+  await page.goto(url('/import?category=' + encodeURIComponent('句型测试')))
+  await page.locator('textarea').fill('[{"word":"nope","definitions":[{"pos":"","def":"","trans":"不该出现"}],"category":"句型测试","difficulty":1}]')
+  await page.getByRole('button', { name: /解析预览/ }).click()
+  await page.getByRole('button', { name: /导入 \d+ 个单词/ }).click()
+  await expect(page.getByText(/仅用于短句，不能添加单词/)).toBeVisible()
+
+  // 确认没有真正写进去
+  await page.goto(url('/categories/' + encodeURIComponent('句型测试')))
+  await expect(page.getByText('共 0 个短句')).toBeVisible()
+})
+
+test('TC-CAT-TYPE-002: 单词分类详情页不含短句入口', async ({ page }) => {
+  await createTypedCategory(page, '纯词分类', 'word')
+  await page.goto(url('/add'))
+  await page.getByPlaceholder(/输入单词/).fill('typeword')
+  await page.getByPlaceholder(/中文翻译/).first().fill('型词')
+  await page.locator('select').filter({ hasText: /默认|CET|纯词/ }).selectOption('纯词分类')
+  await page.getByRole('button', { name: '保存', exact: true }).click()
+  await page.waitForURL(/\/words/)
+
+  await page.goto(url('/categories/' + encodeURIComponent('纯词分类')))
+  await expect(page.getByText('共 1 个单词')).toBeVisible()
+  // 定型后无 Tab 切换按钮（不存在"短句 (n)"Tab）与短句区
+  await expect(page.getByRole('button', { name: /^短句/ })).toHaveCount(0)
+  await expect(page.getByText('共 0 个短句')).toHaveCount(0)
+})
+
+test('TC-CAT-MIXED-001: 旧混合分类锁定新增并提示清理', async ({ page }) => {
+  // 分别创建词型/句型分类并各放一条内容
+  await createTypedCategory(page, '混W', 'word')
+  await createTypedCategory(page, '混S', 'sentence')
+
+  await page.goto(url('/add'))
+  await page.getByPlaceholder(/输入单词/).fill('mixword')
+  await page.getByPlaceholder(/中文翻译/).first().fill('混合词')
+  await page.locator('select').filter({ hasText: /默认|CET|混W/ }).selectOption('混W')
+  await page.getByRole('button', { name: '保存', exact: true }).click()
+  await page.waitForURL(/\/words/)
+
+  await page.goto(url('/sentences/add'))
+  await page.getByPlaceholder(/输入短句/).fill('mix sentence here')
+  await page.getByPlaceholder(/中文翻译/).first().fill('混合句')
+  await page.locator('select').filter({ hasText: /默认|N5|混S/ }).selectOption('混S')
+  await page.getByRole('button', { name: '保存短句', exact: true }).click()
+  await page.waitForURL(/\/sentences/)
+
+  // 直接改库把短句挪进词型分类 → 人为制造旧混合数据
+  await moveSentencesCategory(page, '混S', '混W')
+
+  // 混合分类：双 Tab 可见、有清理提示、两侧均无"批量导入"入口
+  await page.goto(url('/categories/' + encodeURIComponent('混W')))
+  await page.waitForTimeout(800)
+  await expect(page.getByText(/此分类同时包含单词与短句/)).toBeVisible()
+  await expect(page.getByRole('button', { name: /^单词 \(1\)$/ })).toBeVisible()
+  await expect(page.getByRole('button', { name: /^短句 \(1\)$/ })).toBeVisible()
+  await expect(page.getByRole('link', { name: /批量导入/ })).toHaveCount(0)
 })

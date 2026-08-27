@@ -119,6 +119,31 @@ class VocabularyDatabase extends Dexie {
         s.entityId = s.wordId
       })
     })
+    // v9: 分类增加 entityType（单词/短句单一类型化）。
+    //     按现有内容推断：只有单词→word；只有短句→sentence；混合或空→undefined。
+    this.version(9).stores({
+      words: '++id, word, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      sentences: '++id, sentence, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      categories: '++id, name',
+      studySessions: '++id, wordId, entityId, entityType, timestamp, kind',
+      studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
+    }).upgrade(async (tx) => {
+      const wordCats = new Set<string>()
+      await tx.table('words').toCollection().each((w: any) => {
+        if (w.category) wordCats.add(w.category)
+      })
+      const sentenceCats = new Set<string>()
+      await tx.table('sentences').toCollection().each((s: any) => {
+        if (s.category) sentenceCats.add(s.category)
+      })
+      await tx.table('categories').toCollection().modify((c: any) => {
+        const hasWord = wordCats.has(c.name)
+        const hasSentence = sentenceCats.has(c.name)
+        if (hasWord && !hasSentence) c.entityType = 'word'
+        else if (hasSentence && !hasWord) c.entityType = 'sentence'
+        // 混合或空 → 保持 undefined（运行时锁定新增 / 待首次写入定型）
+      })
+    })
   }
 }
 
