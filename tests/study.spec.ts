@@ -206,13 +206,15 @@ test('TC-STUDY-QCK-010: 长内容展开时评分按钮进入视口', async ({ pa
   await page.locator('button').filter({ hasText: /short-entry|long-[ab]/ }).first().click()
   await page.getByRole('button', { name: '记得', exact: true }).click()
 
-  // 展开（唯一）的"忘记"按钮必须完整出现在视口内，允许平滑滚动进行中重试
+  // 展开（唯一）的"忘记"按钮必须完整出现在底部导航栏上方的可视区域，允许平滑滚动进行中重试
   const forget = page.getByRole('button', { name: '忘记', exact: true })
   await expect(forget).toHaveCount(1)
   await expect.poll(async () => {
     return forget.evaluate((element) => {
+      const nav = document.querySelector('nav')
+      const limit = nav ? nav.getBoundingClientRect().top : window.innerHeight
       const rect = element.getBoundingClientRect()
-      return rect.top >= 0 && rect.bottom <= window.innerHeight && rect.height > 0
+      return rect.top >= 0 && rect.bottom <= limit && rect.height > 0
     })
   }, { timeout: 4000 }).toBeTruthy()
 })

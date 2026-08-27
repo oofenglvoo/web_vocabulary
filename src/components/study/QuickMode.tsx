@@ -53,6 +53,7 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
   // 自动展开下一项后，把"忘记/记得/掌握"操作区滚到可视区域。
   // 用按钮区而不是整卡作目标：内容长于视口时 nearest 只能把卡顶滚进来，
   // 按钮仍会被挡住；以按钮区为目标能保证可以直接开始评分。
+  // 底部有固定的主导航栏，用 scroll-margin-bottom 让按钮最终停在菜单上方。
   useEffect(() => {
     const id = autoScrollId.current
     if (id === null) return
@@ -60,7 +61,11 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
     const frame = window.requestAnimationFrame(() => {
       const target =
         document.getElementById(`quick-actions-${id}`) ?? itemRefs.current[id]
-      target?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      if (!target) return
+      const nav = document.querySelector('nav')
+      const navHeight = nav ? nav.getBoundingClientRect().height : 0
+      target.style.scrollMarginBottom = `${Math.round(navHeight + 8)}px`
+      target.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     })
     return () => window.cancelAnimationFrame(frame)
   }, [expanded])
