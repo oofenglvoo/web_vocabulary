@@ -50,14 +50,17 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
      })
    }
 
-  // 自动展开下一项后，把它滚到可视区域；nearest 会只滚动必要距离，
-  // 因此不会把列表跳回顶部，也能让展开内容尽量完整地出现在视口内。
+  // 自动展开下一项后，把"忘记/记得/掌握"操作区滚到可视区域。
+  // 用按钮区而不是整卡作目标：内容长于视口时 nearest 只能把卡顶滚进来，
+  // 按钮仍会被挡住；以按钮区为目标能保证可以直接开始评分。
   useEffect(() => {
     const id = autoScrollId.current
     if (id === null) return
     autoScrollId.current = null
     const frame = window.requestAnimationFrame(() => {
-      itemRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      const target =
+        document.getElementById(`quick-actions-${id}`) ?? itemRefs.current[id]
+      target?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     })
     return () => window.cancelAnimationFrame(frame)
   }, [expanded])
@@ -154,7 +157,7 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
                     {item.renderDefs()}
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2">
+                  <div id={`quick-actions-${item.id}`} className="grid grid-cols-3 gap-2">
                     <button
                       type="button"
                       onClick={(e) => {

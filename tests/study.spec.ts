@@ -185,6 +185,38 @@ test('TC-STUDY-QCK-009: 自动展开下一词并滚动到可见区域', async ({
   expect(isVisible).toBeTruthy()
 })
 
+test('TC-STUDY-QCK-010: 长内容展开时评分按钮进入视口', async ({ page }) => {
+  // 通过 JSON 导入创建两个释义超长的单词，保证展开内容高度超过视口
+  const longTrans = '很'.repeat(500)
+  await page.goto(url('/import'))
+  await page.locator('textarea').fill(JSON.stringify([
+    { word: 'short-entry', definitions: [{ pos: '', def: '', trans: '短' }], category: '默认', difficulty: 1 },
+    { word: 'long-a', definitions: [{ pos: '', def: '', trans: longTrans }], category: '默认', difficulty: 1 },
+    { word: 'long-b', definitions: [{ pos: '', def: '', trans: longTrans }], category: '默认', difficulty: 1 },
+  ]))
+  await page.getByRole('button', { name: /解析预览/ }).click()
+  await page.getByRole('button', { name: /导入 \d+ 个单词/ }).click()
+  await expect(page.getByText(/成功导入/)).toBeVisible()
+
+  await page.goto(url('/study'))
+  await page.waitForTimeout(1000)
+  await switchToQuick(page)
+
+  // 展开第一个词并评分 → 自动展开下一个未评词（必为长内容词）
+  await page.locator('button').filter({ hasText: /short-entry|long-[ab]/ }).first().click()
+  await page.getByRole('button', { name: '记得', exact: true }).click()
+
+  // 展开（唯一）的"忘记"按钮必须完整出现在视口内，允许平滑滚动进行中重试
+  const forget = page.getByRole('button', { name: '忘记', exact: true })
+  await expect(forget).toHaveCount(1)
+  await expect.poll(async () => {
+    return forget.evaluate((element) => {
+      const rect = element.getBoundingClientRect()
+      return rect.top >= 0 && rect.bottom <= window.innerHeight && rect.height > 0
+    })
+  }, { timeout: 4000 }).toBeTruthy()
+})
+
 // ===== 题型切换 =====
 
 test('TC-STUDY-SWITCH-001: 新学题型切换', async ({ page }) => {
