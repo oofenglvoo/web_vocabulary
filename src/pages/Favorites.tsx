@@ -144,23 +144,25 @@ export function Favorites() {
         </button>
       </div>
 
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-sm text-gray-500 dark:text-gray-400">
+          共 {tab === 'word' ? words.length : sentences.length} 个
+        </span>
+        <Link
+          to={tab === 'word' ? '/import?favorite=1' : '/sentences/import?favorite=1'}
+          className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
+        >
+          <Upload size={14} /> 导入并收藏
+        </Link>
+      </div>
+
+      <div className="flex gap-2 mb-3">
+        <TabButton active={tab === 'word'} onClick={() => setTab('word')} label={`单词${wordIdSet.size > 0 ? ` (${wordIdSet.size})` : ''}`} />
+        <TabButton active={tab === 'sentence'} onClick={() => setTab('sentence')} label={`短句${sentenceIdSet.size > 0 ? ` (${sentenceIdSet.size})` : ''}`} />
+      </div>
+
       {tab === 'word' ? (
         <>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex gap-2 mb-0" />
-            <span className="text-sm text-gray-500 dark:text-gray-400">共 {words.length} 个</span>
-            <Link
-              to="/import?favorite=1"
-              className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
-            >
-              <Upload size={14} /> 导入并收藏
-            </Link>
-          </div>
-
-          <div className="flex gap-2 mb-3">
-            <TabButton active={tab === 'word'} onClick={() => setTab('word')} label={`单词${words.length > 0 ? ` (${words.length})` : ''}`} />
-            <TabButton active={false} onClick={() => setTab('sentence')} label={`短句${sentenceIdSet.size > 0 ? ` (${sentenceIdSet.size})` : ''}`} />
-          </div>
 
           <SelectableWordList
             words={words}
@@ -192,20 +194,6 @@ export function Favorites() {
         </>
       ) : (
         <>
-          <div className="flex gap-2 mb-3">
-            <TabButton active={false} onClick={() => setTab('word')} label={`单词${wordIdSet.size > 0 ? ` (${wordIdSet.size})` : ''}`} />
-            <TabButton active={true} onClick={() => setTab('sentence')} label={`短句${sentences.length > 0 ? ` (${sentences.length})` : ''}`} />
-          </div>
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm text-gray-500 dark:text-gray-400">共 {sentences.length} 个</span>
-            <Link
-              to="/sentences/import?favorite=1"
-              className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
-            >
-              <Upload size={14} /> 导入并收藏
-            </Link>
-          </div>
-
           <SelectableWordList<Sentence>
             words={sentences}
             search={search}

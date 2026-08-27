@@ -2,6 +2,15 @@ import { useState } from 'react'
 import { Heart, Plus, X } from 'lucide-react'
 import { useEntityFolderIds, useFavoriteFolders, setItemFolders, createFolder, renameFolder } from '../hooks/useFavorites'
 import { DEFAULT_FOLDER_NAME } from '../hooks/useFavorites'
+import { useToast } from './Toast'
+
+const LAST_FOLDER_KEY = 'vocab:lastFavoriteFolderId'
+
+function getLastFolderId(folders: { id?: number; name: string }[]) {
+  const saved = Number(localStorage.getItem(LAST_FOLDER_KEY))
+  if (Number.isInteger(saved) && folders.some((folder) => folder.id === saved)) return saved
+  return folders.find((folder) => folder.name === DEFAULT_FOLDER_NAME)?.id ?? folders[0]?.id
+}
 
 const PRESET_COLORS = [
   '#ef4444', '#8b5cf6', '#06b6d4', '#f97316', '#3b82f6',
@@ -21,8 +30,28 @@ interface FavoriteButtonProps {
 export function FavoriteButton({ entityType, entityId, title }: FavoriteButtonProps) {
   const [open, setOpen] = useState(false)
   const folderIds = useEntityFolderIds(entityType, entityId)
+  const folders = useFavoriteFolders()
+  const { toast } = useToast()
   const active = folderIds.length > 0
-  void title
+
+  const favoriteInLastFolder = async () => {
+    const folderId = getLastFolderId(folders)
+    if (folderId == null) {
+      setOpen(true)
+      return
+    }
+    try {
+      await setItemFolders(entityType, entityId, [folderId])
+      localStorage.setItem(LAST_FOLDER_KEY, String(folderId))
+      const folderName = folders.find((folder) => folder.id === folderId)?.name ?? DEFAULT_FOLDER_NAME
+      toast('success', `${title ? `「${title}」` : '内容'}已收藏到「${folderName}」`, 5000, {
+        label: '收藏到其他目录',
+        onClick: () => setOpen(true),
+      })
+    } catch (e) {
+      toast('error', (e as Error).message || '收藏失败')
+    }
+  }
 
   return (
     <>
@@ -30,7 +59,8 @@ export function FavoriteButton({ entityType, entityId, title }: FavoriteButtonPr
         type="button"
         onClick={(e) => {
           e.stopPropagation()
-          setOpen(true)
+          if (active) setOpen(true)
+          else void favoriteInLastFolder()
         }}
         className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors shrink-0"
         aria-label={active ? '编辑收藏' : '加入收藏'}
@@ -45,6 +75,7 @@ export function FavoriteButton({ entityType, entityId, title }: FavoriteButtonPr
           entityId={entityId}
           currentFolderIds={folderIds}
           onClose={() => setOpen(false)}
+          onSaved={(folderId) => localStorage.setItem(LAST_FOLDER_KEY, String(folderId))}
         />
       )}
     </>
@@ -56,14 +87,17 @@ function FavoritePanel({
   entityId,
   currentFolderIds,
   onClose,
+  onSaved,
 }: {
   entityType: 'word' | 'sentence'
   entityId: number
   currentFolderIds: number[]
   onClose: () => void
+  onSaved: (folderId: number) => void
 }) {
   const folders = useFavoriteFolders()
   const [selected, setSelected] = useState<Set<number>>(new Set(currentFolderIds))
+  const [lastSelectedId, setLastSelectedId] = useState<number | undefined>(currentFolderIds[0])
   const [creating, setCreating] = useState(false)
   const [newName, setNewName] = useState('')
   const [newColor, setNewColor] = useState(PRESET_COLORS[1])
@@ -74,7 +108,10 @@ function FavoritePanel({
     setSelected((prev) => {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
-      else next.add(id)
+      else {
+        next.add(id)
+        setLastSelectedId(id)
+      }
       return next
     })
   }
@@ -84,6 +121,7 @@ function FavoritePanel({
     try {
       const id = await createFolder(newName, newColor)
       setSelected((prev) => new Set(prev).add(id))
+      setLastSelectedId(id)
       setCreating(false)
       setNewName('')
     } catch (e) {
@@ -96,6 +134,7 @@ function FavoritePanel({
     setSaving(true)
     try {
       await setItemFolders(entityType, entityId, Array.from(selected))
+      if (lastSelectedId != null && selected.has(lastSelectedId)) onSaved(lastSelectedId)
       onClose()
     } catch (e) {
       setError((e as Error).message || '保存失败')

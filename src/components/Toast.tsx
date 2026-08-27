@@ -8,10 +8,11 @@ interface Toast {
   type: ToastType
   message: string
   duration: number
+  action?: { label: string; onClick: () => void }
 }
 
 interface ToastContextValue {
-  toast: (type: ToastType, message: string, duration?: number) => void
+  toast: (type: ToastType, message: string, duration?: number, action?: Toast['action']) => void
 }
 
 const ToastContext = createContext<ToastContextValue>({
@@ -27,9 +28,9 @@ let toastId = 0
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([])
 
-  const addToast = useCallback((type: ToastType, message: string, duration = 3000) => {
+  const addToast = useCallback((type: ToastType, message: string, duration = 3000, action?: Toast['action']) => {
     const id = ++toastId
-    setToasts((prev) => [...prev, { id, type, message, duration }])
+    setToasts((prev) => [...prev, { id, type, message, duration, action }])
   }, [])
 
   const removeToast = useCallback((id: number) => {
@@ -88,7 +89,21 @@ function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: number) =
       <span className="text-sm font-medium text-gray-800 dark:text-gray-100 flex-1">
         {toast.message}
       </span>
+      {toast.action && (
+        <button
+          type="button"
+          onClick={() => {
+            toast.action?.onClick()
+            onRemove(toast.id)
+          }}
+          className="shrink-0 text-sm font-semibold text-primary-600 dark:text-primary-300 hover:underline whitespace-nowrap"
+        >
+          {toast.action.label}
+        </button>
+      )}
       <button
+        type="button"
+        aria-label="关闭提示"
         onClick={() => onRemove(toast.id)}
         className="shrink-0 p-0.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
       >
