@@ -1,5 +1,5 @@
 import Dexie, { Table } from 'dexie'
-import { Word, Category, StudySession, StudyPlan, Sentence, Definition } from '../types/word'
+import { Word, Category, StudySession, StudyPlan, Sentence, Definition, FavoriteFolder, FavoriteItem } from '../types/word'
 
 class VocabularyDatabase extends Dexie {
   words!: Table<Word>
@@ -7,6 +7,8 @@ class VocabularyDatabase extends Dexie {
   categories!: Table<Category>
   studySessions!: Table<StudySession>
   studyPlans!: Table<StudyPlan>
+  favoriteFolders!: Table<FavoriteFolder>
+  favoriteItems!: Table<FavoriteItem>
 
   constructor() {
     super('VocabularyDB_v2')
@@ -143,6 +145,41 @@ class VocabularyDatabase extends Dexie {
         else if (hasSentence && !hasWord) c.entityType = 'sentence'
         // 混合或空 → 保持 undefined（运行时锁定新增 / 待首次写入定型）
       })
+    })
+    // v10: 多收藏夹。favoriteFolders 存目录；favoriteItems 为 word/sentence 与夹的多对多行。
+    //      旧 isFavorite=1 的内容迁入系统"默认"收藏夹；标志继续双写（=属于至少一个夹）。
+    this.version(10).stores({
+      words: '++id, word, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      sentences: '++id, sentence, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      categories: '++id, name',
+      studySessions: '++id, wordId, entityId, entityType, timestamp, kind',
+      studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
+      favoriteFolders: '++id, name, createdAt',
+      favoriteItems: '++id, folderId, entityId, [entityType+entityId]',
+    }).upgrade(async (tx) => {
+      // 已存在收藏夹数据则视为已完成迁移（理论上首次到 v10 才会走这里）
+      const existing = await tx.table('favoriteFolders').count()
+      let defaultFolderId: number
+      if (existing === 0) {
+        defaultFolderId = Number(
+          await tx.table('favoriteFolders').add({
+            name: '默认',
+            color: '#ef4444',
+            createdAt: Date.now(),
+          } as FavoriteFolder)
+        )
+      } else {
+        const first = await tx.table('favoriteFolders').orderBy('createdAt').first()
+        defaultFolderId = first!.id!
+      }
+      const rows: FavoriteItem[] = []
+      await tx.table('words').where('isFavorite').equals(1).each((w: any) => {
+        rows.push({ folderId: defaultFolderId, entityType: 'word', entityId: w.id, createdAt: Date.now() })
+      })
+      await tx.table('sentences').where('isFavorite').equals(1).each((s: any) => {
+        rows.push({ folderId: defaultFolderId, entityType: 'sentence', entityId: s.id, createdAt: Date.now() })
+      })
+      if (rows.length > 0) await tx.table('favoriteItems').bulkAdd(rows)
     })
   }
 }

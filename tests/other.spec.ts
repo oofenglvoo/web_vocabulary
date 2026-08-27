@@ -301,3 +301,70 @@ test('TC-CAT-MIXED-001: 旧混合分类锁定新增并提示清理', async ({ pa
   await expect(page.getByRole('button', { name: /^短句 \(1\)$/ })).toBeVisible()
   await expect(page.getByRole('link', { name: /批量导入/ })).toHaveCount(0)
 })
+
+// ===== 多收藏夹 =====
+
+test('TC-FAV-FOLD-001: 学习页点心形收藏进新夹', async ({ page }) => {
+  await page.goto(url('/add'))
+  await page.getByPlaceholder(/输入单词/).fill('favword')
+  await page.getByPlaceholder(/中文翻译/).first().fill('藏词')
+  await page.getByRole('button', { name: '保存', exact: true }).click()
+  await page.waitForURL(/\/words/)
+
+  // 学习页（回忆式卡片正面）点心形 → 面板新建夹并勾选
+  await page.goto(url('/study'))
+  await page.waitForTimeout(1200)
+  await page.getByRole('button', { name: /加入收藏|编辑收藏/ }).first().click()
+  await page.getByRole('button', { name: /新建收藏夹/ }).click()
+  await page.getByPlaceholder('收藏夹名称').fill('重点词')
+  await page.getByRole('button', { name: /创建并勾选/ }).click()
+  await page.getByRole('button', { name: /确定 \(1\)/ }).click()
+
+  // 收藏页出现"重点词"chip，选中后列表含 favword
+  await page.goto(url('/favorites'))
+  const chip = page.locator('[role="button"]').filter({ hasText: '重点词' })
+  await expect(chip.first()).toBeVisible()
+  await chip.first().click()
+  await expect(page.getByText('favword', { exact: true })).toBeVisible()
+})
+
+test('TC-FAV-FOLD-002: 新建/重命名收藏夹，默认夹无删除', async ({ page }) => {
+  await page.goto(url('/favorites'))
+  // 打开新建
+  await page.getByRole('button', { name: '新建收藏夹' }).click()
+  await page.getByPlaceholder('收藏夹名称').fill('口语表达')
+  await page.locator('.modal-content').getByRole('button', { name: '保存' }).click()
+  const chip = page.locator('[role="button"]').filter({ hasText: '口语表达' })
+  await expect(chip.first()).toBeVisible()
+
+  // 编辑"默认"：无删除按钮，可重命名
+  const defChip = page.locator('[role="button"]').filter({ hasText: /^默认/ }).first()
+  await expect(defChip).toBeVisible()
+  await defChip.getByRole('button', { name: /管理 默认/ }).click()
+  const dialog = page.locator('.modal-content')
+  await expect(dialog).toBeVisible()
+  await expect(dialog.getByRole('button', { name: /删除/ })).toHaveCount(0)
+  await dialog.getByPlaceholder('收藏夹名称').fill('我的默认')
+  await dialog.getByRole('button', { name: '保存' }).click()
+  await expect(page.locator('[role="button"]').filter({ hasText: '我的默认' }).first()).toBeVisible()
+})
+
+test('TC-FAV-MIG-001: 详情页心形面板多归属与默认夹迁移', async ({ page }) => {
+  await page.goto(url('/add'))
+  await page.getByPlaceholder(/输入单词/).fill('foldw')
+  await page.getByPlaceholder(/中文翻译/).first().fill('夹词')
+  await page.getByRole('button', { name: '保存', exact: true }).click()
+  await page.waitForURL(/\/words/)
+
+  // 从详情页旧入口进入 → 现为统一面板
+  await page.goto(url('/words'))
+  await page.getByText('foldw', { exact: true }).waitFor({ timeout: 10000 })
+  await page.getByText('foldw', { exact: true }).click()
+  await page.getByRole('button', { name: /加入收藏/ }).click()
+  // 默认夹应已存在且可勾选
+  await page.getByRole('checkbox').first().check()
+  await page.getByRole('button', { name: /确定 \(1\)/ }).click()
+
+  // 已收藏徽标
+  await expect(page.getByText('已收藏')).toBeVisible()
+})

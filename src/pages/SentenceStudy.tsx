@@ -468,6 +468,7 @@ export function SentenceStudy() {
             onRate={(q) => handleRate(currentItem, q)}
             onMaster={() => setConfirmMaster(true)}
             onSpeak={() => speak(currentItem)}
+            entityType="sentence"
           />
         )}
         {studyType === 'choice' && currentItem && (
@@ -478,6 +479,7 @@ export function SentenceStudy() {
             onRate={(q) => handleRate(currentItem, q)}
             onMaster={() => setConfirmMaster(true)}
             onSpeak={() => speak(currentItem)}
+            entityType="sentence"
           />
         )}
         {studyType === 'quick' && (
@@ -486,6 +488,7 @@ export function SentenceStudy() {
             items={queue}
             onRateAll={handleQuickSubmit}
             onSpeak={speak}
+            entityType="sentence"
           />
         )}
       </div>

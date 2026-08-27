@@ -6,6 +6,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { NotFound } from './components/NotFound'
 import { Home } from './pages/Home'
 import { initDefaultCategories } from './hooks/useWords'
+import { ensureDefaultFolder } from './hooks/useFavorites'
 
 // 按需加载重页面，减小首屏 bundle
 const Study = lazy(() => import('./pages/Study').then((m) => ({ default: m.Study })))
@@ -36,7 +37,9 @@ function PageFallback() {
 
 function App() {
   useEffect(() => {
+    // 全新数据库不会执行 Dexie upgrade 回调，默认收藏夹需在启动时惰性确保存在
     initDefaultCategories()
+    ensureDefaultFolder().catch(() => {})
   }, [])
   return (
     <ErrorBoundary>

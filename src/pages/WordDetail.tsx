@@ -15,13 +15,13 @@ import {
 import {
   useWordById,
   deleteWord,
-  toggleFavorite,
   updateWord,
   useCategories,
   useAllWords,
   useFavoriteWords,
   useWordsByCategory,
 } from '../hooks/useWords'
+import { FavoriteButton } from '../components/FavoriteButton'
 import { speakWord } from '../utils/tts'
 import { getDefinitions } from '../utils/definitions'
 import { BackButton } from '../components/BackButton'
@@ -176,16 +176,7 @@ export function WordDetail() {
       <div className="flex items-center justify-between mb-4">
         <BackButton />
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => toggleFavorite(word.id!, word.isFavorite)}
-            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
-            aria-label="收藏"
-          >
-            <Heart
-              size={20}
-              className={word.isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'}
-            />
-          </button>
+          <FavoriteButton entityType="word" entityId={word.id!} title={word.word} />
           <button
             onClick={() => setShowMove(true)}
             className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"

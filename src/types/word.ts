@@ -82,6 +82,23 @@ export type StudySessionMode = StudyMode | 'mark-learned'
 // 新学 vs 复习（打卡双圈与统计区分用）
 export type StudyKind = 'new' | 'review'
 
+// 收藏夹：多目录收藏。旧版 isFavorite 标志保留为"属于至少一个夹"的派生值
+export interface FavoriteFolder {
+  id?: number
+  name: string
+  color: string
+  createdAt: number
+}
+
+// 收藏条目：word/sentence 与收藏夹的多对多关系行
+export interface FavoriteItem {
+  id?: number
+  folderId: number
+  entityType: 'word' | 'sentence'
+  entityId: number
+  createdAt: number
+}
+
 export interface StudySession {
   id?: number
   /** 旧字段，保留用于读取旧数据库记录；新记录使用 entityId/entityType。 */

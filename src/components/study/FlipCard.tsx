@@ -1,17 +1,20 @@
 import { ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Volume2 } from 'lucide-react'
-import { StudyItem } from './types'
+import { StudyItem, StudyEntityType } from './types'
+import { FavoriteButton } from '../FavoriteButton'
 
 interface FlipCardProps {
   item: StudyItem
   flipped: boolean
   onSpeak: () => void
+  /** 收藏的实体类型：单词页/短句页各自传入 */
+  entityType?: StudyEntityType
   children?: ReactNode // 翻面后的附加内容（如自评按钮）
 }
 
 /** 正面=词面(单词/短句+发音)，背面=释义；统一翻转卡片 */
-export function FlipCard({ item, flipped, onSpeak, children }: FlipCardProps) {
+export function FlipCard({ item, flipped, onSpeak, entityType = 'word', children }: FlipCardProps) {
   return (
     <motion.div
       key={item.id}
@@ -47,6 +50,9 @@ export function FlipCard({ item, flipped, onSpeak, children }: FlipCardProps) {
               >
                 <Volume2 size={22} />
               </button>
+              <div onClick={(e) => e.stopPropagation()}>
+                <FavoriteButton entityType={entityType} entityId={item.id} title={item.title} />
+              </div>
             </div>
             {item.phonetic && (
               <p className="text-gray-500 dark:text-gray-400 text-base text-center mb-4">{item.phonetic}</p>

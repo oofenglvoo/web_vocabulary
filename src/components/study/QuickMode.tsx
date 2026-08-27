@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Check, ChevronRight, Star, Volume2, X as XIcon } from 'lucide-react'
 import { StudyItem } from './types'
+import { FavoriteButton } from '../FavoriteButton'
 
 export interface QuickRating {
   item: StudyItem
@@ -12,10 +13,11 @@ interface QuickModeProps {
   items: StudyItem[]
   onRateAll: (results: QuickRating[]) => Promise<boolean> | boolean | void
   onSpeak: (item: StudyItem) => void
+  entityType?: 'word' | 'sentence'
 }
 
 /** 快速自测：列表视图，所有词同时列出，点击展开释义 + 忘记/记得/掌握三选项，全部评完后统一提交 */
-export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
+export function QuickMode({ items, onRateAll, onSpeak, entityType = 'word' }: QuickModeProps) {
   const [ratings, setRatings] = useState<Record<number, QuickRating>>({})
   const [expanded, setExpanded] = useState<Set<number>>(new Set())
   const [submitted, setSubmitted] = useState(false)
@@ -140,8 +142,9 @@ export function QuickMode({ items, onRateAll, onSpeak }: QuickModeProps) {
                   className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors shrink-0"
                   aria-label="发音"
                 >
-                  <Volume2 size={16} className="text-gray-400" />
+                  <Volume2 size={16} />
                 </button>
+                <FavoriteButton entityType={entityType} entityId={item.id} title={item.title} />
                 {isRated && (
                   <span className="shrink-0" aria-label={rating.quality === 1 ? '忘记' : rating.quality === 5 ? '掌握' : '记得'}>
                     {rating.quality === 1 ? (

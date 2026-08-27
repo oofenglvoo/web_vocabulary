@@ -488,6 +488,7 @@ export function Study() {
             onRate={(q) => handleRate(currentItem, q)}
             onMaster={() => setConfirmMaster(true)}
             onSpeak={() => speak(currentItem)}
+            entityType="word"
           />
         )}
         {studyType === 'choice' && currentItem && (
@@ -498,6 +499,7 @@ export function Study() {
             onRate={(q) => handleRate(currentItem, q)}
             onMaster={() => setConfirmMaster(true)}
             onSpeak={() => speak(currentItem)}
+            entityType="word"
           />
         )}
         {studyType === 'quick' && (
@@ -506,6 +508,7 @@ export function Study() {
             items={queue}
             onRateAll={handleQuickSubmit}
             onSpeak={speak}
+            entityType="word"
           />
         )}
       </div>

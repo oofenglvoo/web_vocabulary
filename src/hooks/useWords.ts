@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
-import { Word, Category, Flag, StudyKind } from '../types/word'
+import { Word, Category, Flag, StudyKind, FavoriteItem } from '../types/word'
 import { applyStageReview, stageIntervalDays, MAX_STAGE, getTodayReviewCutoff } from '../utils/srs'
 import { ensureCategoryWritable } from '../utils/categoryType'
 import { useNow } from './useNow'
@@ -217,7 +217,8 @@ export async function bulkAddWords(
 
   if (toInsert.length > 0) {
     // 查重 + 插入放进同一事务：防止两个并发导入同时通过查重造成重复
-    await db.transaction('rw', db.words, db.sentences, db.categories, async () => {
+    const { ensureDefaultFolder } = await import('./useFavorites')
+    await db.transaction('rw', db.words, db.sentences, db.categories, db.favoriteFolders, db.favoriteItems, async () => {
       // 分类类型校验：批内所有涉及分类需允许写入单词（顺带为未定型空分类盖戳）
       for (const cat of new Set(toInsert.map((w) => w.category))) {
         await ensureCategoryWritable('word', cat)
@@ -243,6 +244,18 @@ export async function bulkAddWords(
       const ids = (await db.words.bulkAdd(candidates, { allKeys: true })) as unknown as number[]
       result.added = candidates.length
       result.addedIds = ids
+      // forceFavorite → 同步写入"默认"收藏夹条目
+      if (options.forceFavorite) {
+        const def = await ensureDefaultFolder()
+        await db.favoriteItems.bulkAdd(
+          candidates.map((_, i) => ({
+            folderId: def.id!,
+            entityType: 'word',
+            entityId: ids[i],
+            createdAt: Date.now(),
+          } as FavoriteItem))
+        )
+      }
     })
   }
   return result
@@ -252,12 +265,16 @@ export async function updateWord(id: number, changes: Partial<Word>) {
   return db.words.update(id, changes)
 }
 
-// 删除单词时级联清理：孤儿 studySessions + 计划里的失效 ID
+// 删除单词时级联清理：孤儿 studySessions + 计划里的失效 ID + 收藏条目
 export async function deleteWord(id: number) {
-  await db.transaction('rw', db.words, db.studySessions, db.studyPlans, async () => {
+  await db.transaction('rw', db.words, db.studySessions, db.studyPlans, db.favoriteItems, async () => {
     await db.words.delete(id)
     await db.studySessions.where('entityType').equals('word').filter((s) => s.entityId === id).delete()
     await pruneWordIdFromPlans(id)
+    await db.favoriteItems
+      .where('[entityType+entityId]')
+      .equals(['word', id])
+      .delete()
   })
 }
 
@@ -331,8 +348,16 @@ export async function recordReview(
   })
 }
 
+/** 切换"默认"收藏夹归属（旧接口语义：单目录快速收藏） */
 export async function toggleFavorite(id: number, current: Flag) {
-  return db.words.update(id, { isFavorite: current ? 0 : 1 })
+  const { ensureDefaultFolder, setItemFolders } = await import('./useFavorites')
+  if (current) {
+    // 取消 → 从所有收藏夹移除（保持与旧语义一致：一键移除全部）
+    await setItemFolders('word', id, [])
+  } else {
+    const def = await ensureDefaultFolder()
+    await setItemFolders('word', id, [def.id!])
+  }
 }
 
 // 标记单词为已掌握(用于"掌握"按钮直接确认)
@@ -476,13 +501,22 @@ export async function deleteCategory(
   const cat = await db.categories.get(id)
   if (!cat) return
 
-  await db.transaction('rw', db.words, db.sentences, db.studySessions, db.studyPlans, db.categories, async () => {
-    // 找出该分类下所有单词，逐一带上级联清理（学习记录 + 计划引用）
-    const words = await db.words.where('category').equals(cat.name).toArray()
-    const wordIds = words.map((w) => w.id!)
-    for (const wid of wordIds) {
-      await db.studySessions.where('entityType').equals('word').filter((s) => s.entityId === wid).delete()
-    }
+  await db.transaction(
+    'rw',
+    db.words,
+    db.sentences,
+    db.studySessions,
+    db.studyPlans,
+    db.categories,
+    async () => {
+      // 收藏条目(favoriteItems)不在本 6 表事务内（Dexie 签名上限），
+      // 由 useFolderMembers 的孤儿惰性清理兜底。
+      // 找出该分类下所有单词，逐一带上级联清理（学习记录 + 计划引用）
+      const words = await db.words.where('category').equals(cat.name).toArray()
+      const wordIds = words.map((w) => w.id!)
+      for (const wid of wordIds) {
+        await db.studySessions.where('entityType').equals('word').filter((s) => s.entityId === wid).delete()
+      }
     // 从计划中清除这些单词 ID
     const plans = await db.studyPlans.toArray()
     for (const p of plans) {
@@ -544,11 +578,24 @@ export async function bulkSetCategory(ids: number[], category: string) {
 
 export async function bulkSetFavorite(ids: number[], favorite: boolean) {
   if (ids.length === 0) return
-  await db.transaction('rw', db.words, async () => {
+  const { ensureDefaultFolder, setItemFolders } = await import('./useFavorites')
+  if (!favorite) {
+    // 批量取消收藏：从所有收藏夹移除
     for (const id of ids) {
-      await db.words.update(id, { isFavorite: favorite ? 1 : 0 })
+      await setItemFolders('word', id, [])
     }
-  })
+    return
+  }
+  const def = await ensureDefaultFolder()
+  for (const id of ids) {
+    // 批量收藏进默认夹；已属于其他夹的保持多归属（合并后重设）
+    const existing = await db.favoriteItems
+      .where('[entityType+entityId]')
+      .equals(['word', id])
+      .toArray()
+    const merged = Array.from(new Set([...existing.map((e) => e.folderId), def.id!]))
+    await setItemFolders('word', id, merged)
+  }
 }
 
 export async function bulkMarkLearned(ids: number[]) {
@@ -586,11 +633,12 @@ export async function bulkMarkLearned(ids: number[]) {
 
 export async function bulkDeleteWords(ids: number[]) {
   if (ids.length === 0) return
-  await db.transaction('rw', db.words, db.studySessions, db.studyPlans, async () => {
+  await db.transaction('rw', db.words, db.studySessions, db.studyPlans, db.favoriteItems, async () => {
     await db.words.bulkDelete(ids)
     for (const id of ids) {
       await db.studySessions.where('entityType').equals('word').filter((s) => s.entityId === id).delete()
       await pruneWordIdFromPlans(id)
+      await db.favoriteItems.where('[entityType+entityId]').equals(['word', id]).delete()
     }
   })
 }
