@@ -211,7 +211,9 @@ export async function deleteSentence(id: number) {
     await db.sentences.delete(id)
     await db.studySessions.where('entityType').equals('sentence').filter((s) => s.entityId === id).delete()
     await pruneSentenceIdFromPlans(id)
-    await db.favoriteItems.where('[entityType+entityId]').equals(['sentence', id]).delete()
+    await db.favoriteItems
+      .filter((item) => item.entityType === 'sentence' && item.entityId === id)
+      .delete()
   })
 }
 
@@ -357,10 +359,9 @@ export async function bulkSetSentenceFavorite(ids: number[], favorite: boolean) 
   }
   const def = await ensureDefaultFolder()
   for (const id of ids) {
-    const existing = await db.favoriteItems
-      .where('[entityType+entityId]')
-      .equals(['sentence', id])
-      .toArray()
+    const existing = (await db.favoriteItems.toArray()).filter(
+      (item) => item.entityType === 'sentence' && item.entityId === id
+    )
     const merged = Array.from(new Set([...existing.map((e) => e.folderId), def.id!]))
     await setItemFolders('sentence', id, merged)
   }
@@ -405,7 +406,9 @@ export async function bulkDeleteSentences(ids: number[]) {
     for (const id of ids) {
       await db.studySessions.where('entityType').equals('sentence').filter((s) => s.entityId === id).delete()
       await pruneSentenceIdFromPlans(id)
-      await db.favoriteItems.where('[entityType+entityId]').equals(['sentence', id]).delete()
+      await db.favoriteItems
+        .filter((item) => item.entityType === 'sentence' && item.entityId === id)
+        .delete()
     }
   })
 }

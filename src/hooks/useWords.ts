@@ -272,8 +272,7 @@ export async function deleteWord(id: number) {
     await db.studySessions.where('entityType').equals('word').filter((s) => s.entityId === id).delete()
     await pruneWordIdFromPlans(id)
     await db.favoriteItems
-      .where('[entityType+entityId]')
-      .equals(['word', id])
+      .filter((item) => item.entityType === 'word' && item.entityId === id)
       .delete()
   })
 }
@@ -589,10 +588,9 @@ export async function bulkSetFavorite(ids: number[], favorite: boolean) {
   const def = await ensureDefaultFolder()
   for (const id of ids) {
     // 批量收藏进默认夹；已属于其他夹的保持多归属（合并后重设）
-    const existing = await db.favoriteItems
-      .where('[entityType+entityId]')
-      .equals(['word', id])
-      .toArray()
+    const existing = (await db.favoriteItems.toArray()).filter(
+      (item) => item.entityType === 'word' && item.entityId === id
+    )
     const merged = Array.from(new Set([...existing.map((e) => e.folderId), def.id!]))
     await setItemFolders('word', id, merged)
   }
@@ -638,7 +636,9 @@ export async function bulkDeleteWords(ids: number[]) {
     for (const id of ids) {
       await db.studySessions.where('entityType').equals('word').filter((s) => s.entityId === id).delete()
       await pruneWordIdFromPlans(id)
-      await db.favoriteItems.where('[entityType+entityId]').equals(['word', id]).delete()
+      await db.favoriteItems
+        .filter((item) => item.entityType === 'word' && item.entityId === id)
+        .delete()
     }
   })
 }

@@ -181,6 +181,17 @@ class VocabularyDatabase extends Dexie {
       })
       if (rows.length > 0) await tx.table('favoriteItems').bulkAdd(rows)
     })
+    // v11: 为已有 v10 数据库补建 favoriteFolders.createdAt 索引。
+    // v10 已发布后修改声明不会影响已经打开过的数据库，必须升版本才能真正更新 schema。
+    this.version(11).stores({
+      words: '++id, word, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      sentences: '++id, sentence, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      categories: '++id, name',
+      studySessions: '++id, wordId, entityId, entityType, timestamp, kind',
+      studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
+      favoriteFolders: '++id, name, createdAt',
+      favoriteItems: '++id, folderId, entityId, [entityType+entityId]',
+    })
   }
 }
 
