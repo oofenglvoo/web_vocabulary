@@ -44,10 +44,9 @@ export function useEntityFolderIds(entityType: FavEntityType, entityId: number |
     useLiveQuery(
       async () => {
         if (entityId == null) return []
-        const items = await db.favoriteItems
-          .where('[entityType+entityId]')
-          .equals([entityType, entityId])
-          .toArray()
+        const items = (await db.favoriteItems.toArray()).filter(
+          (item) => item.entityType === entityType && item.entityId === entityId
+        )
         return items.map((it) => it.folderId)
       },
       [entityType, entityId]
@@ -167,10 +166,9 @@ export async function setItemFolders(
   let added = 0
   let removed = 0
   await db.transaction('rw', db.favoriteFolders, db.favoriteItems, table, async () => {
-    const current = await db.favoriteItems
-      .where('[entityType+entityId]')
-      .equals([entityType, entityId])
-      .toArray()
+    const current = (await db.favoriteItems.toArray()).filter(
+      (item) => item.entityType === entityType && item.entityId === entityId
+    )
     const currentIds = new Set(current.map((c) => c.folderId))
     const targetSet = new Set(uniqueTargets)
 
