@@ -135,12 +135,9 @@ export function Study() {
         const extraWords = await getExtraNewWords(p)
         items = extraWords.map((w) => ({ word: w, isReview: false }))
       } else {
-        const reviewWords = await getTodayReviewWords(p)
+        // 学习入口只包含今日新词配额；到期复习由首页"开始复习"(mode=review)独立进入
         const newWords = await getTodayNewWords(p)
-        items = [
-          ...reviewWords.map((w) => ({ word: w, isReview: true })),
-          ...newWords.map((w) => ({ word: w, isReview: false })),
-        ]
+        items = newWords.map((w) => ({ word: w, isReview: false }))
       }
     } else {
       const words = await getRandomWords(20)
