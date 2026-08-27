@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
-import { Sentence } from '../types/word'
+import { Sentence, FavoriteItem } from '../types/word'
 import { applyStageReview, stageIntervalDays, MAX_STAGE } from '../utils/srs'
 import { ensureCategoryWritable } from '../utils/categoryType'
 import { useNow } from './useNow'
@@ -143,7 +143,8 @@ export async function bulkAddSentences(
 
   if (toInsert.length > 0) {
     // 查重 + 插入放进同一事务，防止并发导入产生重复
-    await db.transaction('rw', db.sentences, db.words, db.categories, async () => {
+    const { ensureDefaultFolder } = await import('./useFavorites')
+    await db.transaction('rw', db.sentences, db.words, db.categories, db.favoriteFolders, db.favoriteItems, async () => {
       // 分类类型校验：批内所有涉及分类需允许写入短句（顺带为未定型空分类盖戳）
       for (const cat of new Set(toInsert.map((s) => s.category))) {
         await ensureCategoryWritable('sentence', cat)
@@ -168,6 +169,18 @@ export async function bulkAddSentences(
       const ids = (await db.sentences.bulkAdd(candidates, { allKeys: true })) as unknown as number[]
       result.added = candidates.length
       result.addedIds = ids
+      // forceFavorite → 同步写入"默认"收藏夹条目
+      if (options.forceFavorite) {
+        const def = await ensureDefaultFolder()
+        await db.favoriteItems.bulkAdd(
+          candidates.map((_, i) => ({
+            folderId: def.id!,
+            entityType: 'sentence',
+            entityId: ids[i],
+            createdAt: Date.now(),
+          } as FavoriteItem))
+        )
+      }
     })
   }
   return result
@@ -193,16 +206,25 @@ async function pruneSentenceIdFromPlans(id: number) {
 }
 
 export async function deleteSentence(id: number) {
-  // 删除短句时级联清理：学习记录和计划里的失效 ID
-  await db.transaction('rw', db.sentences, db.studySessions, db.studyPlans, async () => {
+  // 删除短句时级联清理：学习记录、计划里的失效 ID、收藏条目
+  await db.transaction('rw', db.sentences, db.studySessions, db.studyPlans, db.favoriteItems, async () => {
     await db.sentences.delete(id)
     await db.studySessions.where('entityType').equals('sentence').filter((s) => s.entityId === id).delete()
     await pruneSentenceIdFromPlans(id)
+    await db.favoriteItems.where('[entityType+entityId]').equals(['sentence', id]).delete()
   })
 }
 
+/** 切换"默认"收藏夹归属（旧接口语义：单目录快速收藏） */
 export async function toggleSentenceFavorite(id: number, current: number) {
-  return db.sentences.update(id, { isFavorite: current ? 0 : 1 })
+  const { ensureDefaultFolder, setItemFolders } = await import('./useFavorites')
+  if (current) {
+    // 取消 → 从所有收藏夹移除（与旧语义一致：一键移除全部）
+    await setItemFolders('sentence', id, [])
+  } else {
+    const def = await ensureDefaultFolder()
+    await setItemFolders('sentence', id, [def.id!])
+  }
 }
 
 // 记录一次短句复习(SRS 同单词逻辑,只改 sentences 表)
@@ -326,11 +348,22 @@ export async function bulkSetSentenceCategory(ids: number[], category: string) {
 
 export async function bulkSetSentenceFavorite(ids: number[], favorite: boolean) {
   if (ids.length === 0) return
-  await db.transaction('rw', db.sentences, db.studySessions, async () => {
+  const { ensureDefaultFolder, setItemFolders } = await import('./useFavorites')
+  if (!favorite) {
     for (const id of ids) {
-      await db.sentences.update(id, { isFavorite: favorite ? 1 : 0 })
+      await setItemFolders('sentence', id, [])
     }
-  })
+    return
+  }
+  const def = await ensureDefaultFolder()
+  for (const id of ids) {
+    const existing = await db.favoriteItems
+      .where('[entityType+entityId]')
+      .equals(['sentence', id])
+      .toArray()
+    const merged = Array.from(new Set([...existing.map((e) => e.folderId), def.id!]))
+    await setItemFolders('sentence', id, merged)
+  }
 }
 
 export async function bulkMarkSentenceLearned(ids: number[]) {
@@ -367,11 +400,12 @@ export async function bulkMarkSentenceLearned(ids: number[]) {
 
 export async function bulkDeleteSentences(ids: number[]) {
   if (ids.length === 0) return
-  await db.transaction('rw', db.sentences, db.studySessions, db.studyPlans, async () => {
+  await db.transaction('rw', db.sentences, db.studySessions, db.studyPlans, db.favoriteItems, async () => {
     await db.sentences.bulkDelete(ids)
     for (const id of ids) {
       await db.studySessions.where('entityType').equals('sentence').filter((s) => s.entityId === id).delete()
       await pruneSentenceIdFromPlans(id)
+      await db.favoriteItems.where('[entityType+entityId]').equals(['sentence', id]).delete()
     }
   })
 }

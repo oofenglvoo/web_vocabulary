@@ -5,8 +5,20 @@ import { url } from './helpers'
 
 // --- 添加单词 (TC-ADD-001 ~ 010) ---
 
+// 等待 AddWord 完成水合且分类数据已从 Dexie 载入（避免冷启动竞态）
+async function waitForAddPageReady(page: import('@playwright/test').Page) {
+  await page.waitForFunction(
+    () => {
+      const sel = document.querySelectorAll('select')[1]
+      return !!sel && sel.options.length > 0
+    },
+    { timeout: 20000 }
+  )
+}
+
 test('TC-ADD-001: 正常添加单词', async ({ page }) => {
   await page.goto(url('/add'))
+  await waitForAddPageReady(page)
   await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
@@ -245,7 +257,10 @@ test('TC-DTL-002: 收藏/取消收藏', async ({ page }) => {
   await page.goto(url('/words'))
   await page.getByText('star', { exact: true }).waitFor({ timeout: 10000 })
   await page.getByText('star', { exact: true }).click()
-  await page.getByRole('button', { name: '收藏', exact: true }).click()
+  // 心形按钮 → 面板勾选默认夹 → 确定
+  await page.getByRole('button', { name: '加入收藏' }).click()
+  await page.getByRole('checkbox').first().check()
+  await page.getByRole('button', { name: /确定 \(1\)/ }).click()
   await expect(page.getByText('已收藏')).toBeVisible()
 
   await page.goto(url('/favorites'))

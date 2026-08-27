@@ -4,12 +4,12 @@ import { Heart, Trash2, Volume2, FolderInput, ChevronLeft, ChevronRight, Plus, X
 import {
   useSentenceById,
   deleteSentence,
-  toggleSentenceFavorite,
   updateSentence,
   useAllSentences,
   useFavoriteSentences,
   useSentencesByCategory,
 } from '../hooks/useSentences'
+import { FavoriteButton } from '../components/FavoriteButton'
 import { useCategories } from '../hooks/useWords'
 import { speakWord } from '../utils/tts'
 import { getSentenceDefinitions } from '../utils/definitions'
@@ -155,16 +155,7 @@ export function SentenceDetail() {
       <div className="flex items-center justify-between mb-4">
         <BackButton />
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => toggleSentenceFavorite(sentence.id!, sentence.isFavorite)}
-            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
-            aria-label="收藏"
-          >
-            <Heart
-              size={20}
-              className={sentence.isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'}
-            />
-          </button>
+          <FavoriteButton entityType="sentence" entityId={sentence.id!} title={sentence.sentence} />
           <button
             onClick={() => setShowMove(true)}
             className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"

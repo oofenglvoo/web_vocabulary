@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { CheckCircle, HelpCircle, XCircle } from 'lucide-react'
-import { StudyItem } from './types'
+import { StudyItem, StudyEntityType } from './types'
 import { FlipCard } from './FlipCard'
 
 interface RecallModeProps {
@@ -8,17 +8,18 @@ interface RecallModeProps {
   onRate: (quality: number) => void
   onMaster?: () => void
   onSpeak: () => void
+  entityType?: StudyEntityType
 }
 
 /** 回忆式(Moji)：正面=单词，点卡片翻面看释义；认识/模糊/忘记 三按钮常驻下方 */
-export function RecallMode({ item, onRate, onMaster, onSpeak }: RecallModeProps) {
+export function RecallMode({ item, onRate, onMaster, onSpeak, entityType = 'word' }: RecallModeProps) {
   const [flipped, setFlipped] = useState(false)
 
   const handleFlip = () => setFlipped((f) => !f)
 
   return (
     <div onClick={handleFlip} className="flex-1 flex flex-col cursor-pointer select-none">
-      <FlipCard item={item} flipped={flipped} onSpeak={onSpeak}>
+      <FlipCard item={item} flipped={flipped} onSpeak={onSpeak} entityType={entityType}>
         {/* 自评按钮常驻（点按钮不触发翻面） */}
         <div
           className="mt-4 grid grid-cols-3 gap-2"

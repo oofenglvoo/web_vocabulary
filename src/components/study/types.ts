@@ -9,3 +9,6 @@ export interface StudyItem {
   primaryTranslation: string // 用于选择题
   renderDefs: () => ReactNode // 释义区 JSX
 }
+
+/** 收藏按钮等需要知道实体表的场景使用 */
+export type StudyEntityType = 'word' | 'sentence'

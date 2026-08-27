@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Volume2, CheckCircle, XCircle, RotateCcw } from 'lucide-react'
-import { StudyItem } from './types'
+import { StudyItem, StudyEntityType } from './types'
+import { FavoriteButton } from '../FavoriteButton'
 
 interface ChoiceModeProps {
   item: StudyItem
@@ -10,10 +11,11 @@ interface ChoiceModeProps {
   onRate: (quality: number) => void
   onMaster?: () => void
   onSpeak: () => void
+  entityType?: StudyEntityType
 }
 
 /** 选择题：看词选义(四选一)，答对后推进，答错重排 */
-export function ChoiceMode({ item, distractors, onRate, onMaster, onSpeak }: ChoiceModeProps) {
+export function ChoiceMode({ item, distractors, onRate, onMaster, onSpeak, entityType = 'word' }: ChoiceModeProps) {
   const [options, setOptions] = useState<string[]>([])
   const [selected, setSelected] = useState<string | null>(null)
   const [revealed, setRevealed] = useState(false)
@@ -56,6 +58,7 @@ export function ChoiceMode({ item, distractors, onRate, onMaster, onSpeak }: Cho
         >
           <Volume2 size={20} />
         </button>
+        <FavoriteButton entityType={entityType} entityId={item.id} title={item.title} />
       </div>
       {item.phonetic && <p className="text-gray-500 dark:text-gray-400 mb-4">{item.phonetic}</p>}
       <p className="text-gray-500 dark:text-gray-400 mb-6">选择正确的中文释义</p>
