@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
 import { StudyPlan, Sentence } from '../types/word'
+import { getTodayReviewCutoff } from '../utils/srs'
 
 // 短句计划:与单词计划(useStudyPlan.ts)逻辑一致,仅查表改为 sentences,
 // 且只管理 entityType === 'sentence' 的计划。单词/短句各自独立维护"激活"状态。
@@ -92,15 +93,16 @@ export function useSentencePlanProgress(plan: StudyPlan | undefined): SentencePl
       todayNewDisplay: 0,
     }
   }
-  const now = Date.now()
+  const reviewCutoff = getTodayReviewCutoff()
   const startedSet = new Set(plan.startedIds)
+  const startedSentences = sentences.filter((s) => startedSet.has(s.id!))
   const learned = sentences.filter((s) => s.isLearned === 1).length
   // 剩余新句：未 start 且未掌握（与 getTodayNewSentences 口径一致，已掌握不算新句）
   const remainingNew = sentences.filter(
     (s) => !startedSet.has(s.id!) && s.isLearned === 0
   ).length
   const dueReview = sentences.filter(
-    (s) => startedSet.has(s.id!) && s.isLearned === 0 && s.nextReviewAt <= now
+    (s) => startedSet.has(s.id!) && s.isLearned === 0 && s.nextReviewAt < reviewCutoff
   ).length
   const today = todayStr()
   const isToday = plan.todayDate === today
@@ -122,7 +124,7 @@ export function useSentencePlanProgress(plan: StudyPlan | undefined): SentencePl
 
   return {
     totalSentences: sentences.length,
-    startedSentences: plan.startedIds.length,
+    startedSentences: startedSentences.length,
     learnedSentences: learned,
     remainingNew,
     dueReview,
@@ -306,7 +308,7 @@ export async function markExtraSentenceStarted(planId: number, sentenceId: numbe
 
 export async function getTodayReviewSentences(plan: StudyPlan): Promise<Sentence[]> {
   if (plan.wordIds.length === 0) return []
-  const now = Date.now()
+  const reviewCutoff = getTodayReviewCutoff()
   const startedSet = new Set(plan.startedIds)
   const candidates = plan.wordIds.filter((id) => startedSet.has(id))
   const sentences = await db.sentences.bulkGet(candidates)
@@ -316,7 +318,7 @@ export async function getTodayReviewSentences(plan: StudyPlan): Promise<Sentence
   const remaining = Math.max(0, plan.reviewPerDay - todayReviewDone)
   return sentences
     .filter((s): s is Sentence => !!s)
-    .filter((s) => s.isLearned === 0 && s.nextReviewAt <= now)
+    .filter((s) => s.isLearned === 0 && s.nextReviewAt < reviewCutoff)
     .sort((a, b) => a.nextReviewAt - b.nextReviewAt)
     .slice(0, remaining)
 }
