@@ -363,3 +363,37 @@ test('TC-DTL-010: 编辑空释义验证', async ({ page }) => {
   await page.getByRole('button', { name: /保存/ }).first().click()
   await expect(page.getByText(/至少需要一个释义/)).toBeVisible()
 })
+
+test('TC-LIST-011: 详情返回恢复列表滚动位置', async ({ page }) => {
+  // 导入 30 个词,保证列表可滚动
+  const words = Array.from({ length: 30 }, (_, i) => ({
+    word: `scroll-${String(i + 1).padStart(2, '0')}`,
+    definitions: [{ pos: '', def: '', trans: `词条${i + 1}` }],
+    category: '默认',
+    difficulty: 1,
+  }))
+  await page.goto(url('/import'))
+  await page.locator('textarea').fill(JSON.stringify(words))
+  await page.getByRole('button', { name: /解析预览/ }).click()
+  await page.getByRole('button', { name: /导入 \d+ 个单词/ }).click()
+  await expect(page.getByText(/成功导入/)).toBeVisible()
+
+  await page.goto(url('/words'))
+  const target = page.getByText('scroll-20', { exact: true })
+  await target.waitFor({ timeout: 10000 })
+  // 滚到列表中部并等待滚动位置被记录
+  await target.scrollIntoViewIfNeeded()
+  await page.waitForTimeout(300)
+  const before = await page.evaluate(() => window.scrollY)
+  expect(before).toBeGreaterThan(300)
+
+  // 点开详情 → PUSH 应回到顶部
+  await target.click()
+  await page.waitForURL(/\/word\/\d+/)
+  await expect.poll(() => page.evaluate(() => window.scrollY), { timeout: 3000 }).toBeLessThan(50)
+
+  // 浏览器返回 → 恢复之前的滚动位置
+  await page.goBack()
+  await expect.poll(() => page.evaluate(() => window.scrollY), { timeout: 5000 }).toBeGreaterThan(300)
+  await expect(page.getByText('scroll-20', { exact: true })).toBeVisible()
+})
