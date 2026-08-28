@@ -10,6 +10,7 @@ export function BackButton({ className = '' }: BackButtonProps) {
   return (
     <button
       onClick={() => navigate(-1)}
+      aria-label="返回"
       className={`p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors ${className}`}
     >
       <ArrowLeft size={22} />

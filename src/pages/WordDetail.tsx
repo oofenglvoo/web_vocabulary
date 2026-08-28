@@ -31,6 +31,7 @@ import { useToast } from '../components/Toast'
 import { NotesBlock } from '../components/NotesBlock'
 import { SkeletonCard } from '../components/Skeleton'
 import { Definition, JapaneseDefinition, JapaneseWord, Word } from '../types/word'
+import type { LangWord } from '../hooks/languageAware'
 
 const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
 
@@ -71,13 +72,27 @@ export function WordDetail() {
   const favWords = useLangFavoriteWords()
   const catWords = useLangWordsByCategory(scopeCategory)
 
-  const list = scope === 'favorites' ? favWords : scope === 'category' ? catWords : allWords
+  // 预习列表可能来自计划/随机队列，详情页必须沿用预习时的顺序计算上下词
+  const studyIds = searchParams.get('studyPreview') === '1'
+    ? (searchParams.get('studyIds') || '').split(',').map(Number).filter((value) => Number.isFinite(value))
+    : []
+  const studyWordMap = new Map(allWords.map((item) => [item.id, item]))
+  const studyPreviewList = studyIds
+    .map((studyId) => studyWordMap.get(studyId))
+    .filter((item): item is LangWord => !!item)
+  const list = studyPreviewList.length > 0
+    ? studyPreviewList
+    : scope === 'favorites' ? favWords : scope === 'category' ? catWords : allWords
   const currentIdx = list.findIndex((w) => w.id === Number(id))
   const prevWord = currentIdx > 0 ? list[currentIdx - 1] : null
   const nextWord = currentIdx >= 0 && currentIdx < list.length - 1 ? list[currentIdx + 1] : null
 
   const buildHref = (wordId: number) => {
     const params = new URLSearchParams()
+    if (searchParams.get('studyPreview') === '1') {
+      params.set('studyPreview', '1')
+      params.set('studyIds', studyIds.join(','))
+    }
     params.set('scope', scope)
     if (scope === 'category' && scopeCategory) params.set('category', scopeCategory)
     return `/word/${wordId}?${params.toString()}`
@@ -88,9 +103,9 @@ export function WordDetail() {
     const handler = (e: KeyboardEvent) => {
       if (e.target && (e.target as HTMLElement).tagName.match(/INPUT|TEXTAREA|SELECT/)) return
       if (e.key === 'ArrowLeft' && prevWord) {
-        navigate(buildHref(prevWord.id!))
+        navigate(buildHref(prevWord.id!), { replace: true })
       } else if (e.key === 'ArrowRight' && nextWord) {
-        navigate(buildHref(nextWord.id!))
+        navigate(buildHref(nextWord.id!), { replace: true })
       }
     }
     window.addEventListener('keydown', handler)
@@ -252,7 +267,7 @@ export function WordDetail() {
       {/* 上一个 / 下一个 */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <button
-          onClick={() => prevWord && navigate(buildHref(prevWord.id!))}
+          onClick={() => prevWord && navigate(buildHref(prevWord.id!), { replace: true })}
           disabled={!prevWord}
           className="flex-1 flex items-center justify-start gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
         >
@@ -265,7 +280,7 @@ export function WordDetail() {
           </div>
         </button>
         <button
-          onClick={() => nextWord && navigate(buildHref(nextWord.id!))}
+          onClick={() => nextWord && navigate(buildHref(nextWord.id!), { replace: true })}
           disabled={!nextWord}
           className="flex-1 flex items-center justify-end gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
         >

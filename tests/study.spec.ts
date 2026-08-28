@@ -45,13 +45,26 @@ test('TC-STUDY-RCL-001: 认识通过不再重复', async ({ page }) => {
 })
 
 test('TC-STUDY-PREVIEW-001: 先显示当天学习列表，确认后才进入测试', async ({ page }) => {
-  await addWords(page, [['preview-a', '甲'], ['preview-b', '乙']])
+  await addWords(page, [['preview-a', '甲'], ['preview-b', '乙'], ['preview-c', '丙']])
   await page.goto(url('/study'))
-  await expect(page.getByText('今日学习 · 2 个词条')).toBeVisible()
+  await expect(page.getByText('今日学习 · 3 个词条')).toBeVisible()
   await expect(page.getByRole('heading', { name: '先学习当天词条' })).toBeVisible()
   await expect(page.getByText('preview-a', { exact: true })).toBeVisible()
   await expect(page.getByText('preview-b', { exact: true })).toBeVisible()
+  await expect(page.getByText('preview-c', { exact: true })).toBeVisible()
   await expect(page.getByText('新学 · 回忆式')).toHaveCount(0)
+
+  // 详情页的上下词必须沿用预习列表中的实际顺序，而不是普通词库顺序
+  const previewLinks = page.locator('a[href*="studyPreview=1"]')
+  const firstTitle = await previewLinks.nth(0).innerText()
+  const secondTitle = await previewLinks.nth(1).innerText()
+  const thirdTitle = await previewLinks.nth(2).innerText()
+  await previewLinks.nth(1).click()
+  await page.waitForURL(/\/word\/\d+\?studyPreview=1/)
+  await expect(page.getByRole('button', { name: new RegExp(`上一个.*${firstTitle}`) })).toBeVisible()
+  await expect(page.getByRole('button', { name: new RegExp(`下一个.*${thirdTitle}`) })).toBeVisible()
+  await page.goBack()
+  await expect(page.getByRole('button', { name: '开始测试', exact: true })).toBeVisible()
 
   await page.getByRole('button', { name: '开始测试', exact: true }).click()
   await expect(page.getByText('不能返回当天学习列表')).toBeVisible()
