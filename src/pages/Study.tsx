@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
-import { CheckCircle, Sparkles, Target, RefreshCw } from 'lucide-react'
+import { CheckCircle, Sparkles, Target, RefreshCw, BookOpen } from 'lucide-react'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import {
@@ -51,6 +51,9 @@ export function Study() {
   const [learnStats, setLearnStats] = useState({ newDone: 0, reviewDone: 0 })
   const [confirmMaster, setConfirmMaster] = useState(false)
   const [done, setDone] = useState(false)
+  // Moji 流程：先看当天词表，点击开始测试后才进入题型测验
+  const [studyStarted, setStudyStarted] = useState(false)
+  const [confirmStartTest, setConfirmStartTest] = useState(false)
   // 题型版本号：切题型时递增，强制重渲染让 studyType 重新读 localStorage
   const [studyTypeVersion, setStudyTypeVersion] = useState(0)
   // 依赖 studyTypeVersion：切题型时重算题型（重新读 localStorage）
@@ -88,6 +91,8 @@ export function Study() {
     setLoading(true)
     setLearnStats({ newDone: 0, reviewDone: 0 })
     setDone(false)
+    setStudyStarted(false)
+    setConfirmStartTest(false)
     requeuedRef.current = new Set()
     allTranslationsRef.current = null
     let items: { word: LangWord; isReview: boolean }[] = []
@@ -403,6 +408,73 @@ export function Study() {
     )
   }
 
+  // 预学习阶段：当天词条完整展示，用户主动开始测试后锁定进入题型
+  if (!studyStarted) {
+    return (
+      <div className="p-4 min-h-screen flex flex-col">
+        <div className="flex items-center justify-between mb-3">
+          <BackButton />
+          <div className="flex items-center gap-2">
+            {planIdNum && plan && (
+              <span className="chip bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300">
+                <Target size={11} /> {plan.name}
+              </span>
+            )}
+            <StudyTypeSettings onChange={() => { setDone(false); setStudyTypeVersion((v) => v + 1) }} />
+          </div>
+        </div>
+        <div className="flex justify-center mb-3">
+          <span className="chip bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400">
+            <BookOpen size={11} /> 今日学习 · {total} 个词条
+          </span>
+        </div>
+        <div className="card p-4 flex-1 space-y-3 overflow-auto">
+          <div>
+            <h1 className="text-xl font-bold dark:text-gray-100">先学习当天词条</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              请先浏览并记忆下面的词条，准备好后再开始测试。
+            </p>
+          </div>
+          <div className="space-y-2">
+            {queue.map((item) => (
+              <div key={item.id} className="rounded-xl bg-gray-50 dark:bg-slate-700/60 p-3">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-semibold dark:text-gray-100">{item.title}</span>
+                  {item.phonetic && <span className="text-xs text-gray-400 dark:text-gray-500">{item.phonetic}</span>}
+                </div>
+                <div className="text-sm text-gray-700 dark:text-gray-300 mt-1">{item.primaryTranslation || '暂无释义'}</div>
+                {item.notes && (
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 whitespace-pre-wrap">笔记：{item.notes}</div>
+                )}
+              </div>
+            ))}
+          </div>
+          <button onClick={() => setConfirmStartTest(true)} className="btn-primary w-full mt-auto">
+            开始测试
+          </button>
+        </div>
+        {confirmStartTest && (
+          <div className="modal-overlay">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="modal-content max-w-sm text-center"
+            >
+              <h2 className="font-bold text-lg dark:text-gray-100">开始测试？</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 mb-5">
+                开始测试后将进入{STUDY_TYPE_LABEL_ZH[studyType]}，不能返回当天学习列表。
+              </p>
+              <div className="flex gap-2">
+                <button onClick={() => setConfirmStartTest(false)} className="btn-secondary flex-1">继续学习</button>
+                <button onClick={() => { setConfirmStartTest(false); setStudyStarted(true) }} className="btn-primary flex-1">确认开始</button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </div>
+    )
+  }
+
   // 回忆式进度 = 已完成(移除)数 / 本轮总数；其他模式 = index/total
   const progressPct =
     studyType === 'recall'
@@ -412,7 +484,7 @@ export function Study() {
   const entityType = isJa ? ('japaneseWord' as const) : ('word' as const)
 
   return (
-    <div className="p-4 min-h-screen flex flex-col">
+    <div className="p-4 min-h-screen flex flex-col" data-study-quiz>
       <div className="flex items-center justify-between mb-3">
         <BackButton />
         <div className="flex items-center gap-2">

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { url } from './helpers'
+import { url, startStudyTest } from './helpers'
 
 async function addWords(page: import('@playwright/test').Page, words: [string, string][]) {
   for (const [word, trans] of words) {
@@ -13,6 +13,7 @@ async function addWords(page: import('@playwright/test').Page, words: [string, s
 
 // 切到选择题
 async function switchToChoice(page: import('@playwright/test').Page) {
+  await startStudyTest(page)
   await page.getByRole('button', { name: '题型设置' }).click()
   const overlay = page.locator('.modal-overlay')
   await overlay.getByRole('button', { name: '选择题', exact: true }).first().click()

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CheckCircle, HelpCircle, XCircle } from 'lucide-react'
 import { StudyItem, StudyEntityType } from './types'
 import { FlipCard } from './FlipCard'
@@ -14,6 +14,16 @@ interface RecallModeProps {
 /** 回忆式(Moji)：正面=单词，点卡片翻面看释义；认识/模糊/忘记 三按钮常驻下方 */
 export function RecallMode({ item, onRate, onMaster, onSpeak, entityType = 'word' }: RecallModeProps) {
   const [flipped, setFlipped] = useState(false)
+  const spokenId = useRef<number | null>(null)
+  const speakRef = useRef(onSpeak)
+  speakRef.current = onSpeak
+
+  // 每个新词进入回忆式卡片时自动播放一次，手动点击发音仍可重复播放
+  useEffect(() => {
+    if (spokenId.current === item.id) return
+    spokenId.current = item.id
+    speakRef.current()
+  }, [item.id])
 
   const handleFlip = () => setFlipped((f) => !f)
 

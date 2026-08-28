@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { url } from './helpers'
+import { url, startStudyTest } from './helpers'
 
 async function addWords(page: import('@playwright/test').Page, words: [string, string][]) {
   for (const [word, trans] of words) {
@@ -13,6 +13,7 @@ async function addWords(page: import('@playwright/test').Page, words: [string, s
 
 // 等自由学习加载出词卡
 async function waitCard(page: import('@playwright/test').Page) {
+  await startStudyTest(page)
   await page.waitForSelector('text=回忆式')
   await page.locator('h2').first().waitFor({ timeout: 10000 })
 }
@@ -41,6 +42,24 @@ test('TC-STUDY-RCL-001: 认识通过不再重复', async ({ page }) => {
   await page.getByRole('button', { name: '认识', exact: true }).click()
   // apple 认识后剩余 1
   await expect(page.getByText('剩余 1')).toBeVisible()
+})
+
+test('TC-STUDY-PREVIEW-001: 先显示当天学习列表，确认后才进入测试', async ({ page }) => {
+  await addWords(page, [['preview-a', '甲'], ['preview-b', '乙']])
+  await page.goto(url('/study'))
+  await expect(page.getByText('今日学习 · 2 个词条')).toBeVisible()
+  await expect(page.getByRole('heading', { name: '先学习当天词条' })).toBeVisible()
+  await expect(page.getByText('preview-a', { exact: true })).toBeVisible()
+  await expect(page.getByText('preview-b', { exact: true })).toBeVisible()
+  await expect(page.getByText('新学 · 回忆式')).toHaveCount(0)
+
+  await page.getByRole('button', { name: '开始测试', exact: true }).click()
+  await expect(page.getByText('不能返回当天学习列表')).toBeVisible()
+  await page.getByRole('button', { name: '继续学习', exact: true }).click()
+  await expect(page.getByText('不能返回当天学习列表')).toHaveCount(0)
+  await page.getByRole('button', { name: '开始测试', exact: true }).click()
+  await page.getByRole('button', { name: '确认开始', exact: true }).click()
+  await expect(page.getByText('新学 · 回忆式')).toBeVisible()
 })
 
 test('TC-STUDY-RCL-002: 忘记重排到队尾', async ({ page }) => {
@@ -113,6 +132,7 @@ test('TC-STUDY-RCL-007: 全部学完进空队列页', async ({ page }) => {
 // ===== 快速自测 =====
 
 async function switchToQuick(page: import('@playwright/test').Page) {
+  await startStudyTest(page)
   await page.getByRole('button', { name: '题型设置' }).click()
   await page.locator('.modal-overlay').getByRole('button', { name: '快速自测', exact: true }).first().click()
   await page.locator('.modal-overlay').getByRole('button', { name: '关闭', exact: true }).click()
@@ -174,9 +194,9 @@ test('TC-STUDY-QCK-009: 自动展开下一词并滚动到可见区域', async ({
   await first.click()
   await page.getByRole('button', { name: '记得', exact: true }).click()
 
-  const next = list.locator('button').filter({ hasText: 'scroll-1' }).first()
-  await expect(next).toBeVisible()
-  const nextCard = next.locator('..').locator('..')
+  // 词条顺序是随机的，验证评分后有且仅有一个未评分词条自动展开
+  const nextCard = list.locator('[aria-expanded="true"]').locator('..').locator('..')
+  await expect(nextCard).toBeVisible()
   await expect(nextCard).toHaveAttribute('class', /overflow-hidden/)
   const isVisible = await nextCard.evaluate((element) => {
     const rect = element.getBoundingClientRect()
@@ -225,6 +245,7 @@ test('TC-STUDY-SWITCH-001: 新学题型切换', async ({ page }) => {
   await addWords(page, [['apple', '苹果']])
   await page.goto(url('/study'))
   await page.waitForTimeout(1000)
+  await startStudyTest(page)
   await expect(page.getByText('新学 · 回忆式')).toBeVisible()
 
   // 切到快速自测
@@ -240,6 +261,7 @@ test('TC-STUDY-SWITCH-001: 新学题型切换', async ({ page }) => {
   // 刷新页面验证持久化
   await page.reload()
   await page.waitForTimeout(2000)
+  await startStudyTest(page)
   await expect(page.getByText('新学 · 回忆式')).toBeVisible()
 })
 
@@ -249,6 +271,7 @@ test('TC-STUDY-FREE-001: 无计划自由学习', async ({ page }) => {
   await addWords(page, [['free', '自由'], ['study', '学习']])
   await page.goto(url('/study'))
   await page.waitForTimeout(1500)
+  await startStudyTest(page)
   await expect(page.locator('h2').first()).toBeVisible()
 })
 

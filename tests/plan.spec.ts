@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { url } from './helpers'
+import { url, startStudyTest } from './helpers'
 
 async function addWords(page: import('@playwright/test').Page, words: [string, string][]) {
   for (const [word, trans] of words) {
@@ -153,7 +153,7 @@ test('TC-EXTRA-001: 首页加学确认框', async ({ page }) => {
 
   // 学 1 个词（回忆式认识）。等完成页出现 → 确保 markWordStarted 已写入 DB
   await page.goto(url('/study?plan=1&mode=learn'))
-  await page.locator('h2').first().waitFor({ timeout: 10000 })
+  await startStudyTest(page)
   await page.getByRole('button', { name: '认识', exact: true }).click()
   await expect(page.getByText('今日学习已完成!')).toBeVisible({ timeout: 10000 })
 
@@ -169,7 +169,7 @@ test('TC-EXTRA-005: 取消加学', async ({ page }) => {
   await addWords(page, [['apple', '苹果'], ['banana', '香蕉']])
   await createPlanWithQuota1(page, '取消加学')
   await page.goto(url('/study?plan=1&mode=learn'))
-  await page.locator('h2').first().waitFor({ timeout: 10000 })
+  await startStudyTest(page)
   await page.getByRole('button', { name: '认识', exact: true }).click()
   await expect(page.getByText('今日学习已完成!')).toBeVisible({ timeout: 10000 })
 

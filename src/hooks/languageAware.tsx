@@ -345,6 +345,7 @@ export function toLangStudyItem(w: LangWord, isReview: boolean): StudyItem {
       isReview,
       title: w.word,
       phonetic: w.reading,
+      notes: w.notes,
       primaryTranslation: getLangPrimaryTranslation(w),
       renderDefs: () => renderJaDefs(w),
     }
@@ -354,6 +355,7 @@ export function toLangStudyItem(w: LangWord, isReview: boolean): StudyItem {
     isReview,
     title: w.word,
     phonetic: w.phonetic,
+    notes: w.notes,
     primaryTranslation: getPrimaryTranslation(w),
     renderDefs: () => renderEnDefs(w),
   }

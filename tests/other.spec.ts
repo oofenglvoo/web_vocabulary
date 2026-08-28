@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { url, moveSentencesCategory } from './helpers'
+import { url, moveSentencesCategory, startStudyTest } from './helpers'
 
 test('TC-GLB-003: 404 页面', async ({ page }) => {
   await page.goto(url('/nonexistent-page'))
@@ -164,6 +164,7 @@ test('TC-CHK-002: 学习后打卡天数增加', async ({ page }) => {
   await page.getByRole('button', { name: '保存', exact: true }).click()
   await page.waitForURL(/\/words/)
   await page.goto(url('/study'))
+  await startStudyTest(page)
   await page.waitForSelector('text=回忆式')
   await page.waitForTimeout(1000)
   await page.getByRole('button', { name: '认识', exact: true }).click()
@@ -314,6 +315,7 @@ test('TC-FAV-FOLD-001: 学习页点心形收藏进新夹', async ({ page }) => {
   // 学习页（回忆式卡片正面）点心形 → 默认进上次目录，成功提示可进入其他目录
   await page.goto(url('/study'))
   await page.waitForTimeout(1200)
+  await startStudyTest(page)
   await page.getByRole('button', { name: /加入收藏|编辑收藏/ }).first().click()
   await expect(page.getByRole('button', { name: '收藏到其他目录' })).toBeVisible()
   await page.getByRole('button', { name: '收藏到其他目录' }).click()
