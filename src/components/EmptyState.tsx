@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 interface EmptyStateProps {
   icon: React.ReactNode
@@ -27,13 +28,14 @@ export function EmptyState({ icon, title, description, action }: EmptyStateProps
         <p className="text-sm text-gray-400 dark:text-gray-500 max-w-xs">{description}</p>
       )}
       {action && (
-        <a
-          href={action.href}
+        // 应用内路由必须走 Link：原生 <a href> 会丢掉 basename（/web_vocabulary）导致 404
+        <Link
+          to={action.href}
           onClick={action.onClick}
           className="btn-primary mt-5 inline-flex items-center gap-1.5"
         >
           {action.label}
-        </a>
+        </Link>
       )}
     </motion.div>
   )

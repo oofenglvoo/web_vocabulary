@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Calendar, Flame, Clock, Trophy, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useCheckInStats, useMonthCheckIns, dateKeyOf } from '../hooks/useCheckIn'
+import { useLangSessionTypes } from '../hooks/languageAware'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
 import { ACHIEVEMENTS, getUnlocked, checkAchievements, AchievementStats } from '../utils/achievements'
@@ -14,28 +15,39 @@ const WEEK_DAYS = ['日', '一', '二', '三', '四', '五', '六']
 export function CheckIn() {
   const navigate = useNavigate()
   const { toast } = useToast()
-  const stats = useCheckInStats()
+  const sessionTypes = useLangSessionTypes()
+  const stats = useCheckInStats(sessionTypes)
 
   const now = new Date()
   const [viewYear, setViewYear] = useState(now.getFullYear())
   const [viewMonth, setViewMonth] = useState(now.getMonth() + 1) // 1-12
-  const monthCheckIns = useMonthCheckIns(viewYear, viewMonth)
+  const monthCheckIns = useMonthCheckIns(viewYear, viewMonth, sessionTypes)
 
-  // 累计学时（所有 session durationMs 求和）
+  // 累计学时（当前语言 session durationMs 求和）
   const totalMinutes = useLiveQuery(async () => {
     let sum = 0
     await db.studySessions.each((s) => {
-      sum += s.durationMs || 0
+      if (sessionTypes.includes(s.entityType)) sum += s.durationMs || 0
     })
     return Math.round(sum / 60000)
-  }, []) ?? 0
+  }, [sessionTypes]) ?? 0
 
-  // 勋章统计
-  const totalSessions = useLiveQuery(() => db.studySessions.count(), []) ?? 0
+  // 勋章统计（按当前语言）
+  const isJa = sessionTypes.length === 1 && sessionTypes[0] === 'japaneseWord'
+  const totalSessions = useLiveQuery(
+    () => db.studySessions.filter((s) => sessionTypes.includes(s.entityType)).count(),
+    [sessionTypes]
+  ) ?? 0
   const totalLearned =
-    (useLiveQuery(() => db.words.where('isLearned').equals(1).count(), []) ?? 0) +
-    (useLiveQuery(() => db.sentences.where('isLearned').equals(1).count(), []) ?? 0)
-  const totalPlans = useLiveQuery(() => db.studyPlans.count(), []) ?? 0
+    (useLiveQuery(
+      () => (isJa ? db.japaneseWords.where('isLearned').equals(1).count() : db.words.where('isLearned').equals(1).count()),
+      [isJa]
+    ) ?? 0) +
+    (isJa ? 0 : useLiveQuery(() => db.sentences.where('isLearned').equals(1).count(), []) ?? 0)
+  const totalPlans = useLiveQuery(
+    () => (isJa ? db.japaneseStudyPlans.count() : db.studyPlans.count()),
+    [isJa]
+  ) ?? 0
 
   // 页面打开时检查新解锁勋章
   useEffect(() => {

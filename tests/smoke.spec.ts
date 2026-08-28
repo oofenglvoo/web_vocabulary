@@ -13,6 +13,8 @@ test('能添加单词并出现在列表', async ({ page }) => {
   await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
+  // 等待保存完成跳转，避免 goto 中断进行中的写入
+  await page.waitForURL(/\/words/)
 
   await page.goto(url('/words'))
   await expect(page.getByText('apple', { exact: true })).toBeVisible()

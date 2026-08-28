@@ -1,9 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
-import { StudyKind } from '../types/word'
+import { StudyKind, StudySession } from '../types/word'
 
 // 打卡统计：完全从 studySessions 派生（timestamp + kind）
 // kind='new' 有记录 → 当天新学完成；kind='review' → 当天复习完成
+// 支持按语言过滤会话实体（en: word+sentence；ja: japaneseWord）
 
 export interface DayCheckIn {
   dateKey: string // yyyy-mm-dd（本地时区）
@@ -19,6 +20,8 @@ export interface CheckInStats {
 }
 
 const DAY_MS = 24 * 60 * 60 * 1000
+
+const ALL_TYPES: StudySession['entityType'][] = ['word', 'sentence', 'japaneseWord']
 
 export function dateKeyOf(ts: number): string {
   const d = new Date(ts)
@@ -39,10 +42,14 @@ function groupByDay(sessions: { timestamp: number; kind: StudyKind }[]): Map<str
   return map
 }
 
-/** 学习打卡总览：累计天数、连续天数、今日新学/复习完成 */
-export function useCheckInStats(): CheckInStats {
-  const sessions = useLiveQuery(() => db.studySessions.toArray(), []) ?? []
-  const byDay = groupByDay(sessions)
+/** 学习打卡总览：累计天数、连续天数、今日新学/复习完成（按语言过滤） */
+export function useCheckInStats(entityTypes: StudySession['entityType'][] = ALL_TYPES): CheckInStats {
+  const sessions = useLiveQuery(
+    () => db.studySessions.toArray(),
+    [],
+  ) ?? []
+  const filtered = sessions.filter((s) => entityTypes.includes(s.entityType))
+  const byDay = groupByDay(filtered)
   const dateKeys = Array.from(byDay.keys())
   const totalDays = dateKeys.length
 
@@ -77,8 +84,12 @@ export function useCheckInStats(): CheckInStats {
   }
 }
 
-/** 某月每天的打卡情况（dateKey → newDone/reviewDone） */
-export function useMonthCheckIns(year: number, month: number): Map<string, DayCheckIn> {
+/** 某月每天的打卡情况（dateKey → newDone/reviewDone，按语言过滤） */
+export function useMonthCheckIns(
+  year: number,
+  month: number,
+  entityTypes: StudySession['entityType'][] = ALL_TYPES
+): Map<string, DayCheckIn> {
   // month 1-12
   const monthStart = new Date(year, month - 1, 1).getTime()
   const monthEnd = new Date(year, month, 1).getTime()
@@ -90,5 +101,5 @@ export function useMonthCheckIns(year: number, month: number): Map<string, DayCh
         .toArray(),
     [year, month]
   ) ?? []
-  return groupByDay(sessions)
+  return groupByDay(sessions.filter((s) => entityTypes.includes(s.entityType)))
 }

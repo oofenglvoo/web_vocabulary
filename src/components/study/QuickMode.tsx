@@ -13,7 +13,7 @@ interface QuickModeProps {
   items: StudyItem[]
   onRateAll: (results: QuickRating[]) => Promise<boolean> | boolean | void
   onSpeak: (item: StudyItem) => void
-  entityType?: 'word' | 'sentence'
+  entityType?: 'word' | 'sentence' | 'japaneseWord'
 }
 
 /** 快速自测：列表视图，所有词同时列出，点击展开释义 + 忘记/记得/掌握三选项，全部评完后统一提交 */
