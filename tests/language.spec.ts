@@ -222,3 +222,31 @@ test('TC-LANG-011: 学习翻面显示笔记并可现场编辑', async ({ page })
   await expect(page.getByText('笔记已保存')).toBeVisible()
   await expect(page.getByText('更新后的笔记')).toBeVisible()
 })
+
+test('TC-LANG-012: 日语分类导入关闭跳过重复后允许跨分类导入同词', async ({ page }) => {
+  await switchLang(page, '日语')
+
+  // 先把同一个日语词导入 N5 分类
+  await page.goto(url('/import?category=N5'))
+  await page.locator('textarea').fill(`[
+    { "word": "分類語", "reading": "ぶんるいご", "meaning": "分类词" }
+  ]`)
+  await page.getByRole('button', { name: /解析预览/ }).click()
+  await page.getByRole('button', { name: /导入 \d+ 个/ }).click()
+  await expect(page.getByText(/导入完成/)).toBeVisible({ timeout: 10000 })
+
+  // 目标改为 N4，取消“跳过已存在”后再次导入同词
+  await page.goto(url('/import?category=N4'))
+  await page.locator('textarea').fill(`[
+    { "word": "分類語", "reading": "ぶんるいご", "meaning": "分类词（N4）" }
+  ]`)
+  await page.getByRole('button', { name: /解析预览/ }).click()
+  await page.locator('input[type="checkbox"]').nth(1).uncheck()
+  await page.getByRole('button', { name: /导入 \d+ 个/ }).click()
+  await expect(page.getByText(/导入完成/)).toBeVisible({ timeout: 10000 })
+  await expect(page.getByText('跳过: 0 个')).toBeVisible()
+
+  // 两个分类都应各有一条同名日语词
+  await page.goto(url('/categories/N4'))
+  await expect(page.getByText('分類語', { exact: true })).toBeVisible({ timeout: 10000 })
+})
