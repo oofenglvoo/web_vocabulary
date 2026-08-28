@@ -1,9 +1,11 @@
 // 单词发音工具
-// 优先使用有道词典真人发音 API,失败回退到浏览器原生 Web Speech API。
+// 优先使用在线真人/合成音频,失败回退到浏览器原生 Web Speech API。
 //
-// 有道发音地址: https://dict.youdao.com/dictvoice?audio=<word>&type=<1|2>
+// 英语: 有道词典真人发音 https://dict.youdao.com/dictvoice?audio=<word>&type=<1|2>
 //   type=1 英音, type=2 美音
-// 注意: 这是一个公开但非官方的接口,无 SLA 保证。
+// 日语: Google 翻译 TTS https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ja&q=<word>
+//   (有道 dictvoice 对日文只返回无效音频,不能用作日语发音源)
+// 注意: 两者均为公开但非官方的接口,无 SLA 保证。
 
 export type Accent = 'us' | 'uk'
 export type TtsProvider = 'auto' | 'youdao' | 'native'
@@ -65,22 +67,30 @@ function speakNative(word: string, accent: Accent, lang: 'en' | 'ja'): boolean {
   const utterance = new SpeechSynthesisUtterance(word)
   if (lang === 'ja') {
     utterance.lang = 'ja-JP'
+    // 日语 0.9 倍速听感拖沓,用默认语速更自然
+    utterance.rate = 1
   } else {
     utterance.lang = accent === 'uk' ? 'en-GB' : 'en-US'
+    utterance.rate = 0.9
   }
-  utterance.rate = 0.9
+  // 候选按语言前缀筛选,再优先挑选更自然的音色:
+  // Edge 的 Online (Natural) 神经语音 > Chrome 的 Google 网络语音 > 其余本地音色
   const target = utterance.lang.toLowerCase()
+  const prefix = target.split('-')[0]
+  const candidates = voices.filter((v) => {
+    const vl = v.lang.toLowerCase().replace('_', '-')
+    return vl === target || vl.startsWith(prefix)
+  })
   const voice =
-    voices.find((v) => v.lang.toLowerCase() === target) ||
-    (lang === 'ja'
-      ? voices.find((v) => v.lang.toLowerCase().startsWith('ja'))
-      : voices.find((v) => v.lang.toLowerCase().startsWith('en')))
+    candidates.find((v) => /natural/i.test(v.name)) ||
+    candidates.find((v) => /google/i.test(v.name)) ||
+    candidates[0]
   if (voice) utterance.voice = voice
   synth.speak(utterance)
   return true
 }
 
-// ---- 有道发音 ----
+// ---- 在线音频(有道/Google) ----
 // 用 token 标识当前播放,旧的 token 不允许触发 fallback
 let currentAudio: HTMLAudioElement | null = null
 let speakToken = 0
@@ -90,12 +100,17 @@ function youdaoUrl(word: string, accent: Accent) {
   return `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=${type}`
 }
 
+function googleTtsUrl(word: string) {
+  // 仅用于日语发音(英语走有道真人音频)
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ja&q=${encodeURIComponent(word.slice(0, 200))}`
+}
+
 /**
- * 播放有道音频。返回 'played' 表示已开始播放(不一定播完),'failed' 表示无法播放。
+ * 播放在线音频。返回 'played' 表示已开始播放(不一定播完),'failed' 表示无法播放。
  * 关键点:只要 audio.play() 这个 Promise 成功 resolve,就认为播放成功——
  * 不再等 'ended',避免 5s 超时误触发 fallback 把已经在响的音频盖掉。
  */
-function speakYoudao(word: string, accent: Accent, myToken: number): Promise<'played' | 'failed'> {
+function speakRemoteAudio(url: string, myToken: number): Promise<'played' | 'failed'> {
   return new Promise((resolve) => {
     if (typeof Audio === 'undefined') return resolve('failed')
     // 取消上一个
@@ -108,7 +123,7 @@ function speakYoudao(word: string, accent: Accent, myToken: number): Promise<'pl
       currentAudio = null
     }
 
-    const audio = new Audio(youdaoUrl(word, accent))
+    const audio = new Audio(url)
     audio.preload = 'auto'
     currentAudio = audio
 
@@ -164,20 +179,23 @@ export async function speakWord(
     return
   }
 
-  if (provider === 'youdao' || provider === 'auto') {
-    // 有道接口无日语音频保证，日语直接走原生语音
-    if (lang === 'ja') {
-      speakNative(w, accent, lang)
-      return
+  if (lang === 'ja') {
+    // 有道 dictvoice 对日文返回无效音频;自动模式下日语改用 Google 翻译 TTS
+    if (provider === 'auto') {
+      const result = await speakRemoteAudio(googleTtsUrl(w), myToken)
+      if (myToken !== speakToken) return
+      if (result === 'played') return
     }
-    const result = await speakYoudao(w, accent, myToken)
-    // 如果当前 token 已经被新的播放请求顶替,直接返回,避免叠加播放
-    if (myToken !== speakToken) return
-    if (result === 'played') return
-    // 有道失败 → 回退原生
     speakNative(w, accent, lang)
     return
   }
+
+  const result = await speakRemoteAudio(youdaoUrl(w, accent), myToken)
+  // 如果当前 token 已经被新的播放请求顶替,直接返回,避免叠加播放
+  if (myToken !== speakToken) return
+  if (result === 'played') return
+  // 在线发音失败 → 回退原生
+  speakNative(w, accent, lang)
 }
 
 export function stopSpeaking() {
