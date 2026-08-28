@@ -6,6 +6,7 @@ export interface StudyItem {
   isReview: boolean
   title: string // 主词面（单词或短句）
   phonetic?: string
+  notes?: string
   primaryTranslation: string // 用于选择题
   renderDefs: () => ReactNode // 释义区 JSX
 }

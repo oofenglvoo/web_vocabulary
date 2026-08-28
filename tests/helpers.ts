@@ -11,6 +11,20 @@ export function url(path: string): string {
 
 export { BASE }
 
+/** Moji 学习流程：进入当天词表后确认开始测试 */
+export async function startStudyTest(page: Page) {
+  const startButton = page.getByRole('button', { name: '开始测试', exact: true })
+  await page.waitForFunction(() => {
+    const hasStart = Array.from(document.querySelectorAll('button')).some((button) => button.textContent?.trim() === '开始测试')
+    const hasQuiz = !!document.querySelector('[data-study-quiz]')
+    const isEmpty = document.body.textContent?.includes('今日学习已完成') || document.body.textContent?.includes('暂无待复习')
+    return hasStart || hasQuiz || isEmpty
+  }, undefined, { timeout: 10000 })
+  if (await startButton.count() === 0 || !(await startButton.isVisible())) return
+  await startButton.click()
+  await page.getByRole('button', { name: '确认开始', exact: true }).click()
+}
+
 /**
  * 直接改写 IndexedDB 中短句的 category 字段（绕过应用校验层），
  * 用于在测试中构造“旧混合数据”场景。

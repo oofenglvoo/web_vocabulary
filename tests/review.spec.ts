@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { url, makeAllWordsDue } from './helpers'
+import { url, makeAllWordsDue, startStudyTest } from './helpers'
 
 async function addWords(page: import('@playwright/test').Page, words: [string, string][]) {
   for (const [word, trans] of words) {
@@ -38,6 +38,7 @@ test('学习后复习入口可用', async ({ page }) => {
 
   // 学习一个词（回忆式，点认识）
   await page.goto(url('/study?plan=1&mode=learn'))
+  await startStudyTest(page)
   await page.waitForSelector('text=回忆式')
   await page.getByRole('button', { name: '认识', exact: true }).click()
 
@@ -54,6 +55,7 @@ test('TC-SEP-001: 学习入口只含新词，复习入口只含到期词', async
 
   // 通过"额外学习"把 3 个词都标记为已学（不占用今日配额）
   await page.goto(url('/study?plan=1&mode=learn&extra=1'))
+  await startStudyTest(page)
   await page.waitForSelector('text=回忆式')
   for (let i = 0; i < 3; i++) {
     await page.getByRole('button', { name: '认识', exact: true }).click()
@@ -72,6 +74,7 @@ test('TC-SEP-001: 学习入口只含新词，复习入口只含到期词', async
 
   // mode=review：3 个到期词都应在复习队列
   await page.goto(url('/study?plan=1&mode=review'))
+  await startStudyTest(page)
   await page.waitForSelector('text=回忆式')
   await expect(page.getByText('复习 · 回忆式')).toBeVisible()
   await expect(page.getByText('剩余 3')).toBeVisible()

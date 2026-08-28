@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { url } from './helpers'
+import { url, startStudyTest } from './helpers'
 
 // ===== 语言上下文：英语/日语统一页面切换 =====
 
@@ -211,6 +211,7 @@ test('TC-LANG-011: 学习翻面显示笔记并可现场编辑', async ({ page })
   // 进入新学（自由学习队列只有这一个词）
   await page.goto(url('/study'))
   await page.waitForTimeout(1500)
+  await startStudyTest(page)
   // 翻面看释义
   await page.getByText('勉強').click()
   await expect(page.getByText('初始笔记')).toBeVisible()
