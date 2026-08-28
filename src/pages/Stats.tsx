@@ -307,7 +307,7 @@ export function Stats() {
               ))}
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-              自动: 优先有道真人发音,失败回退浏览器合成
+              自动: 英语优先有道真人发音,日语优先 Google 翻译语音,失败回退浏览器合成
             </p>
           </div>
 
