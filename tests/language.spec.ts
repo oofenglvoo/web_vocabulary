@@ -163,3 +163,62 @@ test('TC-LANG-009: 收藏夹空态「批量导入并收藏」走应用内路由'
   await expect(page).toHaveURL(/\/import\?favorite=1$/)
   await expect(page.getByRole('heading', { name: '导入日语词' })).toBeVisible()
 })
+
+test('TC-LANG-010: 新格式导入（音调/meaning/notes）在列表与详情展示', async ({ page }) => {
+  await switchLang(page, '日语')
+  await page.goto(url('/import'))
+  await page.locator('textarea').fill(`[
+    {
+      "word": "廊下",
+      "reading": "ろうか",
+      "accent": "⓪",
+      "partOfSpeech": "名",
+      "meaning": "走廊，廊下",
+      "example": "廊下を歩く。",
+      "exampleTranslation": "走走廊。",
+      "category": "N5",
+      "notes": "音调测试笔记"
+    }
+  ]`)
+  await page.getByRole('button', { name: /解析预览/ }).click()
+  // 预览表含音调列
+  await expect(page.getByRole('cell', { name: '⓪' })).toBeVisible()
+  await page.getByRole('button', { name: /导入 \d+ 个/ }).click()
+  await expect(page.getByText(/导入完成/)).toBeVisible({ timeout: 10000 })
+
+  // 词库卡片：音调 chip + 笔记行
+  await page.goto(url('/words'))
+  await expect(page.getByText('廊下', { exact: true })).toBeVisible({ timeout: 10000 })
+  await expect(page.getByText('音调测试笔记')).toBeVisible()
+
+  // 详情页：音调 chip + 笔记块
+  await page.getByText('廊下', { exact: true }).click()
+  await page.waitForURL(/\/word\/\d+/)
+  await expect(page.getByText('⓪').first()).toBeVisible()
+  await expect(page.getByText('音调测试笔记')).toBeVisible()
+})
+
+test('TC-LANG-011: 学习翻面显示笔记并可现场编辑', async ({ page }) => {
+  await switchLang(page, '日语')
+  await page.goto(url('/import'))
+  await page.locator('textarea').fill(`[
+    { "word": "勉強", "reading": "べんきょう", "meaning": "学习", "notes": "初始笔记" }
+  ]`)
+  await page.getByRole('button', { name: /解析预览/ }).click()
+  await page.getByRole('button', { name: /导入 \d+ 个/ }).click()
+  await expect(page.getByText(/导入完成/)).toBeVisible({ timeout: 10000 })
+
+  // 进入新学（自由学习队列只有这一个词）
+  await page.goto(url('/study'))
+  await page.waitForTimeout(1500)
+  // 翻面看释义
+  await page.getByText('勉強').click()
+  await expect(page.getByText('初始笔记')).toBeVisible()
+
+  // 现场编辑笔记（NotesBlock 阻止冒泡，不会触发翻面）
+  await page.getByLabel('编辑笔记').click()
+  await page.locator('textarea').fill('更新后的笔记')
+  await page.getByRole('button', { name: '保存', exact: true }).click()
+  await expect(page.getByText('笔记已保存')).toBeVisible()
+  await expect(page.getByText('更新后的笔记')).toBeVisible()
+})

@@ -28,11 +28,11 @@ import { getDefinitions } from '../utils/definitions'
 import { BackButton } from '../components/BackButton'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { useToast } from '../components/Toast'
+import { NotesBlock } from '../components/NotesBlock'
 import { SkeletonCard } from '../components/Skeleton'
 import { Definition, JapaneseDefinition, JapaneseWord, Word } from '../types/word'
 
 const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
-const JLPT_OPTIONS = ['', 'N5', 'N4', 'N3', 'N2', 'N1']
 
 // 浏览来源:从哪个列表进入了这个详情页 → 决定上一个/下一个的取数集
 type Scope = 'all' | 'favorites' | 'category'
@@ -224,14 +224,9 @@ export function WordDetail() {
           <span className="inline-block px-3 py-1 rounded-full text-sm bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300">
             {difficultyLabels[word.difficulty - 1]}
           </span>
-          {isJa && jaWord!.jlptLevel && (
-            <span className="inline-block px-3 py-1 rounded-full text-sm bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">
-              {jaWord!.jlptLevel}
-            </span>
-          )}
-          {isJa && jaWord!.textbook && (
-            <span className="inline-block px-3 py-1 rounded-full text-sm bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300">
-              {jaWord!.textbook}
+          {isJa && jaWord!.accent && (
+            <span className="inline-block px-3 py-1 rounded-full text-sm bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300">
+              {jaWord!.accent}
             </span>
           )}
           <Link
@@ -476,7 +471,7 @@ export function WordDetail() {
   )
 }
 
-/** 日语词条展示 + 整卡编辑（假名/JLPT/教科书/多释义/例句三件套/笔记） */
+/** 日语词条展示 + 整卡编辑（假名/音调/多释义/例句三件套/笔记） */
 function JapaneseDetailBody({
   word,
   editing,
@@ -518,9 +513,8 @@ function JapaneseDetailBody({
     await updateLangWord(word.id!, {
       word: form.word.trim(),
       reading: form.reading.trim(),
+      accent: form.accent,
       partOfSpeech: form.partOfSpeech,
-      jlptLevel: form.jlptLevel,
-      textbook: form.textbook,
       category: form.category,
       difficulty: form.difficulty,
       definitions: validDefs.map((d) => ({
@@ -554,14 +548,9 @@ function JapaneseDetailBody({
         </div>
         <div className="grid grid-cols-2 gap-2">
           <input value={form.partOfSpeech} onChange={(e) => set('partOfSpeech', e.target.value)} className="input-field text-sm" placeholder="词性" />
-          <select value={form.jlptLevel} onChange={(e) => set('jlptLevel', e.target.value)} className="input-field text-sm">
-            {JLPT_OPTIONS.map((l) => (
-              <option key={l} value={l}>{l || 'JLPT 等级'}</option>
-            ))}
-          </select>
+          <input value={form.accent} onChange={(e) => set('accent', e.target.value)} className="input-field text-sm" placeholder="音调（如 ⓪ / ①）" />
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <input value={form.textbook} onChange={(e) => set('textbook', e.target.value)} className="input-field text-sm" placeholder="教材出处" />
           <select value={form.category} onChange={(e) => set('category', e.target.value)} className="input-field text-sm">
             <option value="">未分类</option>
             <option value="默认">默认</option>
@@ -570,6 +559,11 @@ function JapaneseDetailBody({
             <option value="N4">N4</option>
             <option value="N3">N3</option>
             <option value="标准日本语">标准日本语</option>
+          </select>
+          <select value={form.difficulty} onChange={(e) => set('difficulty', Number(e.target.value))} className="input-field text-sm">
+            {[1, 2, 3, 4, 5].map((d) => (
+              <option key={d} value={d}>难度 {d}</option>
+            ))}
           </select>
         </div>
         <div className="space-y-2">
@@ -684,7 +678,7 @@ function JapaneseDetailBody({
           {word.exampleTranslation && <p className="text-sm text-primary-700 dark:text-primary-300 mt-1">{word.exampleTranslation}</p>}
         </div>
       )}
-      {word.notes && <SectionCard title="笔记" content={word.notes} />}
+      <NotesBlock notes={word.notes} onSave={async (n) => { await updateLangWord(word.id!, { notes: n }) }} />
     </>
   )
 }

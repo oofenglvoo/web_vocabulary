@@ -9,7 +9,6 @@ import { BackButton } from '../components/BackButton'
 import { Definition, JapaneseDefinition } from '../types/word'
 
 const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
-const JLPT_OPTIONS = ['', 'N5', 'N4', 'N3', 'N2', 'N1']
 
 export function AddWord() {
   const lang = useLang()
@@ -249,16 +248,15 @@ function AddEnglishWord() {
   )
 }
 
-/** 日语添加表单：表记+假名必填，含 JLPT/教科书/例句三件套 */
+/** 日语添加表单：表记+假名必填，含音调/多释义/例句三件套 */
 function AddJapaneseWord() {
   const navigate = useNavigate()
   const { toast } = useToast()
   const [form, setForm] = useState({
     word: '',
     reading: '',
+    accent: '',
     partOfSpeech: '',
-    jlptLevel: '',
-    textbook: '',
     example: '',
     exampleReading: '',
     exampleTranslation: '',
@@ -308,9 +306,8 @@ function AddJapaneseWord() {
       await addJapaneseWord({
         word: form.word.trim(),
         reading: form.reading.trim(),
+        accent: form.accent.trim(),
         partOfSpeech: form.partOfSpeech.trim(),
-        jlptLevel: form.jlptLevel,
-        textbook: form.textbook.trim(),
         definitions: validDefs.map((d) => ({
           pos: d.pos.trim(),
           meaning: d.meaning.trim(),
@@ -390,16 +387,13 @@ function AddJapaneseWord() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">JLPT 等级</label>
-            <select
-              value={form.jlptLevel}
-              onChange={(e) => set('jlptLevel', e.target.value)}
+            <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">音调</label>
+            <input
+              value={form.accent}
+              onChange={(e) => set('accent', e.target.value)}
               className="input-field"
-            >
-              {JLPT_OPTIONS.map((l) => (
-                <option key={l} value={l}>{l || '未标注'}</option>
-              ))}
-            </select>
+              placeholder="如：⓪ / ① / ⓪①"
+            />
           </div>
         </div>
 
@@ -483,16 +477,6 @@ function AddJapaneseWord() {
               placeholder="中文"
             />
           </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">教材出处</label>
-          <input
-            value={form.textbook}
-            onChange={(e) => set('textbook', e.target.value)}
-            className="input-field"
-            placeholder="如：标准日本语初级"
-          />
         </div>
 
         <div>

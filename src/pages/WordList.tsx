@@ -19,16 +19,16 @@ import { ConfirmModal } from '../components/ConfirmModal'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
 
-/** 日语词条搜索：表记/假名/词性/教科书/释义 全覆盖 */
+/** 日语词条搜索：表记/假名/词性/音调/笔记/释义 全覆盖 */
 function matchJapaneseSearch(query: string, w: LangWord): boolean {
   const word = w as JapaneseWord
   const q = query.trim().toLowerCase()
   const haystack = [
     word.word,
     word.reading,
+    word.accent,
     word.partOfSpeech,
-    word.textbook,
-    word.jlptLevel,
+    word.notes,
     word.category,
     ...(word.definitions ?? []).flatMap((d) => [d.pos, d.meaning, d.translation]),
   ]

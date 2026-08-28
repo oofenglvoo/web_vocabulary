@@ -14,6 +14,7 @@ import {
   StudySession,
 } from '../types/word'
 import { useLang, getCurrentLang } from '../context/Language'
+import { NotesBlock } from '../components/NotesBlock'
 import { LANG_SESSION_TYPES, useStats } from './useWords'
 import { useAllWords, useDueCount, useDueWords, useWordsByCategory, useFavoriteWords } from './useWords'
 import {
@@ -261,8 +262,11 @@ function renderJaDefs(w: JapaneseWord): ReactNode {
   return (
     <div className="space-y-3">
       <div className="bg-primary-50 dark:bg-primary-900/30 rounded-xl p-3.5">
-        <div className="text-xs text-primary-600 dark:text-primary-400 mb-1">假名</div>
-        <p className="text-base font-medium dark:text-gray-100">{w.reading}</p>
+        <div className="text-xs text-primary-600 dark:text-primary-400 mb-1">假名{w.accent ? ' · 音调' : ''}</div>
+        <p className="text-base font-medium dark:text-gray-100">
+          {w.reading}
+          {w.accent && <span className="ml-2 text-rose-600 dark:text-rose-300">{w.accent}</span>}
+        </p>
       </div>
       {w.definitions?.map((d, i) => (
         <div key={i} className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
@@ -279,12 +283,7 @@ function renderJaDefs(w: JapaneseWord): ReactNode {
           {w.exampleTranslation && <p className="text-sm text-primary-700 dark:text-primary-300 mt-1">{w.exampleTranslation}</p>}
         </div>
       )}
-      {w.notes && (
-        <div className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">笔记</div>
-          <p className="text-sm dark:text-gray-200">{w.notes}</p>
-        </div>
-      )}
+      <NotesBlock notes={w.notes} onSave={async (n) => { await updateLangWord(w.id!, { notes: n }) }} />
     </div>
   )
 }
