@@ -133,7 +133,6 @@ export async function bulkAddJapaneseWords(
           skippedWords.push(word)
           continue
         }
-        throw new DuplicateJapaneseWordError(word)
       }
       usedCategories.add(category)
       await ensureCategoryWritableForLang('ja', category)
