@@ -38,9 +38,9 @@ function matchJapaneseSearch(query: string, w: LangWord): boolean {
   const haystack = [
     w.word,
     jaW.reading,
+    jaW.accent,
     jaW.partOfSpeech,
-    jaW.textbook,
-    jaW.jlptLevel,
+    jaW.notes,
     w.category,
     ...(jaW.definitions ?? []).flatMap((d) => [d.pos, d.meaning, d.translation]),
   ]

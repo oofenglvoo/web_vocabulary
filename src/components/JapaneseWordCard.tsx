@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Heart, Trash2, Volume2 } from 'lucide-react'
+import { Heart, StickyNote, Trash2, Volume2 } from 'lucide-react'
 import { JapaneseWord } from '../types/word'
 import { speakWord } from '../utils/tts'
 
@@ -10,7 +10,7 @@ interface JapaneseWordCardProps {
   onDelete: () => void
 }
 
-/** 日语词条卡片：与 WordCard 同构，读音/假名/JLPT 槽位替换英语特有字段 */
+/** 日语词条卡片：与 WordCard 同构，读音/假名/音调槽位替换英语特有字段 */
 export const JapaneseWordCard = memo(function JapaneseWordCard({ word, onClick, onFavorite, onDelete }: JapaneseWordCardProps) {
   const primary = word.definitions?.[0]
   const learnedBadge = word.isLearned === 1
@@ -52,9 +52,13 @@ export const JapaneseWordCard = memo(function JapaneseWordCard({ word, onClick, 
           <p className="mt-1 text-sm text-gray-700 dark:text-gray-300 truncate">
             {primary ? [primary.pos || word.partOfSpeech, primary.translation, primary.meaning].filter(Boolean).join(' ') : '暂无释义'}
           </p>
+          {word.notes && (
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 truncate flex items-center gap-1">
+              <StickyNote size={11} className="shrink-0" /> {word.notes}
+            </p>
+          )}
           <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px] text-gray-500 dark:text-gray-400">
-            {word.jlptLevel && <span className="chip bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">{word.jlptLevel}</span>}
-            {word.textbook && <span className="chip bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">{word.textbook}</span>}
+            {word.accent && <span className="chip bg-rose-50 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300">{word.accent}</span>}
             {word.category && <span>{word.category}</span>}
           </div>
         </div>

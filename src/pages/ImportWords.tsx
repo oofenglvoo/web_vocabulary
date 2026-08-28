@@ -55,26 +55,23 @@ bank	银行;河岸;存钱`,
 
 const JA_SAMPLE = `[
   {
-    "word": "食べる",
-    "reading": "たべる",
-    "partOfSpeech": "他动一",
-    "jlptLevel": "N5",
-    "definitions": [
-      { "pos": "他动一", "meaning": "食物を口に入れて噛み飲み込む", "translation": "吃" },
-      { "translation": "品尝" }
-    ],
-    "example": "朝ごはんを食べる。",
-    "exampleReading": "あさごはんをたべる。",
-    "exampleTranslation": "吃早饭。",
+    "word": "廊下",
+    "reading": "ろうか",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "走廊，廊下",
+    "example": "廊下を歩く。",
+    "exampleTranslation": "走走廊。",
     "category": "N5",
-    "textbook": "标准日本语初级",
-    "difficulty": 2
+    "notes": "补充说明，可省略"
   },
   {
-    "expression": "先生",
-    "kana": "せんせい",
-    "translation": "老师",
-    "jlptLevel": "N5"
+    "word": "食べる",
+    "reading": "たべる",
+    "accent": "②",
+    "partOfSpeech": "他动二",
+    "meaning": "吃",
+    "example": "朝ごはんを食べる。"
   }
 ]`
 
@@ -119,7 +116,7 @@ function parseJapaneseJson(text: string): JapaneseParseResult {
       errors.push(`第 ${row} 行「${word}」: 缺少 reading/kana（假名读音）`)
       return
     }
-    // 释义：definitions 数组优先；退化到顶层 translation（字符串或字符串数组）
+    // 释义：definitions 数组优先；退化到顶层 meaning/translation（字符串或字符串数组）
     let definitions: JapaneseImportItem['definitions'] = []
     if (Array.isArray(item.definitions)) {
       definitions = (item.definitions as Record<string, unknown>[])
@@ -132,11 +129,11 @@ function parseJapaneseJson(text: string): JapaneseParseResult {
         .filter((d) => d.meaning || d.translation)
     }
     if (definitions.length === 0) {
-      const topTrans = item.translation
-      if (typeof topTrans === 'string' && topTrans.trim()) {
-        definitions = [{ pos: '', meaning: '', translation: topTrans.trim().slice(0, MAX_FIELD_LEN) }]
-      } else if (Array.isArray(topTrans)) {
-        definitions = (topTrans as unknown[])
+      const topMeaning = item.meaning ?? item['释义'] ?? item.translation
+      if (typeof topMeaning === 'string' && topMeaning.trim()) {
+        definitions = [{ pos: '', meaning: '', translation: topMeaning.trim().slice(0, MAX_FIELD_LEN) }]
+      } else if (Array.isArray(topMeaning)) {
+        definitions = (topMeaning as unknown[])
           .filter((t): t is string => typeof t === 'string' && !!t.trim())
           .map((t) => ({ pos: '', meaning: '', translation: t.trim().slice(0, MAX_FIELD_LEN) }))
       }
@@ -149,9 +146,8 @@ function parseJapaneseJson(text: string): JapaneseParseResult {
     words.push({
       word,
       reading,
-      partOfSpeech: cap(item.partOfSpeech).trim(),
-      jlptLevel: cap(item.jlptLevel).trim(),
-      textbook: cap(item.textbook).trim(),
+      accent: cap(item.accent ?? item['音调'] ?? item.pitch ?? item.pitchAccent).trim(),
+      partOfSpeech: cap(item.partOfSpeech ?? item['词性']).trim(),
       definitions,
       example: cap(item.example).trim(),
       exampleReading: cap(item.exampleReading).trim(),
@@ -379,7 +375,8 @@ export function ImportWords() {
       )}
       {isJa && (
         <p className="text-xs text-gray-500 dark:text-gray-400">
-          仅支持 JSON 数组格式。每条必填 word（或 expression）与 reading（或 kana）假名读音，释义用 definitions 数组（或顶层 translation）。
+          仅支持 JSON 数组格式。每条必填 word（或 expression）与 reading（或 kana）；释义用 meaning（兼容旧格式 definitions 数组或顶层 translation）；
+          可选 accent（音调，如 ⓪/①/⓪①）、partOfSpeech、example、exampleTranslation、category、notes、difficulty。
         </p>
       )}
 
@@ -514,6 +511,7 @@ export function ImportWords() {
                   <tr>
                     <th className="text-left px-2 py-1">{isJa ? '表记' : '单词'}</th>
                     {isJa && <th className="text-left px-2 py-1">假名</th>}
+                    {isJa && <th className="text-left px-2 py-1">音调</th>}
                     <th className="text-left px-2 py-1">释义/翻译</th>
                     <th className="text-left px-2 py-1">分类</th>
                   </tr>
@@ -524,6 +522,7 @@ export function ImportWords() {
                         <tr key={w.word} className="border-t dark:border-slate-700">
                           <td className="px-2 py-1 font-medium">{w.word}</td>
                           <td className="px-2 py-1">{w.reading}</td>
+                          <td className="px-2 py-1">{w.accent}</td>
                           <td className="px-2 py-1 truncate max-w-[200px]">
                             {w.definitions.map((d) => [d.pos, d.translation || d.meaning].filter(Boolean).join(' ')).join('; ')}
                           </td>

@@ -74,10 +74,10 @@ export interface JapaneseWord {
   id?: number
   word: string
   reading: string
+  // 音调（accent）：如 ⓪ / ① / ⓪①，可空
+  accent: string
   definitions: JapaneseDefinition[]
   partOfSpeech: string
-  jlptLevel: string
-  textbook: string
   example: string
   exampleReading: string
   exampleTranslation: string
