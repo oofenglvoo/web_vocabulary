@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
-import { CheckCircle, Sparkles, Target, RefreshCw, BookOpen } from 'lucide-react'
+import { CheckCircle, Sparkles, Target, RefreshCw, BookOpen, ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import {
@@ -432,21 +432,20 @@ export function Study() {
           <div>
             <h1 className="text-xl font-bold dark:text-gray-100">先学习当天词条</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              请先浏览并记忆下面的词条，准备好后再开始测试。
+              点击单词查看完整详情，准备好后再开始测试。
             </p>
           </div>
           <div className="space-y-2">
             {queue.map((item) => (
-              <div key={item.id} className="rounded-xl bg-gray-50 dark:bg-slate-700/60 p-3">
-                <div className="flex items-baseline justify-between gap-2">
-                  <span className="font-semibold dark:text-gray-100">{item.title}</span>
-                  {item.phonetic && <span className="text-xs text-gray-400 dark:text-gray-500">{item.phonetic}</span>}
-                </div>
-                <div className="text-sm text-gray-700 dark:text-gray-300 mt-1">{item.primaryTranslation || '暂无释义'}</div>
-                {item.notes && (
-                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 whitespace-pre-wrap">笔记：{item.notes}</div>
-                )}
-              </div>
+              <Link
+                key={item.id}
+                to={`/word/${item.id}?studyPreview=1&studyIds=${queue.map((entry) => entry.id).join(',')}`}
+                aria-label={item.title}
+                className="flex items-center justify-between gap-3 rounded-xl bg-gray-50 dark:bg-slate-700/60 px-4 py-3 hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors"
+              >
+                <span className="font-semibold dark:text-gray-100">{item.title}</span>
+                <ChevronRight size={16} className="text-gray-400 dark:text-gray-500 shrink-0" />
+              </Link>
             ))}
           </div>
           <button onClick={() => setConfirmStartTest(true)} className="btn-primary w-full mt-auto">

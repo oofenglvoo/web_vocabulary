@@ -316,6 +316,10 @@ test('TC-DTL-006: 上下切换', async ({ page }) => {
   await page.getByText('second', { exact: true }).click()
   await page.getByRole('button', { name: /下一个/ }).click()
   await expect(page.getByText('first')).toBeVisible()
+  // 上下切换使用 replace，不应把切换过的详情页堆进返回历史
+  await page.getByRole('button', { name: /返回/ }).click()
+  await expect(page).toHaveURL(/\/words$/)
+  await expect(page.getByRole('heading', { name: '单词列表' })).toBeVisible()
 })
 
 test('TC-DTL-008: 边界不可切换', async ({ page }) => {
