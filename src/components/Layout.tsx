@@ -1,8 +1,10 @@
 import { Link, useLocation } from 'react-router-dom'
 import { BookOpen, Home, Heart, FolderOpen, Target } from 'lucide-react'
+import { useScrollRestoration } from '../hooks/useScrollRestoration'
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation()
+  useScrollRestoration()
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/'
     return location.pathname === path || location.pathname.startsWith(path + '/')
