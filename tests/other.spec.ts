@@ -42,7 +42,7 @@ test('TC-SNT-001: 正常添加短句', async ({ page }) => {
   await page.getByPlaceholder(/输入短句/).fill('Hello')
   await page.getByPlaceholder(/中文翻译/).first().fill('你好')
   await page.getByRole('button', { name: '保存', exact: true }).click()
-  await page.waitForURL(/\/sentences/)
+  await page.waitForURL(/\/sentences$/)
   await expect(page.getByText('Hello', { exact: true })).toBeVisible()
 })
 
@@ -57,7 +57,7 @@ test('TC-SNT-003: 重复短句检测', async ({ page }) => {
   await page.getByPlaceholder(/输入短句/).fill('Nice to meet you')
   await page.getByPlaceholder(/中文翻译/).first().fill('很高兴认识你')
   await page.getByRole('button', { name: '保存', exact: true }).click()
-  await page.waitForURL(/\/sentences/)
+  await page.waitForURL(/\/sentences$/)
 
   await page.goto(url('/sentences/add'))
   await page.getByPlaceholder(/输入短句/).fill('nice to meet you')
@@ -71,7 +71,7 @@ test('TC-SNT-LIST-001: 短句列表显示', async ({ page }) => {
   await page.getByPlaceholder(/输入短句/).fill('How are you')
   await page.getByPlaceholder(/中文翻译/).first().fill('你好吗')
   await page.getByRole('button', { name: '保存', exact: true }).click()
-  await page.waitForURL(/\/sentences/)
+  await page.waitForURL(/\/sentences$/)
   await page.goto(url('/sentences'))
   await expect(page.getByText('How are you', { exact: true })).toBeVisible({ timeout: 15000 })
 })
@@ -288,7 +288,7 @@ test('TC-CAT-MIXED-001: 旧混合分类锁定新增并提示清理', async ({ pa
   await page.getByPlaceholder(/中文翻译/).first().fill('混合句')
   await page.locator('select').filter({ hasText: /默认|N5|混S/ }).selectOption('混S')
   await page.getByRole('button', { name: '保存短句', exact: true }).click()
-  await page.waitForURL(/\/sentences/)
+  await page.waitForURL(/\/sentences$/)
 
   // 直接改库把短句挪进词型分类 → 人为制造旧混合数据
   await moveSentencesCategory(page, '混S', '混W')

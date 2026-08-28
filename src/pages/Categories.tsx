@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FolderPlus, Pencil, Trash2, FolderOpen } from 'lucide-react'
+import { useLang } from '../context/Language'
 import {
-  useCategoryStats,
-  addCategory,
-  updateCategory,
-  deleteCategory,
-} from '../hooks/useWords'
+  useLangCategoryStats,
+  addLangCategory,
+} from '../hooks/languageAware'
+import { updateCategory, deleteCategory } from '../hooks/useWords'
 import { Category } from '../types/word'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
@@ -18,7 +18,8 @@ const PRESET_COLORS = [
 ]
 
 export function Categories() {
-  const cats = useCategoryStats()
+  const isJa = useLang() === 'ja'
+  const cats = useLangCategoryStats()
   const [editing, setEditing] = useState<Category | null>(null)
   const [showAdd, setShowAdd] = useState(false)
 
@@ -98,6 +99,7 @@ export function Categories() {
       {showAdd && (
         <CategoryEditor
           mode="add"
+          isJa={isJa}
           onClose={() => setShowAdd(false)}
         />
       )}
@@ -106,6 +108,7 @@ export function Categories() {
         <CategoryEditor
           mode="edit"
           category={editing}
+          isJa={isJa}
           onClose={() => setEditing(null)}
         />
       )}
@@ -116,10 +119,11 @@ export function Categories() {
 interface EditorProps {
   mode: 'add' | 'edit'
   category?: Category
+  isJa: boolean
   onClose: () => void
 }
 
-function CategoryEditor({ mode, category, onClose }: EditorProps) {
+function CategoryEditor({ mode, category, isJa, onClose }: EditorProps) {
   const { toast } = useToast()
   const [name, setName] = useState(category?.name ?? '')
   const [description, setDescription] = useState(category?.description ?? '')
@@ -139,7 +143,12 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
     }
     try {
       if (mode === 'add') {
-        await addCategory(n, description.trim(), color, type)
+        if (isJa) {
+          // 日语分类自动归属日语语言与 word 实体
+          await addLangCategory(n, description.trim(), color)
+        } else {
+          await addLangCategory(n, description.trim(), color, type)
+        }
         toast('success', `分类「${n}」已创建`)
       } else if (category?.id) {
         await updateCategory(category.id, { name: n, description: description.trim(), color })
@@ -189,7 +198,7 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
           {mode === 'add' ? (
             <div>
               <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">类型 *</label>
-              <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="分类类型">
+              <div className={`grid gap-2 ${isJa ? 'grid-cols-1' : 'grid-cols-2'}`} role="radiogroup" aria-label="分类类型">
                 <button
                   type="button"
                   role="radio"
@@ -201,24 +210,26 @@ function CategoryEditor({ mode, category, onClose }: EditorProps) {
                       : 'border-gray-200 text-gray-600 dark:border-slate-600 dark:text-gray-300 hover:border-primary-300'
                   }`}
                 >
-                  单词分类
+                  {isJa ? '日语词分类' : '单词分类'}
                 </button>
-                <button
-                  type="button"
-                  role="radio"
-                  aria-checked={type === 'sentence'}
-                  onClick={() => setType('sentence')}
-                  className={`py-2.5 rounded-xl text-sm font-medium border transition-all ${
-                    type === 'sentence'
-                      ? 'bg-purple-500 text-white border-purple-500 shadow-glow'
-                      : 'border-gray-200 text-gray-600 dark:border-slate-600 dark:text-gray-300 hover:border-purple-300'
-                  }`}
-                >
-                  短句分类
-                </button>
+                {!isJa && (
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked={type === 'sentence'}
+                    onClick={() => setType('sentence')}
+                    className={`py-2.5 rounded-xl text-sm font-medium border transition-all ${
+                      type === 'sentence'
+                        ? 'bg-purple-500 text-white border-purple-500 shadow-glow'
+                        : 'border-gray-200 text-gray-600 dark:border-slate-600 dark:text-gray-300 hover:border-purple-300'
+                    }`}
+                  >
+                    短句分类
+                  </button>
+                )}
               </div>
               <p className="text-xs text-gray-400 dark:text-gray-500 mt-1.5">
-                类型创建后不可更改；每个分类只存放一种内容
+                {isJa ? '分类将归入日语词库，仅存放日语词条' : '类型创建后不可更改；每个分类只存放一种内容'}
               </p>
             </div>
           ) : (

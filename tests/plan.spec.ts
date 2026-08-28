@@ -63,7 +63,7 @@ test('TC-PLN-004: 创建短句计划', async ({ page }) => {
   await page.getByPlaceholder(/输入短句/).fill('hello')
   await page.getByPlaceholder(/中文翻译/).first().fill('你好')
   await page.getByRole('button', { name: '保存', exact: true }).click()
-  await page.waitForURL(/\/sentences/)
+  await page.waitForURL(/\/sentences$/)
 
   await page.goto(url('/plan'))
   await page.getByRole('button', { name: /短句计划/ }).click()

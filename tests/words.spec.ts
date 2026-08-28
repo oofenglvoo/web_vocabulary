@@ -22,6 +22,8 @@ test('TC-ADD-001: 正常添加单词', async ({ page }) => {
   await page.getByPlaceholder(/输入单词/).fill('apple')
   await page.getByPlaceholder(/中文翻译/).first().fill('苹果')
   await page.getByRole('button', { name: '保存', exact: true }).click()
+  // 等待应用自身的保存完成跳转（/add 不匹配该正则，避免中断进行中的写入）
+  await page.waitForURL(/\/words/)
 
   await page.goto(url('/words'))
   await page.getByText('apple', { exact: true }).waitFor({ timeout: 10000 })

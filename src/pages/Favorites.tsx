@@ -1,21 +1,24 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Heart, Upload, Plus, Pencil, Trash2, FolderHeart } from 'lucide-react'
+import { useLang } from '../context/Language'
 import {
-  useFavoriteFolders,
-  useFolderMembers,
-  createFolder,
-  renameFolder,
-  deleteFolder,
-  DEFAULT_FOLDER_NAME,
-} from '../hooks/useFavorites'
-import {
-  useAllWords,
-  deleteWord,
-  bulkSetCategory,
-  bulkSetFavorite,
-  bulkDeleteWords,
-} from '../hooks/useWords'
+  useLangFavoriteFolders,
+  useLangFolderMembers,
+  useLangCategories,
+  createLangFolder,
+  renameLangFolder,
+  updateLangFolderColor,
+  deleteLangFolder,
+  setLangItemFolders,
+  deleteLangWord,
+  bulkSetLangCategory,
+  bulkSetLangFavorite,
+  bulkDeleteLangWords,
+} from '../hooks/languageAware'
+import { DEFAULT_FOLDER_NAME } from '../hooks/useFavorites'
+import { useAllWords } from '../hooks/useWords'
+import { useAllJapaneseWords } from '../hooks/useJapaneseWords'
 import {
   useAllSentences,
   deleteSentence,
@@ -24,13 +27,13 @@ import {
   bulkDeleteSentences,
 } from '../hooks/useSentences'
 import { SelectableWordList } from '../components/SelectableWordList'
+import { JapaneseWordCard } from '../components/JapaneseWordCard'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SentenceCard } from '../components/SentenceCard'
 import { BackButton } from '../components/BackButton'
-import { WordCard } from '../components/WordCard'
 import { useToast } from '../components/Toast'
 import { enhancedSearch } from '../utils/search'
-import { Word, Sentence, FavoriteFolder } from '../types/word'
+import { Word, Sentence, FavoriteFolder, JapaneseWord } from '../types/word'
 
 type Tab = 'word' | 'sentence'
 
@@ -39,15 +42,34 @@ const PRESET_COLORS = [
   '#22c55e', '#a855f7', '#eab308', '#ec4899', '#10b981',
 ]
 
+function matchJapaneseSearch(query: string, w: JapaneseWord): boolean {
+  const q = query.trim().toLowerCase()
+  const haystack = [
+    w.word,
+    w.reading,
+    w.partOfSpeech,
+    w.textbook,
+    w.jlptLevel,
+    w.category,
+    ...(w.definitions ?? []).flatMap((d) => [d.pos, d.meaning, d.translation]),
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+  return haystack.includes(q)
+}
+
 export function Favorites() {
   const navigate = useNavigate()
   const { toast } = useToast()
-  const folders = useFavoriteFolders()
+  const isJa = useLang() === 'ja'
+  const folders = useLangFavoriteFolders()
   const allWords = useAllWords()
+  const allJapaneseWords = useAllJapaneseWords()
   const allSentences = useAllSentences()
 
   const [activeFolderId, setActiveFolderId] = useState<number | 'all'>('all')
-  const members = useFolderMembers(activeFolderId)
+  const members = useLangFolderMembers(activeFolderId)
 
   const [tab, setTab] = useState<Tab>('word')
   const [search, setSearch] = useState('')
@@ -65,22 +87,26 @@ export function Favorites() {
   const [editingFolder, setEditingFolder] = useState<FavoriteFolder | null>(null)
   const [creatingFolder, setCreatingFolder] = useState(false)
 
-  // 当前夹内的实体（按 Tab 过滤类型）
+  // 当前夹内的实体（按类型过滤）
+  const jaEntityIds = new Set(
+    members.filter((m) => m.entityType === 'japaneseWord').map((m) => m.entityId)
+  )
   const wordIdSet = new Set(
     members.filter((m) => m.entityType === 'word').map((m) => m.entityId)
   )
   const sentenceIdSet = new Set(
     members.filter((m) => m.entityType === 'sentence').map((m) => m.entityId)
   )
-  const words: Word[] = tab === 'word' ? allWords.filter((w) => wordIdSet.has(w.id!)) : []
-  const sentences: Sentence[] =
-    tab === 'sentence' ? allSentences.filter((s) => sentenceIdSet.has(s.id!)) : []
+  // 同一条目可能在多个夹 → 去重，保持词库排序
+  const japaneseWords: JapaneseWord[] = allJapaneseWords.filter((w) => jaEntityIds.has(w.id!))
+  const words: Word[] = allWords.filter((w) => wordIdSet.has(w.id!))
+  const sentences: Sentence[] = allSentences.filter((s) => sentenceIdSet.has(s.id!))
 
   const activeFolder = folders.find((f) => f.id === activeFolderId)
 
   const handleMoveToWord = async (cat: string) => {
-    await bulkSetCategory(moveWordIds, cat)
-    toast('success', `已移动 ${moveWordIds.length} 个单词到「${cat}」`)
+    await bulkSetLangCategory(moveWordIds, cat)
+    toast('success', `已移动 ${moveWordIds.length} 个${isJa ? '日语词' : '单词'}到「${cat}」`)
     setShowMove(false)
     setMoveWordIds([])
   }
@@ -104,6 +130,13 @@ export function Favorites() {
       onDelete={actions.onDelete}
     />
   )
+
+  // 移动分类弹窗的分类候选（顶层调用 hook，避免条件渲染违反规则）
+  const categories = useLangCategories()
+  const moveCandidates = categories.filter((c) => {
+    if (isJa || tab === 'word') return !c.entityType || c.entityType === 'word'
+    return !c.entityType || c.entityType === 'sentence'
+  })
 
   return (
     <div className="p-4">
@@ -146,88 +179,117 @@ export function Favorites() {
 
       <div className="flex items-center justify-between mb-3">
         <span className="text-sm text-gray-500 dark:text-gray-400">
-          共 {tab === 'word' ? words.length : sentences.length} 个
+          共 {isJa ? japaneseWords.length : tab === 'word' ? words.length : sentences.length} 个
         </span>
         <Link
-          to={tab === 'word' ? '/import?favorite=1' : '/sentences/import?favorite=1'}
+          to={isJa ? '/import?favorite=1' : tab === 'word' ? '/import?favorite=1' : '/sentences/import?favorite=1'}
           className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
         >
           <Upload size={14} /> 导入并收藏
         </Link>
       </div>
 
-      <div className="flex gap-2 mb-3">
-        <TabButton active={tab === 'word'} onClick={() => setTab('word')} label={`单词${wordIdSet.size > 0 ? ` (${wordIdSet.size})` : ''}`} />
-        <TabButton active={tab === 'sentence'} onClick={() => setTab('sentence')} label={`短句${sentenceIdSet.size > 0 ? ` (${sentenceIdSet.size})` : ''}`} />
-      </div>
+      {/* 实体 Tab（日语模式只有日语词，隐藏 Tab） */}
+      {!isJa && (
+        <div className="flex gap-2 mb-3">
+          <TabButton active={tab === 'word'} onClick={() => setTab('word')} label={`单词${wordIdSet.size > 0 ? ` (${wordIdSet.size})` : ''}`} />
+          <TabButton active={tab === 'sentence'} onClick={() => setTab('sentence')} label={`短句${sentenceIdSet.size > 0 ? ` (${sentenceIdSet.size})` : ''}`} />
+        </div>
+      )}
 
-      {tab === 'word' ? (
-        <>
-
-          <SelectableWordList
-            words={words}
-            search={search}
-            onSearchChange={setSearch}
-            onWordClick={(w) => navigate(`/word/${w.id}?scope=favorites`)}
-            onFavorite={(w) =>
-              bulkSetFavorite([w.id!], false).then(() => toast('success', '已取消收藏'))
-            }
-            onDelete={(w) => setConfirmDeleteWordId(w.id!)}
-            emptyText={activeFolderId === 'all' ? '收藏夹是空的' : `「${activeFolder?.name ?? ''}」还没有内容`}
-            emptyHint="在学习页点击心形图标即可加入收藏"
-            emptyAction={{ label: '批量导入并收藏', href: '/import?favorite=1' }}
-            batchActions={{
-              onMoveToCategory: (ids) => {
-                setMoveWordIds(ids)
-                setShowMove(true)
-              },
-              onUnfavoriteAll: (ids) => {
-                bulkSetFavorite(ids, false)
-                toast('success', '已取消收藏')
-              },
-              onDeleteAll: (ids) => {
-                setBatchWordIds(ids)
-                setConfirmBatchWordDelete(true)
-              },
-            }}
-          />
-        </>
+      {isJa ? (
+        <SelectableWordList<JapaneseWord>
+          words={japaneseWords}
+          search={search}
+          onSearchChange={setSearch}
+          searchPlaceholder="搜索表记、假名、释义..."
+          onWordClick={(w) => navigate(`/word/${w.id}?scope=favorites`)}
+          onFavorite={(w) =>
+            setLangItemFolders(w.id!, []).then(() => toast('success', '已取消收藏'))
+          }
+          onDelete={(w) => setConfirmDeleteWordId(w.id!)}
+          renderItem={(w, actions) => <JapaneseWordCard word={w} {...actions} />}
+          matchSearch={matchJapaneseSearch}
+          emptyText={activeFolderId === 'all' ? '收藏夹暂无日语词' : `「${activeFolder?.name ?? ''}」还没有内容`}
+          emptyHint="在学习页点击心形图标即可加入收藏"
+          emptyAction={{ label: '批量导入并收藏', href: '/import?favorite=1' }}
+          batchActions={{
+            onMoveToCategory: (ids) => {
+              setMoveWordIds(ids)
+              setShowMove(true)
+            },
+            onUnfavoriteAll: (ids) => {
+              Promise.all(ids.map((id) => setLangItemFolders(id, [])))
+              toast('success', '已取消收藏')
+            },
+            onDeleteAll: (ids) => {
+              setBatchWordIds(ids)
+              setConfirmBatchWordDelete(true)
+            },
+          }}
+        />
+      ) : tab === 'word' ? (
+        <SelectableWordList
+          words={words}
+          search={search}
+          onSearchChange={setSearch}
+          onWordClick={(w) => navigate(`/word/${w.id}?scope=favorites`)}
+          onFavorite={(w) =>
+            bulkSetLangFavorite([w.id!], false).then(() => toast('success', '已取消收藏'))
+          }
+          onDelete={(w) => setConfirmDeleteWordId(w.id!)}
+          emptyText={activeFolderId === 'all' ? '收藏夹是空的' : `「${activeFolder?.name ?? ''}」还没有内容`}
+          emptyHint="在学习页点击心形图标即可加入收藏"
+          emptyAction={{ label: '批量导入并收藏', href: '/import?favorite=1' }}
+          batchActions={{
+            onMoveToCategory: (ids) => {
+              setMoveWordIds(ids)
+              setShowMove(true)
+            },
+            onUnfavoriteAll: (ids) => {
+              bulkSetLangFavorite(ids, false)
+              toast('success', '已取消收藏')
+            },
+            onDeleteAll: (ids) => {
+              setBatchWordIds(ids)
+              setConfirmBatchWordDelete(true)
+            },
+          }}
+        />
       ) : (
-        <>
-          <SelectableWordList<Sentence>
-            words={sentences}
-            search={search}
-            onSearchChange={setSearch}
-            onWordClick={(s) => navigate(`/sentence/${s.id}?scope=favorites`)}
-            onFavorite={(s) =>
-              bulkSetSentenceFavorite([s.id!], false).then(() => toast('success', '已取消收藏'))
-            }
-            onDelete={(s) => setConfirmDeleteSentenceId(s.id!)}
-            renderItem={renderSentence}
-            matchSearch={(q, s) => {
-              const defs = s.definitions ?? []
-              const defsText = defs.map((d: any) => `${d.pos ?? ''} ${d.def ?? ''} ${d.trans ?? ''}`).join(' ')
-              return enhancedSearch(q, { word: s.sentence, translation: s.translation, definition: defsText })
-            }}
-            emptyText={activeFolderId === 'all' ? '收藏夹暂无短句' : `「${activeFolder?.name ?? ''}」还没有内容`}
-            emptyHint="在学习页点击心形图标即可加入收藏"
-            emptyAction={{ label: '批量导入并收藏', href: '/sentences/import?favorite=1' }}
-            batchActions={{
-              onMoveToCategory: (ids) => {
-                setMoveSentenceIds(ids)
-                setShowMove(true)
-              },
-              onUnfavoriteAll: (ids) => {
-                bulkSetSentenceFavorite(ids, false)
-                toast('success', '已取消收藏')
-              },
-              onDeleteAll: (ids) => {
-                setBatchSentenceIds(ids)
-                setConfirmBatchSentenceDelete(true)
-              },
-            }}
-          />
-        </>
+        <SelectableWordList<Sentence>
+          words={sentences}
+          search={search}
+          onSearchChange={setSearch}
+          onWordClick={(s) => navigate(`/sentence/${s.id}?scope=favorites`)}
+          onFavorite={(s) =>
+            bulkSetSentenceFavorite([s.id!], false).then(() => toast('success', '已取消收藏'))
+          }
+          onDelete={(s) => setConfirmDeleteSentenceId(s.id!)}
+          renderItem={renderSentence}
+          matchSearch={(q, s) => {
+            const defs = s.definitions ?? []
+            const defsText = defs.map((d: any) => `${d.pos ?? ''} ${d.def ?? ''} ${d.trans ?? ''}`).join(' ')
+            return enhancedSearch(q, { word: s.sentence, translation: s.translation, definition: defsText })
+          }}
+          emptyText={activeFolderId === 'all' ? '收藏夹暂无短句' : `「${activeFolder?.name ?? ''}」还没有内容`}
+          emptyHint="在学习页点击心形图标即可加入收藏"
+          emptyAction={{ label: '批量导入并收藏', href: '/sentences/import?favorite=1' }}
+          batchActions={{
+            onMoveToCategory: (ids) => {
+              setMoveSentenceIds(ids)
+              setShowMove(true)
+            },
+            onUnfavoriteAll: (ids) => {
+              bulkSetSentenceFavorite(ids, false)
+              toast('success', '已取消收藏')
+            },
+            onDeleteAll: (ids) => {
+              setBatchSentenceIds(ids)
+              setConfirmBatchSentenceDelete(true)
+            },
+          }}
+        />
       )}
 
       {/* 移动到分类 */}
@@ -235,15 +297,12 @@ export function Favorites() {
         <div className="modal-overlay">
           <div className="modal-content max-h-[80vh] overflow-auto">
             <h3 className="font-bold text-lg mb-4 dark:text-gray-100">移动到分类</h3>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">
-              仅显示允许{tab === 'word' ? '单词' : '短句'}的分类
-            </p>
             <div className="space-y-2">
-              {useCategoriesForMove(tab).map((cat) => (
+              {moveCandidates.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() =>
-                    tab === 'word' ? handleMoveToWord(cat.name) : handleMoveToSentence(cat.name)
+                    tab === 'word' || isJa ? handleMoveToWord(cat.name) : handleMoveToSentence(cat.name)
                   }
                   className="w-full flex items-center gap-3 p-3 rounded-xl border dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
                 >
@@ -278,12 +337,12 @@ export function Favorites() {
 
       {confirmDeleteWordId !== null && (
         <ConfirmModal
-          title="删除单词?"
+          title={isJa ? '删除日语词?' : '删除单词?'}
           message="删除后不可恢复（相关学习记录、计划引用与收藏会一并清理）"
           confirmText="删除"
           onConfirm={async () => {
-            await deleteWord(confirmDeleteWordId)
-            toast('success', '单词已删除')
+            await deleteLangWord(confirmDeleteWordId)
+            toast('success', isJa ? '日语词已删除' : '单词已删除')
           }}
           onCancel={() => setConfirmDeleteWordId(null)}
         />
@@ -304,12 +363,12 @@ export function Favorites() {
 
       {confirmBatchWordDelete && (
         <ConfirmModal
-          title="删除选中的单词?"
-          message={`共 ${batchWordIds.length} 个单词`}
+          title={isJa ? '删除选中的日语词?' : '删除选中的单词?'}
+          message={`共 ${batchWordIds.length} 个`}
           confirmText="删除"
           onConfirm={async () => {
-            await bulkDeleteWords(batchWordIds)
-            toast('success', `已删除 ${batchWordIds.length} 个单词`)
+            await bulkDeleteLangWords(batchWordIds)
+            toast('success', `已删除 ${batchWordIds.length} 个`)
           }}
           onCancel={() => setConfirmBatchWordDelete(false)}
         />
@@ -329,17 +388,6 @@ export function Favorites() {
       )}
     </div>
   )
-}
-
-// hook 不能在条件渲染里调用 → 分类列表由独立子组件读取。
-// 为避免此处复杂化，用轻量包装：在小计数场景直接引入 useCategories 于顶层。
-import { useCategories } from '../hooks/useWords'
-function useCategoriesForMove(_tab: Tab) {
-  // 该函数在渲染期被调用于 showMove 分支内部（违反 hooks 规则的风险点）——
-  // 实际实现改为顶层调用后传参。这里仅作为占位以保持此文件可编译。
-  const cats = useCategories()
-  const allowed = _tab === 'word' ? 'word' : 'sentence'
-  return cats.filter((c) => !c.entityType || c.entityType === allowed)
 }
 
 function Chip({
@@ -406,7 +454,6 @@ function TabButton({ active, onClick, label }: { active: boolean; onClick: () =>
 
 function FolderEditor({ mode, folder, onClose }: { mode: 'add' | 'edit'; folder?: FavoriteFolder; onClose: () => void }) {
   const { toast } = useToast()
-  const folders = useFavoriteFolders()
   const isDefault = folder?.name === DEFAULT_FOLDER_NAME
   const [name, setName] = useState(folder?.name ?? '')
   const [color, setColor] = useState(folder?.color ?? PRESET_COLORS[1])
@@ -417,11 +464,11 @@ function FolderEditor({ mode, folder, onClose }: { mode: 'add' | 'edit'; folder?
     setError('')
     try {
       if (mode === 'add') {
-        await createFolder(name, color)
+        await createLangFolder(name, color)
         toast('success', `收藏夹「${name.trim()}」已创建`)
       } else if (folder?.id) {
-        await renameFolder(folder.id, name)
-        await import('../hooks/useFavorites').then((m) => m.updateFolderColor(folder.id!, color))
+        await renameLangFolder(folder.id, name)
+        await updateLangFolderColor(folder.id, color)
         toast('success', '收藏夹已更新')
       }
       onClose()
@@ -433,7 +480,7 @@ function FolderEditor({ mode, folder, onClose }: { mode: 'add' | 'edit'; folder?
   const handleDelete = async () => {
     if (!folder?.id) return
     try {
-      await deleteFolder(folder.id)
+      await deleteLangFolder(folder.id)
       toast('success', `收藏夹「${folder.name}」已删除（内容不受影响）`)
       onClose()
     } catch (e) {
@@ -441,8 +488,6 @@ function FolderEditor({ mode, folder, onClose }: { mode: 'add' | 'edit'; folder?
       setConfirmDel(false)
     }
   }
-
-  void folders
 
   return (
     <div className="modal-overlay">
@@ -508,7 +553,7 @@ function FolderEditor({ mode, folder, onClose }: { mode: 'add' | 'edit'; folder?
         {confirmDel && (
           <ConfirmModal
             title="删除收藏夹?"
-            message={`「${folder?.name}」中的收藏条目将被移除，单词/短句本身不受影响`}
+            message={`「${folder?.name}」中的收藏条目将被移除，词条本身不受影响`}
             confirmText="删除"
             onConfirm={handleDelete}
             onCancel={() => setConfirmDel(false)}
@@ -518,6 +563,3 @@ function FolderEditor({ mode, folder, onClose }: { mode: 'add' | 'edit'; folder?
     </div>
   )
 }
-
-// WordCard 引用保留给后续单条卡片操作扩展
-void WordCard

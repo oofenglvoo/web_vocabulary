@@ -38,6 +38,8 @@ interface SelectableWordListProps<T extends SelectableListItem> {
   renderItem?: (item: T, actions: { onClick: () => void; onFavorite: () => void; onDelete: () => void }) => React.ReactNode
   /** 自定义搜索匹配（默认按 word/translation/definition 增强 search）。短句按 sentence/translation */
   matchSearch?: (query: string, item: T) => boolean
+  /** 搜索框占位文案 */
+  searchPlaceholder?: string
 }
 
 export function SelectableWordList<T extends SelectableListItem>({
@@ -56,6 +58,7 @@ export function SelectableWordList<T extends SelectableListItem>({
   onCategoryChange,
   renderItem,
   matchSearch,
+  searchPlaceholder = '搜索单词、释义...',
 }: SelectableWordListProps<T>) {
   const [selectMode, setSelectMode] = useState(false)
   const [selected, setSelected] = useState<Set<number>>(new Set())
@@ -142,7 +145,7 @@ export function SelectableWordList<T extends SelectableListItem>({
             type="text"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="搜索单词、释义..."
+            placeholder={searchPlaceholder}
             className="input-field pl-10"
           />
         </div>

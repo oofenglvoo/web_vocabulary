@@ -1,14 +1,22 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Save, Plus, X } from 'lucide-react'
+import { useLang } from '../context/Language'
 import { addWord, useCategories } from '../hooks/useWords'
+import { addJapaneseWord } from '../hooks/useJapaneseWords'
 import { useToast } from '../components/Toast'
 import { BackButton } from '../components/BackButton'
-import { Definition } from '../types/word'
+import { Definition, JapaneseDefinition } from '../types/word'
 
 const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
+const JLPT_OPTIONS = ['', 'N5', 'N4', 'N3', 'N2', 'N1']
 
 export function AddWord() {
+  const lang = useLang()
+  return lang === 'ja' ? <AddJapaneseWord /> : <AddEnglishWord />
+}
+
+function AddEnglishWord() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { toast } = useToast()
@@ -235,6 +243,300 @@ export function AddWord() {
 
         <button onClick={handleSubmit} className="btn-primary w-full flex items-center justify-center gap-2">
           <Save size={18} /> 保存单词
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/** 日语添加表单：表记+假名必填，含 JLPT/教科书/例句三件套 */
+function AddJapaneseWord() {
+  const navigate = useNavigate()
+  const { toast } = useToast()
+  const [form, setForm] = useState({
+    word: '',
+    reading: '',
+    partOfSpeech: '',
+    jlptLevel: '',
+    textbook: '',
+    example: '',
+    exampleReading: '',
+    exampleTranslation: '',
+    category: '日语',
+    difficulty: 1,
+    notes: '',
+  })
+  const [definitions, setDefinitions] = useState<JapaneseDefinition[]>([
+    { pos: '', meaning: '', translation: '' },
+  ])
+  const [error, setError] = useState('')
+
+  const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) =>
+    setForm((f) => ({ ...f, [key]: value }))
+
+  const addDefinition = () => {
+    setDefinitions([...definitions, { pos: '', meaning: '', translation: '' }])
+  }
+
+  const removeDefinition = (index: number) => {
+    if (definitions.length <= 1) return
+    setDefinitions(definitions.filter((_, i) => i !== index))
+  }
+
+  const updateDefinition = (index: number, field: keyof JapaneseDefinition, value: string) => {
+    const next = [...definitions]
+    next[index] = { ...next[index], [field]: value }
+    setDefinitions(next)
+  }
+
+  const handleSubmit = async () => {
+    if (!form.word.trim()) {
+      setError('表记不能为空')
+      return
+    }
+    if (!form.reading.trim()) {
+      setError('假名读音不能为空')
+      return
+    }
+    const validDefs = definitions.filter((d) => d.meaning.trim() || d.translation.trim())
+    if (validDefs.length === 0) {
+      setError('至少需要一个释义')
+      return
+    }
+
+    try {
+      await addJapaneseWord({
+        word: form.word.trim(),
+        reading: form.reading.trim(),
+        partOfSpeech: form.partOfSpeech.trim(),
+        jlptLevel: form.jlptLevel,
+        textbook: form.textbook.trim(),
+        definitions: validDefs.map((d) => ({
+          pos: d.pos.trim(),
+          meaning: d.meaning.trim(),
+          translation: d.translation.trim(),
+        })),
+        example: form.example.trim(),
+        exampleReading: form.exampleReading.trim(),
+        exampleTranslation: form.exampleTranslation.trim(),
+        category: form.category,
+        difficulty: form.difficulty,
+        notes: form.notes.trim(),
+        lastReviewedAt: 0,
+        reviewCount: 0,
+        correctCount: 0,
+        streak: 0,
+        easeFactor: 2.5,
+        interval: 0,
+        nextReviewAt: Date.now(),
+        srsStage: 0,
+        stageProgress: 0,
+        isLearned: 0,
+        isFavorite: 0,
+      })
+      toast('success', '日语词已保存')
+      navigate('/words')
+    } catch (e) {
+      setError((e as Error).message || '保存失败，请重试')
+    }
+  }
+
+  const difficultyLabels = ['简单', '较易', '中等', '较难', '困难']
+
+  return (
+    <div className="p-4">
+      <div className="flex items-center justify-between mb-4">
+        <BackButton />
+        <h1 className="page-title-accent">添加日语词</h1>
+        <button onClick={handleSubmit} className="btn-primary flex items-center gap-1">
+          <Save size={18} /> 保存
+        </button>
+      </div>
+
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-3 rounded-xl mb-4 text-sm">{error}</div>
+      )}
+
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">表记 *</label>
+            <input
+              value={form.word}
+              onChange={(e) => set('word', e.target.value)}
+              className="input-field"
+              placeholder="如：食べる"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">假名读音 *</label>
+            <input
+              value={form.reading}
+              onChange={(e) => set('reading', e.target.value)}
+              className="input-field"
+              placeholder="如：たべる"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">词性</label>
+            <input
+              value={form.partOfSpeech}
+              onChange={(e) => set('partOfSpeech', e.target.value)}
+              className="input-field"
+              placeholder="如：他动一"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">JLPT 等级</label>
+            <select
+              value={form.jlptLevel}
+              onChange={(e) => set('jlptLevel', e.target.value)}
+              className="input-field"
+            >
+              {JLPT_OPTIONS.map((l) => (
+                <option key={l} value={l}>{l || '未标注'}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* 多释义区域 */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium dark:text-gray-300">释义 *</label>
+            <button
+              type="button"
+              onClick={addDefinition}
+              className="text-sm text-primary-600 dark:text-primary-400 flex items-center gap-1 hover:underline"
+            >
+              <Plus size={14} /> 添加释义
+            </button>
+          </div>
+          <div className="space-y-3">
+            {definitions.map((d, i) => (
+              <div
+                key={i}
+                className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3 space-y-2 relative"
+              >
+                {definitions.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeDefinition(i)}
+                    className="absolute top-2 right-2 p-1 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"
+                    aria-label="删除此释义"
+                  >
+                    <X size={14} className="text-gray-400" />
+                  </button>
+                )}
+                <input
+                  value={d.pos}
+                  onChange={(e) => updateDefinition(i, 'pos', e.target.value)}
+                  className="input-field text-sm"
+                  placeholder="词性（可留空，默认用上方词性）"
+                />
+                <input
+                  value={d.meaning}
+                  onChange={(e) => updateDefinition(i, 'meaning', e.target.value)}
+                  className="input-field text-sm"
+                  placeholder="日文释义"
+                />
+                <input
+                  value={d.translation}
+                  onChange={(e) => updateDefinition(i, 'translation', e.target.value)}
+                  className="input-field text-sm"
+                  placeholder="中文翻译"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">例句</label>
+          <textarea
+            value={form.example}
+            onChange={(e) => set('example', e.target.value)}
+            className="input-field min-h-[60px]"
+            placeholder="输入日语例句"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">例句读音</label>
+            <input
+              value={form.exampleReading}
+              onChange={(e) => set('exampleReading', e.target.value)}
+              className="input-field"
+              placeholder="假名"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">例句翻译</label>
+            <input
+              value={form.exampleTranslation}
+              onChange={(e) => set('exampleTranslation', e.target.value)}
+              className="input-field"
+              placeholder="中文"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">教材出处</label>
+          <input
+            value={form.textbook}
+            onChange={(e) => set('textbook', e.target.value)}
+            className="input-field"
+            placeholder="如：标准日本语初级"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">分类</label>
+          <select
+            value={form.category}
+            onChange={(e) => set('category', e.target.value)}
+            className="input-field"
+          >
+            {['日语', '默认', 'N5', 'N4', 'N3', '标准日本语'].map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">难度: {difficultyLabels[form.difficulty - 1]}</label>
+          <input
+            type="range"
+            min={1}
+            max={5}
+            value={form.difficulty}
+            onChange={(e) => set('difficulty', Number(e.target.value))}
+            className="w-full"
+          />
+          <div className="flex justify-between text-xs text-gray-400 mt-1">
+            {difficultyLabels.map((l) => (
+              <span key={l}>{l}</span>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">笔记</label>
+          <textarea
+            value={form.notes}
+            onChange={(e) => set('notes', e.target.value)}
+            className="input-field min-h-[60px]"
+            placeholder="个人笔记..."
+          />
+        </div>
+
+        <button onClick={handleSubmit} className="btn-primary w-full flex items-center justify-center gap-2">
+          <Save size={18} /> 保存日语词
         </button>
       </div>
     </div>

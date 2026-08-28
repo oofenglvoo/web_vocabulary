@@ -1,4 +1,5 @@
 import { db } from '../db/database'
+import { Lang } from '../context/Language'
 
 export type CategoryEntityType = 'word' | 'sentence'
 
@@ -14,6 +15,8 @@ const TYPE_LABEL: Record<CategoryEntityType, string> = {
   word: '单词',
   sentence: '短句',
 }
+
+const LANG_LABEL: Record<Lang, string> = { en: '英语', ja: '日语' }
 
 /**
  * 校验目标分类是否允许写入指定类型的内容：
@@ -60,4 +63,45 @@ export async function ensureCategoryWritable(
   }
 
   await db.categories.update(cat.id, { entityType })
+}
+
+/**
+ * 语言维度的分类归属校验：
+ * - 'en' 内容不能写入 ja 分类，'ja' 内容不能写入 en 分类
+ * - 未标记 lang 的旧分类：按现有内容推断并补标（空分类按写入方盖戳）
+ * - 'en' 内容仍需通过原有的 word/sentence 类型校验
+ * - 'ja' 分类复用 entityType='word'（日语只有词条一种实体）
+ */
+export async function ensureCategoryWritableForLang(
+  lang: Lang,
+  categoryName: string
+): Promise<void> {
+  const name = categoryName?.trim()
+  if (!name) return
+  const cat = await db.categories.where('name').equals(name).first()
+  if (!cat || cat.id == null) return
+
+  // 语言归属校验（undefined 视为 'en'，但先按内容补标再判定）
+  let catLang = cat.lang
+  if (!catLang) {
+    const [hasJa, hasEnWord, hasSentence] = await Promise.all([
+      db.japaneseWords.where('category').equals(name).count(),
+      db.words.where('category').equals(name).count(),
+      db.sentences.where('category').equals(name).count(),
+    ])
+    catLang = !hasEnWord && !hasSentence && hasJa > 0 ? 'ja' : 'en'
+    await db.categories.update(cat.id, { lang: catLang })
+  }
+  if (catLang !== lang) {
+    throw new CategoryTypeError(
+      `分类「${name}」仅用于${LANG_LABEL[catLang]}内容，不能添加${LANG_LABEL[lang]}词条`
+    )
+  }
+
+  if (lang === 'ja') {
+    // 日语词条复用 word 实体类型；短句型分类禁止写入
+    await ensureCategoryWritable('word', name)
+    return
+  }
+  await ensureCategoryWritable('word', name)
 }

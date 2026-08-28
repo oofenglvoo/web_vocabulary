@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { Heart, Plus, X } from 'lucide-react'
-import { useEntityFolderIds, useFavoriteFolders, setItemFolders, createFolder, renameFolder } from '../hooks/useFavorites'
+import { useEntityFolderIds, useFavoriteFolders, setItemFolders, createFolder, useJapaneseEntityFolderIds, useJapaneseFavoriteFolders, setJapaneseItemFolders, createJapaneseFavoriteFolder } from '../hooks/useFavorites'
 import { DEFAULT_FOLDER_NAME } from '../hooks/useFavorites'
 import { useToast } from './Toast'
 
 const LAST_FOLDER_KEY = 'vocab:lastFavoriteFolderId'
+const LAST_JAPANESE_FOLDER_KEY = 'vocab:lastJapaneseFavoriteFolderId'
 
-function getLastFolderId(folders: { id?: number; name: string }[]) {
-  const saved = Number(localStorage.getItem(LAST_FOLDER_KEY))
+function getLastFolderId(folders: { id?: number; name: string }[], japanese = false) {
+  const saved = Number(localStorage.getItem(japanese ? LAST_JAPANESE_FOLDER_KEY : LAST_FOLDER_KEY))
   if (Number.isInteger(saved) && folders.some((folder) => folder.id === saved)) return saved
   return folders.find((folder) => folder.name === DEFAULT_FOLDER_NAME)?.id ?? folders[0]?.id
 }
@@ -18,7 +19,7 @@ const PRESET_COLORS = [
 ]
 
 interface FavoriteButtonProps {
-  entityType: 'word' | 'sentence'
+  entityType: 'word' | 'sentence' | 'japaneseWord'
   entityId: number
   title?: string // 提示文案里的词条名（toast 用）
 }
@@ -31,19 +32,25 @@ export function FavoriteButton({ entityType, entityId, title }: FavoriteButtonPr
   const [open, setOpen] = useState(false)
   const folderIds = useEntityFolderIds(entityType, entityId)
   const folders = useFavoriteFolders()
+  const japaneseFolderIds = useJapaneseEntityFolderIds(entityType === 'japaneseWord' ? entityId : undefined)
+  const japaneseFolders = useJapaneseFavoriteFolders()
   const { toast } = useToast()
-  const active = folderIds.length > 0
+  const selectedFolderIds = entityType === 'japaneseWord' ? japaneseFolderIds : folderIds
+  const selectedFolders = entityType === 'japaneseWord' ? japaneseFolders : folders
+  const active = selectedFolderIds.length > 0
 
   const favoriteInLastFolder = async () => {
-    const folderId = getLastFolderId(folders)
+    const isJapanese = entityType === 'japaneseWord'
+    const folderId = getLastFolderId(selectedFolders, isJapanese)
     if (folderId == null) {
       setOpen(true)
       return
     }
     try {
-      await setItemFolders(entityType, entityId, [folderId])
-      localStorage.setItem(LAST_FOLDER_KEY, String(folderId))
-      const folderName = folders.find((folder) => folder.id === folderId)?.name ?? DEFAULT_FOLDER_NAME
+      if (entityType === 'japaneseWord') await setJapaneseItemFolders(entityId, [folderId])
+      else await setItemFolders(entityType, entityId, [folderId])
+      localStorage.setItem(isJapanese ? LAST_JAPANESE_FOLDER_KEY : LAST_FOLDER_KEY, String(folderId))
+      const folderName = selectedFolders.find((folder) => folder.id === folderId)?.name ?? DEFAULT_FOLDER_NAME
       toast('success', `${title ? `「${title}」` : '内容'}已收藏到「${folderName}」`, 5000, {
         label: '收藏到其他目录',
         onClick: () => setOpen(true),
@@ -71,11 +78,12 @@ export function FavoriteButton({ entityType, entityId, title }: FavoriteButtonPr
 
       {open && (
         <FavoritePanel
-          entityType={entityType}
-          entityId={entityId}
-          currentFolderIds={folderIds}
           onClose={() => setOpen(false)}
-          onSaved={(folderId) => localStorage.setItem(LAST_FOLDER_KEY, String(folderId))}
+          folders={selectedFolders}
+          currentFolderIds={selectedFolderIds}
+          createFolder={entityType === 'japaneseWord' ? createJapaneseFavoriteFolder : createFolder}
+          saveFolders={(ids) => entityType === 'japaneseWord' ? setJapaneseItemFolders(entityId, ids) : setItemFolders(entityType, entityId, ids)}
+          onSaved={(folderId) => localStorage.setItem(entityType === 'japaneseWord' ? LAST_JAPANESE_FOLDER_KEY : LAST_FOLDER_KEY, String(folderId))}
         />
       )}
     </>
@@ -83,19 +91,20 @@ export function FavoriteButton({ entityType, entityId, title }: FavoriteButtonPr
 }
 
 function FavoritePanel({
-  entityType,
-  entityId,
   currentFolderIds,
+  folders,
+  createFolder,
+  saveFolders,
   onClose,
   onSaved,
 }: {
-  entityType: 'word' | 'sentence'
-  entityId: number
   currentFolderIds: number[]
+  folders: { id?: number; name: string; color: string }[]
+  createFolder: (name: string, color: string) => Promise<number>
+  saveFolders: (ids: number[]) => Promise<unknown>
   onClose: () => void
   onSaved: (folderId: number) => void
 }) {
-  const folders = useFavoriteFolders()
   const [selected, setSelected] = useState<Set<number>>(new Set(currentFolderIds))
   const [lastSelectedId, setLastSelectedId] = useState<number | undefined>(currentFolderIds[0])
   const [creating, setCreating] = useState(false)
@@ -133,7 +142,7 @@ function FavoritePanel({
     if (saving) return
     setSaving(true)
     try {
-      await setItemFolders(entityType, entityId, Array.from(selected))
+      await saveFolders(Array.from(selected))
       if (lastSelectedId != null && selected.has(lastSelectedId)) onSaved(lastSelectedId)
       onClose()
     } catch (e) {
@@ -141,8 +150,6 @@ function FavoritePanel({
       setSaving(false)
     }
   }
-
-  void renameFolder
 
   return (
     <div className="modal-overlay" onClick={onClose}>

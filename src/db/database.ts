@@ -1,14 +1,18 @@
 import Dexie, { Table } from 'dexie'
-import { Word, Category, StudySession, StudyPlan, Sentence, Definition, FavoriteFolder, FavoriteItem } from '../types/word'
+import { Word, Category, StudySession, StudyPlan, Sentence, Definition, FavoriteFolder, FavoriteItem, JapaneseWord, JapaneseFavoriteFolder, JapaneseFavoriteItem, JapaneseStudyPlan } from '../types/word'
 
 class VocabularyDatabase extends Dexie {
   words!: Table<Word>
   sentences!: Table<Sentence>
+  japaneseWords!: Table<JapaneseWord>
   categories!: Table<Category>
   studySessions!: Table<StudySession>
   studyPlans!: Table<StudyPlan>
   favoriteFolders!: Table<FavoriteFolder>
   favoriteItems!: Table<FavoriteItem>
+  japaneseFavoriteFolders!: Table<JapaneseFavoriteFolder>
+  japaneseFavoriteItems!: Table<JapaneseFavoriteItem>
+  japaneseStudyPlans!: Table<JapaneseStudyPlan>
 
   constructor() {
     super('VocabularyDB_v2')
@@ -191,6 +195,72 @@ class VocabularyDatabase extends Dexie {
       studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
       favoriteFolders: '++id, name, createdAt',
       favoriteItems: '++id, folderId, entityId, [entityType+entityId]',
+    })
+    // v12: 新增独立日语词库，复用词条的分类、收藏和 SRS 索引。
+    this.version(12).stores({
+      words: '++id, word, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      sentences: '++id, sentence, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      japaneseWords: '++id, word, reading, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      categories: '++id, name',
+      studySessions: '++id, wordId, entityId, entityType, timestamp, kind',
+      studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
+      favoriteFolders: '++id, name, createdAt',
+      favoriteItems: '++id, folderId, entityId, [entityType+entityId]',
+    })
+    // v13: 日语收藏夹与学习计划完全独立于英语/短句数据。
+    this.version(13).stores({
+      words: '++id, word, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      sentences: '++id, sentence, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      japaneseWords: '++id, word, reading, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      categories: '++id, name',
+      studySessions: '++id, wordId, entityId, entityType, timestamp, kind',
+      studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
+      favoriteFolders: '++id, name, createdAt',
+      favoriteItems: '++id, folderId, entityId, [entityType+entityId]',
+      japaneseFavoriteFolders: '++id, name, createdAt',
+      japaneseFavoriteItems: '++id, folderId, entityId, [entityType+entityId]',
+      japaneseStudyPlans: '++id, name, sourceKind, isActive, isArchived, createdAt',
+    }).upgrade(async (tx) => {
+      const folders = tx.table<JapaneseFavoriteFolder>('japaneseFavoriteFolders')
+      if (await folders.count() === 0) {
+        await folders.add({ name: '默认', color: '#ef4444', createdAt: Date.now() })
+      }
+    })
+    // v14: 分类增加语言归属 lang('en'|'ja')，实现英语/日语分类互不可见。
+    //      非索引字段，无需变更索引声明；仅补标旧数据：
+    //      含日语词条且无英语词/短句的分类 → 'ja'；其余 → 'en'（默认）。
+    this.version(14).stores({
+      words: '++id, word, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      sentences: '++id, sentence, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      japaneseWords: '++id, word, reading, category, nextReviewAt, isLearned, isFavorite, createdAt, srsStage',
+      categories: '++id, name',
+      studySessions: '++id, wordId, entityId, entityType, timestamp, kind',
+      studyPlans: '++id, name, sourceKind, isActive, isArchived, entityType, createdAt',
+      favoriteFolders: '++id, name, createdAt',
+      favoriteItems: '++id, folderId, entityId, [entityType+entityId]',
+      japaneseFavoriteFolders: '++id, name, createdAt',
+      japaneseFavoriteItems: '++id, folderId, entityId, [entityType+entityId]',
+      japaneseStudyPlans: '++id, name, sourceKind, isActive, isArchived, createdAt',
+    }).upgrade(async (tx) => {
+      const jaCats = new Set<string>()
+      await tx.table('japaneseWords').toCollection().each((w: any) => {
+        if (w.category) jaCats.add(w.category)
+      })
+      const enCats = new Set<string>()
+      await tx.table('words').toCollection().each((w: any) => {
+        if (w.category) enCats.add(w.category)
+      })
+      await tx.table('sentences').toCollection().each((s: any) => {
+        if (s.category) enCats.add(s.category)
+      })
+      // 内容为空、但名字明确面向日语的预置分类也归日语
+      const jaHintNames = new Set(['日语', 'N5', 'N4', 'N3', '标准日本语'])
+      await tx.table('categories').toCollection().modify((c: any) => {
+        if (c.lang) return
+        if (jaCats.has(c.name) && !enCats.has(c.name)) c.lang = 'ja'
+        else if (!enCats.has(c.name) && jaHintNames.has(c.name)) c.lang = 'ja'
+        else c.lang = 'en'
+      })
     })
   }
 }

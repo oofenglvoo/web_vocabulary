@@ -15,19 +15,19 @@ import {
   Zap,
   MessageSquare,
   CalendarCheck,
+  Languages,
 } from 'lucide-react'
-import {
-  useStats,
-  useFavoriteWords,
-} from '../hooks/useWords'
-import { useActivePlan, usePlanProgress } from '../hooks/useStudyPlan'
+import { useLang, useSetLang, Lang } from '../context/Language'
+import { useLangStats, useLangFavoriteWords, useLangActivePlan, useLangPlanProgress } from '../hooks/languageAware'
 
 export function Home() {
   const navigate = useNavigate()
-  const stats = useStats()
-  const favorites = useFavoriteWords()
-  const activePlan = useActivePlan()
-  const planProgress = usePlanProgress(activePlan)
+  const lang = useLang()
+  const setLang = useSetLang()
+  const stats = useLangStats()
+  const favorites = useLangFavoriteWords()
+  const activePlan = useLangActivePlan()
+  const planProgress = useLangPlanProgress(activePlan)
   const overallProgress =
     stats.total > 0 ? Math.round((stats.learned / stats.total) * 100) : 0
 
@@ -49,7 +49,9 @@ export function Home() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-white/80 text-xs">今日</p>
-              <h1 className="text-2xl font-bold tracking-tight mt-0.5">单词记忆</h1>
+              <h1 className="text-2xl font-bold tracking-tight mt-0.5">
+                {lang === 'ja' ? '日语记忆' : '单词记忆'}
+              </h1>
             </div>
             <div className="flex items-center gap-2">
               <Link
@@ -67,6 +69,28 @@ export function Home() {
                 <Settings size={18} />
               </Link>
             </div>
+          </div>
+
+          {/* 语言切换入口：切换后全应用页面数据源随之切换 */}
+          <div className="flex items-center gap-1 bg-white/15 backdrop-blur rounded-2xl p-1 mb-4">
+            {(['en', 'ja'] as Lang[]).map((l) => {
+              const active = lang === l
+              return (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  aria-pressed={active}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-sm font-medium transition-all ${
+                    active
+                      ? 'bg-white text-primary-700 shadow'
+                      : 'text-white/80 hover:bg-white/10'
+                  }`}
+                >
+                  <Languages size={15} />
+                  {l === 'en' ? '英语' : '日语'}
+                </button>
+              )
+            })}
           </div>
 
           <div className="grid grid-cols-3 gap-3">
@@ -217,10 +241,20 @@ export function Home() {
                 </div>
                 <div className="min-w-0">
                   <h2 className="font-semibold truncate dark:text-gray-100">
-                    {stats.total > 0 ? `共 ${stats.total} 个单词` : '还没有单词'}
+                    {stats.total > 0
+                      ? lang === 'ja'
+                        ? `共 ${stats.total} 个日语词`
+                        : `共 ${stats.total} 个单词`
+                      : lang === 'ja'
+                        ? '还没有日语词'
+                        : '还没有单词'}
                   </h2>
                   <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                    {stats.total > 0 ? '持续学习,掌握更多词汇' : '添加单词开始学习'}
+                    {stats.total > 0
+                      ? '持续学习,掌握更多词汇'
+                      : lang === 'ja'
+                        ? '导入或添加日语词开始学习'
+                        : '添加单词开始学习'}
                   </p>
                 </div>
               </div>
@@ -364,28 +398,30 @@ export function Home() {
           />
         </motion.div>
 
-        {/* 短句入口 */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <Link
-            to="/sentences"
-            className="card p-4 flex items-center gap-3 hover:shadow-glow transition-all"
+        {/* 短句入口（英语专属，日语模式下隐藏） */}
+        {lang === 'en' && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
           >
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white shadow-soft">
-              <MessageSquare size={20} />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-sm dark:text-gray-100">短句学习</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                管理和复习常用短句、短语
-              </p>
-            </div>
-            <span className="text-purple-600 dark:text-purple-400 text-xs font-medium">→</span>
-          </Link>
-        </motion.div>
+            <Link
+              to="/sentences"
+              className="card p-4 flex items-center gap-3 hover:shadow-glow transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white shadow-soft">
+                <MessageSquare size={20} />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-sm dark:text-gray-100">短句学习</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  管理和复习常用短句、短语
+                </p>
+              </div>
+              <span className="text-purple-600 dark:text-purple-400 text-xs font-medium">→</span>
+            </Link>
+          </motion.div>
+        )}
       </div>
     </div>
   )

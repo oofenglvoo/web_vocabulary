@@ -3,19 +3,24 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { CheckCircle, Sparkles, Target, RefreshCw } from 'lucide-react'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
-import { db } from '../db/database'
-import { getRandomWords, recordReview, markWordLearned } from '../hooks/useWords'
 import {
-  getTodayNewWords,
-  getTodayReviewWords,
-  getExtraNewWords,
-  markWordStarted,
-  markExtraWordStarted,
-  markReviewDone,
-} from '../hooks/useStudyPlan'
-import { Word, StudyPlan } from '../types/word'
+  getLangPlan,
+  getLangTodayNewWords,
+  getLangTodayReviewWords,
+  getLangExtraNewWords,
+  markLangWordStarted,
+  markLangExtraWordStarted,
+  markLangReviewDone,
+  recordLangReview,
+  markLangWordLearned,
+  getRandomLangWords,
+  toLangStudyItem,
+  getLangAllTranslations,
+} from '../hooks/languageAware'
+import { LangWord } from '../hooks/languageAware'
+import { useLang } from '../context/Language'
+import type { LangPlan } from '../hooks/languageAware'
 import { speakWord, unlockTts } from '../utils/tts'
-import { getDefinitions, getPrimaryTranslation } from '../utils/definitions'
 import { getStudyType } from '../utils/studyPrefs'
 import { StudyItem } from '../components/study/types'
 import { RecallMode } from '../components/study/RecallMode'
@@ -28,6 +33,8 @@ import { useToast } from '../components/Toast'
 export function Study() {
   const navigate = useNavigate()
   const { toast } = useToast()
+  const lang = useLang()
+  const isJa = lang === 'ja'
   const [searchParams] = useSearchParams()
   const planId = searchParams.get('plan')
   const planIdNum = planId ? Number(planId) : null
@@ -35,7 +42,7 @@ export function Study() {
   // 加学模式:今日配额学满后的独立一轮,不计入今日配额
   const isExtra = searchParams.get('extra') === '1'
 
-  const [plan, setPlan] = useState<StudyPlan | null>(null)
+  const [plan, setPlan] = useState<LangPlan | null>(null)
   const [queue, setQueue] = useState<StudyItem[]>([])
   const [index, setIndex] = useState(0)
   // 本轮初始词数(回忆式进度用)
@@ -69,88 +76,47 @@ export function Study() {
     }
   }, [])
 
+  // 语言切换时重新加载队列（数据源完全不同）
   useEffect(() => {
     startStudy()
     unlockTts()
     // isReviewMode 也作为依赖：仅改 mode 参数(plan 不变)时也要重新加载队列
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [planIdNum, isReviewMode])
-
-  function renderWordDefs(word: Word) {
-    const defs = getDefinitions(word)
-    return (
-      <>
-        <div className="space-y-3">
-          {defs.length > 0 ? (
-            defs.map((d, i) => (
-              <div key={i} className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
-                <div className="flex items-start gap-2">
-                  {d.pos && (
-                    <span className="text-xs font-medium text-primary-500 dark:text-primary-400 shrink-0 mt-0.5">
-                      {d.pos}
-                    </span>
-                  )}
-                  <div className="flex-1">
-                    {d.trans && (
-                      <p className="text-sm text-gray-800 dark:text-gray-200 font-medium">{d.trans}</p>
-                    )}
-                    {d.def && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{d.def}</p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <>
-              {word.definition && <InfoBlock title="释义" content={word.definition} />}
-              {word.translation && <InfoBlock title="中文翻译" content={word.translation} />}
-            </>
-          )}
-        </div>
-        {word.example && <InfoBlock title="例句" content={word.example} highlight />}
-        {word.notes && <InfoBlock title="笔记" content={word.notes} />}
-      </>
-    )
-  }
+  }, [planIdNum, isReviewMode, lang])
 
   async function startStudy() {
     setLoading(true)
     setLearnStats({ newDone: 0, reviewDone: 0 })
     setDone(false)
     requeuedRef.current = new Set()
-    let items: { word: Word; isReview: boolean }[] = []
+    allTranslationsRef.current = null
+    let items: { word: LangWord; isReview: boolean }[] = []
     if (planIdNum) {
-      const p = await db.studyPlans.get(planIdNum)
+      const p = await getLangPlan(planIdNum)
       if (!p) {
         setLoading(false)
         return
       }
       setPlan(p)
       if (isReviewMode) {
-        const reviewWords = await getTodayReviewWords(p)
+        const reviewWords = await getLangTodayReviewWords(p)
         items = reviewWords.map((w) => ({ word: w, isReview: true }))
       } else if (isExtra) {
         // 加学:取一批新词,独立于今日配额
-        const extraWords = await getExtraNewWords(p)
+        const extraWords = await getLangExtraNewWords(p)
         items = extraWords.map((w) => ({ word: w, isReview: false }))
       } else {
         // 学习入口只包含今日新词配额；到期复习由首页"开始复习"(mode=review)独立进入
-        const newWords = await getTodayNewWords(p)
+        const newWords = await getLangTodayNewWords(p)
         items = newWords.map((w) => ({ word: w, isReview: false }))
       }
     } else {
-      const words = await getRandomWords(20)
+      const words = await getRandomLangWords(20)
       items = words.map((w) => ({ word: w, isReview: false }))
     }
-    const studyItems: StudyItem[] = items.map(({ word, isReview }) => ({
-      id: word.id!,
-      isReview,
-      title: word.word,
-      phonetic: word.phonetic,
-      primaryTranslation: getPrimaryTranslation(word),
-      renderDefs: () => renderWordDefs(word),
-    }))
+    const studyItems: StudyItem[] = items.map(({ word, isReview }) =>
+      toLangStudyItem(word, isReview)
+    )
     setQueue(studyItems)
     setStartTotal(studyItems.length)
     setIndex(0)
@@ -160,11 +126,10 @@ export function Study() {
   const currentItem = queue[index]
   const total = queue.length
 
-  // 选择题干扰项缓存 + 异步加载
+  // 选择题干扰项缓存 + 异步加载（按当前语言词库构建候选池）
   const loadDistractors = async (current: StudyItem) => {
     if (allTranslationsRef.current === null) {
-      const all = await db.words.toArray()
-      allTranslationsRef.current = all.map((w) => getPrimaryTranslation(w)).filter(Boolean)
+      allTranslationsRef.current = await getLangAllTranslations()
     }
     const others = allTranslationsRef.current.filter((t) => t !== current.primaryTranslation)
     setChoiceDistractors([...new Set(others)].slice(0, 3))
@@ -180,7 +145,7 @@ export function Study() {
 
   async function handleRate(item: StudyItem, quality: number) {
     try {
-      await recordReview(item.id, quality, 0, item.isReview ? 'review' : 'new')
+      await recordLangReview(item.id, quality, 0, item.isReview ? 'review' : 'new')
     } catch (e) {
       toast('error', '记录失败: ' + (e as Error).message)
       return
@@ -198,14 +163,14 @@ export function Study() {
       if (planIdNum) {
         try {
           if (item.isReview) {
-            await markReviewDone(planIdNum)
+            await markLangReviewDone(planIdNum)
             setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
           } else if (isExtra) {
             // 加学:只写 startedIds,不计入今日配额
-            await markExtraWordStarted(planIdNum, item.id)
+            await markLangExtraWordStarted(planIdNum, item.id)
             setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
           } else {
-            await markWordStarted(planIdNum, item.id)
+            await markLangWordStarted(planIdNum, item.id)
             setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
           }
         } catch (e) {
@@ -220,13 +185,13 @@ export function Study() {
     if (planIdNum) {
       try {
         if (item.isReview) {
-          await markReviewDone(planIdNum)
+          await markLangReviewDone(planIdNum)
           setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
         } else if (isExtra) {
-          await markExtraWordStarted(planIdNum, item.id)
+          await markLangExtraWordStarted(planIdNum, item.id)
           setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
         } else {
-          await markWordStarted(planIdNum, item.id)
+          await markLangWordStarted(planIdNum, item.id)
           setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
         }
       } catch (e) {
@@ -255,10 +220,10 @@ export function Study() {
   async function handleQuickSubmit(results: QuickRating[]): Promise<boolean> {
     for (const { item, quality, mastered } of results) {
       try {
-        await recordReview(item.id, quality, 0, item.isReview ? 'review' : 'new')
+        await recordLangReview(item.id, quality, 0, item.isReview ? 'review' : 'new')
         // "掌握" → 永久标记已掌握
         if (mastered) {
-          await markWordLearned(item.id)
+          await markLangWordLearned(item.id)
         }
       } catch (e) {
         toast('error', '记录失败: ' + (e as Error).message)
@@ -267,13 +232,13 @@ export function Study() {
       if (planIdNum) {
         try {
           if (item.isReview) {
-            await markReviewDone(planIdNum)
+            await markLangReviewDone(planIdNum)
             setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
           } else if (isExtra) {
-            await markExtraWordStarted(planIdNum, item.id)
+            await markLangExtraWordStarted(planIdNum, item.id)
             setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
           } else {
-            await markWordStarted(planIdNum, item.id)
+            await markLangWordStarted(planIdNum, item.id)
             setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
           }
         } catch (e) {
@@ -295,16 +260,16 @@ export function Study() {
   async function handleMaster(item: StudyItem) {
     setConfirmMaster(false)
     try {
-      await markWordLearned(item.id)
+      await markLangWordLearned(item.id)
       if (planIdNum) {
         if (item.isReview) {
-          await markReviewDone(planIdNum)
+          await markLangReviewDone(planIdNum)
           setLearnStats((s) => ({ ...s, reviewDone: s.reviewDone + 1 }))
         } else if (isExtra) {
-          await markExtraWordStarted(planIdNum, item.id)
+          await markLangExtraWordStarted(planIdNum, item.id)
           setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
         } else {
-          await markWordStarted(planIdNum, item.id)
+          await markLangWordStarted(planIdNum, item.id)
           setLearnStats((s) => ({ ...s, newDone: s.newDone + 1 }))
         }
       }
@@ -316,7 +281,8 @@ export function Study() {
     advance()
   }
 
-  const speak = (item: StudyItem) => speakWord(item.title)
+  const speak = (item: StudyItem) =>
+    isJa ? speakWord(item.title, { lang: 'ja' }) : speakWord(item.title)
 
   // 到达末尾 → 完成页(触发庆祝)
   // 回忆式：队列清空(所有词都"认识")即完成；其他模式：index 走完
@@ -361,7 +327,9 @@ export function Study() {
             <RefreshCw size={28} className="text-white" />
           </div>
           <h2 className="text-2xl font-bold mb-1">
-            {isReviewMode ? '暂无待复习单词' : '今日学习已完成!'}
+            {isReviewMode
+              ? isJa ? '暂无待复习日语词' : '暂无待复习单词'
+              : '今日学习已完成!'}
           </h2>
           <p className="text-gray-500 dark:text-gray-400 mb-5">
             {plan?.name && `「${plan.name}」`}
@@ -369,7 +337,9 @@ export function Study() {
               ? '当前没有需要复习的内容'
               : planIdNum
                 ? '本日新词与复习均已结束'
-                : '暂无可学习的单词，请先添加单词'}
+                : isJa
+                  ? '暂无可学习的日语词，请先导入'
+                  : '暂无可学习的单词，请先添加单词'}
           </p>
           <div className="flex gap-3">
             <button onClick={() => navigate('/plan')} className="btn-secondary flex-1">
@@ -439,6 +409,8 @@ export function Study() {
       ? Math.round(((startTotal - queue.length) / Math.max(startTotal, 1)) * 100)
       : Math.round(((index) / Math.max(total, 1)) * 100)
 
+  const entityType = isJa ? ('japaneseWord' as const) : ('word' as const)
+
   return (
     <div className="p-4 min-h-screen flex flex-col">
       <div className="flex items-center justify-between mb-3">
@@ -488,7 +460,7 @@ export function Study() {
             onRate={(q) => handleRate(currentItem, q)}
             onMaster={() => setConfirmMaster(true)}
             onSpeak={() => speak(currentItem)}
-            entityType="word"
+            entityType={entityType}
           />
         )}
         {studyType === 'choice' && currentItem && (
@@ -499,7 +471,7 @@ export function Study() {
             onRate={(q) => handleRate(currentItem, q)}
             onMaster={() => setConfirmMaster(true)}
             onSpeak={() => speak(currentItem)}
-            entityType="word"
+            entityType={entityType}
           />
         )}
         {studyType === 'quick' && (
@@ -508,7 +480,7 @@ export function Study() {
             items={queue}
             onRateAll={handleQuickSubmit}
             onSpeak={speak}
-            entityType="word"
+            entityType={entityType}
           />
         )}
       </div>
@@ -551,29 +523,4 @@ const STUDY_TYPE_LABEL_ZH: Record<string, string> = {
   recall: '回忆式',
   choice: '选择题',
   quick: '快速自测',
-}
-
-function InfoBlock({
-  title,
-  content,
-  highlight,
-}: {
-  title: string
-  content: string
-  highlight?: boolean
-}) {
-  return (
-    <div className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
-      <div
-        className={`text-xs font-medium mb-1 ${
-          highlight ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400'
-        }`}
-      >
-        {title}
-      </div>
-      <p className={`text-sm ${highlight ? 'italic text-primary-700 dark:text-primary-300' : 'text-gray-800 dark:text-gray-200'}`}>
-        {content}
-      </p>
-    </div>
-  )
 }

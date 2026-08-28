@@ -1,17 +1,50 @@
 import { useState, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Plus, Upload } from 'lucide-react'
-import { useAllWords, toggleFavorite, deleteWord, bulkSetCategory, bulkSetFavorite, bulkDeleteWords, useCategories } from '../hooks/useWords'
+import { useLang } from '../context/Language'
+import {
+  useLangWords,
+  useLangCategories,
+  toggleLangFavorite,
+  deleteLangWord,
+  bulkSetLangCategory,
+  bulkSetLangFavorite,
+  bulkDeleteLangWords,
+  LangWord,
+} from '../hooks/languageAware'
 import { SelectableWordList } from '../components/SelectableWordList'
+import { JapaneseWordCard } from '../components/JapaneseWordCard'
+import { JapaneseWord } from '../types/word'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
 
+/** 日语词条搜索：表记/假名/词性/教科书/释义 全覆盖 */
+function matchJapaneseSearch(query: string, w: LangWord): boolean {
+  const word = w as JapaneseWord
+  const q = query.trim().toLowerCase()
+  const haystack = [
+    word.word,
+    word.reading,
+    word.partOfSpeech,
+    word.textbook,
+    word.jlptLevel,
+    word.category,
+    ...(word.definitions ?? []).flatMap((d) => [d.pos, d.meaning, d.translation]),
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+  return haystack.includes(q)
+}
+
 export function WordList() {
   const navigate = useNavigate()
   const { toast } = useToast()
-  const words = useAllWords()
-  const categories = useCategories()
+  const lang = useLang()
+  const isJa = lang === 'ja'
+  const words = useLangWords()
+  const categories = useLangCategories()
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('全部')
   const [showMove, setShowMove] = useState(false)
@@ -26,8 +59,8 @@ export function WordList() {
   const filtered = category === '全部' ? words : words.filter((w) => w.category === category)
 
   const handleMoveTo = async (cat: string) => {
-    await bulkSetCategory(moveIds, cat)
-    toast('success', `已移动 ${moveIds.length} 个单词到「${cat}」`)
+    await bulkSetLangCategory(moveIds, cat)
+    toast('success', `已移动 ${moveIds.length} 个词条到「${cat}」`)
     setShowMove(false)
     setMoveIds([])
   }
@@ -36,7 +69,7 @@ export function WordList() {
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
         <BackButton />
-        <h1 className="page-title-accent">单词列表</h1>
+        <h1 className="page-title-accent">{isJa ? '日语词库' : '单词列表'}</h1>
         <div className="flex gap-2">
           <Link to="/import" className="btn-secondary flex items-center gap-1">
             <Upload size={18} /> 导入
@@ -48,18 +81,31 @@ export function WordList() {
       </div>
 
       <SelectableWordList
-        words={category === '全部' ? words : filtered}
+        words={filtered}
         search={search}
         onSearchChange={setSearch}
+        searchPlaceholder={isJa ? '搜索表记、假名、释义...' : '搜索单词、释义...'}
         onWordClick={(w) => navigate(`/word/${w.id}?scope=all`)}
-        onFavorite={(w) => toggleFavorite(w.id!, w.isFavorite)}
+        onFavorite={(w) => toggleLangFavorite(w.id!, w.isFavorite)}
         onDelete={(w) => setConfirmDeleteId(w.id!)}
         categories={categoryList}
         category={category}
         onCategoryChange={setCategory}
+        renderItem={
+          isJa
+            ? (item, actions) => <JapaneseWordCard word={item as JapaneseWord} {...actions} />
+            : undefined
+        }
+        matchSearch={isJa ? matchJapaneseSearch : undefined}
+        emptyText={isJa ? '暂无日语词' : '暂无单词'}
+        emptyHint={
+          isJa
+            ? '点击右上角「导入」批量添加日语词，或「添加」手动录入'
+            : '点击右上角「导入」批量添加单词，或「添加」手动录入'
+        }
         batchActions={{
           onMoveToCategory: (ids) => { setMoveIds(ids); setShowMove(true) },
-          onFavoriteAll: (ids) => { bulkSetFavorite(ids, true); toast('success', `已收藏 ${ids.length} 个单词`) },
+          onFavoriteAll: (ids) => { bulkSetLangFavorite(ids, true); toast('success', `已收藏 ${ids.length} 个词条`) },
           onDeleteAll: (ids) => { setBatchDeleteIds(ids); setConfirmBatchDelete(true) },
         }}
       />
@@ -89,12 +135,12 @@ export function WordList() {
 
       {confirmDeleteId !== null && (
         <ConfirmModal
-          title="删除单词?"
+          title={isJa ? '删除日语词?' : '删除单词?'}
           message="删除后不可恢复（相关学习记录与计划引用会一并清理）"
           confirmText="删除"
           onConfirm={async () => {
-            await deleteWord(confirmDeleteId)
-            toast('success', '单词已删除')
+            await deleteLangWord(confirmDeleteId)
+            toast('success', isJa ? '日语词已删除' : '单词已删除')
           }}
           onCancel={() => setConfirmDeleteId(null)}
         />
@@ -102,12 +148,12 @@ export function WordList() {
 
       {confirmBatchDelete && (
         <ConfirmModal
-          title="删除选中的单词?"
-          message={`共 ${batchDeleteIds.length} 个单词`}
+          title={isJa ? '删除选中的日语词?' : '删除选中的单词?'}
+          message={`共 ${batchDeleteIds.length} 个词条`}
           confirmText="删除"
           onConfirm={async () => {
-            await bulkDeleteWords(batchDeleteIds)
-            toast('success', `已删除 ${batchDeleteIds.length} 个单词`)
+            await bulkDeleteLangWords(batchDeleteIds)
+            toast('success', `已删除 ${batchDeleteIds.length} 个词条`)
           }}
           onCancel={() => setConfirmBatchDelete(false)}
         />

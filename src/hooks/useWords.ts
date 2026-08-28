@@ -1,9 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
-import { Word, Category, Flag, StudyKind, FavoriteItem } from '../types/word'
+import { Word, Category, Flag, StudyKind, FavoriteItem, StudySession } from '../types/word'
 import { applyStageReview, stageIntervalDays, MAX_STAGE, getTodayReviewCutoff } from '../utils/srs'
 import { ensureCategoryWritable } from '../utils/categoryType'
 import { useNow } from './useNow'
+import { Lang } from '../context/Language'
 
 export function useAllWords() {
   return useLiveQuery(() => db.words.orderBy('createdAt').reverse().toArray(), []) ?? []
@@ -83,7 +84,13 @@ export function useCategories() {
 
 const DAY_MS = 24 * 60 * 60 * 1000
 
-export function useStats() {
+/** 会话实体类型 → 语言分组：英语模式含单词+短句，日语模式仅日语词条 */
+export const LANG_SESSION_TYPES: Record<Lang, StudySession['entityType'][]> = {
+  en: ['word', 'sentence'],
+  ja: ['japaneseWord'],
+}
+
+export function useStats(sessionEntityTypes: StudySession['entityType'][] = ['word', 'sentence']) {
   const total = useLiveQuery(() => db.words.count(), []) ?? 0
   const learned = useLiveQuery(() => db.words.where('isLearned').equals(1).count(), []) ?? 0
   const due = useDueCount()
@@ -96,6 +103,10 @@ export function useStats() {
   const weekAgo = Date.now() - 7 * DAY_MS
   const weekSessions = useLiveQuery(() => db.studySessions.where('timestamp').above(weekAgo).toArray(), []) ?? []
 
+  // 按语言过滤会话（今日/本周统计只计当前语言的答题）
+  const todayFiltered = todaySessions.filter((s) => sessionEntityTypes.includes(s.entityType))
+  const weekFiltered = weekSessions.filter((s) => sessionEntityTypes.includes(s.entityType))
+
   // 计算连续学习天数（只读最近一年，避免全表扫描）
   const streak = useLiveQuery(async () => {
     const yearAgo = Date.now() - 366 * DAY_MS
@@ -104,14 +115,15 @@ export function useStats() {
       .above(yearAgo)
       .reverse()
       .toArray()
-    if (sessions.length === 0) return 0
+    const filtered = sessions.filter((s) => sessionEntityTypes.includes(s.entityType))
+    if (filtered.length === 0) return 0
 
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     const dayMs = DAY_MS
 
     // 获取最近一次学习日期
-    const lastSession = sessions[0]
+    const lastSession = filtered[0]
     const lastDate = new Date(lastSession.timestamp)
     lastDate.setHours(0, 0, 0, 0)
 
@@ -123,7 +135,7 @@ export function useStats() {
     let streakCount = 0
     let checkDate = diffDays === 0 ? today.getTime() : lastDate.getTime()
     const dateSet = new Set<string>()
-    for (const s of sessions) {
+    for (const s of filtered) {
       const d = new Date(s.timestamp)
       const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
       dateSet.add(key)
@@ -140,16 +152,16 @@ export function useStats() {
       }
     }
     return streakCount
-  }, []) ?? 0
+  }, [sessionEntityTypes]) ?? 0
 
   return {
     total,
     learned,
     due,
-    todayTotal: todaySessions.length,
-    todayCorrect: todaySessions.filter((s) => s.result === 'correct').length,
-    weekTotal: weekSessions.length,
-    weekCorrect: weekSessions.filter((s) => s.result === 'correct').length,
+    todayTotal: todayFiltered.length,
+    todayCorrect: todayFiltered.filter((s) => s.result === 'correct').length,
+    weekTotal: weekFiltered.length,
+    weekCorrect: weekFiltered.filter((s) => s.result === 'correct').length,
     streak,
   }
 }
@@ -418,25 +430,50 @@ export async function getRandomWords(limit: number): Promise<Word[]> {
 }
 
 export async function initDefaultCategories(): Promise<void> {
-  const count = await db.categories.count()
-  if (count > 0) return
+  // 事务内复查 + 按名称幂等：StrictMode 双挂载/并发调用不会重复播种
+  await db.transaction('rw', db.categories, async () => {
+    const count = await db.categories.count()
+    if (count > 0) return
 
-  const defaults = [
-    { name: '默认', description: '默认分类', color: '#8b5cf6', wordCount: 0, createdAt: Date.now() },
-    { name: 'CET-4', description: '大学英语四级', color: '#06b6d4', wordCount: 0, createdAt: Date.now() },
-    { name: 'CET-6', description: '大学英语六级', color: '#f97316', wordCount: 0, createdAt: Date.now() },
-    { name: '雅思', description: '雅思词汇', color: '#3b82f6', wordCount: 0, createdAt: Date.now() },
-    { name: '托福', description: '托福词汇', color: '#22c55e', wordCount: 0, createdAt: Date.now() },
-    { name: 'GRE', description: 'GRE词汇', color: '#a855f7', wordCount: 0, createdAt: Date.now() },
-    { name: '商务英语', description: '商务场景词汇', color: '#eab308', wordCount: 0, createdAt: Date.now() },
-    { name: '日常用语', description: '日常生活常用词', color: '#6366f1', wordCount: 0, createdAt: Date.now() },
-    { name: 'N5', description: '日语N5基础', color: '#ec4899', wordCount: 0, createdAt: Date.now() },
-    { name: 'N4', description: '日语N4进阶', color: '#f43f5e', wordCount: 0, createdAt: Date.now() },
-    { name: 'N3', description: '日语N3中级', color: '#14b8a6', wordCount: 0, createdAt: Date.now() },
-    { name: '标准日本语', description: '标准日本语教材词汇', color: '#8b5cf6', wordCount: 0, createdAt: Date.now() },
-  ]
+    const defaults = [
+      { name: '默认', description: '默认分类', color: '#8b5cf6', wordCount: 0, createdAt: Date.now() },
+      { name: 'CET-4', description: '大学英语四级', color: '#06b6d4', wordCount: 0, createdAt: Date.now() },
+      { name: 'CET-6', description: '大学英语六级', color: '#f97316', wordCount: 0, createdAt: Date.now() },
+      { name: '雅思', description: '雅思词汇', color: '#3b82f6', wordCount: 0, createdAt: Date.now() },
+      { name: '托福', description: '托福词汇', color: '#22c55e', wordCount: 0, createdAt: Date.now() },
+      { name: 'GRE', description: 'GRE词汇', color: '#a855f7', wordCount: 0, createdAt: Date.now() },
+      { name: '商务英语', description: '商务场景词汇', color: '#eab308', wordCount: 0, createdAt: Date.now() },
+      { name: '日常用语', description: '日常生活常用词', color: '#6366f1', wordCount: 0, createdAt: Date.now() },
+      { name: '日语', description: '日语词汇', color: '#d946ef', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
+      { name: 'N5', description: '日语N5基础', color: '#ec4899', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
+      { name: 'N4', description: '日语N4进阶', color: '#f43f5e', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
+      { name: 'N3', description: '日语N3中级', color: '#14b8a6', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
+      { name: '标准日本语', description: '标准日本语教材词汇', color: '#8b5cf6', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
+    ]
 
-  await db.categories.bulkAdd(defaults)
+    // 按名称去重（老库曾因并发播种出现同名重复行，这里兜底跳过已存在的）
+    const existingNames = new Set((await db.categories.toArray()).map((c) => c.name))
+    await db.categories.bulkAdd(defaults.filter((d) => !existingNames.has(d.name)))
+  })
+}
+
+/** 修复历史重复播种：同名分类仅保留最早创建的一条（应用启动时调用一次） */
+export async function dedupeCategories(): Promise<void> {
+  await db.transaction('rw', db.categories, async () => {
+    const cats = await db.categories.orderBy('createdAt').toArray()
+    const seen = new Set<string>()
+    const removeIds: number[] = []
+    for (const c of cats) {
+      if (seen.has(c.name)) {
+        removeIds.push(c.id!)
+      } else {
+        seen.add(c.name)
+      }
+    }
+    if (removeIds.length > 0) {
+      await db.categories.bulkDelete(removeIds)
+    }
+  })
 }
 
 /** 分类重名错误 */
@@ -451,7 +488,8 @@ export async function addCategory(
   name: string,
   description = '',
   color = '#8b5cf6',
-  entityType?: 'word' | 'sentence'
+  entityType?: 'word' | 'sentence',
+  lang: Lang = 'en'
 ) {
   const trimmed = name.trim()
   if (!trimmed) throw new Error('分类名称不能为空')
@@ -465,7 +503,8 @@ export async function addCategory(
     color,
     wordCount: 0,
     createdAt: Date.now(),
-    ...(entityType ? { entityType } : {}),
+    lang,
+    ...(entityType ? { entityType } : lang === 'ja' ? { entityType: 'word' as const } : {}),
   })
 }
 
@@ -483,9 +522,11 @@ export async function updateCategory(id: number, changes: Partial<Category>) {
     if (old && old.name !== changes.name) {
       const newName = changes.name
       // 查询与更新放入同一事务，避免读写之间新增的记录遗漏
-      await db.transaction('rw', db.words, db.sentences, db.categories, async () => {
+      // 改名级联三种词条表（英/日/短句共用分类名字符串）
+      await db.transaction('rw', db.words, db.sentences, db.japaneseWords, db.categories, async () => {
         await db.words.where('category').equals(old.name).modify({ category: newName })
         await db.sentences.where('category').equals(old.name).modify({ category: newName })
+        await db.japaneseWords.where('category').equals(old.name).modify({ category: newName })
         await db.categories.update(id, changes)
       })
       return
@@ -500,21 +541,17 @@ export async function deleteCategory(
   const cat = await db.categories.get(id)
   if (!cat) return
 
+  // 数组形式传表，覆盖三种词条表 + 两套收藏/计划表，整组级联放进同一事务
   await db.transaction(
     'rw',
-    db.words,
-    db.sentences,
-    db.studySessions,
-    db.studyPlans,
-    db.categories,
+    [db.words, db.sentences, db.japaneseWords, db.studySessions, db.studyPlans, db.japaneseStudyPlans, db.favoriteItems, db.japaneseFavoriteItems, db.categories],
     async () => {
-      // 收藏条目(favoriteItems)不在本 6 表事务内（Dexie 签名上限），
-      // 由 useFolderMembers 的孤儿惰性清理兜底。
       // 找出该分类下所有单词，逐一带上级联清理（学习记录 + 计划引用）
       const words = await db.words.where('category').equals(cat.name).toArray()
       const wordIds = words.map((w) => w.id!)
       for (const wid of wordIds) {
         await db.studySessions.where('entityType').equals('word').filter((s) => s.entityId === wid).delete()
+        await db.favoriteItems.filter((item) => item.entityType === 'word' && item.entityId === wid).delete()
       }
     // 从计划中清除这些单词 ID
     const plans = await db.studyPlans.toArray()
@@ -535,6 +572,7 @@ export async function deleteCategory(
     const sentenceIds = sentences.map((s) => s.id!)
     for (const sid of sentenceIds) {
       await db.studySessions.where('entityType').equals('sentence').filter((s) => s.entityId === sid).delete()
+      await db.favoriteItems.filter((item) => item.entityType === 'sentence' && item.entityId === sid).delete()
     }
     // 从计划中清除短句 ID
     for (const p of plans) {
@@ -548,6 +586,25 @@ export async function deleteCategory(
       }
     }
     await db.sentences.where('category').equals(cat.name).delete()
+    // 日语词条同理（会话 entityType='japaneseWord'，计划在 japaneseStudyPlans）
+    const jaWords = await db.japaneseWords.where('category').equals(cat.name).toArray()
+    const jaWordIds = jaWords.map((w) => w.id!)
+    for (const jid of jaWordIds) {
+      await db.studySessions.where('entityType').equals('japaneseWord').filter((s) => s.entityId === jid).delete()
+      await db.japaneseFavoriteItems.filter((item) => item.entityId === jid).delete()
+    }
+    const jaPlans = await db.japaneseStudyPlans.toArray()
+    for (const p of jaPlans) {
+      const wordIdsFiltered = (p.wordIds ?? []).filter((w) => !jaWordIds.includes(w))
+      const startedIdsFiltered = (p.startedIds ?? []).filter((w) => !jaWordIds.includes(w))
+      if (
+        wordIdsFiltered.length !== (p.wordIds ?? []).length ||
+        startedIdsFiltered.length !== (p.startedIds ?? []).length
+      ) {
+        await db.japaneseStudyPlans.update(p.id!, { wordIds: wordIdsFiltered, startedIds: startedIdsFiltered })
+      }
+    }
+    await db.japaneseWords.where('category').equals(cat.name).delete()
     // 删除分类
     await db.categories.delete(id)
     // 如果删除后没有任何分类，自动重建"默认"

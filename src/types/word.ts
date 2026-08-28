@@ -62,6 +62,42 @@ export interface Sentence {
   notes: string
 }
 
+// 日语释义条目：保留词性、日文释义与中文翻译，便于日语词条独立展示
+export interface JapaneseDefinition {
+  pos: string
+  meaning: string
+  translation: string
+}
+
+// 日语词条：读音只保存假名，不使用罗马字。
+export interface JapaneseWord {
+  id?: number
+  word: string
+  reading: string
+  definitions: JapaneseDefinition[]
+  partOfSpeech: string
+  jlptLevel: string
+  textbook: string
+  example: string
+  exampleReading: string
+  exampleTranslation: string
+  category: string
+  difficulty: number
+  createdAt: number
+  lastReviewedAt: number
+  reviewCount: number
+  correctCount: number
+  streak: number
+  easeFactor: number
+  interval: number
+  nextReviewAt: number
+  srsStage: number
+  stageProgress: number
+  isLearned: Flag
+  isFavorite: Flag
+  notes: string
+}
+
 export interface Category {
   id?: number
   name: string
@@ -74,6 +110,11 @@ export interface Category {
    * undefined = 未定型（空分类，首次写入时锁定）或旧混合数据（锁定新增）。
    */
   entityType?: 'word' | 'sentence'
+  /**
+   * 语言归属：'en'=英语词/短句，'ja'=日语词条。
+   * undefined 视为 'en'（v14 迁移按内容补标）。
+   */
+  lang?: 'en' | 'ja'
 }
 
 // 复习结果与模式：收紧为字面量联合，避免脏数据 / 拼写错误静默通过
@@ -94,7 +135,22 @@ export interface FavoriteFolder {
 export interface FavoriteItem {
   id?: number
   folderId: number
-  entityType: 'word' | 'sentence'
+  entityType: 'word' | 'sentence' | 'japaneseWord'
+  entityId: number
+  createdAt: number
+}
+
+export interface JapaneseFavoriteFolder {
+  id?: number
+  name: string
+  color: string
+  createdAt: number
+}
+
+export interface JapaneseFavoriteItem {
+  id?: number
+  folderId: number
+  entityType: 'japaneseWord'
   entityId: number
   createdAt: number
 }
@@ -104,7 +160,7 @@ export interface StudySession {
   /** 旧字段，保留用于读取旧数据库记录；新记录使用 entityId/entityType。 */
   wordId?: number
   entityId: number
-  entityType: 'word' | 'sentence'
+  entityType: 'word' | 'sentence' | 'japaneseWord'
   mode: StudySessionMode
   result: StudyResult
   durationMs: number
@@ -146,5 +202,23 @@ export interface StudyPlan {
   todayNewDone: number
   todayReviewDone: number
   // 今日加学完成数(学满配额后的额外学习,不计入 todayNewDone,但统计显示叠加)
+  todayExtraDone: number
+}
+
+export interface JapaneseStudyPlan {
+  id?: number
+  name: string
+  sourceKind: 'category' | 'favorites' | 'all'
+  sourceCategory: string
+  newPerDay: number
+  reviewPerDay: number
+  wordIds: number[]
+  startedIds: number[]
+  isActive: Flag
+  isArchived: Flag
+  createdAt: number
+  todayDate: string
+  todayNewDone: number
+  todayReviewDone: number
   todayExtraDone: number
 }

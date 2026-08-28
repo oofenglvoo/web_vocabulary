@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Download, Upload, FileUp, Volume2, BarChart3, Moon, Sun, DatabaseBackup, FileJson } from 'lucide-react'
-import { useStats, useAllWords, useCategories, addCategory } from '../hooks/useWords'
+import { useLang } from '../context/Language'
+import { useLangStats, useLangCategories, useLangCategoryStats, addLangCategory, useLangSessionTypes } from '../hooks/languageAware'
+import { useAllWords } from '../hooks/useWords'
 import { useAllSentences, useSentenceStats } from '../hooks/useSentences'
 import { StatCard } from '../components/StatCard'
 import { exportWordsToJson, exportWordsToCsv, exportSentencesToJson, exportSentencesToCsv, downloadFile } from '../utils/export'
@@ -23,9 +25,12 @@ import { BackupPreview, downloadBackup, parseBackup, restoreBackup } from '../ut
 
 export function Stats() {
   const { toast } = useToast()
-  const stats = useStats()
+  const lang = useLang()
+  const isJa = lang === 'ja'
+  const stats = useLangStats()
   const words = useAllWords()
-  const categories = useCategories()
+  const categories = useLangCategories()
+  const categoryStats = useLangCategoryStats()
   const sentences = useAllSentences()
   const sentenceStats = useSentenceStats()
   const [showAddCat, setShowAddCat] = useState(false)
@@ -94,7 +99,7 @@ export function Stats() {
     const name = newCatName.trim()
     if (!name) return
     try {
-      await addCategory(name)
+      await addLangCategory(name)
       toast('success', `分类「${name}」已创建`)
       setNewCatName('')
       setShowAddCat(false)
@@ -166,7 +171,7 @@ export function Stats() {
       <div>
         <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">学习统计</h2>
         <div className="grid grid-cols-3 gap-3">
-          <StatCard title="总单词" value={stats.total} />
+          <StatCard title={isJa ? '总日语词' : '总单词'} value={stats.total} />
           <StatCard title="已掌握" value={stats.learned} color="text-success-600" />
           <StatCard title="待复习" value={stats.due} color="text-warn-600" />
         </div>
@@ -190,16 +195,18 @@ export function Stats() {
         </div>
       </div>
 
-      {/* 近7日学习趋势 */}
+      {/* 近7日学习趋势（按当前语言过滤） */}
       <WeeklyChart />
 
-      <div>
-        <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">短句统计</h2>
-        <div className="grid grid-cols-3 gap-3">
-          <StatCard title="总短句" value={sentenceStats.total} />
-          <StatCard title="已掌握" value={sentenceStats.learned} color="text-success-600" />
+      {!isJa && (
+        <div>
+          <h2 className="font-semibold text-lg mb-3 dark:text-gray-200">短句统计</h2>
+          <div className="grid grid-cols-3 gap-3">
+            <StatCard title="总短句" value={sentenceStats.total} />
+            <StatCard title="已掌握" value={sentenceStats.learned} color="text-success-600" />
+          </div>
         </div>
-      </div>
+      )}
       </section>
 
       <section hidden={tab !== 'data'} aria-label="分类管理">
@@ -220,7 +227,9 @@ export function Stats() {
                 />
                 <span className="dark:text-gray-200">{cat.name}</span>
               </div>
-              <span className="text-sm text-gray-400 dark:text-gray-500">{cat.wordCount} 词</span>
+              <span className="text-sm text-gray-400 dark:text-gray-500">
+                {categoryStats.find((s) => s.name === cat.name)?.wordCount ?? 0} 词
+              </span>
             </div>
           ))}
         </div>
@@ -338,43 +347,61 @@ export function Stats() {
           <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-2">恢复前会显示数据数量并要求确认，恢复会替换当前本地数据。</p>
         </div>
 
-        {/* 单词 */}
-        <div className="mb-3">
-          <h3 className="text-sm font-medium mb-2 dark:text-gray-300">单词</h3>
-          <Link
-            to="/import"
-            className="btn-primary w-full flex items-center justify-center gap-2 mb-2"
-          >
-            <FileUp size={18} /> 批量导入单词
-          </Link>
-          <div className="flex gap-3">
-            <button onClick={handleExportJson} className="btn-secondary flex-1 flex items-center justify-center gap-2">
-              <Download size={18} /> JSON
-            </button>
-            <button onClick={handleExportCsv} className="btn-secondary flex-1 flex items-center justify-center gap-2">
-              <Upload size={18} /> CSV
-            </button>
-          </div>
-        </div>
+        {/* 单词/短句导入导出（日语模式下数据管理走完整备份，避免跨语言误导出） */}
+        {!isJa && (
+          <>
+            <div className="mb-3">
+              <h3 className="text-sm font-medium mb-2 dark:text-gray-300">单词</h3>
+              <Link
+                to="/import"
+                className="btn-primary w-full flex items-center justify-center gap-2 mb-2"
+              >
+                <FileUp size={18} /> 批量导入单词
+              </Link>
+              <div className="flex gap-3">
+                <button onClick={handleExportJson} className="btn-secondary flex-1 flex items-center justify-center gap-2">
+                  <Download size={18} /> JSON
+                </button>
+                <button onClick={handleExportCsv} className="btn-secondary flex-1 flex items-center justify-center gap-2">
+                  <Upload size={18} /> CSV
+                </button>
+              </div>
+            </div>
 
-        {/* 短句 */}
-        <div>
-          <h3 className="text-sm font-medium mb-2 dark:text-gray-300">短句</h3>
-          <Link
-            to="/sentences/import"
-            className="btn-primary w-full flex items-center justify-center gap-2 mb-2"
-          >
-            <FileUp size={18} /> 批量导入短句
-          </Link>
-          <div className="flex gap-3">
-            <button onClick={handleExportSentencesJson} className="btn-secondary flex-1 flex items-center justify-center gap-2">
-              <Download size={18} /> JSON
-            </button>
-            <button onClick={handleExportSentencesCsv} className="btn-secondary flex-1 flex items-center justify-center gap-2">
-              <Upload size={18} /> CSV
-            </button>
+            {/* 短句 */}
+            <div>
+              <h3 className="text-sm font-medium mb-2 dark:text-gray-300">短句</h3>
+              <Link
+                to="/sentences/import"
+                className="btn-primary w-full flex items-center justify-center gap-2 mb-2"
+              >
+                <FileUp size={18} /> 批量导入短句
+              </Link>
+              <div className="flex gap-3">
+                <button onClick={handleExportSentencesJson} className="btn-secondary flex-1 flex items-center justify-center gap-2">
+                  <Download size={18} /> JSON
+                </button>
+                <button onClick={handleExportSentencesCsv} className="btn-secondary flex-1 flex items-center justify-center gap-2">
+                  <Upload size={18} /> CSV
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+        {isJa && (
+          <div className="mb-3">
+            <h3 className="text-sm font-medium mb-2 dark:text-gray-300">日语词</h3>
+            <Link
+              to="/import"
+              className="btn-primary w-full flex items-center justify-center gap-2 mb-2"
+            >
+              <FileUp size={18} /> 批量导入日语词
+            </Link>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              日语词导出请使用「导出完整备份」，其中包含日语词库与学习数据。
+            </p>
           </div>
-        </div>
+        )}
       </div>
       </section>
 
@@ -429,9 +456,10 @@ function Row({ label, value }: { label: string; value: string | number }) {
   )
 }
 
-// 近7日学习趋势图
+// 近7日学习趋势图（按当前语言的会话过滤）
 function WeeklyChart() {
   const [tooltip, setTooltip] = useState<{ index: number; data: { total: number; correct: number } } | null>(null)
+  const sessionTypes = useLangSessionTypes()
   const dailyData = useLiveQuery(async () => {
     const now = Date.now()
     const dayMs = 24 * 60 * 60 * 1000
@@ -447,6 +475,7 @@ function WeeklyChart() {
         .where('timestamp')
         .between(start.getTime(), end.getTime())
         .toArray()
+      const filtered = sessions.filter((s) => sessionTypes.includes(s.entityType))
 
       const d = new Date(start.getTime())
       const label = `${d.getMonth() + 1}/${d.getDate()}`
@@ -456,12 +485,12 @@ function WeeklyChart() {
       days.push({
         date: label,
         label: dayLabel,
-        total: sessions.length,
-        correct: sessions.filter((s) => s.result === 'correct' || s.result === 'mastered').length,
+        total: filtered.length,
+        correct: filtered.filter((s) => s.result === 'correct' || s.result === 'mastered').length,
       })
     }
     return days
-  }, []) ?? []
+  }, [sessionTypes]) ?? []
 
   const maxTotal = Math.max(1, ...dailyData.map((d) => d.total))
 

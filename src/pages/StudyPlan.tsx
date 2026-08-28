@@ -24,22 +24,31 @@ import {
   Pencil,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useLang } from '../context/Language'
 import {
-  useActivePlan,
-  useAllPlans,
-  usePlanProgress,
-  usePlanById,
-  usePlanWords,
-  createPlan,
-  activatePlan,
-  archivePlan,
-  deletePlan,
-  ensureTodayReset,
-  markPlanWordLearned,
-  refreshPlanWords,
-  getPlanNewWordCount,
-  updatePlanSettings,
-} from '../hooks/useStudyPlan'
+  useLangActivePlan,
+  useLangAllPlans,
+  useLangPlanProgress,
+  useLangPlanById,
+  useLangPlanWords,
+  createLangPlan,
+  activateLangPlan,
+  archiveLangPlan,
+  deleteLangPlan,
+  ensureLangTodayReset,
+  markLangPlanWordLearned,
+  markLangWordLearned,
+  unmarkLangWordLearned,
+  refreshLangPlanWords,
+  getLangPlanNewWordCount,
+  updateLangPlanSettings,
+  useLangCategories,
+  useLangCategoryStats,
+  useLangStats,
+  useLangFavoriteWords,
+} from '../hooks/languageAware'
+import { bulkMarkLearned, useCategories } from '../hooks/useWords'
+import { updatePlanSettings } from '../hooks/useStudyPlan'
 import {
   useActiveSentencePlan,
   useAllSentencePlans,
@@ -53,25 +62,24 @@ import {
   getSentencePlanNewWordCount,
   updateSentencePlanSettings,
 } from '../hooks/useSentencePlan'
-import { useCategories, useCategoryStats, useStats, useFavoriteWords, bulkMarkLearned, unmarkWordLearned } from '../hooks/useWords'
 import { useSentenceStats, useFavoriteSentences, useSentenceCategoryStats } from '../hooks/useSentences'
 import { StudyPlan as PlanType } from '../types/word'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
 
-const SOURCE_LABEL: Record<string, string> = {
-  category: '分类',
-  favorites: '收藏夹',
-  all: '全部单词',
-  allSentences: '全部短句',
+function sourceLabelOf(plan: PlanType, isJa: boolean): string {
+  if (plan.sourceKind === 'category') return plan.sourceCategory
+  if (plan.sourceKind === 'favorites') return '收藏夹'
+  return isJa ? '全部日语词' : '全部单词'
 }
 
 export function StudyPlanPage() {
   const navigate = useNavigate()
+  const isJa = useLang() === 'ja'
   const [tab, setTab] = useState<'word' | 'sentence'>('word')
-  const activePlan = useActivePlan()
-  const allPlans = useAllPlans()
-  const progress = usePlanProgress(activePlan)
+  const activePlan = useLangActivePlan()
+  const allPlans = useLangAllPlans()
+  const progress = useLangPlanProgress(activePlan)
   const activeSentencePlan = useActiveSentencePlan()
   const allSentencePlans = useAllSentencePlans()
   const sentenceProgress = useSentencePlanProgress(activeSentencePlan)
@@ -85,8 +93,8 @@ export function StudyPlanPage() {
 
   useEffect(() => {
     if (activePlan?.id) {
-      ensureTodayReset(activePlan.id)
-      getPlanNewWordCount(activePlan.id).then(setNewWordCount)
+      ensureLangTodayReset(activePlan.id)
+      getLangPlanNewWordCount(activePlan.id).then(setNewWordCount)
     }
   }, [activePlan?.id])
 
@@ -114,7 +122,7 @@ export function StudyPlanPage() {
           </button>
         </div>
 
-        {/* 单词计划 | 短句计划 Tab */}
+        {/* 单词计划 | 短句计划 Tab（日语模式下仅日语词计划） */}
         <div className="flex gap-2">
           <button
             onClick={() => setTab('word')}
@@ -124,18 +132,20 @@ export function StudyPlanPage() {
                 : 'bg-white/70 dark:bg-slate-700/70 text-gray-600 dark:text-gray-300'
             }`}
           >
-            单词计划
+            {isJa ? '日语词计划' : '单词计划'}
           </button>
-          <button
-            onClick={() => setTab('sentence')}
-            className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
-              tab === 'sentence'
-                ? 'bg-primary-500 text-white'
-                : 'bg-white/70 dark:bg-slate-700/70 text-gray-600 dark:text-gray-300'
-            }`}
-          >
-            短句计划
-          </button>
+          {!isJa && (
+            <button
+              onClick={() => setTab('sentence')}
+              className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
+                tab === 'sentence'
+                  ? 'bg-primary-500 text-white'
+                  : 'bg-white/70 dark:bg-slate-700/70 text-gray-600 dark:text-gray-300'
+              }`}
+            >
+              短句计划
+            </button>
+          )}
         </div>
 
         {tab === 'word' ? (
@@ -150,15 +160,16 @@ export function StudyPlanPage() {
                 onReview={() => navigate(`/study?plan=${activePlan.id}&mode=review`)}
                 onSync={async () => {
                   setSyncing(true)
-                  await refreshPlanWords(activePlan.id!)
-                  const cnt = await getPlanNewWordCount(activePlan.id!)
+                  await refreshLangPlanWords(activePlan.id!)
+                  const cnt = await getLangPlanNewWordCount(activePlan.id!)
                   setNewWordCount(cnt)
                   setSyncing(false)
                 }}
                 syncing={syncing}
+                isJa={isJa}
               />
             ) : (
-              <EmptyPlan onCreate={() => setShowCreate(true)} label="单词学习计划" />
+              <EmptyPlan onCreate={() => setShowCreate(true)} label={isJa ? '日语词学习计划' : '单词学习计划'} />
             )}
 
             {allPlans.length > 0 && (
@@ -178,9 +189,10 @@ export function StudyPlanPage() {
                       <PlanRow
                         plan={p}
                         isActive={p.id === activePlan?.id}
-                        onActivate={() => activatePlan(p.id!)}
-                        onArchive={() => archivePlan(p.id!)}
-                        onDelete={() => deletePlan(p.id!)}
+                        isJa={isJa}
+                        onActivate={() => activateLangPlan(p.id!)}
+                        onArchive={() => archiveLangPlan(p.id!)}
+                        onDelete={() => deleteLangPlan(p.id!)}
                         onEdit={() => setEditingPlan(p)}
                       />
                     </motion.div>
@@ -229,6 +241,7 @@ export function StudyPlanPage() {
                       <PlanRow
                         plan={p}
                         isActive={p.id === activeSentencePlan?.id}
+                        isJa={false}
                         onActivate={() => activateSentencePlan(p.id!)}
                         onArchive={() => archiveSentencePlan(p.id!)}
                         onDelete={() => deleteSentencePlan(p.id!)}
@@ -247,6 +260,7 @@ export function StudyPlanPage() {
         <CreatePlanModal
           onClose={() => setShowCreate(false)}
           onCreated={() => setShowCreate(false)}
+          isJa={isJa}
         />
       )}
 
@@ -299,15 +313,17 @@ function ActivePlanCard({
   onReview,
   onSync,
   syncing,
+  isJa,
 }: {
   plan: PlanType
-  progress: ReturnType<typeof usePlanProgress>
+  progress: ReturnType<typeof useLangPlanProgress>
   newWordCount: number
   onStart: () => void
   onExtraStart: () => void
   onReview: () => void
   onSync: () => void
   syncing: boolean
+  isJa: boolean
 }) {
   // 今日新词展示 = 配额内完成 + 加学完成(如 20/10)；进度条按配额封顶 100%
   const newDone = progress.todayNewDisplay
@@ -315,10 +331,7 @@ function ActivePlanCard({
   const newPct = progress.todayNewTarget > 0 ? Math.min(100, (newDone / progress.todayNewTarget) * 100) : 0
   const reviewPct = progress.dueReview > 0 ? (reviewDone / progress.dueReview) * 100 : 0
 
-  const sourceLabel =
-    plan.sourceKind === 'category'
-      ? plan.sourceCategory
-      : SOURCE_LABEL[plan.sourceKind]
+  const sourceLabel = sourceLabelOf(plan, isJa)
 
   // 今日新词是否已学满(配额内)，且还有未掌握可学的词 → 点"学习"需确认是否加学
   const newQuotaDone = progress.todayNewRemaining === 0 && progress.remainingNew > 0
@@ -362,7 +375,7 @@ function ActivePlanCard({
             to={`/plan/${plan.id}/words`}
             className="btn-secondary flex items-center gap-1.5 shrink-0"
           >
-            <List size={16} /> 单词
+            <List size={16} /> {isJa ? '词条' : '单词'}
           </Link>
         </div>
       </div>
@@ -517,6 +530,7 @@ function MiniStat({
 function PlanRow({
   plan,
   isActive,
+  isJa,
   onActivate,
   onArchive,
   onDelete,
@@ -524,14 +538,14 @@ function PlanRow({
 }: {
   plan: PlanType
   isActive: boolean
+  isJa: boolean
   onActivate: () => void
   onArchive: () => void
   onDelete: () => void
   onEdit: () => void
 }) {
   const [confirmDelete, setConfirmDelete] = useState(false)
-  const sourceLabel =
-    plan.sourceKind === 'category' ? plan.sourceCategory : SOURCE_LABEL[plan.sourceKind]
+  const sourceLabel = sourceLabelOf(plan, isJa)
   return (
     <div className="card p-3 flex items-center gap-3">
       <div
@@ -638,6 +652,7 @@ function EditPlanModal({
   onSaved: () => void
 }) {
   const { toast } = useToast()
+  const isJa = useLang() === 'ja'
   const [name, setName] = useState(plan.name)
   const [newPerDay, setNewPerDay] = useState(plan.newPerDay)
   const [reviewPerDay, setReviewPerDay] = useState(plan.reviewPerDay)
@@ -657,7 +672,8 @@ function EditPlanModal({
     setSaving(true)
     try {
       const changes = { name: trimmed, newPerDay, reviewPerDay }
-      if ((plan.entityType ?? 'word') === 'sentence') await updateSentencePlanSettings(plan.id!, changes)
+      if (isJa) await updateLangPlanSettings(plan.id!, changes)
+      else if ((plan.entityType ?? 'word') === 'sentence') await updateSentencePlanSettings(plan.id!, changes)
       else await updatePlanSettings(plan.id!, changes)
       toast('success', `计划「${trimmed}」已更新`)
       onSaved()
@@ -703,18 +719,20 @@ function EditPlanModal({
 function CreatePlanModal({
   onClose,
   onCreated,
+  isJa,
 }: {
   onClose: () => void
   onCreated: () => void
+  isJa: boolean
 }) {
   const { toast } = useToast()
-  const categories = useCategories()
-  const categoryStats = useCategoryStats()
-  const stats = useStats()
-  const favorites = useFavoriteWords()
+  const categories = useLangCategories()
+  const categoryStats = useLangCategoryStats()
+  const stats = useLangStats()
+  const favorites = useLangFavoriteWords()
   const [name, setName] = useState('')
   const [sourceKind, setSourceKind] = useState<'category' | 'favorites' | 'all'>('category')
-  const [sourceCategory, setSourceCategory] = useState(categories[0]?.name ?? '默认')
+  const [sourceCategory, setSourceCategory] = useState(categories[0]?.name ?? (isJa ? '日语' : '默认'))
   const [newPerDay, setNewPerDay] = useState(10)
   const [reviewPerDay, setReviewPerDay] = useState(20)
   const [error, setError] = useState('')
@@ -722,9 +740,9 @@ function CreatePlanModal({
 
   useEffect(() => {
     if (sourceKind === 'category' && !categories.find((c) => c.name === sourceCategory)) {
-      setSourceCategory(categories[0]?.name ?? '默认')
+      setSourceCategory(categories[0]?.name ?? (isJa ? '日语' : '默认'))
     }
-  }, [sourceKind, categories, sourceCategory])
+  }, [sourceKind, categories, sourceCategory]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const categoryWordCount = (name: string) =>
     categoryStats.find((c) => c.name === name)?.wordCount ?? 0
@@ -750,7 +768,7 @@ function CreatePlanModal({
     }
     setCreating(true)
     try {
-      await createPlan({
+      await createLangPlan({
         name: n,
         sourceKind,
         sourceCategory: sourceKind === 'category' ? sourceCategory : '',
@@ -1331,9 +1349,10 @@ export function PlanWordList() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { toast } = useToast()
+  const isJa = useLang() === 'ja'
   const planId = Number(id)
-  const plan = usePlanById(planId)
-  const words = usePlanWords(plan)
+  const plan = useLangPlanById(planId)
+  const words = useLangPlanWords(plan)
 
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<WordStatus | 'all'>('all')
@@ -1355,12 +1374,16 @@ export function PlanWordList() {
   const filtered = enriched.filter((w) => {
     const q = search.toLowerCase()
     const defs = w.definitions ?? []
-    const defsText = defs.map((d: any) => `${d.pos ?? ''} ${d.def ?? ''} ${d.trans ?? ''}`).join(' ')
+    const defsText = defs
+      .map((d: any) => `${d.pos ?? ''} ${d.def ?? ''} ${d.trans ?? ''} ${d.meaning ?? ''} ${d.translation ?? ''}`)
+      .join(' ')
+    const reading = (w as { reading?: string }).reading ?? ''
     const matchSearch =
       search === '' ||
       w.word.toLowerCase().includes(q) ||
-      (w.translation ?? '').includes(search) ||
-      (w.definition ?? '').toLowerCase().includes(q) ||
+      reading.toLowerCase().includes(q) ||
+      ((w as any).translation ?? '').includes(search) ||
+      ((w as any).definition ?? '').toLowerCase().includes(q) ||
       defsText.toLowerCase().includes(q)
     const matchStatus = statusFilter === 'all' || w.status === statusFilter
     return matchSearch && matchStatus
@@ -1392,7 +1415,13 @@ export function PlanWordList() {
   async function handleBatchMaster() {
     if (selected.size === 0) return
     const ids = Array.from(selected)
-    await bulkMarkLearned(ids)
+    if (isJa) {
+      for (const wordId of ids) {
+        await markLangWordLearned(wordId)
+      }
+    } else {
+      await bulkMarkLearned(ids)
+    }
     if (plan) {
       // 用 Map 避免每次 find 都是 O(n)
       const byId = new Map(enriched.map((w) => [w.id, w]))
@@ -1400,18 +1429,18 @@ export function PlanWordList() {
         const w = byId.get(wordId)
         if (w) {
           const wasReview = w.status === 'started'
-          await markPlanWordLearned(plan.id!, wordId, wasReview)
+          await markLangPlanWordLearned(plan.id!, wordId, wasReview)
         }
       }
     }
-    toast('success', `已标记 ${ids.length} 个单词为已掌握`)
+    toast('success', `已标记 ${ids.length} 个${isJa ? '日语词' : '单词'}为已掌握`)
     setSelected(new Set())
     setSelectMode(false)
     setConfirmBatch(false)
   }
 
   async function handleUnmaster(wordId: number) {
-    await unmarkWordLearned(wordId)
+    await unmarkLangWordLearned(wordId)
     toast('info', '已取消掌握标记')
     setConfirmUnmaster(null)
   }
@@ -1555,8 +1584,8 @@ export function PlanWordList() {
                         </p>
                       )
                     }
-                    return w.translation ? (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 truncate mt-0.5">{w.translation}</p>
+                    return (w as any).translation ? (
+                      <p className="text-sm text-gray-600 dark:text-gray-400 truncate mt-0.5">{(w as any).translation}</p>
                     ) : null
                   })()}
                 </div>

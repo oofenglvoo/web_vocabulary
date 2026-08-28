@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Upload, Plus, FolderOpen } from 'lucide-react'
+import { useLang } from '../context/Language'
 import {
-  useWordsByCategory,
-  useCategories,
-  toggleFavorite,
-  deleteWord,
-  bulkSetFavorite,
-  bulkSetCategory,
-  bulkDeleteWords,
-} from '../hooks/useWords'
+  useLangWordsByCategory,
+  useLangCategories,
+  toggleLangFavorite,
+  deleteLangWord,
+  bulkSetLangFavorite,
+  bulkSetLangCategory,
+  bulkDeleteLangWords,
+} from '../hooks/languageAware'
 import {
   useSentencesByCategory,
   toggleSentenceFavorite,
@@ -19,24 +20,45 @@ import {
   bulkDeleteSentences,
 } from '../hooks/useSentences'
 import { SelectableWordList } from '../components/SelectableWordList'
+import { JapaneseWordCard } from '../components/JapaneseWordCard'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { SentenceCard } from '../components/SentenceCard'
 import { EmptyState } from '../components/EmptyState'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
 import { enhancedSearch } from '../utils/search'
-import { Sentence } from '../types/word'
+import { Sentence, JapaneseWord } from '../types/word'
+import type { LangWord } from '../hooks/languageAware'
 
 type Tab = 'word' | 'sentence'
+
+function matchJapaneseSearch(query: string, w: LangWord): boolean {
+  const jaW = w as JapaneseWord
+  const q = query.trim().toLowerCase()
+  const haystack = [
+    w.word,
+    jaW.reading,
+    jaW.partOfSpeech,
+    jaW.textbook,
+    jaW.jlptLevel,
+    w.category,
+    ...(jaW.definitions ?? []).flatMap((d) => [d.pos, d.meaning, d.translation]),
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+  return haystack.includes(q)
+}
 
 export function CategoryDetail() {
   const { name } = useParams<{ name: string }>()
   const navigate = useNavigate()
   const { toast } = useToast()
+  const isJa = useLang() === 'ja'
   const decoded = name ? decodeURIComponent(name) : ''
-  const words = useWordsByCategory(decoded)
+  const words = useLangWordsByCategory(decoded)
   const sentences = useSentencesByCategory(decoded)
-  const categories = useCategories()
+  const categories = useLangCategories()
 
   const [tab, setTab] = useState<Tab>('word')
   const [search, setSearch] = useState('')
@@ -71,14 +93,18 @@ export function CategoryDetail() {
   const sentenceAddHref = `/sentences/add?category=${encodeURIComponent(decoded)}`
 
   // 分类内容形态：
+  // - 日语模式 → 恒为单词视图（日语词库无短句）
   // - 双侧都有内容（旧混合数据 / 异常数据）→ 双 Tab 只读浏览，锁定新增（优先判定）
   // - 已定型 → 单一视图（无 Tab）
   // - 未定型 + 空 → 初始选择（选择后写入即定型）
   // - 未定型 + 单侧有内容 → 按内容渲染
+  const jaMode: 'word' | 'choose' = words.length > 0 ? 'word' : 'choose'
   const typedView: Tab | undefined =
     cat?.entityType === 'word' ? 'word' : cat?.entityType === 'sentence' ? 'sentence' : undefined
   let contentMode: 'word' | 'sentence' | 'choose' | 'mixed'
-  if (words.length > 0 && sentences.length > 0) {
+  if (isJa) {
+    contentMode = jaMode
+  } else if (words.length > 0 && sentences.length > 0) {
     contentMode = 'mixed'
   } else if (typedView) {
     contentMode = typedView
@@ -91,15 +117,15 @@ export function CategoryDetail() {
   }
   // 混合模式下允许查看两个 Tab，但全部新增入口关闭
   const canAddWord = contentMode !== 'mixed' && (contentMode !== 'sentence')
-  const canAddSentence = contentMode !== 'mixed' && (contentMode !== 'word')
+  const canAddSentence = !isJa && contentMode !== 'mixed' && (contentMode !== 'word')
 
   const handleMoveToWord = async (target: string) => {
     if (target === decoded) {
       setShowMove(false)
       return
     }
-    await bulkSetCategory(moveWordIds, target)
-    toast('success', `已移动 ${moveWordIds.length} 个单词到「${target}」`)
+    await bulkSetLangCategory(moveWordIds, target)
+    toast('success', `已移动 ${moveWordIds.length} 个${isJa ? '日语词' : '单词'}到「${target}」`)
     setShowMove(false)
     setMoveWordIds([])
   }
@@ -149,19 +175,29 @@ export function CategoryDetail() {
           </div>
           <h3 className="font-bold text-lg mb-1 dark:text-gray-100">还没有内容</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
-            请先选择要放入本分类的内容类型（选定后只存放这一种）
+            {isJa
+              ? '向本分类添加或导入日语词'
+              : '请先选择要放入本分类的内容类型（选定后只存放这一种）'}
           </p>
-          <div className="grid grid-cols-2 gap-2">
+          <div className={`grid gap-2 ${isJa ? 'grid-cols-1' : 'grid-cols-2'}`}>
             <Link to={addHref} className="btn-primary py-2.5 text-sm">
-              添加单词
+              {isJa ? '添加日语词' : '添加单词'}
             </Link>
-            <Link
-              to={sentenceAddHref}
-              className="py-2.5 rounded-xl text-sm font-medium border border-purple-300 text-purple-600 dark:border-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all inline-flex items-center justify-center"
-            >
-              添加短句
-            </Link>
+            {!isJa && (
+              <Link
+                to={sentenceAddHref}
+                className="py-2.5 rounded-xl text-sm font-medium border border-purple-300 text-purple-600 dark:border-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all inline-flex items-center justify-center"
+              >
+                添加短句
+              </Link>
+            )}
           </div>
+          <Link
+            to={importHref}
+            className="mt-3 inline-flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl text-sm font-medium border border-gray-300 dark:border-slate-600 text-gray-600 dark:text-gray-300 hover:border-primary-400 hover:text-primary-600 dark:hover:text-primary-300 transition-all"
+          >
+            <Upload size={14} /> 批量导入{isJa ? '日语词' : '单词'}到本分类
+          </Link>
         </div>
       ) : (
         <>
@@ -199,7 +235,9 @@ export function CategoryDetail() {
           {(contentMode === 'word' || (contentMode === 'mixed' && tab === 'word')) && (
             <>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-sm text-gray-500 dark:text-gray-400">共 {words.length} 个单词</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  共 {words.length} 个{isJa ? '日语词' : '单词'}
+                </span>
                 {canAddWord && (
                   <div className="flex gap-2">
                     <Link
@@ -222,10 +260,17 @@ export function CategoryDetail() {
                 words={words}
                 search={search}
                 onSearchChange={setSearch}
+                searchPlaceholder={isJa ? '搜索表记、假名、释义...' : '搜索单词、释义...'}
                 onWordClick={(w) => navigate(`/word/${w.id}?category=${encodeURIComponent(decoded)}`)}
-                onFavorite={(w) => toggleFavorite(w.id!, w.isFavorite)}
+                onFavorite={(w) => toggleLangFavorite(w.id!, w.isFavorite)}
                 onDelete={(w) => setConfirmDeleteWordId(w.id!)}
-                emptyText="该分类暂无单词"
+                renderItem={
+                  isJa
+                    ? (item, actions) => <JapaneseWordCard word={item as JapaneseWord} {...actions} />
+                    : undefined
+                }
+                matchSearch={isJa ? matchJapaneseSearch : undefined}
+                emptyText={isJa ? '该分类暂无日语词' : '该分类暂无单词'}
                 emptyAction={canAddWord ? { label: '批量导入', href: importHref } : undefined}
                 batchActions={{
                   onMoveToCategory: (ids) => {
@@ -233,8 +278,8 @@ export function CategoryDetail() {
                     setShowMove(true)
                   },
                   onFavoriteAll: (ids) => {
-                    bulkSetFavorite(ids, true)
-                    toast('success', `已收藏 ${ids.length} 个单词`)
+                    bulkSetLangFavorite(ids, true)
+                    toast('success', `已收藏 ${ids.length} 个${isJa ? '日语词' : '单词'}`)
                   },
                   onDeleteAll: (ids) => {
                     setBatchWordIds(ids)
@@ -343,12 +388,12 @@ export function CategoryDetail() {
 
       {confirmDeleteWordId !== null && (
         <ConfirmModal
-          title="删除单词?"
+          title={isJa ? '删除日语词?' : '删除单词?'}
           message="删除后不可恢复（相关学习记录与计划引用会一并清理）"
           confirmText="删除"
           onConfirm={async () => {
-            await deleteWord(confirmDeleteWordId)
-            toast('success', '单词已删除')
+            await deleteLangWord(confirmDeleteWordId)
+            toast('success', isJa ? '日语词已删除' : '单词已删除')
           }}
           onCancel={() => setConfirmDeleteWordId(null)}
         />
@@ -369,12 +414,12 @@ export function CategoryDetail() {
 
       {confirmBatchWordDelete && (
         <ConfirmModal
-          title="删除选中的单词?"
-          message={`共 ${batchWordIds.length} 个单词`}
+          title={isJa ? '删除选中的日语词?' : '删除选中的单词?'}
+          message={`共 ${batchWordIds.length} 个`}
           confirmText="删除"
           onConfirm={async () => {
-            await bulkDeleteWords(batchWordIds)
-            toast('success', `已删除 ${batchWordIds.length} 个单词`)
+            await bulkDeleteLangWords(batchWordIds)
+            toast('success', `已删除 ${batchWordIds.length} 个`)
           }}
           onCancel={() => setConfirmBatchWordDelete(false)}
         />
