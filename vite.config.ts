@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // VITE_ANDROID=1: 打包安卓 APK 专用(webDir=dist-android, base='/' 适配 WebView 的 https://localhost)
@@ -7,8 +7,28 @@ import react from '@vitejs/plugin-react'
 const isAndroid = process.env.VITE_ANDROID === '1'
 const appBase = isAndroid ? '/' : process.env.VITE_BASE || '/web_vocabulary'
 
+/** 让本地开发时无尾斜杠的 base URL 也能正常打开和刷新 */
+function redirectBaseWithoutSlash(): Plugin {
+  return {
+    name: 'redirect-base-without-slash',
+    configureServer(server) {
+      if (appBase === '/') return
+      server.middlewares.use((req, res, next) => {
+        const [pathname, query = ''] = (req.url || '').split('?')
+        if (pathname !== appBase) {
+          next()
+          return
+        }
+        res.statusCode = 302
+        res.setHeader('Location', `${appBase}/${query ? `?${query}` : ''}`)
+        res.end()
+      })
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [redirectBaseWithoutSlash(), react()],
   base: isAndroid ? '/' : process.env.VITE_BASE || '/web_vocabulary/',
   build: {
     outDir: isAndroid ? 'dist-android' : process.env.VITE_OUT_DIR || 'dist',
