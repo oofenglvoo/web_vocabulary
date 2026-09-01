@@ -75,6 +75,24 @@ test('TC-STUDY-PREVIEW-001: 先显示当天学习列表，确认后才进入测�
   await expect(page.getByText('新学 · 回忆式')).toBeVisible()
 })
 
+test('TC-STUDY-PREVIEW-002: 最后一个详情页可直接开始测试', async ({ page }) => {
+  await addWords(page, [['detail-test-a', '甲'], ['detail-test-b', '乙']])
+  await page.goto(url('/study'))
+  await expect(page.getByRole('heading', { name: '先学习当天词条' })).toBeVisible()
+
+  await page.locator('a[href*="studyPreview=1"]').first().click()
+  await page.waitForURL(/\/word\/\d+\?studyPreview=1/)
+  await page.getByRole('button', { name: /下一个/ }).click()
+  await expect(page.getByText('已是最后一个', { exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: '开始测试', exact: true })).toBeVisible()
+
+  await page.getByRole('button', { name: '开始测试', exact: true }).click()
+  await expect(page).toHaveURL(/\/study\?.*autoStartTest=1/)
+  await expect(page.getByText('不能返回当天学习列表')).toBeVisible()
+  await page.getByRole('button', { name: '确认开始', exact: true }).click()
+  await expect(page.getByText('新学 · 回忆式')).toBeVisible()
+})
+
 test('TC-STUDY-RCL-002: 忘记重排到队尾', async ({ page }) => {
   await addWords(page, [['cat', '猫'], ['dog', '狗']])
   await page.goto(url('/study'))
