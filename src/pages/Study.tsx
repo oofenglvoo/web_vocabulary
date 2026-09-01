@@ -39,6 +39,7 @@ export function Study() {
   const planId = searchParams.get('plan')
   const planIdNum = planId ? Number(planId) : null
   const isReviewMode = searchParams.get('mode') === 'review'
+  const autoStartTest = searchParams.get('autoStartTest') === '1'
   // 加学模式:今日配额学满后的独立一轮,不计入今日配额
   const isExtra = searchParams.get('extra') === '1'
 
@@ -128,7 +129,9 @@ export function Study() {
     setStartTotal(studyItems.length)
     setIndex(0)
     // 复习不需要预学习列表，进入页面后直接开始复习测试。
+    // 复习直接进入测试；从预习详情进入时先回到预习页并显示统一确认框。
     setStudyStarted(isReviewMode)
+    setConfirmStartTest(autoStartTest)
     setLoading(false)
   }
 
@@ -463,7 +466,7 @@ export function Study() {
             {queue.map((item) => (
               <Link
                 key={item.id}
-                to={`/word/${item.id}?studyPreview=1&studyIds=${queue.map((entry) => entry.id).join(',')}`}
+                to={`/word/${item.id}?studyPreview=1&studyIds=${queue.map((entry) => entry.id).join(',')}&studyPath=${encodeURIComponent(`/study?${searchParams.toString()}`)}`}
                 aria-label={item.title}
                 className="flex items-center justify-between gap-3 rounded-xl bg-gray-50 dark:bg-slate-700/60 px-4 py-3 hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors"
               >
@@ -610,6 +613,7 @@ export function Study() {
           </motion.div>
         </div>
       )}
+
     </div>
   )
 }

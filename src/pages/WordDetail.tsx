@@ -86,16 +86,24 @@ export function WordDetail() {
   const currentIdx = list.findIndex((w) => w.id === Number(id))
   const prevWord = currentIdx > 0 ? list[currentIdx - 1] : null
   const nextWord = currentIdx >= 0 && currentIdx < list.length - 1 ? list[currentIdx + 1] : null
+  const isStudyPreview = searchParams.get('studyPreview') === '1' && studyIds.length > 0
+  const studyPath = searchParams.get('studyPath')
 
   const buildHref = (wordId: number) => {
     const params = new URLSearchParams()
     if (searchParams.get('studyPreview') === '1') {
       params.set('studyPreview', '1')
       params.set('studyIds', studyIds.join(','))
+      if (studyPath) params.set('studyPath', studyPath)
     }
     params.set('scope', scope)
     if (scope === 'category' && scopeCategory) params.set('category', scopeCategory)
     return `/word/${wordId}?${params.toString()}`
+  }
+
+  const startStudyTest = () => {
+    if (!studyPath) return
+    navigate(`${studyPath}${studyPath.includes('?') ? '&' : '?'}autoStartTest=1`)
   }
 
   // 键盘 ←/→ 切换上下一个
@@ -298,6 +306,12 @@ export function WordDetail() {
           ? `${currentIdx + 1} / ${list.length} · ${scopeLabel}`
           : ''}
       </div>
+
+      {isStudyPreview && !nextWord && studyPath && (
+        <button onClick={startStudyTest} className="btn-primary w-full mb-4">
+          开始测试
+        </button>
+      )}
 
       <div className="space-y-3">
         {isJa ? (
