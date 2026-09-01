@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import {
   getLangPlan,
+  getLangWordsByIds,
   getLangTodayNewWords,
   getLangTodayReviewWords,
   getLangExtraNewWords,
@@ -29,7 +30,15 @@ import { QuickMode, QuickRating } from '../components/study/QuickMode'
 import { StudyTypeSettings } from '../components/StudyTypeSettings'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
-import { markStudyStartedToday } from '../utils/studySession'
+import {
+  clearStudyProgress,
+  clearQuickProgress,
+  getStudyProgress,
+  getQuickProgress,
+  markStudyStartedToday,
+  saveQuickProgress,
+  saveStudyProgress,
+} from '../utils/studySession'
 
 export function Study() {
   const navigate = useNavigate()
@@ -55,6 +64,7 @@ export function Study() {
   const [learnStats, setLearnStats] = useState({ newDone: 0, reviewDone: 0 })
   const [confirmMaster, setConfirmMaster] = useState(false)
   const [done, setDone] = useState(false)
+  const [quickRatings, setQuickRatings] = useState<Record<number, QuickRating>>({})
   // Moji 流程：先看当天词表，点击开始测试后才进入题型测验
   const [studyStarted, setStudyStarted] = useState(false)
   const [confirmStartTest, setConfirmStartTest] = useState(false)
@@ -89,7 +99,7 @@ export function Study() {
     unlockTts()
     // isReviewMode 也作为依赖：仅改 mode 参数(plan 不变)时也要重新加载队列
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [planIdNum, isReviewMode, lang])
+  }, [planIdNum, isReviewMode, isExtra, lang])
 
   async function startStudy() {
     setLoading(true)
@@ -97,6 +107,7 @@ export function Study() {
     setDone(false)
     setStudyStarted(false)
     setConfirmStartTest(false)
+    setQuickRatings({})
     requeuedRef.current = new Set()
     allTranslationsRef.current = null
     let items: { word: LangWord; isReview: boolean }[] = []
@@ -123,13 +134,39 @@ export function Study() {
       const words = await getRandomLangWords(20)
       items = words.map((w) => ({ word: w, isReview: false }))
     }
-    const studyItems: StudyItem[] = items.map(({ word, isReview }) =>
+    let studyItems: StudyItem[] = items.map(({ word, isReview }) =>
       toLangStudyItem(word, isReview)
     )
+    const savedProgress = getStudyProgress(lang, planIdNum, isReviewMode, isExtra, studyType)
+    if (savedProgress) {
+      const savedWords = await getLangWordsByIds(savedProgress.queue.map((item) => item.id))
+      const wordMap = new Map(savedWords.map((word) => [word.id!, word]))
+      studyItems = savedProgress.queue
+        .map(({ id, isReview }) => {
+          const word = wordMap.get(id)
+          return word ? toLangStudyItem(word, isReview) : null
+        })
+        .filter((item): item is StudyItem => !!item)
+      setIndex(Math.min(savedProgress.index, studyItems.length))
+    } else {
+      setIndex(0)
+    }
+    if (studyType === 'quick') {
+      const savedRatings = getQuickProgress(lang, planIdNum, isExtra)
+      setQuickRatings(
+        Object.fromEntries(
+          Object.entries(savedRatings)
+            .map(([savedId, rating]) => {
+              const item = studyItems.find((candidate) => candidate.id === Number(savedId))
+              return item ? [item.id, { item, ...rating }] : null
+            })
+            .filter((entry): entry is [number, QuickRating] => entry !== null)
+        )
+      )
+    }
     setQueue(studyItems)
     setInitialItems(studyItems)
     setStartTotal(studyItems.length)
-    setIndex(0)
     // 复习不需要预学习列表，进入页面后直接开始复习测试。
     // 复习直接进入测试；从预习详情进入时先回到预习页并显示统一确认框。
     setStudyStarted(isReviewMode || resumeTest)
@@ -170,7 +207,9 @@ export function Study() {
         setQueue((q) => {
           const idx = q.findIndex((x) => x.id === item.id)
           if (idx === -1) return q
-          return [...q.slice(0, idx), ...q.slice(idx + 1), item]
+          const next = [...q.slice(0, idx), ...q.slice(idx + 1), item]
+          saveCurrentStudyProgress(next, index)
+          return next
         })
         return // 不计数、不推进（当前词重排到队尾，下一个词自动顶到当前位置）
       }
@@ -193,7 +232,23 @@ export function Study() {
         }
       }
       // 认识 → 移除当前词；index 不推进（下一个词顶到当前位置，避免跳过）
-      setQueue((q) => q.filter((x) => x.id !== item.id))
+      setQueue((q) => {
+        const next = q.filter((x) => x.id !== item.id)
+        saveCurrentStudyProgress(next, index)
+        return next
+      })
+      return
+    }
+    // 复习中的模糊答案保留在队尾，且只重排一次。
+    if (item.isReview && quality < 3 && !requeuedRef.current.has(item.id)) {
+      requeuedRef.current.add(item.id)
+      setQueue((q) => {
+        const idx = q.findIndex((x) => x.id === item.id)
+        if (idx === -1) return q
+        const next = [...q.slice(0, idx), ...q.slice(idx + 1), item]
+        saveCurrentStudyProgress(next, index)
+        return next
+      })
       return
     }
     if (planIdNum) {
@@ -214,20 +269,21 @@ export function Study() {
       }
     }
     // 复习答错 → 重排到队尾(每轮一次)
-    if (item.isReview && quality < 3 && !requeuedRef.current.has(item.id)) {
-      requeuedRef.current.add(item.id)
-      setQueue((q) => {
-        const idx = q.findIndex((x) => x.id === item.id)
-        if (idx === -1) return q
-        return [...q.slice(0, idx), ...q.slice(idx + 1), item]
-      })
-      return
-    }
     advance()
+    saveCurrentStudyProgress(queue, index + 1)
   }
 
   function advance() {
     setIndex((i) => i + 1)
+  }
+
+  function saveCurrentStudyProgress(items: StudyItem[], currentIndex: number) {
+    if (studyType === 'quick' || done || items.length === 0) return
+    saveStudyProgress(lang, planIdNum, isReviewMode, isExtra, {
+      studyType,
+      queue: items.map(({ id, isReview }) => ({ id, isReview })),
+      index: currentIndex,
+    })
   }
 
   // 快速自测批量提交
@@ -262,6 +318,8 @@ export function Study() {
       }
     }
     setDone(true)
+    clearQuickProgress(lang, planIdNum, isExtra)
+    clearStudyProgress(lang, planIdNum, isReviewMode, isExtra)
     confetti({
       particleCount: 100,
       spread: 70,
@@ -292,6 +350,7 @@ export function Study() {
       return
     }
     setQueue((q) => q.filter((x) => x.id !== item.id))
+    saveCurrentStudyProgress(queue.filter((x) => x.id !== item.id), index)
     advance()
   }
 
@@ -303,6 +362,9 @@ export function Study() {
     setStartTotal(initialItems.length)
     setIndex(0)
     setDone(false)
+    setQuickRatings({})
+    clearQuickProgress(lang, planIdNum, isExtra)
+    clearStudyProgress(lang, planIdNum, isReviewMode, isExtra)
     setStudyStarted(true)
     requeuedRef.current = new Set()
   }
@@ -330,6 +392,7 @@ export function Study() {
       : false
     if (completed && !done) {
       setDone(true)
+      clearStudyProgress(lang, planIdNum, isReviewMode, isExtra)
       confetti({
         particleCount: 100,
         spread: 70,
@@ -590,6 +653,11 @@ export function Study() {
             key={`quick-${studyType}-${queue.length}`}
             items={queue}
             onRateAll={handleQuickSubmit}
+            initialRatings={quickRatings}
+            onRatingChange={({ item, quality, mastered }) => {
+              saveQuickProgress(lang, planIdNum, isExtra, item.id, { quality, mastered })
+              setQuickRatings((ratings) => ({ ...ratings, [item.id]: { item, quality, mastered } }))
+            }}
             onSpeak={speak}
             entityType={entityType}
           />

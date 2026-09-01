@@ -143,6 +143,11 @@ export function useLangWordById(id: number): LangWord | undefined {
   return lang === 'ja' ? jaWord : en
 }
 
+export async function getLangWordsByIds(ids: number[]): Promise<LangWord[]> {
+  if (ja()) return (await db.japaneseWords.bulkGet(ids)).filter((word): word is JapaneseWord => !!word)
+  return (await db.words.bulkGet(ids)).filter((word): word is Word => !!word)
+}
+
 export function useLangWordsByCategory(category: string): LangWord[] {
   const lang = useLang()
   const en = useWordsByCategory(category)
