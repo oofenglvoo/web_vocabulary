@@ -120,7 +120,7 @@ export function useSentencePlanProgress(plan: StudyPlan | undefined): SentencePl
     Math.max(0, plan.newPerDay - todayNewDone),
     remainingNew
   )
-  const todayReviewRemaining = Math.max(0, dueReview - todayReviewDone)
+  const todayReviewRemaining = dueReview
 
   return {
     totalSentences: sentences.length,
@@ -131,7 +131,7 @@ export function useSentencePlanProgress(plan: StudyPlan | undefined): SentencePl
     todayNewDone,
     todayReviewDone,
     todayNewTarget: plan.newPerDay,
-    todayReviewTarget: plan.reviewPerDay,
+    todayReviewTarget: todayReviewDone + dueReview,
     todayNewRemaining,
     todayReviewRemaining,
     overallPercent,
@@ -162,7 +162,7 @@ export async function createSentencePlan(input: {
   sourceKind: 'category' | 'favorites' | 'all'
   sourceCategory?: string
   newPerDay: number
-  reviewPerDay: number
+  reviewPerDay?: number
 }): Promise<number> {
   const wordIds = await buildSentenceIdsFromSource(
     input.sourceKind,
@@ -186,7 +186,7 @@ export async function createSentencePlan(input: {
         sourceKind: input.sourceKind,
         sourceCategory: input.sourceCategory ?? '',
         newPerDay: input.newPerDay,
-        reviewPerDay: input.reviewPerDay,
+        reviewPerDay: input.reviewPerDay ?? 0,
         wordIds,
         startedIds: [],
         isActive: 1,
@@ -312,15 +312,10 @@ export async function getTodayReviewSentences(plan: StudyPlan): Promise<Sentence
   const startedSet = new Set(plan.startedIds)
   const candidates = plan.wordIds.filter((id) => startedSet.has(id))
   const sentences = await db.sentences.bulkGet(candidates)
-  const today = todayStr()
-  const isToday = plan.todayDate === today
-  const todayReviewDone = isToday ? plan.todayReviewDone : 0
-  const remaining = Math.max(0, plan.reviewPerDay - todayReviewDone)
   return sentences
     .filter((s): s is Sentence => !!s)
     .filter((s) => s.isLearned === 0 && s.nextReviewAt < reviewCutoff)
     .sort((a, b) => a.nextReviewAt - b.nextReviewAt)
-    .slice(0, remaining)
 }
 
 // 事务内读取-计算-写入计划更新，避免并发互相覆盖

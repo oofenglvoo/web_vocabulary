@@ -44,6 +44,7 @@ export function Study() {
 
   const [plan, setPlan] = useState<LangPlan | null>(null)
   const [queue, setQueue] = useState<StudyItem[]>([])
+  const [initialItems, setInitialItems] = useState<StudyItem[]>([])
   const [index, setIndex] = useState(0)
   // 本轮初始词数(回忆式进度用)
   const [startTotal, setStartTotal] = useState(0)
@@ -123,8 +124,11 @@ export function Study() {
       toLangStudyItem(word, isReview)
     )
     setQueue(studyItems)
+    setInitialItems(studyItems)
     setStartTotal(studyItems.length)
     setIndex(0)
+    // 复习不需要预学习列表，进入页面后直接开始复习测试。
+    setStudyStarted(isReviewMode)
     setLoading(false)
   }
 
@@ -289,6 +293,15 @@ export function Study() {
   const speak = (item: StudyItem) =>
     isJa ? speakWord(item.title, { lang: 'ja' }) : speakWord(item.title)
 
+  function startTestFromCompletion() {
+    setQueue(initialItems)
+    setStartTotal(initialItems.length)
+    setIndex(0)
+    setDone(false)
+    setStudyStarted(true)
+    requeuedRef.current = new Set()
+  }
+
   // 到达末尾 → 完成页(触发庆祝)
   // 回忆式：队列清空(所有词都"认识")即完成；其他模式：index 走完
   useEffect(() => {
@@ -363,6 +376,11 @@ export function Study() {
               </Link>
             )}
           </div>
+          {!isReviewMode && initialItems.length > 0 && (
+            <button onClick={startTestFromCompletion} className="btn-primary w-full mt-3">
+              开始测试
+            </button>
+          )}
         </motion.div>
       </div>
     )
@@ -398,8 +416,14 @@ export function Study() {
           )}
 
           <button
+            onClick={startTestFromCompletion}
+            className="btn-primary w-full mb-2"
+          >
+            开始测试
+          </button>
+          <button
             onClick={() => navigate(planIdNum ? '/plan' : '/')}
-            className="btn-primary w-full"
+            className="btn-secondary w-full"
           >
             {planIdNum ? '返回计划' : '返回首页'}
           </button>

@@ -327,9 +327,9 @@ function ActivePlanCard({
 }) {
   // 今日新词展示 = 配额内完成 + 加学完成(如 20/10)；进度条按配额封顶 100%
   const newDone = progress.todayNewDisplay
-  const reviewDone = Math.min(progress.todayReviewDone, progress.dueReview)
+  const reviewDone = Math.min(progress.todayReviewDone, progress.todayReviewTarget)
   const newPct = progress.todayNewTarget > 0 ? Math.min(100, (newDone / progress.todayNewTarget) * 100) : 0
-  const reviewPct = progress.dueReview > 0 ? (reviewDone / progress.dueReview) * 100 : 0
+  const reviewPct = progress.todayReviewTarget > 0 ? (reviewDone / progress.todayReviewTarget) * 100 : 0
 
   const sourceLabel = sourceLabelOf(plan, isJa)
 
@@ -408,7 +408,7 @@ function ActivePlanCard({
         <TodayCard
           title="今日复习"
           done={reviewDone}
-          target={progress.dueReview}
+          target={progress.todayReviewTarget}
           pct={reviewPct}
           color="accent"
         />
@@ -565,7 +565,7 @@ function PlanRow({
           )}
         </div>
         <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
-          {sourceLabel} · 每日 {plan.newPerDay} 新 / {plan.reviewPerDay} 复习
+          {sourceLabel} · 每日 {plan.newPerDay} 新词
         </div>
       </div>
       <div className="flex items-center gap-1">
@@ -655,7 +655,6 @@ function EditPlanModal({
   const isJa = useLang() === 'ja'
   const [name, setName] = useState(plan.name)
   const [newPerDay, setNewPerDay] = useState(plan.newPerDay)
-  const [reviewPerDay, setReviewPerDay] = useState(plan.reviewPerDay)
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
 
@@ -665,13 +664,13 @@ function EditPlanModal({
       setError('请填写计划名称')
       return
     }
-    if (newPerDay < 1 || reviewPerDay < 0) {
+    if (newPerDay < 1) {
       setError('每日新词数至少为 1')
       return
     }
     setSaving(true)
     try {
-      const changes = { name: trimmed, newPerDay, reviewPerDay }
+      const changes = { name: trimmed, newPerDay }
       if (isJa) await updateLangPlanSettings(plan.id!, changes)
       else if ((plan.entityType ?? 'word') === 'sentence') await updateSentencePlanSettings(plan.id!, changes)
       else await updatePlanSettings(plan.id!, changes)
@@ -703,7 +702,6 @@ function EditPlanModal({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <NumberStepper label="每日新词" value={newPerDay} onChange={setNewPerDay} min={1} max={50} icon={Sparkles} />
-            <NumberStepper label="每日复习" value={reviewPerDay} onChange={setReviewPerDay} min={0} max={100} icon={TrendingUp} />
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400">修改配额只影响之后的每日任务，不会重置已学习进度。</p>
         </div>
@@ -734,7 +732,6 @@ function CreatePlanModal({
   const [sourceKind, setSourceKind] = useState<'category' | 'favorites' | 'all'>('category')
   const [sourceCategory, setSourceCategory] = useState(categories[0]?.name ?? (isJa ? '日语' : '默认'))
   const [newPerDay, setNewPerDay] = useState(10)
-  const [reviewPerDay, setReviewPerDay] = useState(20)
   const [error, setError] = useState('')
   const [creating, setCreating] = useState(false)
 
@@ -762,7 +759,7 @@ function CreatePlanModal({
       setError('请填写计划名称')
       return
     }
-    if (newPerDay < 1 || reviewPerDay < 0) {
+    if (newPerDay < 1) {
       setError('每日新词数至少为 1')
       return
     }
@@ -773,7 +770,6 @@ function CreatePlanModal({
         sourceKind,
         sourceCategory: sourceKind === 'category' ? sourceCategory : '',
         newPerDay,
-        reviewPerDay,
       })
       toast('success', `计划「${n}」已创建`)
       onCreated()
@@ -875,14 +871,6 @@ function CreatePlanModal({
               min={1}
               max={50}
               icon={Sparkles}
-            />
-            <NumberStepper
-              label="每日复习"
-              value={reviewPerDay}
-              onChange={setReviewPerDay}
-              min={0}
-              max={100}
-              icon={TrendingUp}
             />
           </div>
 
@@ -986,9 +974,9 @@ function ActiveSentencePlanCard({
 }) {
   // 今日新词展示 = 配额内完成 + 加学完成(如 20/10)；进度条按配额封顶 100%
   const newDone = progress.todayNewDisplay
-  const reviewDone = Math.min(progress.todayReviewDone, progress.dueReview)
+  const reviewDone = Math.min(progress.todayReviewDone, progress.todayReviewTarget)
   const newPct = progress.todayNewTarget > 0 ? Math.min(100, (newDone / progress.todayNewTarget) * 100) : 0
-  const reviewPct = progress.dueReview > 0 ? (reviewDone / progress.dueReview) * 100 : 0
+  const reviewPct = progress.todayReviewTarget > 0 ? (reviewDone / progress.todayReviewTarget) * 100 : 0
 
   const sourceLabel =
     plan.sourceKind === 'category'
@@ -1066,7 +1054,7 @@ function ActiveSentencePlanCard({
         <TodayCard
           title="今日复习"
           done={reviewDone}
-          target={progress.dueReview}
+          target={progress.todayReviewTarget}
           pct={reviewPct}
           color="accent"
         />
@@ -1145,7 +1133,6 @@ function CreateSentencePlanModal({
   const [sourceKind, setSourceKind] = useState<'category' | 'favorites' | 'all'>('all')
   const [sourceCategory, setSourceCategory] = useState(categories[0]?.name ?? '默认')
   const [newPerDay, setNewPerDay] = useState(5)
-  const [reviewPerDay, setReviewPerDay] = useState(10)
   const [error, setError] = useState('')
   const [creating, setCreating] = useState(false)
 
@@ -1181,7 +1168,6 @@ function CreateSentencePlanModal({
         sourceKind,
         sourceCategory: sourceKind === 'category' ? sourceCategory : '',
         newPerDay,
-        reviewPerDay,
       })
       toast('success', `短句计划「${n}」已创建`)
       onCreated()
@@ -1280,14 +1266,6 @@ function CreateSentencePlanModal({
               min={1}
               max={50}
               icon={Sparkles}
-            />
-            <NumberStepper
-              label="每日复习"
-              value={reviewPerDay}
-              onChange={setReviewPerDay}
-              min={0}
-              max={100}
-              icon={TrendingUp}
             />
           </div>
 

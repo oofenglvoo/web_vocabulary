@@ -142,6 +142,19 @@ test('TC-STUDY-RCL-007: 全部学完进空队列页', async ({ page }) => {
   await expect(page.getByText('今日学习已完成!')).toBeVisible()
 })
 
+test('TC-STUDY-TEST-001: 学习完成后可开始测试', async ({ page }) => {
+  await addWords(page, [['test-after-learn', '学后测试']])
+  await page.goto(url('/study'))
+  await waitCard(page)
+
+  await page.getByRole('button', { name: '认识', exact: true }).click()
+  await expect(page.getByText('今日学习已完成!')).toBeVisible()
+  await page.getByRole('button', { name: '开始测试', exact: true }).click()
+
+  await expect(page.locator('[data-study-quiz]')).toBeVisible()
+  await expect(page.getByText('test-after-learn', { exact: true })).toBeVisible()
+})
+
 // ===== 快速自测 =====
 
 async function switchToQuick(page: import('@playwright/test').Page) {

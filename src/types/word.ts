@@ -187,7 +187,7 @@ export interface StudyPlan {
   sourceCategory: string // 仅 sourceKind === 'category' 时有意义
   // 每日学习目标
   newPerDay: number // 每日新学数量
-  reviewPerDay: number // 每日复习数量上限
+  reviewPerDay?: number // 旧版本字段，复习数量现由到期词动态决定
   // 计划纳入的 ID 池(创建计划时根据 source 快照确定)
   // entityType='word' 时为 wordIds, 'sentence' 时为 sentenceIds
   wordIds: number[]
@@ -211,7 +211,7 @@ export interface JapaneseStudyPlan {
   sourceKind: 'category' | 'favorites' | 'all'
   sourceCategory: string
   newPerDay: number
-  reviewPerDay: number
+  reviewPerDay?: number
   wordIds: number[]
   startedIds: number[]
   isActive: Flag
