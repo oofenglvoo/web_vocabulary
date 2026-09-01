@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import { useLang, useSetLang, Lang } from '../context/Language'
 import { useLangStats, useLangFavoriteWords, useLangActivePlan, useLangPlanProgress } from '../hooks/languageAware'
-import { hasStartedStudyToday } from '../utils/studySession'
+import { hasQuickProgressToday, hasStartedStudyToday, hasStudyProgressToday } from '../utils/studySession'
 
 export function Home() {
   const navigate = useNavigate()
@@ -40,6 +40,10 @@ export function Home() {
   const newQuotaDone = todayNewRemaining === 0 && planProgress.remainingNew > 0
   const resumeStudy = hasStartedStudyToday(lang, activePlan?.id ?? null)
   const resumeFreeStudy = hasStartedStudyToday(lang, null)
+  const hasInterruptedStudy = hasStudyProgressToday(lang, activePlan?.id ?? null, false, false)
+  const hasInterruptedFreeStudy = hasStudyProgressToday(lang, null, false, false)
+  const hasQuickStudy = hasQuickProgressToday(lang, activePlan?.id ?? null, false)
+  const hasQuickFreeStudy = hasQuickProgressToday(lang, null, false)
   const [confirmExtra, setConfirmExtra] = useState(false)
 
   return (
@@ -172,10 +176,10 @@ export function Home() {
 
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => (newQuotaDone ? setConfirmExtra(true) : resumeStudy ? navigate(`/study?plan=${activePlan.id}&mode=learn&resumeTest=1`) : navigate(`/study?plan=${activePlan.id}&mode=learn`))}
+                onClick={() => (newQuotaDone && !hasInterruptedStudy && !hasQuickStudy ? setConfirmExtra(true) : resumeStudy || hasInterruptedStudy || hasQuickStudy ? navigate(`/study?plan=${activePlan.id}&mode=learn&resumeTest=1`) : navigate(`/study?plan=${activePlan.id}&mode=learn`))}
                 className="btn-primary py-2.5 text-sm gap-1.5"
               >
-                <Play size={14} fill="currentColor" /> {todayNewRemaining > 0 ? '开始学习' : '额外学习'}
+                <Play size={14} fill="currentColor" /> {todayNewRemaining > 0 || hasInterruptedStudy || hasQuickStudy ? '继续学习' : '额外学习'}
               </button>
               <button
                 onClick={() => navigate(`/study?plan=${activePlan.id}&mode=review`)}
@@ -274,7 +278,7 @@ export function Home() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => navigate(`/study?mode=learn${resumeFreeStudy ? '&resumeTest=1' : ''}`)}
+                onClick={() => navigate(`/study?mode=learn${resumeFreeStudy || hasInterruptedFreeStudy || hasQuickFreeStudy ? '&resumeTest=1' : ''}`)}
                 className="btn-primary py-2.5 text-sm gap-1.5"
               >
                 <Play size={14} fill="currentColor" /> 学习

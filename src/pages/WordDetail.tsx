@@ -290,7 +290,7 @@ export function WordDetail() {
 
       <div className="card p-6 text-center mb-4">
         <div className="flex items-center justify-center gap-3">
-          <h1 className="text-3xl font-bold text-gradient">{word.word}</h1>
+          <h1 className="text-3xl font-bold leading-[1.3] py-1 text-gradient">{word.word}</h1>
           <button onClick={speak} className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors" aria-label="发音">
             <Volume2 size={24} />
           </button>

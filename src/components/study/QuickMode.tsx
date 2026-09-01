@@ -12,13 +12,15 @@ export interface QuickRating {
 interface QuickModeProps {
   items: StudyItem[]
   onRateAll: (results: QuickRating[]) => Promise<boolean> | boolean | void
+  initialRatings?: Record<number, QuickRating>
+  onRatingChange?: (rating: QuickRating) => void
   onSpeak: (item: StudyItem) => void
   entityType?: 'word' | 'sentence' | 'japaneseWord'
 }
 
 /** 快速自测：列表视图，所有词同时列出，点击展开释义 + 忘记/记得/掌握三选项，全部评完后统一提交 */
-export function QuickMode({ items, onRateAll, onSpeak, entityType = 'word' }: QuickModeProps) {
-  const [ratings, setRatings] = useState<Record<number, QuickRating>>({})
+export function QuickMode({ items, onRateAll, initialRatings = {}, onRatingChange, onSpeak, entityType = 'word' }: QuickModeProps) {
+  const [ratings, setRatings] = useState<Record<number, QuickRating>>(initialRatings)
   const [expanded, setExpanded] = useState<Set<number>>(new Set())
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -30,7 +32,9 @@ export function QuickMode({ items, onRateAll, onSpeak, entityType = 'word' }: Qu
   const ratedCount = Object.keys(ratings).length
 
   const setRating = (item: StudyItem, quality: number, mastered: boolean) => {
-    setRatings((prev) => ({ ...prev, [item.id]: { item, quality, mastered } }))
+    const rating = { item, quality, mastered }
+    setRatings((prev) => ({ ...prev, [item.id]: rating }))
+    onRatingChange?.(rating)
     // 三选项（忘记/记得/掌握）选完都自动收起当前词，并展开下一个未评词
     setExpanded((prevExpanded) => {
       const next = new Set(prevExpanded)
