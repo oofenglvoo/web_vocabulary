@@ -19,6 +19,7 @@ import {
 } from 'lucide-react'
 import { useLang, useSetLang, Lang } from '../context/Language'
 import { useLangStats, useLangFavoriteWords, useLangActivePlan, useLangPlanProgress } from '../hooks/languageAware'
+import { hasStartedStudyToday } from '../utils/studySession'
 
 export function Home() {
   const navigate = useNavigate()
@@ -37,6 +38,8 @@ export function Home() {
   const estimatedMinutes = taskCount > 0 ? Math.max(1, Math.ceil(taskCount * 0.5)) : 0
   // 今日新词是否学满(配额内)且还有未掌握可学 → 点"学习"弹确认
   const newQuotaDone = todayNewRemaining === 0 && planProgress.remainingNew > 0
+  const resumeStudy = hasStartedStudyToday(lang, activePlan?.id ?? null)
+  const resumeFreeStudy = hasStartedStudyToday(lang, null)
   const [confirmExtra, setConfirmExtra] = useState(false)
 
   return (
@@ -169,7 +172,7 @@ export function Home() {
 
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => (newQuotaDone ? setConfirmExtra(true) : navigate(`/study?plan=${activePlan.id}&mode=learn`))}
+                onClick={() => (newQuotaDone ? setConfirmExtra(true) : resumeStudy ? navigate(`/study?plan=${activePlan.id}&mode=learn&resumeTest=1`) : navigate(`/study?plan=${activePlan.id}&mode=learn`))}
                 className="btn-primary py-2.5 text-sm gap-1.5"
               >
                 <Play size={14} fill="currentColor" /> {todayNewRemaining > 0 ? '开始学习' : '额外学习'}
@@ -271,7 +274,7 @@ export function Home() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => navigate('/study?mode=learn')}
+                onClick={() => navigate(`/study?mode=learn${resumeFreeStudy ? '&resumeTest=1' : ''}`)}
                 className="btn-primary py-2.5 text-sm gap-1.5"
               >
                 <Play size={14} fill="currentColor" /> 学习
