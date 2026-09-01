@@ -173,6 +173,38 @@ export function SentenceDetail() {
         </div>
       </div>
 
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <button
+          onClick={() => prevItem && navigate(buildHref(prevItem.id!))}
+          disabled={!prevItem}
+          className="flex-1 flex items-center justify-start gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+        >
+          <ChevronLeft size={18} className="flex-shrink-0" />
+          <div className="text-left min-w-0">
+            <div className="text-xs text-gray-400">上一个</div>
+            <div className="text-sm font-medium truncate dark:text-gray-200">
+              {prevItem?.sentence ?? '已是第一个'}
+            </div>
+          </div>
+        </button>
+        <button
+          onClick={() => nextItem && navigate(buildHref(nextItem.id!))}
+          disabled={!nextItem}
+          className="flex-1 flex items-center justify-end gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+        >
+          <div className="text-right min-w-0">
+            <div className="text-xs text-gray-400">下一个</div>
+            <div className="text-sm font-medium truncate dark:text-gray-200">
+              {nextItem?.sentence ?? '已是最后一个'}
+            </div>
+          </div>
+          <ChevronRight size={18} className="flex-shrink-0" />
+        </button>
+      </div>
+      <div className="text-center text-xs text-gray-400 -mt-2 mb-3">
+        {currentIdx >= 0 && list.length > 0 ? `${currentIdx + 1} / ${list.length} · ${scopeLabel}` : ''}
+      </div>
+
       <div className="card p-6 text-center mb-4">
         <div className="flex items-center justify-center gap-3">
           <h1 className="text-2xl font-bold text-gradient leading-snug">{sentence.sentence}</h1>
@@ -206,38 +238,6 @@ export function SentenceDetail() {
             </span>
           ) : null}
         </div>
-      </div>
-
-      <div className="flex items-center justify-between gap-2 mb-4">
-        <button
-          onClick={() => prevItem && navigate(buildHref(prevItem.id!))}
-          disabled={!prevItem}
-          className="flex-1 flex items-center justify-start gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
-        >
-          <ChevronLeft size={18} className="flex-shrink-0" />
-          <div className="text-left min-w-0">
-            <div className="text-xs text-gray-400">上一个</div>
-            <div className="text-sm font-medium truncate dark:text-gray-200">
-              {prevItem?.sentence ?? '已是第一个'}
-            </div>
-          </div>
-        </button>
-        <button
-          onClick={() => nextItem && navigate(buildHref(nextItem.id!))}
-          disabled={!nextItem}
-          className="flex-1 flex items-center justify-end gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
-        >
-          <div className="text-right min-w-0">
-            <div className="text-xs text-gray-400">下一个</div>
-            <div className="text-sm font-medium truncate dark:text-gray-200">
-              {nextItem?.sentence ?? '已是最后一个'}
-            </div>
-          </div>
-          <ChevronRight size={18} className="flex-shrink-0" />
-        </button>
-      </div>
-      <div className="text-center text-xs text-gray-400 -mt-2 mb-3">
-        {currentIdx >= 0 && list.length > 0 ? `${currentIdx + 1} / ${list.length} · ${scopeLabel}` : ''}
       </div>
 
       <div className="space-y-3">
