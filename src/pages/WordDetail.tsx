@@ -20,6 +20,7 @@ import {
   useLangWordsByCategory,
   useLangCategories,
   deleteLangWord,
+  markLangWordLearned,
   updateLangWord,
 } from '../hooks/languageAware'
 import { FavoriteButton } from '../components/FavoriteButton'
@@ -54,6 +55,7 @@ export function WordDetail() {
   // 日语：整卡编辑模式（词干/假名/元信息/释义/例句/笔记）
   const [editingJa, setEditingJa] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [markingLearned, setMarkingLearned] = useState(false)
 
   // 切换单词时重置编辑状态，避免残留上一个单词的释义编辑面板
   useEffect(() => {
@@ -157,6 +159,17 @@ export function WordDetail() {
     setShowMove(false)
   }
 
+  const handleMarkLearned = async () => {
+    if (word.isLearned || markingLearned) return
+    setMarkingLearned(true)
+    try {
+      await markLangWordLearned(word.id!)
+      toast('success', '已加入已掌握')
+    } finally {
+      setMarkingLearned(false)
+    }
+  }
+
   const startEditDefs = () => {
     const defs = getDefinitions(word as Word)
     setEditDefinitions(defs.length > 0 ? defs.map((d) => ({ ...d })) : [{ pos: '', def: '', trans: '' }])
@@ -209,6 +222,15 @@ export function WordDetail() {
       <div className="flex items-center justify-between mb-4">
         <BackButton />
         <div className="flex items-center gap-2">
+          {!word.isLearned && (
+            <button
+              onClick={handleMarkLearned}
+              disabled={markingLearned}
+              className="btn-success px-3 py-1.5 text-sm disabled:opacity-50"
+            >
+              {markingLearned ? '处理中...' : '掌握'}
+            </button>
+          )}
           <FavoriteButton
             entityType={isJa ? 'japaneseWord' : 'word'}
             entityId={word.id!}
@@ -229,6 +251,41 @@ export function WordDetail() {
             <Trash2 size={20} className="text-gray-400 hover:text-red-500" />
           </button>
         </div>
+      </div>
+
+      {/* 上一个 / 下一个 */}
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <button
+          onClick={() => prevWord && navigate(buildHref(prevWord.id!), { replace: true })}
+          disabled={!prevWord}
+          className="flex-1 flex items-center justify-start gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+        >
+          <ChevronLeft size={18} className="flex-shrink-0" />
+          <div className="text-left min-w-0">
+            <div className="text-xs text-gray-400">上一个</div>
+            <div className="text-sm font-medium truncate dark:text-gray-200">
+              {prevWord?.word ?? '已是第一个'}
+            </div>
+          </div>
+        </button>
+        <button
+          onClick={() => nextWord && navigate(buildHref(nextWord.id!), { replace: true })}
+          disabled={!nextWord}
+          className="flex-1 flex items-center justify-end gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+        >
+          <div className="text-right min-w-0">
+            <div className="text-xs text-gray-400">下一个</div>
+            <div className="text-sm font-medium truncate dark:text-gray-200">
+              {nextWord?.word ?? '已是最后一个'}
+            </div>
+          </div>
+          <ChevronRight size={18} className="flex-shrink-0" />
+        </button>
+      </div>
+      <div className="text-center text-xs text-gray-400 -mt-2 mb-3">
+        {currentIdx >= 0 && list.length > 0
+          ? `${currentIdx + 1} / ${list.length} · ${scopeLabel}`
+          : ''}
       </div>
 
       <div className="card p-6 text-center mb-4">
@@ -270,41 +327,6 @@ export function WordDetail() {
             </span>
           ) : null}
         </div>
-      </div>
-
-      {/* 上一个 / 下一个 */}
-      <div className="flex items-center justify-between gap-2 mb-4">
-        <button
-          onClick={() => prevWord && navigate(buildHref(prevWord.id!), { replace: true })}
-          disabled={!prevWord}
-          className="flex-1 flex items-center justify-start gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
-        >
-          <ChevronLeft size={18} className="flex-shrink-0" />
-          <div className="text-left min-w-0">
-            <div className="text-xs text-gray-400">上一个</div>
-            <div className="text-sm font-medium truncate dark:text-gray-200">
-              {prevWord?.word ?? '已是第一个'}
-            </div>
-          </div>
-        </button>
-        <button
-          onClick={() => nextWord && navigate(buildHref(nextWord.id!), { replace: true })}
-          disabled={!nextWord}
-          className="flex-1 flex items-center justify-end gap-2 px-3 py-2 rounded-xl border bg-white dark:bg-slate-800 dark:border-slate-700 disabled:opacity-40 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
-        >
-          <div className="text-right min-w-0">
-            <div className="text-xs text-gray-400">下一个</div>
-            <div className="text-sm font-medium truncate dark:text-gray-200">
-              {nextWord?.word ?? '已是最后一个'}
-            </div>
-          </div>
-          <ChevronRight size={18} className="flex-shrink-0" />
-        </button>
-      </div>
-      <div className="text-center text-xs text-gray-400 -mt-2 mb-3">
-        {currentIdx >= 0 && list.length > 0
-          ? `${currentIdx + 1} / ${list.length} · ${scopeLabel}`
-          : ''}
       </div>
 
       {isStudyPreview && !nextWord && studyPath && (
