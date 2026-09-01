@@ -73,6 +73,12 @@ test('TC-STUDY-PREVIEW-001: 先显示当天学习列表，确认后才进入测�
   await page.getByRole('button', { name: '开始测试', exact: true }).click()
   await page.getByRole('button', { name: '确认开始', exact: true }).click()
   await expect(page.getByText('新学 · 回忆式')).toBeVisible()
+
+  // 确认后离开，再从首页点击学习应直接进入测试
+  await page.getByRole('button', { name: '返回' }).click()
+  await expect(page).toHaveURL(/\/web_vocabulary\/?$/)
+  await page.getByRole('button', { name: '学习', exact: true }).click()
+  await expect(page.getByText('新学 · 回忆式')).toBeVisible()
 })
 
 test('TC-STUDY-PREVIEW-002: 最后一个详情页可直接开始测试', async ({ page }) => {

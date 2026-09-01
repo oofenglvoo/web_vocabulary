@@ -29,6 +29,7 @@ import { QuickMode, QuickRating } from '../components/study/QuickMode'
 import { StudyTypeSettings } from '../components/StudyTypeSettings'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
+import { markStudyStartedToday } from '../utils/studySession'
 
 export function Study() {
   const navigate = useNavigate()
@@ -40,6 +41,7 @@ export function Study() {
   const planIdNum = planId ? Number(planId) : null
   const isReviewMode = searchParams.get('mode') === 'review'
   const autoStartTest = searchParams.get('autoStartTest') === '1'
+  const resumeTest = searchParams.get('resumeTest') === '1'
   // 加学模式:今日配额学满后的独立一轮,不计入今日配额
   const isExtra = searchParams.get('extra') === '1'
 
@@ -130,7 +132,7 @@ export function Study() {
     setIndex(0)
     // 复习不需要预学习列表，进入页面后直接开始复习测试。
     // 复习直接进入测试；从预习详情进入时先回到预习页并显示统一确认框。
-    setStudyStarted(isReviewMode)
+    setStudyStarted(isReviewMode || resumeTest)
     setConfirmStartTest(autoStartTest)
     setLoading(false)
   }
@@ -303,6 +305,17 @@ export function Study() {
     setDone(false)
     setStudyStarted(true)
     requeuedRef.current = new Set()
+  }
+
+  function confirmStudyStart() {
+    markStudyStartedToday(lang, planIdNum)
+    setConfirmStartTest(false)
+    setStudyStarted(true)
+    if (autoStartTest) {
+      const params = new URLSearchParams(searchParams)
+      params.delete('autoStartTest')
+      navigate(`/study?${params.toString()}`, { replace: true })
+    }
   }
 
   // 到达末尾 → 完成页(触发庆祝)
@@ -492,7 +505,7 @@ export function Study() {
               </p>
               <div className="flex gap-2">
                 <button onClick={() => setConfirmStartTest(false)} className="btn-secondary flex-1">继续学习</button>
-                <button onClick={() => { setConfirmStartTest(false); setStudyStarted(true) }} className="btn-primary flex-1">确认开始</button>
+                <button onClick={confirmStudyStart} className="btn-primary flex-1">确认开始</button>
               </div>
             </motion.div>
           </div>
@@ -512,7 +525,7 @@ export function Study() {
   return (
     <div className="p-4 min-h-screen flex flex-col" data-study-quiz>
       <div className="flex items-center justify-between mb-3">
-        <BackButton />
+          <BackButton onBack={() => navigate('/')} />
         <div className="flex items-center gap-2">
           {planIdNum && plan && (
             <span className="chip bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300">
