@@ -109,7 +109,7 @@ export function useJapanesePlanProgress(plan: JapaneseStudyPlan | undefined): Ja
     Math.max(0, plan.newPerDay - todayNewDone),
     remainingNew
   )
-  const todayReviewRemaining = Math.max(0, dueReview - todayReviewDone)
+  const todayReviewRemaining = dueReview
 
   return {
     totalWords: words.length,
@@ -121,7 +121,7 @@ export function useJapanesePlanProgress(plan: JapaneseStudyPlan | undefined): Ja
     todayNewDone,
     todayReviewDone,
     todayNewTarget: plan.newPerDay,
-    todayReviewTarget: plan.reviewPerDay,
+    todayReviewTarget: dueReview,
     todayNewRemaining,
     todayReviewRemaining,
     overallPercent,
@@ -154,7 +154,7 @@ export async function createJapaneseStudyPlan(input: {
   sourceKind: 'category' | 'favorites' | 'all'
   sourceCategory?: string
   newPerDay: number
-  reviewPerDay: number
+  reviewPerDay?: number
 }): Promise<number> {
   const wordIds = await buildJapaneseWordIdsFromSource(input.sourceKind, input.sourceCategory ?? '')
   // 新建计划时把其他激活计划置 0；事务内取回新计划 id
@@ -170,7 +170,7 @@ export async function createJapaneseStudyPlan(input: {
         sourceKind: input.sourceKind,
         sourceCategory: input.sourceCategory ?? '',
         newPerDay: input.newPerDay,
-        reviewPerDay: input.reviewPerDay,
+        reviewPerDay: input.reviewPerDay ?? 0,
         wordIds,
         startedIds: [],
         isActive: 1,
@@ -288,22 +288,17 @@ export async function markExtraJapaneseWordStarted(planId: number, wordId: numbe
   })
 }
 
-// 获取今日应复习的词条队列:已 started 且未掌握且到期，减去今日已完成数
+// 返回全部符合条件的到期词条，复习数量由 SRS 动态决定
 export async function getTodayJapaneseReviewWords(plan: JapaneseStudyPlan): Promise<JapaneseWord[]> {
   if (plan.wordIds.length === 0) return []
   const reviewCutoff = getTodayReviewCutoff()
   const startedSet = new Set(plan.startedIds)
   const candidates = plan.wordIds.filter((id) => startedSet.has(id))
   const words = await db.japaneseWords.bulkGet(candidates)
-  const today = todayStr()
-  const isToday = plan.todayDate === today
-  const todayReviewDone = isToday ? plan.todayReviewDone : 0
-  const remaining = Math.max(0, plan.reviewPerDay - todayReviewDone)
   return words
     .filter((w): w is JapaneseWord => !!w)
     .filter((w) => w.isLearned === 0 && w.nextReviewAt < reviewCutoff)
     .sort((a, b) => a.nextReviewAt - b.nextReviewAt)
-    .slice(0, remaining)
 }
 
 // 事务内读取-计算-写入计划更新，避免并发互相覆盖

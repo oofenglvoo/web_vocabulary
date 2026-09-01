@@ -76,6 +76,7 @@ test('TC-SEP-001: 学习入口只含新词，复习入口只含到期词', async
   await page.goto(url('/study?plan=1&mode=review'))
   await startStudyTest(page)
   await page.waitForSelector('text=回忆式')
+  await expect(page.getByRole('heading', { name: '先学习当天词条' })).toHaveCount(0)
   await expect(page.getByText('复习 · 回忆式')).toBeVisible()
   await expect(page.getByText('剩余 3')).toBeVisible()
   await expect(page.getByRole('heading', { name: 'sep-a' })).toBeVisible()

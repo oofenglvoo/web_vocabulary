@@ -420,7 +420,7 @@ export async function createLangPlan(input: {
   sourceKind: 'category' | 'favorites' | 'all'
   sourceCategory?: string
   newPerDay: number
-  reviewPerDay: number
+  reviewPerDay?: number
 }): Promise<number> {
   return ja() ? createJapaneseStudyPlan(input) : createPlan(input)
 }
