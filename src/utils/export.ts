@@ -1,4 +1,4 @@
-import { Word, Sentence } from '../types/word'
+import { Word, Sentence, JapaneseWord } from '../types/word'
 
 export function exportWordsToJson(words: Word[]): string {
   const exports = words.map((w) => {
@@ -10,6 +10,8 @@ export function exportWordsToJson(words: Word[]): string {
       translation: w.translation,
       category: w.category,
       difficulty: w.difficulty,
+      onlineTranslation: w.onlineTranslation ?? '',
+      onlineTranslationSource: w.onlineTranslationSource ?? '',
     }
     // 如果有多释义，导出 definitions 数组
     if (w.definitions && w.definitions.length > 0) {
@@ -21,7 +23,7 @@ export function exportWordsToJson(words: Word[]): string {
 }
 
 export function exportWordsToCsv(words: Word[]): string {
-  const headers = ['word', 'phonetic', 'definition', 'example', 'translation', 'category', 'difficulty', 'definitions']
+  const headers = ['word', 'phonetic', 'definition', 'example', 'translation', 'category', 'difficulty', 'onlineTranslation', 'onlineTranslationSource', 'definitions']
   const rows = words.map((w) => [
     w.word,
     w.phonetic,
@@ -30,9 +32,39 @@ export function exportWordsToCsv(words: Word[]): string {
     w.translation,
     w.category,
     String(w.difficulty),
+    w.onlineTranslation ?? '',
+    w.onlineTranslationSource ?? '',
     w.definitions && w.definitions.length > 0 ? JSON.stringify(w.definitions) : '',
   ])
   // 前缀 ﻿ (UTF-8 BOM)，让 Excel 正确识别 UTF-8 编码，避免中文乱码
+  return '﻿' + [headers.join(','), ...rows.map((r) => r.map(escapeCsv).join(','))].join('\n')
+}
+
+export function exportJapaneseWordsToJson(words: JapaneseWord[]): string {
+  return JSON.stringify(words.map((w) => ({
+    word: w.word,
+    reading: w.reading,
+    accent: w.accent,
+    partOfSpeech: w.partOfSpeech,
+    definitions: w.definitions,
+    example: w.example,
+    exampleReading: w.exampleReading,
+    exampleTranslation: w.exampleTranslation,
+    category: w.category,
+    difficulty: w.difficulty,
+    onlineTranslation: w.onlineTranslation ?? '',
+    onlineTranslationSource: w.onlineTranslationSource ?? '',
+    notes: w.notes,
+  })), null, 2)
+}
+
+export function exportJapaneseWordsToCsv(words: JapaneseWord[]): string {
+  const headers = ['word', 'reading', 'accent', 'partOfSpeech', 'definitions', 'example', 'exampleReading', 'exampleTranslation', 'category', 'difficulty', 'onlineTranslation', 'onlineTranslationSource', 'notes']
+  const rows = words.map((w) => [
+    w.word, w.reading, w.accent, w.partOfSpeech, JSON.stringify(w.definitions ?? []),
+    w.example, w.exampleReading, w.exampleTranslation, w.category, String(w.difficulty),
+    w.onlineTranslation ?? '', w.onlineTranslationSource ?? '', w.notes,
+  ])
   return '﻿' + [headers.join(','), ...rows.map((r) => r.map(escapeCsv).join(','))].join('\n')
 }
 

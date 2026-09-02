@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { Upload, Plus, FolderOpen } from 'lucide-react'
+import { Upload, Plus, FolderOpen, Download } from 'lucide-react'
 import { useLang } from '../context/Language'
 import {
   useLangWordsByCategory,
@@ -27,8 +27,9 @@ import { EmptyState } from '../components/EmptyState'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
 import { enhancedSearch } from '../utils/search'
-import { Sentence, JapaneseWord } from '../types/word'
+import { Sentence, JapaneseWord, Word } from '../types/word'
 import type { LangWord } from '../hooks/languageAware'
+import { downloadFile, exportJapaneseWordsToCsv, exportJapaneseWordsToJson, exportWordsToCsv, exportWordsToJson } from '../utils/export'
 
 type Tab = 'word' | 'sentence'
 
@@ -91,6 +92,20 @@ export function CategoryDetail() {
   const addHref = `/add?category=${encodeURIComponent(decoded)}`
   const sentenceImportHref = `/sentences/import?category=${encodeURIComponent(decoded)}`
   const sentenceAddHref = `/sentences/add?category=${encodeURIComponent(decoded)}`
+
+  const exportCategoryWords = async (format: 'json' | 'csv') => {
+    const date = new Date().toISOString().slice(0, 10)
+    const safeName = decoded.replace(/[\\/:*?"<>|]/g, '_')
+    if (isJa) {
+      const content = format === 'json'
+        ? exportJapaneseWordsToJson(words as JapaneseWord[])
+        : exportJapaneseWordsToCsv(words as JapaneseWord[])
+      await downloadFile(content, `${safeName}-日语词-${date}.${format}`, format === 'json' ? 'application/json' : 'text/csv')
+      return
+    }
+    const content = format === 'json' ? exportWordsToJson(words as Word[]) : exportWordsToCsv(words as Word[])
+    await downloadFile(content, `${safeName}-单词-${date}.${format}`, format === 'json' ? 'application/json' : 'text/csv')
+  }
 
   // 分类内容形态：
   // - 日语模式 → 恒为单词视图（日语词库无短句）
@@ -238,8 +253,20 @@ export function CategoryDetail() {
                 <span className="text-sm text-gray-500 dark:text-gray-400">
                   共 {words.length} 个{isJa ? '日语词' : '单词'}
                 </span>
-                {canAddWord && (
+                {(canAddWord || words.length > 0) && (
                   <div className="flex gap-2">
+                    {words.length > 0 && (
+                      <div className="flex gap-2">
+                        <button onClick={() => exportCategoryWords('json')} className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1">
+                          <Download size={14} /> JSON
+                        </button>
+                        <button onClick={() => exportCategoryWords('csv')} className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1">
+                          CSV
+                        </button>
+                      </div>
+                    )}
+                    {canAddWord && (
+                      <>
                     <Link
                       to={addHref}
                       className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1"
@@ -252,6 +279,8 @@ export function CategoryDetail() {
                     >
                       <Upload size={14} /> 批量导入
                     </Link>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
@@ -261,7 +290,7 @@ export function CategoryDetail() {
                 search={search}
                 onSearchChange={setSearch}
                 searchPlaceholder={isJa ? '搜索表记、假名、释义...' : '搜索单词、释义...'}
-                onWordClick={(w) => navigate(`/word/${w.id}?category=${encodeURIComponent(decoded)}`)}
+                onWordClick={(w) => navigate(`/word/${w.id}?scope=category&category=${encodeURIComponent(decoded)}`)}
                 onFavorite={(w) => toggleLangFavorite(w.id!, w.isFavorite)}
                 onDelete={(w) => setConfirmDeleteWordId(w.id!)}
                 renderItem={

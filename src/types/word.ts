@@ -34,6 +34,8 @@ export interface Word {
   isLearned: Flag
   isFavorite: Flag
   notes: string
+  onlineTranslation?: string
+  onlineTranslationSource?: string
 }
 
 // 短句/短语:与单词平行的独立实体,复用 SRS 复习字段
@@ -60,6 +62,8 @@ export interface Sentence {
   isLearned: Flag
   isFavorite: Flag
   notes: string
+  onlineTranslation?: string
+  onlineTranslationSource?: string
 }
 
 // 日语释义条目：保留词性、日文释义与中文翻译，便于日语词条独立展示
@@ -96,6 +100,8 @@ export interface JapaneseWord {
   isLearned: Flag
   isFavorite: Flag
   notes: string
+  onlineTranslation?: string
+  onlineTranslationSource?: string
 }
 
 export interface Category {

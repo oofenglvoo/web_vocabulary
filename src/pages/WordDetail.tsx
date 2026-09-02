@@ -11,6 +11,7 @@ import {
   X,
   Pencil,
   Check,
+  Languages,
 } from 'lucide-react'
 import { useLang } from '../context/Language'
 import {
@@ -33,6 +34,7 @@ import { NotesBlock } from '../components/NotesBlock'
 import { SkeletonCard } from '../components/Skeleton'
 import { Definition, JapaneseDefinition, JapaneseWord, Word } from '../types/word'
 import type { LangWord } from '../hooks/languageAware'
+import { translateWithMyMemory } from '../utils/translation'
 
 const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
 
@@ -56,13 +58,18 @@ export function WordDetail() {
   const [editingJa, setEditingJa] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [markingLearned, setMarkingLearned] = useState(false)
+  const [onlineTranslation, setOnlineTranslation] = useState<string | null>(null)
+  const [translationLoading, setTranslationLoading] = useState(false)
+  const [translationError, setTranslationError] = useState(false)
 
   // 切换单词时重置编辑状态，避免残留上一个单词的释义编辑面板
   useEffect(() => {
     setEditingDefs(false)
     setEditDefinitions([])
     setEditingJa(false)
-  }, [id])
+    setOnlineTranslation(word?.onlineTranslation ?? null)
+    setTranslationError(false)
+  }, [id, word?.onlineTranslation])
 
   // 上一个/下一个的来源
   const scopeParam = (searchParams.get('scope') as Scope) || 'all'
@@ -170,6 +177,24 @@ export function WordDetail() {
     }
   }
 
+  const handleOnlineTranslate = async () => {
+    setTranslationLoading(true)
+    setTranslationError(false)
+    try {
+      const translated = await translateWithMyMemory(word.word, isJa ? 'ja' : 'en')
+      await updateLangWord(word.id!, {
+        onlineTranslation: translated,
+        onlineTranslationSource: 'MyMemory',
+      })
+      setOnlineTranslation(translated)
+    } catch {
+      setOnlineTranslation(null)
+      setTranslationError(true)
+    } finally {
+      setTranslationLoading(false)
+    }
+  }
+
   const startEditDefs = () => {
     const defs = getDefinitions(word as Word)
     setEditDefinitions(defs.length > 0 ? defs.map((d) => ({ ...d })) : [{ pos: '', def: '', trans: '' }])
@@ -231,6 +256,15 @@ export function WordDetail() {
               {markingLearned ? '处理中...' : '掌握'}
             </button>
           )}
+          <button
+            onClick={handleOnlineTranslate}
+            disabled={translationLoading}
+            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+            aria-label="在线翻译"
+            title="使用 MyMemory 在线翻译"
+          >
+            <Languages size={20} className="text-gray-400" />
+          </button>
           <FavoriteButton
             entityType={isJa ? 'japaneseWord' : 'word'}
             entityId={word.id!}
@@ -328,6 +362,22 @@ export function WordDetail() {
           ) : null}
         </div>
       </div>
+
+      {(translationLoading || onlineTranslation || translationError) && (
+        <div className="card p-4 mb-4">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400">在线翻译（MyMemory）</h3>
+            {onlineTranslation && (
+              <button onClick={handleOnlineTranslate} className="text-xs text-primary-600 dark:text-primary-400">
+                重新翻译
+              </button>
+            )}
+          </div>
+          {translationLoading && <p className="text-sm text-gray-500 dark:text-gray-400">翻译中...</p>}
+          {!translationLoading && onlineTranslation && <p className="text-lg dark:text-gray-200">{onlineTranslation}</p>}
+          {!translationLoading && translationError && <p className="text-sm text-red-500">翻译失败，请稍后重试</p>}
+        </div>
+      )}
 
       {isStudyPreview && !nextWord && studyPath && (
         <button onClick={startStudyTest} className="btn-primary w-full mb-4">

@@ -264,6 +264,7 @@ export function getLangPrimaryTranslation(w: LangWord): string {
 }
 
 function renderJaDefs(w: JapaneseWord): ReactNode {
+  const definitions = (w.definitions ?? []).filter((d) => d.meaning || d.translation)
   return (
     <div className="space-y-3">
       <div className="bg-primary-50 dark:bg-primary-900/30 rounded-xl p-3.5">
@@ -273,13 +274,15 @@ function renderJaDefs(w: JapaneseWord): ReactNode {
           {w.accent && <span className="ml-2 text-rose-600 dark:text-rose-300">{w.accent}</span>}
         </p>
       </div>
-      {w.definitions?.map((d, i) => (
+      {definitions.length > 0 ? definitions.map((d, i) => (
         <div key={i} className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
           {d.pos && <div className="text-xs text-primary-500 mb-1">{d.pos}</div>}
-          <p className="text-sm font-medium dark:text-gray-200">{d.translation}</p>
+          {d.translation && <p className="text-sm font-medium dark:text-gray-200">{d.translation}</p>}
           {d.meaning && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{d.meaning}</p>}
         </div>
-      ))}
+      )) : <div className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
+        <p className="text-sm text-gray-500 dark:text-gray-400">暂无释义</p>
+      </div>}
       {w.example && (
         <div className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
           <div className="text-xs font-medium text-primary-600 dark:text-primary-400 mb-1">例句</div>
