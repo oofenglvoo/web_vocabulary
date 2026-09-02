@@ -17,7 +17,9 @@ export async function translateWithMyMemory(
   const key = cacheKey(normalizedText, source, target)
   try {
     const cached = localStorage.getItem(key)
-    if (cached) return cached
+    // Older requests may have cached the source text as a false translation.
+    // Ignore that entry so a later request can pick a real candidate result.
+    if (cached && cached.toLowerCase() !== normalizedText.toLowerCase()) return cached
   } catch {
     // Local storage may be unavailable; continue with the network request.
   }
@@ -31,8 +33,15 @@ export async function translateWithMyMemory(
     const data = await response.json() as {
       responseStatus?: number
       responseData?: { translatedText?: string }
+      matches?: Array<{ translation?: string; match?: number }>
     }
-    const translatedText = data.responseData?.translatedText?.trim()
+    const responseTranslation = data.responseData?.translatedText?.trim()
+    // MyMemory can return the source text as the top result even when a translated
+    // match is available, especially for short words such as "address".
+    const translatedText = data.matches
+      ?.map((match) => match.translation?.trim())
+      .find((match) => match && match.toLowerCase() !== normalizedText.toLowerCase())
+      ?? responseTranslation
     if (!translatedText || data.responseStatus !== 200) throw new Error('翻译服务未返回有效结果')
     try {
       localStorage.setItem(key, translatedText)
