@@ -97,6 +97,9 @@ export function WordDetail() {
   const nextWord = currentIdx >= 0 && currentIdx < list.length - 1 ? list[currentIdx + 1] : null
   const isStudyPreview = searchParams.get('studyPreview') === '1' && studyIds.length > 0
   const studyPath = searchParams.get('studyPath')
+  const backToCategory = scope === 'category' && scopeCategory
+    ? `/categories/${encodeURIComponent(scopeCategory)}`
+    : null
 
   const buildHref = (wordId: number) => {
     const params = new URLSearchParams()
@@ -245,7 +248,7 @@ export function WordDetail() {
   return (
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
-        <BackButton />
+        <BackButton onBack={backToCategory ? () => navigate(backToCategory) : undefined} />
         <div className="flex items-center gap-2">
           {!word.isLearned && (
             <button
