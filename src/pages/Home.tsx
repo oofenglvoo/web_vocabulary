@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -16,6 +16,7 @@ import {
   MessageSquare,
   CalendarCheck,
   Languages,
+  Search,
 } from 'lucide-react'
 import { useLang, useSetLang, Lang } from '../context/Language'
 import { useLangStats, useLangFavoriteWords, useLangActivePlan, useLangPlanProgress } from '../hooks/languageAware'
@@ -45,6 +46,13 @@ export function Home() {
   const hasQuickStudy = hasQuickProgressToday(lang, activePlan?.id ?? null, false)
   const hasQuickFreeStudy = hasQuickProgressToday(lang, null, false)
   const [confirmExtra, setConfirmExtra] = useState(false)
+  const [translationQuery, setTranslationQuery] = useState('')
+
+  const submitTranslation = (event: FormEvent) => {
+    event.preventDefault()
+    const query = translationQuery.trim()
+    if (query) navigate(`/translate?q=${encodeURIComponent(query)}`)
+  }
 
   return (
     <div className="pb-2">
@@ -77,6 +85,20 @@ export function Home() {
               </Link>
             </div>
           </div>
+
+          <form onSubmit={submitTranslation} className="flex w-full gap-2 mb-4">
+            <div className="relative flex-1 min-w-0">
+              <Search size={17} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                value={translationQuery}
+                onChange={(event) => setTranslationQuery(event.target.value)}
+                placeholder="输入单词或句子..."
+                className="input-field w-full min-w-0 pl-9"
+                aria-label="翻译内容"
+              />
+            </div>
+            <button type="submit" disabled={!translationQuery.trim()} className="btn-primary shrink-0 px-3 text-sm disabled:opacity-50">翻译</button>
+          </form>
 
           {/* 语言切换入口：切换后全应用页面数据源随之切换 */}
           <div className="flex items-center gap-1 bg-white/15 backdrop-blur rounded-2xl p-1 mb-4">

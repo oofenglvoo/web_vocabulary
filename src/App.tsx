@@ -27,6 +27,7 @@ const AddSentence = lazy(() => import('./pages/AddSentence').then((m) => ({ defa
 const SentenceDetail = lazy(() => import('./pages/SentenceDetail').then((m) => ({ default: m.SentenceDetail })))
 const SentenceStudy = lazy(() => import('./pages/SentenceStudy').then((m) => ({ default: m.SentenceStudy })))
 const CheckIn = lazy(() => import('./pages/CheckIn').then((m) => ({ default: m.CheckIn })))
+const Translate = lazy(() => import('./pages/Translate').then((m) => ({ default: m.Translate })))
 
 function PageFallback() {
   return (
@@ -82,6 +83,7 @@ function App() {
                   <Route path="/plan/:id/words" element={<PlanWordList />} />
                   <Route path="/stats" element={<Stats />} />
                   <Route path="/checkin" element={<CheckIn />} />
+                  <Route path="/translate" element={<Translate />} />
                   {/* 旧日语路由 → 统一页面（自动切换语言） */}
                   <Route path="/japanese" element={<JapaneseRedirect to="/words" />} />
                   <Route path="/japanese/study" element={<JapaneseRedirect to="/study" />} />
