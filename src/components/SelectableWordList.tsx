@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
-import { Search, Trash2, FolderInput, Heart, CheckSquare, Square, CheckCheck } from 'lucide-react'
+import { Search, Trash2, FolderInput, Heart, CheckSquare, Square, CheckCheck, ArrowUp, ArrowDown } from 'lucide-react'
 import { Word } from '../types/word'
 import { WordCard } from './WordCard'
 import { enhancedSearch } from '../utils/search'
@@ -62,6 +62,8 @@ export function SelectableWordList<T extends SelectableListItem>({
 }: SelectableWordListProps<T>) {
   const [selectMode, setSelectMode] = useState(false)
   const [selected, setSelected] = useState<Set<number>>(new Set())
+  const [showScrollTop, setShowScrollTop] = useState(false)
+  const [showScrollBottom, setShowScrollBottom] = useState(false)
 
   // 记忆化过滤结果，避免每次渲染都重新过滤全部单词
   // （搜索为空时直接复用原数组，跳过开销较大的匹配）
@@ -108,6 +110,22 @@ export function SelectableWordList<T extends SelectableListItem>({
   }, [filtered.length])
 
   const visibleWords = filtered.length > visibleCount ? filtered.slice(0, visibleCount) : filtered
+
+  useEffect(() => {
+    const updateScrollButtons = () => {
+      const scroller = document.scrollingElement ?? document.documentElement
+      const maxScroll = scroller.scrollHeight - window.innerHeight
+      setShowScrollTop(scroller.scrollTop > 160)
+      setShowScrollBottom(maxScroll > 160 && scroller.scrollTop < maxScroll - 160)
+    }
+    updateScrollButtons()
+    window.addEventListener('scroll', updateScrollButtons, { passive: true })
+    window.addEventListener('resize', updateScrollButtons)
+    return () => {
+      window.removeEventListener('scroll', updateScrollButtons)
+      window.removeEventListener('resize', updateScrollButtons)
+    }
+  }, [filtered.length, visibleCount])
 
   const toggleSelect = useCallback((id: number) => {
     setSelected((prev) => {
@@ -233,6 +251,42 @@ export function SelectableWordList<T extends SelectableListItem>({
               </button>
             )}
           </div>
+        </div>
+      )}
+
+      {(showScrollTop || showScrollBottom) && (
+        <div className="fixed right-4 bottom-20 z-30 flex flex-col gap-2">
+          {showScrollTop && (
+            <button
+              type="button"
+              onClick={() => {
+                const scroller = document.scrollingElement ?? document.documentElement
+                scroller.scrollTo({ top: 0, behavior: 'auto' })
+              }}
+              className="w-10 h-10 rounded-full bg-white/90 dark:bg-slate-800/90 border border-gray-200 dark:border-slate-700 shadow-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+              aria-label="回到顶部"
+              title="回到顶部"
+            >
+              <ArrowUp size={18} />
+            </button>
+          )}
+          {showScrollBottom && (
+            <button
+              type="button"
+              onClick={() => {
+                setVisibleCount(filtered.length)
+                requestAnimationFrame(() => {
+                  const scroller = document.scrollingElement ?? document.documentElement
+                  scroller.scrollTo({ top: scroller.scrollHeight, behavior: 'auto' })
+                })
+              }}
+              className="w-10 h-10 rounded-full bg-white/90 dark:bg-slate-800/90 border border-gray-200 dark:border-slate-700 shadow-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+              aria-label="到底部"
+              title="到底部"
+            >
+              <ArrowDown size={18} />
+            </button>
+          )}
         </div>
       )}
 
