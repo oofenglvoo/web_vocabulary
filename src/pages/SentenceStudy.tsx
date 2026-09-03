@@ -55,6 +55,8 @@ export function SentenceStudy() {
 
   const allTranslationsRef = useRef<string[] | null>(null)
   const requeuedRef = useRef<Set<number>>(new Set())
+  // 失败后需要连续确认；忘记的确认次数高于模糊。
+  const recallProgressRef = useRef<Map<number, { level: 'fuzzy' | 'forgotten'; recognized: number }>>(new Map())
 
   useEffect(() => {
     // 组件卸载时无需清理(无 setInterval)；保留结构以对齐 Study.tsx
@@ -110,6 +112,7 @@ export function SentenceStudy() {
     setLearnStats({ newDone: 0, reviewDone: 0 })
     setDone(false)
     requeuedRef.current = new Set()
+    recallProgressRef.current = new Map()
     let items: { sentence: Sentence; isReview: boolean }[] = []
 
     if (planIdNum) {
@@ -183,12 +186,29 @@ export function SentenceStudy() {
     // 回忆式(Moji)：认识(quality>=3) → 计数 + 从队列移除(通过不再出现)；模糊/忘记(quality<3) → 重排到队尾，重复直到认识
     if (studyType === 'recall') {
       if (quality < 3) {
+        const previous = recallProgressRef.current.get(item.id)
+        const level = previous?.level === 'forgotten' || quality === 1 ? 'forgotten' : 'fuzzy'
+        recallProgressRef.current.set(item.id, { level, recognized: 0 })
         setQueue((q) => {
           const idx = q.findIndex((x) => x.id === item.id)
           if (idx === -1) return q
           return [...q.slice(0, idx), ...q.slice(idx + 1), item]
         })
         return // 不计数、不推进（当前词重排到队尾，下一个词自动顶到当前位置）
+      }
+      const recallProgress = recallProgressRef.current.get(item.id)
+      if (recallProgress) {
+        const required = recallProgress.level === 'forgotten' ? 3 : 2
+        recallProgress.recognized += 1
+        if (recallProgress.recognized < required) {
+          setQueue((q) => {
+            const idx = q.findIndex((x) => x.id === item.id)
+            if (idx === -1) return q
+            return [...q.slice(0, idx), ...q.slice(idx + 1), item]
+          })
+          return
+        }
+        recallProgressRef.current.delete(item.id)
       }
       if (planIdNum) {
         try {
