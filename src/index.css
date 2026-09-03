@@ -3,13 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --bg: #f8fafc;
-  --bg-soft: #f1f5f9;
+  --bg: #f6f7f2;
+  --bg-soft: #e9eee5;
+  --ink: #19352f;
+  --muted: #72817b;
+  --line: #dfe7df;
 }
 
 .dark {
-  --bg: #0f172a;
-  --bg-soft: #1e293b;
+  --bg: #10221f;
+  --bg-soft: #18332e;
+  --ink: #eef4ec;
+  --muted: #a2b6ad;
+  --line: #2b4a42;
 }
 
 * {
@@ -28,6 +34,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 body {
   @apply text-gray-900 dark:text-gray-100;
   background-color: var(--bg);
+  color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -55,14 +62,15 @@ body {
 
 @layer components {
   .card {
-    @apply bg-white rounded-2xl shadow-card border border-gray-100/80 dark:bg-slate-800/90 dark:border-slate-700/60;
+    @apply bg-white rounded-[1.35rem] shadow-card border dark:bg-slate-800/90;
+    border-color: var(--line);
   }
   .card-hover {
     @apply transition-all duration-200 hover:shadow-glow hover:-translate-y-0.5;
   }
 
   .btn-primary {
-    @apply bg-gradient-primary text-white px-4 py-2.5 rounded-xl font-medium shadow-soft hover:shadow-glow active:scale-[0.97] transition-all inline-flex items-center justify-center gap-1.5;
+    @apply bg-[#1f5147] text-white px-4 py-2.5 rounded-xl font-medium shadow-soft hover:bg-[#173f37] active:scale-[0.97] transition-all inline-flex items-center justify-center gap-1.5;
   }
   .btn-secondary {
     @apply bg-white text-gray-700 border border-gray-200 px-4 py-2.5 rounded-xl font-medium hover:bg-gray-50 hover:border-gray-300 active:scale-[0.97] transition-all inline-flex items-center justify-center gap-1.5 dark:bg-slate-700 dark:text-gray-200 dark:border-slate-600 dark:hover:bg-slate-600;
@@ -122,7 +130,8 @@ body {
 
   /* 页面通用容器 */
   .page-container {
-    @apply min-h-screen bg-gradient-mesh;
+    @apply min-h-screen;
+    background: var(--bg);
   }
   .page-header {
     @apply flex items-center justify-between mb-4;
@@ -141,12 +150,7 @@ body {
 
   /* 渐变文字 */
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-accent-500;
-  }
-
-  /* 顶部渐变装饰条 */
-  .top-accent-bar {
-    @apply h-1 bg-gradient-primary;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#1f5147] to-[#d8785d];
   }
 
   /* Modal 统一样式 */
@@ -161,6 +165,67 @@ body {
   .stagger-item {
     animation: slideUp 0.3s ease-out both;
   }
+}
+
+/* 手动布局模式需要覆盖 Tailwind 的断点布局。 */
+.layout-mobile-mode .home-content {
+  display: block !important;
+}
+.layout-mobile-mode .layout-viewport {
+  width: 100%;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.layout-mobile-mode .home-hero {
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0 0 1.75rem 1.75rem;
+}
+.layout-pc-mode .layout-viewport {
+  width: 100%;
+}
+.layout-mobile-mode .home-content > * {
+  grid-column: auto !important;
+}
+.layout-pc-mode .home-content {
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+.layout-pc-mode .home-content > .home-col-7 {
+  grid-column: span 7 / span 7;
+  grid-row: span 2;
+  align-self: stretch;
+  min-height: 240px;
+}
+.layout-pc-mode .home-content > .home-col-12 { grid-column: span 12 / span 12; }
+.layout-pc-mode .home-right {
+  grid-column: 8 / span 5;
+  grid-row: span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 240px;
+}
+.layout-mobile-mode .home-right {
+  display: block;
+}
+.layout-mobile-mode .home-right > * + * {
+  margin-top: 1rem;
+}
+.layout-pc-mode .home-actions {
+  flex: 1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+.layout-pc-mode .home-actions .card {
+  min-height: 0;
 }
 
 /* 交错入场 delay 工具 */

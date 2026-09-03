@@ -59,14 +59,15 @@ export function Home() {
   return (
     <div className="pb-2">
       {/* 顶部渐变 Hero 区 */}
-      <div className="relative overflow-hidden bg-gradient-primary text-white px-5 pt-6 pb-6 rounded-b-[28px] shadow-card">
+      <div className="home-hero relative overflow-hidden bg-[#1f5147] text-white px-5 pt-7 pb-7 lg:rounded-[2rem] lg:max-w-6xl lg:mx-auto lg:mt-8 shadow-card">
         <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-white/10" />
         <div className="absolute -bottom-16 -left-8 w-40 h-40 rounded-full bg-white/10" />
         <div className="relative">
-          <div className="flex items-center justify-between mb-4">
+           <div>
+           <div className="flex items-center justify-between mb-7">
             <div>
-              <p className="text-white/80 text-xs">今日</p>
-              <h1 className="text-2xl font-bold tracking-tight mt-0.5">
+              <p className="text-[#c5d9c9] text-xs uppercase tracking-[0.2em]">Today · 学习日</p>
+              <h1 className="text-3xl font-bold tracking-tight mt-1">
                 {lang === 'ja' ? '日语记忆' : '单词记忆'}
               </h1>
             </div>
@@ -103,7 +104,7 @@ export function Home() {
           </form>
 
           {/* 语言切换入口：切换后全应用页面数据源随之切换 */}
-          <div className="flex items-center gap-1 bg-white/15 backdrop-blur rounded-2xl p-1 mb-4">
+           <div className="flex items-center gap-1 bg-white/15 backdrop-blur rounded-2xl p-1 mb-4">
             {(['en', 'ja'] as Lang[]).map((l) => {
               const active = lang === l
               return (
@@ -121,10 +122,11 @@ export function Home() {
                   {l === 'en' ? '英语' : '日语'}
                 </button>
               )
-            })}
-          </div>
+             })}
+           </div>
+           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+           <div className="grid grid-cols-3 gap-3">
             <HeroStat label="总词汇" value={stats.total} />
             <HeroStat label="已掌握" value={stats.learned} />
             <HeroStat label="学习中" value={stats.total - stats.learned} />
@@ -145,14 +147,14 @@ export function Home() {
       </div>
 
       {/* 主内容 */}
-      <div className="px-4 mt-4 space-y-4">
+       <div className="home-content px-4 mt-5 space-y-4 lg:max-w-6xl lg:mx-auto lg:grid lg:grid-cols-12 lg:gap-5 lg:space-y-0 lg:items-start">
         {/* 今日任务引导 (有计划时) */}
         {activePlan && (
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="card p-4 bg-white dark:bg-slate-800/90 shadow-card"
+             className="home-col-7 card p-5 bg-white dark:bg-slate-800/90 shadow-card lg:col-span-7"
           >
             <div className="flex items-center gap-2 mb-3">
               <div className="w-9 h-9 rounded-xl bg-gradient-primary flex items-center justify-center text-white shadow-glow shrink-0">
@@ -263,7 +265,7 @@ export function Home() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="card p-4 bg-white dark:bg-slate-800/90 shadow-card"
+             className="home-col-7 card p-5 bg-white dark:bg-slate-800/90 shadow-card lg:col-span-7"
           >
             <div className="flex items-start justify-between gap-3 mb-3">
               <div className="flex items-center gap-2 min-w-0">
@@ -317,117 +319,120 @@ export function Home() {
           </motion.div>
         )}
 
-        {/* 学习计划卡片 */}
-        {activePlan ? (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="card p-4 bg-gradient-card border-primary-100 dark:border-primary-900/30"
-          >
-            <Link to="/plan" className="block">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-success flex items-center justify-center text-white shadow-soft">
-                    <Target size={18} />
+        {/* 右栏：进行中的计划 + 快捷操作（PC 下与今日任务同高对齐） */}
+        <div className="home-right">
+          {/* 学习计划卡片 */}
+          {activePlan ? (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="card p-5 bg-[#e9f0e6] dark:bg-[#183b33] border-[#cddfd0] dark:border-[#285348]"
+            >
+              <Link to="/plan" className="block">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-success flex items-center justify-center text-white shadow-soft">
+                      <Target size={18} />
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-success-600 dark:text-success-400 font-medium">
+                        进行中的计划
+                      </div>
+                      <h3 className="font-semibold text-sm dark:text-gray-100">{activePlan.name}</h3>
+                    </div>
+                  </div>
+                  <span className="text-xs text-gradient font-medium">
+                    {planProgress.overallPercent}%
+                  </span>
+                </div>
+
+                <div className="progress-track h-1.5 mb-2 progress-shimmer">
+                  <div
+                    className="progress-fill"
+                    style={{ width: `${planProgress.overallPercent}%` }}
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div>
+                    <div className="text-sm font-bold text-gray-700 dark:text-gray-200">
+                      {planProgress.learnedWords}/{planProgress.totalWords}
+                    </div>
+                    <div className="text-[10px] text-gray-500 dark:text-gray-400">已掌握</div>
                   </div>
                   <div>
-                    <div className="text-[10px] text-success-600 dark:text-success-400 font-medium">
-                      进行中的计划
+                    <div className="text-sm font-bold text-primary-600 dark:text-primary-400">
+                       {planProgress.learningWords}
                     </div>
-                    <h3 className="font-semibold text-sm dark:text-gray-100">{activePlan.name}</h3>
+                    <div className="text-[10px] text-gray-500 dark:text-gray-400">学习中</div>
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-warn-600 dark:text-warn-400">
+                      {planProgress.remainingNew}
+                    </div>
+                    <div className="text-[10px] text-gray-500 dark:text-gray-400">未开始</div>
                   </div>
                 </div>
-                <span className="text-xs text-gradient font-medium">
-                  {planProgress.overallPercent}%
-                </span>
-              </div>
+              </Link>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Link
+                to="/plan"
+                className="card p-4 flex items-center gap-3 hover:shadow-glow transition-all"
+              >
+                <div className="w-11 h-11 rounded-xl bg-gradient-primary flex items-center justify-center text-white shadow-glow">
+                  <Target size={20} />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-sm dark:text-gray-100">创建学习计划</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    设定每日新词与复习数,科学背单词
+                  </p>
+                </div>
+                <span className="text-primary-600 dark:text-primary-400 text-xs font-medium">→</span>
+              </Link>
+            </motion.div>
+          )}
 
-              <div className="progress-track h-1.5 mb-2 progress-shimmer">
-                <div
-                  className="progress-fill"
-                  style={{ width: `${planProgress.overallPercent}%` }}
-                />
-              </div>
-
-              <div className="grid grid-cols-3 gap-2 text-center">
-                <div>
-                  <div className="text-sm font-bold text-gray-700 dark:text-gray-200">
-                    {planProgress.learnedWords}/{planProgress.totalWords}
-                  </div>
-                  <div className="text-[10px] text-gray-500 dark:text-gray-400">已掌握</div>
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-primary-600 dark:text-primary-400">
-                     {planProgress.learningWords}
-                  </div>
-                  <div className="text-[10px] text-gray-500 dark:text-gray-400">学习中</div>
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-warn-600 dark:text-warn-400">
-                    {planProgress.remainingNew}
-                  </div>
-                  <div className="text-[10px] text-gray-500 dark:text-gray-400">未开始</div>
-                </div>
-              </div>
-            </Link>
-          </motion.div>
-        ) : (
+          {/* 快速操作 */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.3 }}
+            className="home-actions grid grid-cols-4 gap-2"
           >
-            <Link
-              to="/plan"
-              className="card p-4 flex items-center gap-3 hover:shadow-glow transition-all"
-            >
-              <div className="w-11 h-11 rounded-xl bg-gradient-primary flex items-center justify-center text-white shadow-glow">
-                <Target size={20} />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-sm dark:text-gray-100">创建学习计划</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  设定每日新词与复习数,科学背单词
-                </p>
-              </div>
-              <span className="text-primary-600 dark:text-primary-400 text-xs font-medium">→</span>
-            </Link>
+            <QuickAction
+              to="/add"
+              icon={<Plus size={20} />}
+              label="添加"
+              color="from-primary-500 to-primary-600"
+            />
+            <QuickAction
+              to="/favorites"
+              icon={<Heart size={20} />}
+              label={`收藏 ${favorites.length}`}
+              color="from-accent-500 to-accent-600"
+            />
+            <QuickAction
+              to="/categories"
+              icon={<FolderOpen size={20} />}
+              label="分类"
+              color="from-warn-500 to-warn-600"
+            />
+            <QuickAction
+              to="/stats"
+              icon={<BarChart3 size={20} />}
+              label="统计"
+              color="from-success-500 to-success-600"
+            />
           </motion.div>
-        )}
-
-        {/* 快速操作 */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="grid grid-cols-4 gap-2"
-        >
-          <QuickAction
-            to="/add"
-            icon={<Plus size={20} />}
-            label="添加"
-            color="from-primary-500 to-primary-600"
-          />
-          <QuickAction
-            to="/favorites"
-            icon={<Heart size={20} />}
-            label={`收藏 ${favorites.length}`}
-            color="from-accent-500 to-accent-600"
-          />
-          <QuickAction
-            to="/categories"
-            icon={<FolderOpen size={20} />}
-            label="分类"
-            color="from-warn-500 to-warn-600"
-          />
-          <QuickAction
-            to="/stats"
-            icon={<BarChart3 size={20} />}
-            label="统计"
-            color="from-success-500 to-success-600"
-          />
-        </motion.div>
+        </div>
 
         {/* 短句入口（英语专属，日语模式下隐藏） */}
         {lang === 'en' && (
@@ -435,10 +440,11 @@ export function Home() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
+            className="home-col-12"
           >
             <Link
               to="/sentences"
-              className="card p-4 flex items-center gap-3 hover:shadow-glow transition-all"
+                className="card p-4 flex items-center gap-3 hover:shadow-glow transition-all"
             >
               <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white shadow-soft">
                 <MessageSquare size={20} />
@@ -487,7 +493,7 @@ function QuickAction({
   return (
     <Link
       to={to}
-      className="card p-3 flex flex-col items-center gap-1.5 hover:shadow-glow transition-all"
+      className="card h-full min-h-[108px] p-3 flex flex-col items-center justify-center gap-1.5 hover:shadow-glow transition-all"
     >
       <div
         className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-white shadow-soft`}

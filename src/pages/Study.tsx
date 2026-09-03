@@ -85,6 +85,8 @@ export function Study() {
   const allTranslationsRef = useRef<string[] | null>(null)
   // 复习答错重排去重：同一词一轮只重排一次，避免无限循环
   const requeuedRef = useRef<Set<number>>(new Set())
+  // 失败后需要连续确认；忘记的确认次数高于模糊。
+  const recallProgressRef = useRef<Map<number, { level: 'fuzzy' | 'forgotten'; recognized: number }>>(new Map())
 
   useEffect(() => {
     const timers = timersRef.current
@@ -110,6 +112,7 @@ export function Study() {
     setConfirmStartTest(false)
     setQuickRatings({})
     requeuedRef.current = new Set()
+    recallProgressRef.current = new Map()
     allTranslationsRef.current = null
     let items: { word: LangWord; isReview: boolean }[] = []
     if (planIdNum) {
@@ -207,6 +210,9 @@ export function Study() {
     // 回忆式(Moji)：认识(quality>=3) → 计数 + 从队列移除(通过不再出现)；模糊/忘记(quality<3) → 重排到队尾，重复直到认识
     if (studyType === 'recall') {
       if (quality < 3) {
+        const previous = recallProgressRef.current.get(item.id)
+        const level = previous?.level === 'forgotten' || quality === 1 ? 'forgotten' : 'fuzzy'
+        recallProgressRef.current.set(item.id, { level, recognized: 0 })
         setQueue((q) => {
           const idx = q.findIndex((x) => x.id === item.id)
           if (idx === -1) return q
@@ -215,6 +221,22 @@ export function Study() {
           return next
         })
         return // 不计数、不推进（当前词重排到队尾，下一个词自动顶到当前位置）
+      }
+      const recallProgress = recallProgressRef.current.get(item.id)
+      if (recallProgress) {
+        const required = recallProgress.level === 'forgotten' ? 3 : 2
+        recallProgress.recognized += 1
+        if (recallProgress.recognized < required) {
+          setQueue((q) => {
+            const idx = q.findIndex((x) => x.id === item.id)
+            if (idx === -1) return q
+            const next = [...q.slice(0, idx), ...q.slice(idx + 1), item]
+            saveCurrentStudyProgress(next, 0)
+            return next
+          })
+          return
+        }
+        recallProgressRef.current.delete(item.id)
       }
       if (planIdNum) {
         try {

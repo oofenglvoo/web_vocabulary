@@ -202,7 +202,7 @@ test('TC-LANG-011: 学习翻面显示笔记并可现场编辑', async ({ page })
   await switchLang(page, '日语')
   await page.goto(url('/import'))
   await page.locator('textarea').fill(`[
-    { "word": "勉強", "reading": "べんきょう", "meaning": "学习", "notes": "初始笔记" }
+    { "word": "勉強", "reading": "べんきょう", "partOfSpeech": "名", "meaning": "学习", "notes": "初始笔记" }
   ]`)
   await page.getByRole('button', { name: /解析预览/ }).click()
   await page.getByRole('button', { name: /导入 \d+ 个/ }).click()
@@ -214,6 +214,8 @@ test('TC-LANG-011: 学习翻面显示笔记并可现场编辑', async ({ page })
   await startStudyTest(page)
   // 翻面看释义
   await page.getByText('勉強').click()
+  await expect(page.getByText('词性', { exact: true })).toBeVisible()
+  await expect(page.getByText('名', { exact: true })).toBeVisible()
   await expect(page.getByText('初始笔记')).toBeVisible()
 
   // 现场编辑笔记（NotesBlock 阻止冒泡，不会触发翻面）

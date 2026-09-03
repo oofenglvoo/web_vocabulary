@@ -134,14 +134,32 @@ test('TC-STUDY-RCL-004: 认识后不再出现', async ({ page }) => {
   await expect(page.getByText('今日学习已完成!')).toBeVisible()
 })
 
-test('TC-STUDY-RCL-005: 模糊/忘记重复直到认识', async ({ page }) => {
+test('TC-STUDY-RCL-005: 模糊后需要重复认识确认', async ({ page }) => {
   await addWords(page, [['apple', '苹果'], ['banana', '香蕉']])
   await page.goto(url('/study'))
   await waitCard(page)
 
-  // 当前词选模糊 → 重排；下一词认识；重排的词再出现，认识 → 队列空
+  // 当前词选模糊 → 重排；下一词认识；重排的词再出现，需要连续认识两次
   await page.getByRole('button', { name: '模糊', exact: true }).click()
   await page.getByRole('button', { name: '认识', exact: true }).click()
+  await page.getByRole('button', { name: '认识', exact: true }).click()
+  await expect(page.getByText('剩余 1')).toBeVisible()
+  await page.getByRole('button', { name: '认识', exact: true }).click()
+  await expect(page.getByText('今日学习已完成!')).toBeVisible()
+})
+
+test('TC-STUDY-RCL-014: 忘记需要三次认识且再次忘记会重置', async ({ page }) => {
+  await addWords(page, [['repeat-forgot', '重复确认']])
+  await page.goto(url('/study'))
+  await waitCard(page)
+
+  await page.getByRole('button', { name: '忘记', exact: true }).click()
+  await page.getByRole('button', { name: '认识', exact: true }).click()
+  await page.getByRole('button', { name: '认识', exact: true }).click()
+  await page.getByRole('button', { name: '忘记', exact: true }).click()
+  await page.getByRole('button', { name: '认识', exact: true }).click()
+  await page.getByRole('button', { name: '认识', exact: true }).click()
+  await expect(page.getByText('今日学习已完成!')).not.toBeVisible()
   await page.getByRole('button', { name: '认识', exact: true }).click()
   await expect(page.getByText('今日学习已完成!')).toBeVisible()
 })
@@ -177,6 +195,8 @@ test('TC-STUDY-RCL-012: 重复出现的模糊单词仍可继续评分', async ({
   const fuzzyButton = page.getByRole('button', { name: '模糊', exact: true })
   await expect(fuzzyButton).toBeEnabled()
   await fuzzyButton.click()
+  await expect(page.locator('h2').first()).toHaveText(secondWord)
+  await page.getByRole('button', { name: '认识', exact: true }).click()
   await expect(page.locator('h2').first()).toHaveText(secondWord)
   await page.getByRole('button', { name: '认识', exact: true }).click()
   await expect(page.getByText('今日学习已完成!')).toBeVisible()
