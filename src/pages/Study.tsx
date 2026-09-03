@@ -32,6 +32,7 @@ import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
 import {
   clearStudyProgress,
+  clearStudyStarted,
   clearQuickProgress,
   getStudyProgress,
   getQuickProgress,
@@ -175,7 +176,9 @@ export function Study() {
   }
 
   const currentItem = queue[index]
-  const total = queue.length
+  // 总数必须固定为本轮初始数量；回忆式移除词条后不能把 total 变成 0，
+  // 否则完成页会被误判成“初始没有可学习内容”。
+  const total = startTotal
 
   // 选择题干扰项缓存 + 异步加载（按当前语言词库构建候选池）
   const loadDistractors = async (current: StudyItem) => {
@@ -208,7 +211,7 @@ export function Study() {
           const idx = q.findIndex((x) => x.id === item.id)
           if (idx === -1) return q
           const next = [...q.slice(0, idx), ...q.slice(idx + 1), item]
-          saveCurrentStudyProgress(next, index)
+          saveCurrentStudyProgress(next, 0)
           return next
         })
         return // 不计数、不推进（当前词重排到队尾，下一个词自动顶到当前位置）
@@ -234,7 +237,7 @@ export function Study() {
       // 认识 → 移除当前词；index 不推进（下一个词顶到当前位置，避免跳过）
       setQueue((q) => {
         const next = q.filter((x) => x.id !== item.id)
-        saveCurrentStudyProgress(next, index)
+        saveCurrentStudyProgress(next, 0)
         return next
       })
       return
@@ -318,6 +321,7 @@ export function Study() {
       }
     }
     setDone(true)
+    clearStudyStarted(lang, planIdNum)
     clearQuickProgress(lang, planIdNum, isExtra)
     clearStudyProgress(lang, planIdNum, isReviewMode, isExtra)
     confetti({
@@ -349,9 +353,9 @@ export function Study() {
       toast('error', '操作失败: ' + (e as Error).message)
       return
     }
-    setQueue((q) => q.filter((x) => x.id !== item.id))
-    saveCurrentStudyProgress(queue.filter((x) => x.id !== item.id), index)
-    advance()
+    const nextQueue = queue.filter((x) => x.id !== item.id)
+    setQueue(nextQueue)
+    saveCurrentStudyProgress(nextQueue, 0)
   }
 
   const speak = (item: StudyItem) =>
@@ -392,6 +396,7 @@ export function Study() {
       : false
     if (completed && !done) {
       setDone(true)
+      clearStudyStarted(lang, planIdNum)
       clearStudyProgress(lang, planIdNum, isReviewMode, isExtra)
       confetti({
         particleCount: 100,
@@ -410,8 +415,12 @@ export function Study() {
     )
   }
 
+  const reachedEnd = initialItems.length > 0 && (
+    studyType === 'recall' ? queue.length === 0 : total > 0 && index >= total
+  )
+
   // 空队列
-  if (total === 0) {
+  if (total === 0 && !done && !reachedEnd) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center bg-gradient-mesh">
         <motion.div
@@ -466,7 +475,7 @@ export function Study() {
   }
 
   // 完成页
-  if (done) {
+  if (done || reachedEnd) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center bg-gradient-mesh">
         <motion.div
@@ -478,7 +487,7 @@ export function Study() {
           <div className="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-success flex items-center justify-center shadow-glow">
             <CheckCircle size={28} className="text-white" />
           </div>
-          <h2 className="text-2xl font-bold mb-1">{isReviewMode ? '复习完成!' : '学习完成!'}</h2>
+          <h2 className="text-2xl font-bold mb-1">{isReviewMode ? '复习完成!' : '今日学习已完成!'}</h2>
           <p className="text-gray-500 dark:text-gray-400 mb-5">本轮共 {startTotal} 个词条</p>
 
           {planIdNum && (learnStats.newDone > 0 || learnStats.reviewDone > 0) && (

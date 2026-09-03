@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "deploy": "tsc && vite build && gh-pages -d dist",
     "test:e2e": "playwright test",
+    "test:e2e:translation": "playwright test tests/translation.spec.ts",
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {

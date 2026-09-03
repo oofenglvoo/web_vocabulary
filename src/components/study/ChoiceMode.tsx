@@ -48,8 +48,8 @@ export function ChoiceMode({ item, distractors, onRate, onMaster, onSpeak, entit
 
   return (
     <div className="card flex-1 flex flex-col items-center justify-center p-6">
-      <div className="flex items-center gap-3 mb-2">
-        <h2 className="text-3xl font-bold text-gradient text-center break-words">{item.title}</h2>
+      <div className="flex items-center justify-center gap-3 mb-2 min-w-0 flex-wrap w-full">
+        <h2 className="min-w-0 max-w-full text-3xl font-bold text-gradient text-center break-all">{item.title}</h2>
         <button
           type="button"
           onClick={onSpeak}

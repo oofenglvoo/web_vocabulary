@@ -38,6 +38,18 @@ import { translateWithMyMemory } from '../utils/translation'
 
 const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
 
+function splitNumberedJapaneseText(text: string): { items: string[]; numbered: boolean } {
+  const matches = [...text.matchAll(/(?:^|(?<=[^\d]))\d{1,3}[、．.)](?=\s|[\u3000-\u9fff\u3040-\u30ff])/g)]
+  if (matches.length < 2) return { items: [text.trim()], numbered: false }
+  const items = matches.map((match, index) => {
+    const marker = match[0].match(/\d{1,3}[、．.)]/)!
+    const start = (match.index ?? 0) + (match[0].indexOf(marker[0]) + marker[0].length)
+    const end = index + 1 < matches.length ? matches[index + 1].index : text.length
+    return text.slice(start, end).trim()
+  }).filter(Boolean)
+  return { items, numbered: true }
+}
+
 // 浏览来源:从哪个列表进入了这个详情页 → 决定上一个/下一个的取数集
 type Scope = 'all' | 'favorites' | 'category'
 
@@ -97,8 +109,11 @@ export function WordDetail() {
   const nextWord = currentIdx >= 0 && currentIdx < list.length - 1 ? list[currentIdx + 1] : null
   const isStudyPreview = searchParams.get('studyPreview') === '1' && studyIds.length > 0
   const studyPath = searchParams.get('studyPath')
-  const backToCategory = scope === 'category' && scopeCategory
-    ? `/categories/${encodeURIComponent(scopeCategory)}`
+  const returnTo = searchParams.get('returnTo')
+  const backToCategory = returnTo?.startsWith('/categories/')
+    ? returnTo
+    : (returnTo === 'category' || scope === 'category') && scopeCategory
+      ? `/categories/${encodeURIComponent(scopeCategory)}`
     : null
 
   const buildHref = (wordId: number) => {
@@ -110,6 +125,7 @@ export function WordDetail() {
     }
     params.set('scope', scope)
     if (scope === 'category' && scopeCategory) params.set('category', scopeCategory)
+    if (returnTo) params.set('returnTo', returnTo)
     return `/word/${wordId}?${params.toString()}`
   }
 
@@ -248,7 +264,7 @@ export function WordDetail() {
   return (
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
-        <BackButton onBack={backToCategory ? () => navigate(backToCategory) : undefined} />
+        <BackButton onBack={backToCategory ? () => navigate(backToCategory, { replace: true }) : undefined} />
         <div className="flex items-center gap-2">
           {!word.isLearned && (
             <button
@@ -751,9 +767,14 @@ function JapaneseDetailBody({
           </button>
         </div>
         {defs.length > 0 ? (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {defs.map((d, i) => (
-              <div key={i} className="flex items-start gap-2">
+              <div key={i} className="flex items-start gap-2 w-full">
+                {defs.length > 1 && (
+                  <span className="text-sm font-medium text-gray-400 dark:text-gray-500 shrink-0 mt-0.5">
+                    {i + 1}.
+                  </span>
+                )}
                 {(d.pos || word.partOfSpeech) && (
                   <span className="text-sm font-medium text-primary-500 dark:text-primary-400 shrink-0 mt-0.5">
                     {d.pos || word.partOfSpeech}
@@ -761,10 +782,22 @@ function JapaneseDetailBody({
                 )}
                 <div className="flex-1">
                   {d.translation && (
-                    <p className="text-lg dark:text-gray-200 font-medium">{d.translation}</p>
+                    splitNumberedJapaneseText(d.translation).numbered ? (
+                      <ol className="list-decimal pl-5 space-y-1 text-lg dark:text-gray-200 font-medium">
+                        {splitNumberedJapaneseText(d.translation).items.map((text, index) => <li key={index}>{text}</li>)}
+                      </ol>
+                    ) : (
+                      <p className="text-lg dark:text-gray-200 font-medium">{d.translation}</p>
+                    )
                   )}
                   {d.meaning && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{d.meaning}</p>
+                    splitNumberedJapaneseText(d.meaning).numbered ? (
+                      <ol className="list-decimal pl-5 space-y-1 text-sm text-gray-500 dark:text-gray-400">
+                        {splitNumberedJapaneseText(d.meaning).items.map((text, index) => <li key={index}>{text}</li>)}
+                      </ol>
+                    ) : (
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{d.meaning}</p>
+                    )
                   )}
                 </div>
               </div>
