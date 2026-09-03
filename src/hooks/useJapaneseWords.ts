@@ -122,11 +122,11 @@ export async function bulkAddJapaneseWords(
       const word = item.word.trim()
       const key = word.toLocaleLowerCase()
       const category = options.overrideCategory ?? item.category
-      if (!word || seen.has(key)) {
+      if (!word || (options.skipDuplicates && seen.has(key))) {
         skippedWords.push(word || '(空词条)')
         continue
       }
-      seen.add(key)
+      if (options.skipDuplicates) seen.add(key)
       const existing = await db.japaneseWords.where('word').equalsIgnoreCase(word).first()
       if (existing) {
         if (options.skipDuplicates) {

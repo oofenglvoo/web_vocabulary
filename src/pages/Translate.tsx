@@ -16,9 +16,9 @@ function detectSourceLang(text: string): SourceLang {
   return /[\u3040-\u30ff]/.test(text) ? 'ja' : 'en'
 }
 
-function findLocalWord(words: LangWord[], text: string): LangWord | undefined {
+function findLocalWords(words: LangWord[], text: string): LangWord[] {
   const normalized = text.trim().toLocaleLowerCase()
-  return words.find((word) => word.word.trim().toLocaleLowerCase() === normalized)
+  return words.filter((word) => word.word.trim().toLocaleLowerCase() === normalized)
 }
 
 export function Translate() {
@@ -36,7 +36,7 @@ export function Translate() {
   const source = detectSourceLang(query)
   // 翻译页按输入内容选择词库，不受当前首页语言切换状态影响。
   const localWords = source === 'ja' ? japaneseWords : englishWords
-  const localWord = query ? findLocalWord(localWords, query) : undefined
+  const localWordsMatched = query ? findLocalWords(localWords, query) : []
 
   const requestTranslation = async (text: string) => {
     const normalized = text.trim()
@@ -158,7 +158,7 @@ export function Translate() {
         </div>
       )}
 
-      {localWord && <LocalWordResult word={localWord} />}
+      {localWordsMatched.map((word) => <LocalWordResult key={word.id} word={word} />)}
     </div>
   )
 }

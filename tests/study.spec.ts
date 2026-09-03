@@ -157,6 +157,14 @@ test('TC-STUDY-RCL-011: 长单词在学习卡片中完整显示', async ({ page 
   await expect(title).toBeVisible()
 })
 
+test('TC-STUDY-RCL-013: against 在学习卡片中完整显示', async ({ page }) => {
+  await addWords(page, [['against', '反对']])
+  await page.goto(url('/study'))
+  await waitCard(page)
+
+  await expect(page.locator('h2').first()).toHaveText('against')
+})
+
 test('TC-STUDY-RCL-012: 重复出现的模糊单词仍可继续评分', async ({ page }) => {
   await addWords(page, [['repeat-fuzzy-a', '甲'], ['repeat-fuzzy-b', '乙']])
   await page.goto(url('/study'))

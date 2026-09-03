@@ -251,3 +251,21 @@ test('TC-LANG-012: 日语分类导入关闭跳过重复后允许跨分类导入�
   await page.goto(url('/categories/N4'))
   await expect(page.getByText('分類語', { exact: true })).toBeVisible({ timeout: 10000 })
 })
+
+test('TC-LANG-013: 日语导入同分类重复词条后搜索显示全部结果', async ({ page }) => {
+  await switchLang(page, '日语')
+  await page.goto(url('/import?category=N4'))
+  await page.locator('textarea').fill(`[
+    { "word": "重複語", "reading": "ちょうふくご", "meaning": "第一个释义" },
+    { "word": "重複語", "reading": "じゅうふくご", "meaning": "第二个释义" }
+  ]`)
+  await page.getByRole('button', { name: /解析预览/ }).click()
+  await page.locator('input[type="checkbox"]').nth(1).uncheck()
+  await page.getByRole('button', { name: /导入 \d+ 个/ }).click()
+  await expect(page.getByText('新增: 2 个')).toBeVisible({ timeout: 10000 })
+
+  await page.goto(url('/words'))
+  const search = page.getByPlaceholder(/搜索表记/)
+  await search.fill('重複語')
+  await expect(page.getByText('重複語', { exact: true })).toHaveCount(2)
+})
