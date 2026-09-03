@@ -615,7 +615,7 @@ export { DuplicateCategoryError }
 export async function addLangCategory(
   name: string,
   description = '',
-  color = '#8b5cf6',
+  color = '#2f6b5c',
   entityType?: 'word' | 'sentence'
 ): Promise<number> {
   const lang = getCurrentLang()

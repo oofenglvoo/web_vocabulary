@@ -13,8 +13,8 @@ import { useToast } from '../components/Toast'
 import { EmptyState } from '../components/EmptyState'
 
 const PRESET_COLORS = [
-  '#8b5cf6', '#06b6d4', '#f97316', '#3b82f6', '#22c55e',
-  '#a855f7', '#eab308', '#6366f1', '#ec4899', '#10b981',
+  '#2f6b5c', '#6e9f84', '#c89236', '#477f61', '#5f9b78',
+  '#c4654d', '#e0b15b', '#245749', '#d8785d', '#1f5147',
 ]
 
 export function Categories() {
@@ -70,7 +70,7 @@ export function Categories() {
                           className={`chip shrink-0 ${
                             cat.entityType === 'word'
                               ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-300'
-                              : 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-300'
+                               : 'bg-accent-50 text-accent-600 dark:bg-accent-900/30 dark:text-accent-300'
                           }`}
                         >
                           {cat.entityType === 'word' ? '单词' : '短句'}
@@ -220,8 +220,8 @@ function CategoryEditor({ mode, category, isJa, onClose }: EditorProps) {
                     onClick={() => setType('sentence')}
                     className={`py-2.5 rounded-xl text-sm font-medium border transition-all ${
                       type === 'sentence'
-                        ? 'bg-purple-500 text-white border-purple-500 shadow-glow'
-                        : 'border-gray-200 text-gray-600 dark:border-slate-600 dark:text-gray-300 hover:border-purple-300'
+                      ? 'bg-[#7b7564] text-white border-[#7b7564] shadow-glow'
+                        : 'border-gray-200 text-gray-600 dark:border-slate-600 dark:text-gray-300 hover:border-accent-300'
                     }`}
                   >
                     短句分类
@@ -240,7 +240,7 @@ function CategoryEditor({ mode, category, isJa, onClose }: EditorProps) {
                   className={`chip ${
                     category.entityType === 'word'
                       ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-300'
-                      : 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-300'
+                      : 'bg-accent-50 text-accent-600 dark:bg-accent-900/30 dark:text-accent-300'
                   }`}
                 >
                   {category.entityType === 'word' ? '单词分类' : '短句分类'}

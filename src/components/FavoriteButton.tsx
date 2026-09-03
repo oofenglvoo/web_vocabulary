@@ -14,8 +14,8 @@ function getLastFolderId(folders: { id?: number; name: string }[], japanese = fa
 }
 
 const PRESET_COLORS = [
-  '#ef4444', '#8b5cf6', '#06b6d4', '#f97316', '#3b82f6',
-  '#22c55e', '#a855f7', '#eab308', '#ec4899', '#10b981',
+  '#d8785d', '#2f6b5c', '#6e9f84', '#c89236', '#477f61',
+  '#5f9b78', '#c4654d', '#e0b15b', '#d8785d', '#245749',
 ]
 
 interface FavoriteButtonProps {

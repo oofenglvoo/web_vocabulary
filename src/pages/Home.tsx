@@ -446,7 +446,7 @@ export function Home() {
               to="/sentences"
                 className="card p-4 flex items-center gap-3 hover:shadow-glow transition-all"
             >
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white shadow-soft">
+              <div className="w-11 h-11 rounded-xl bg-gradient-accent flex items-center justify-center text-white shadow-soft">
                 <MessageSquare size={20} />
               </div>
               <div className="flex-1">
@@ -455,7 +455,7 @@ export function Home() {
                   管理和复习常用短句、短语
                 </p>
               </div>
-              <span className="text-purple-600 dark:text-purple-400 text-xs font-medium">→</span>
+              <span className="text-accent-600 dark:text-accent-400 text-xs font-medium">→</span>
             </Link>
           </motion.div>
         )}

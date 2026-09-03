@@ -103,14 +103,14 @@ export const SentenceCard = memo(function SentenceCard({
               e.stopPropagation()
               onFavorite()
             }}
-            className="p-2 rounded-full hover:bg-pink-50 active:scale-90 transition dark:hover:bg-pink-900/20"
+            className="p-2 rounded-full hover:bg-accent-50 active:scale-90 transition dark:hover:bg-accent-900/20"
             aria-label="收藏"
           >
             <Heart
               size={17}
               className={
                 sentence.isFavorite
-                  ? 'fill-pink-500 text-pink-500'
+                  ? 'fill-accent-500 text-accent-500'
                   : 'text-gray-300 dark:text-gray-600'
               }
             />

@@ -27,7 +27,7 @@ button, a, input, textarea, select {
 }
 
 button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid #2f6b5c;
   outline-offset: 2px;
 }
 
@@ -171,6 +171,10 @@ body {
 .layout-mobile-mode .home-content {
   display: block !important;
 }
+/* 宽屏下 lg:space-y-0 仍会生效，需在移动端模式恢复卡片间距 */
+.layout-mobile-mode .home-content > * + * {
+  margin-top: 1rem !important;
+}
 .layout-mobile-mode .layout-viewport {
   width: 100%;
   max-width: 28rem;
@@ -236,7 +240,7 @@ input[type='range'] {
   -webkit-appearance: none;
   appearance: none;
   height: 6px;
-  background: linear-gradient(to right, #6366f1, #8b5cf6);
+  background: linear-gradient(to right, #1f5147, #6e9f84);
   border-radius: 9999px;
   outline: none;
 }
@@ -247,8 +251,8 @@ input[type='range']::-webkit-slider-thumb {
   height: 20px;
   border-radius: 50%;
   background: #fff;
-  border: 3px solid #6366f1;
-  box-shadow: 0 2px 6px rgb(99 102 241 / 0.35);
+  border: 3px solid #2f6b5c;
+  box-shadow: 0 2px 6px rgb(31 81 71 / 0.35);
   cursor: pointer;
 }
 input[type='range']::-moz-range-thumb {
@@ -256,7 +260,7 @@ input[type='range']::-moz-range-thumb {
   height: 20px;
   border-radius: 50%;
   background: #fff;
-  border: 3px solid #6366f1;
+  border: 3px solid #2f6b5c;
   cursor: pointer;
 }
 
