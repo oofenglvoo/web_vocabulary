@@ -350,7 +350,7 @@ export function Study() {
       particleCount: 100,
       spread: 70,
       origin: { y: 0.7 },
-      colors: ['#6366f1', '#8b5cf6', '#ec4899', '#10b981'],
+      colors: ['#1f5147', '#2f6b5c', '#d8785d', '#6e9f84'],
     })
     return true
   }
@@ -424,7 +424,7 @@ export function Study() {
         particleCount: 100,
         spread: 70,
         origin: { y: 0.7 },
-        colors: ['#6366f1', '#8b5cf6', '#ec4899', '#10b981'],
+        colors: ['#1f5147', '#2f6b5c', '#d8785d', '#6e9f84'],
       })
     }
   }, [loading, index, total, done, queue.length, studyType])

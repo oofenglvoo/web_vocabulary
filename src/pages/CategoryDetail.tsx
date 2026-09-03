@@ -201,7 +201,7 @@ export function CategoryDetail() {
             {!isJa && (
               <Link
                 to={sentenceAddHref}
-                className="py-2.5 rounded-xl text-sm font-medium border border-purple-300 text-purple-600 dark:border-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all inline-flex items-center justify-center"
+                className="py-2.5 rounded-xl text-sm font-medium border border-primary-300 text-primary-600 dark:border-primary-700 dark:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all inline-flex items-center justify-center"
               >
                 添加短句
               </Link>

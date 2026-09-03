@@ -436,19 +436,19 @@ export async function initDefaultCategories(): Promise<void> {
     if (count > 0) return
 
     const defaults = [
-      { name: '默认', description: '默认分类', color: '#8b5cf6', wordCount: 0, createdAt: Date.now() },
+      { name: '默认', description: '默认分类', color: '#2f6b5c', wordCount: 0, createdAt: Date.now() },
       { name: 'CET-4', description: '大学英语四级', color: '#06b6d4', wordCount: 0, createdAt: Date.now() },
       { name: 'CET-6', description: '大学英语六级', color: '#f97316', wordCount: 0, createdAt: Date.now() },
       { name: '雅思', description: '雅思词汇', color: '#3b82f6', wordCount: 0, createdAt: Date.now() },
       { name: '托福', description: '托福词汇', color: '#22c55e', wordCount: 0, createdAt: Date.now() },
       { name: 'GRE', description: 'GRE词汇', color: '#a855f7', wordCount: 0, createdAt: Date.now() },
       { name: '商务英语', description: '商务场景词汇', color: '#eab308', wordCount: 0, createdAt: Date.now() },
-      { name: '日常用语', description: '日常生活常用词', color: '#6366f1', wordCount: 0, createdAt: Date.now() },
+      { name: '日常用语', description: '日常生活常用词', color: '#6e9f84', wordCount: 0, createdAt: Date.now() },
       { name: '日语', description: '日语词汇', color: '#d946ef', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
-      { name: 'N5', description: '日语N5基础', color: '#ec4899', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
+      { name: 'N5', description: '日语N5基础', color: '#d8785d', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
       { name: 'N4', description: '日语N4进阶', color: '#f43f5e', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
       { name: 'N3', description: '日语N3中级', color: '#14b8a6', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
-      { name: '标准日本语', description: '标准日本语教材词汇', color: '#8b5cf6', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
+      { name: '标准日本语', description: '标准日本语教材词汇', color: '#2f6b5c', wordCount: 0, createdAt: Date.now(), lang: 'ja' as const },
     ]
 
     // 按名称去重（老库曾因并发播种出现同名重复行，这里兜底跳过已存在的）
@@ -487,7 +487,7 @@ export class DuplicateCategoryError extends Error {
 export async function addCategory(
   name: string,
   description = '',
-  color = '#8b5cf6',
+  color = '#2f6b5c',
   entityType?: 'word' | 'sentence',
   lang: Lang = 'en'
 ) {
@@ -613,7 +613,7 @@ export async function deleteCategory(
       await db.categories.add({
         name: '默认',
         description: '默认分类',
-        color: '#8b5cf6',
+        color: '#2f6b5c',
         wordCount: 0,
         createdAt: Date.now(),
       })

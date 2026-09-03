@@ -79,7 +79,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       <nav aria-label="主导航" className={`${useDesktopLayout ? 'hidden' : 'flex'} fixed bottom-0 left-0 right-0 z-50 pointer-events-none`}>
-        <div className="max-w-md mx-auto px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pointer-events-auto">
+        <div className="w-full max-w-md mx-auto pb-[calc(0.75rem+env(safe-area-inset-bottom))] pointer-events-auto">
           <div className="bg-[#f7faf5]/90 dark:bg-slate-800/90 backdrop-blur-xl border border-[var(--line)] shadow-card rounded-2xl">
             <div className="flex justify-around py-1.5">
               {navItems.map((item) => {
@@ -89,19 +89,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     key={item.path}
                     to={item.path}
                     aria-current={active ? 'page' : undefined}
-                    className="flex flex-col items-center px-2.5 py-1.5 rounded-xl transition-all"
+                    className="flex flex-col items-center px-1.5 py-1 rounded-xl transition-all"
                   >
                     <div
-                      className={`flex items-center justify-center w-9 h-9 rounded-xl transition-all ${
+                      className={`flex items-center justify-center w-11 h-11 rounded-xl transition-all ${
                         active
                           ? 'bg-gradient-primary text-white shadow-glow'
                           : 'text-gray-400 hover:bg-gray-50 hover:text-gray-600 dark:hover:bg-slate-700 dark:hover:text-gray-300'
                       }`}
                     >
-                      <item.icon size={18} />
+                      <item.icon size={21} />
                     </div>
                     <span
-                      className={`text-[10px] mt-0.5 transition-colors ${
+                      className={`text-xs mt-0.5 transition-colors ${
                         active ? 'text-primary-600 dark:text-primary-400 font-medium' : 'text-gray-400 dark:text-gray-500'
                       }`}
                     >
