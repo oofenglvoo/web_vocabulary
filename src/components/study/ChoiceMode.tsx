@@ -48,17 +48,19 @@ export function ChoiceMode({ item, distractors, onRate, onMaster, onSpeak, entit
 
   return (
     <div className="card flex-1 flex flex-col items-center justify-center p-6">
-      <div className="flex items-center justify-center gap-3 mb-2 min-w-0 flex-wrap w-full">
-        <h2 className="min-w-0 max-w-full text-3xl font-bold text-gradient text-center break-all">{item.title}</h2>
-        <button
-          type="button"
-          onClick={onSpeak}
-          className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors shrink-0"
-          aria-label="发音"
-        >
-          <Volume2 size={20} />
-        </button>
-        <FavoriteButton entityType={entityType} entityId={item.id} title={item.title} />
+      <div className="flex flex-col items-center justify-center mb-2 min-w-0 w-full">
+        <h2 className="w-full min-w-0 max-w-full overflow-visible py-1 text-3xl font-bold leading-normal text-gradient text-center break-all">{item.title}</h2>
+        <div className="flex items-center gap-2 mt-1">
+          <button
+            type="button"
+            onClick={onSpeak}
+            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+            aria-label="发音"
+          >
+            <Volume2 size={20} />
+          </button>
+          <FavoriteButton entityType={entityType} entityId={item.id} title={item.title} />
+        </div>
       </div>
       {item.phonetic && <p className="text-gray-500 dark:text-gray-400 mb-4">{item.phonetic}</p>}
       <p className="text-gray-500 dark:text-gray-400 mb-6">选择正确的中文释义</p>

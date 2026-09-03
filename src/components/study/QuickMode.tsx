@@ -130,7 +130,7 @@ export function QuickMode({ items, onRateAll, initialRatings = {}, onRatingChang
                   className="flex-1 min-w-0 flex items-center gap-3 text-left hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
                 >
                   <span className="flex-1 min-w-0">
-                    <span className="font-medium dark:text-gray-100 break-words whitespace-normal">{item.title}</span>
+                    <span className="block min-w-0 font-medium dark:text-gray-100 break-all whitespace-normal">{item.title}</span>
                     {item.phonetic && (
                       <span className="text-xs text-gray-400 dark:text-gray-500 ml-2">{item.phonetic}</span>
                     )}
