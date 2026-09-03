@@ -5,7 +5,7 @@ import { url } from './helpers'
 
 test('首页能加载', async ({ page }) => {
   await page.goto(url('/'))
-  await expect(page.getByRole('button', { name: '学习', exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: /^(开始学习|继续学习)$/, exact: true })).toBeVisible()
 })
 
 test('能添加单词并出现在列表', async ({ page }) => {

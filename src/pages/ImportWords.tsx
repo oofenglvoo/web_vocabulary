@@ -302,6 +302,7 @@ export function ImportWords() {
 
     setImporting(true)
     try {
+      let imported: BulkAddResult | BulkAddJapaneseResult
       if (isJa) {
         const r = await bulkAddJapaneseWords(jaParsed!.words, {
           skipDuplicates,
@@ -309,6 +310,7 @@ export function ImportWords() {
           forceFavorite: autoFavorite,
         })
         setResult(r)
+        imported = r
       } else {
         const r = await bulkAddWords(parsed!.words as ImportableWord[], {
           skipDuplicates,
@@ -316,8 +318,9 @@ export function ImportWords() {
           forceFavorite: autoFavorite,
         })
         setResult(r)
+        imported = r
       }
-      toast('success', `成功导入 ${validCount} 个词条`)
+      toast('success', `成功导入 ${imported.added} 个词条${imported.skipped > 0 ? `，跳过 ${imported.skipped} 个重复词条` : ''}`)
     } catch (e) {
       toast('error', '导入失败: ' + (e as Error).message)
       setResult(null)

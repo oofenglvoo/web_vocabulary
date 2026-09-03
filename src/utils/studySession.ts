@@ -56,6 +56,16 @@ export function markStudyStartedToday(lang: string, planId: number | null) {
   }
 }
 
+export function clearStudyStarted(lang: string, planId: number | null) {
+  try {
+    const sessions = JSON.parse(localStorage.getItem(STUDY_SESSION_KEY) || '{}') as Record<string, string>
+    delete sessions[key(lang, planId)]
+    localStorage.setItem(STUDY_SESSION_KEY, JSON.stringify(sessions))
+  } catch {
+    // Local storage may be unavailable.
+  }
+}
+
 export function getQuickProgress(
   lang: string,
   planId: number | null,

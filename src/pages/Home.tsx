@@ -45,6 +45,8 @@ export function Home() {
   const hasInterruptedFreeStudy = hasStudyProgressToday(lang, null, false, false)
   const hasQuickStudy = hasQuickProgressToday(lang, activePlan?.id ?? null, false)
   const hasQuickFreeStudy = hasQuickProgressToday(lang, null, false)
+  const canResumePlanStudy = resumeStudy || hasInterruptedStudy || hasQuickStudy
+  const canResumeFreeStudy = resumeFreeStudy || hasInterruptedFreeStudy || hasQuickFreeStudy
   const [confirmExtra, setConfirmExtra] = useState(false)
   const [translationQuery, setTranslationQuery] = useState('')
 
@@ -198,10 +200,10 @@ export function Home() {
 
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => (newQuotaDone && !hasInterruptedStudy && !hasQuickStudy ? setConfirmExtra(true) : resumeStudy || hasInterruptedStudy || hasQuickStudy ? navigate(`/study?plan=${activePlan.id}&mode=learn&resumeTest=1`) : navigate(`/study?plan=${activePlan.id}&mode=learn`))}
+                onClick={() => (newQuotaDone && !canResumePlanStudy ? setConfirmExtra(true) : canResumePlanStudy ? navigate(`/study?plan=${activePlan.id}&mode=learn&resumeTest=1`) : navigate(`/study?plan=${activePlan.id}&mode=learn`))}
                 className="btn-primary py-2.5 text-sm gap-1.5"
               >
-                <Play size={14} fill="currentColor" /> {todayNewRemaining > 0 || hasInterruptedStudy || hasQuickStudy ? '继续学习' : '额外学习'}
+                <Play size={14} fill="currentColor" /> {canResumePlanStudy ? '继续学习' : newQuotaDone ? '额外学习' : '开始学习'}
               </button>
               <button
                 onClick={() => navigate(`/study?plan=${activePlan.id}&mode=review`)}
@@ -300,10 +302,10 @@ export function Home() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => navigate(`/study?mode=learn${resumeFreeStudy || hasInterruptedFreeStudy || hasQuickFreeStudy ? '&resumeTest=1' : ''}`)}
+                onClick={() => navigate(`/study?mode=learn${canResumeFreeStudy ? '&resumeTest=1' : ''}`)}
                 className="btn-primary py-2.5 text-sm gap-1.5"
               >
-                <Play size={14} fill="currentColor" /> 学习
+                <Play size={14} fill="currentColor" /> {canResumeFreeStudy ? '继续学习' : '开始学习'}
               </button>
               <button
                 onClick={() => navigate('/study?mode=quiz')}

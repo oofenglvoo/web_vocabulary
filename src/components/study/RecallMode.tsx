@@ -5,7 +5,7 @@ import { FlipCard } from './FlipCard'
 
 interface RecallModeProps {
   item: StudyItem
-  onRate: (quality: number) => void
+  onRate: (quality: number) => Promise<void> | void
   onMaster?: () => void
   onSpeak: () => void
   entityType?: StudyEntityType
@@ -14,6 +14,7 @@ interface RecallModeProps {
 /** 回忆式(Moji)：正面=单词，点卡片翻面看释义；认识/模糊/忘记 三按钮常驻下方 */
 export function RecallMode({ item, onRate, onMaster, onSpeak, entityType = 'word' }: RecallModeProps) {
   const [flipped, setFlipped] = useState(false)
+  const [rating, setRating] = useState(false)
   const spokenId = useRef<number | null>(null)
   const speakRef = useRef(onSpeak)
   speakRef.current = onSpeak
@@ -25,7 +26,19 @@ export function RecallMode({ item, onRate, onMaster, onSpeak, entityType = 'word
     speakRef.current()
   }, [item.id])
 
-  const handleFlip = () => setFlipped((f) => !f)
+  const handleFlip = () => {
+    if (!rating) setFlipped((f) => !f)
+  }
+
+  const handleRate = async (quality: number) => {
+    if (rating) return
+    setRating(true)
+    try {
+      await onRate(quality)
+    } finally {
+      setRating(false)
+    }
+  }
 
   return (
     <div onClick={handleFlip} className="flex-1 flex flex-col cursor-pointer select-none">
@@ -39,9 +52,10 @@ export function RecallMode({ item, onRate, onMaster, onSpeak, entityType = 'word
             type="button"
             onClick={(e) => {
               e.stopPropagation()
-              onRate(1)
+               void handleRate(1)
             }}
-            className="flex flex-col items-center gap-1 py-2.5 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 active:scale-95 transition-all"
+             disabled={rating}
+             className="flex flex-col items-center gap-1 py-2.5 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 active:scale-95 transition-all disabled:opacity-50"
           >
             <XCircle size={20} />
             <span className="text-sm font-medium">忘记</span>
@@ -50,9 +64,10 @@ export function RecallMode({ item, onRate, onMaster, onSpeak, entityType = 'word
             type="button"
             onClick={(e) => {
               e.stopPropagation()
-              onRate(2)
+               void handleRate(2)
             }}
-            className="flex flex-col items-center gap-1 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-warn-600 dark:text-warn-400 active:scale-95 transition-all"
+             disabled={rating}
+             className="flex flex-col items-center gap-1 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-warn-600 dark:text-warn-400 active:scale-95 transition-all disabled:opacity-50"
           >
             <HelpCircle size={20} />
             <span className="text-sm font-medium">模糊</span>
@@ -61,9 +76,10 @@ export function RecallMode({ item, onRate, onMaster, onSpeak, entityType = 'word
             type="button"
             onClick={(e) => {
               e.stopPropagation()
-              onRate(5)
+               void handleRate(5)
             }}
-            className="flex flex-col items-center gap-1 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-success-600 dark:text-success-400 active:scale-95 transition-all"
+             disabled={rating}
+             className="flex flex-col items-center gap-1 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-success-600 dark:text-success-400 active:scale-95 transition-all disabled:opacity-50"
           >
             <CheckCircle size={20} />
             <span className="text-sm font-medium">认识</span>

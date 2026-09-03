@@ -77,7 +77,7 @@ test('TC-STUDY-PREVIEW-001: 先显示当天学习列表，确认后才进入测�
   // 确认后离开，再从首页点击学习应直接进入测试
   await page.getByRole('button', { name: '返回' }).click()
   await expect(page).toHaveURL(/\/web_vocabulary\/?$/)
-  await page.getByRole('button', { name: '学习', exact: true }).click()
+  await page.getByRole('button', { name: /^(开始学习|继续学习)$/, exact: true }).click()
   await expect(page.getByText('新学 · 回忆式')).toBeVisible()
 })
 
@@ -142,6 +142,34 @@ test('TC-STUDY-RCL-005: 模糊/忘记重复直到认识', async ({ page }) => {
   // 当前词选模糊 → 重排；下一词认识；重排的词再出现，认识 → 队列空
   await page.getByRole('button', { name: '模糊', exact: true }).click()
   await page.getByRole('button', { name: '认识', exact: true }).click()
+  await page.getByRole('button', { name: '认识', exact: true }).click()
+  await expect(page.getByText('今日学习已完成!')).toBeVisible()
+})
+
+test('TC-STUDY-RCL-011: 长单词在学习卡片中完整显示', async ({ page }) => {
+  const longWord = 'antidisestablishmentarianism'
+  await addWords(page, [[longWord, '反对废除国教主义']])
+  await page.goto(url('/study'))
+  await waitCard(page)
+
+  const title = page.locator('h2').first()
+  await expect(title).toHaveText(longWord)
+  await expect(title).toBeVisible()
+})
+
+test('TC-STUDY-RCL-012: 重复出现的模糊单词仍可继续评分', async ({ page }) => {
+  await addWords(page, [['repeat-fuzzy-a', '甲'], ['repeat-fuzzy-b', '乙']])
+  await page.goto(url('/study'))
+  await waitCard(page)
+
+  await page.getByRole('button', { name: '模糊', exact: true }).click()
+  const secondWord = await currentWord(page)
+  await page.getByRole('button', { name: '认识', exact: true }).click()
+  await expect(page.locator('h2').first()).not.toHaveText(secondWord)
+  const fuzzyButton = page.getByRole('button', { name: '模糊', exact: true })
+  await expect(fuzzyButton).toBeEnabled()
+  await fuzzyButton.click()
+  await expect(page.locator('h2').first()).toHaveText(secondWord)
   await page.getByRole('button', { name: '认识', exact: true }).click()
   await expect(page.getByText('今日学习已完成!')).toBeVisible()
 })

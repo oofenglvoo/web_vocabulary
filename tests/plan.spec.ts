@@ -21,7 +21,7 @@ async function createPlan(page: import('@playwright/test').Page, name: string) {
 }
 
 // 创建计划且每日新词=1（用于加学测试：学满1个后剩余>0 → 弹加学框）
-async function createPlanWithQuota1(page: import('@playwright/test').Page, name: string) {
+async function createPlanWithQuota1(page: import('@playwright/test').Page, name: string): Promise<string> {
   await page.goto(url('/plan'))
   await page.getByRole('button', { name: /创建学习计划/ }).click()
   await page.getByPlaceholder(/例如/).fill(name)
@@ -36,6 +36,10 @@ async function createPlanWithQuota1(page: import('@playwright/test').Page, name:
   }
   await page.getByRole('button', { name: /创建计划/ }).click()
   await expect(page.getByText(name, { exact: true }).first()).toBeVisible()
+  const href = await page.locator('a[href*="/plan/"][href$="/words"]').first().getAttribute('href')
+  const id = href?.match(/\/plan\/(\d+)\/words/)?.[1]
+  if (!id) throw new Error('未找到新建计划 ID')
+  return id
 }
 
 // ===== 学习计划：P0-P2 级别测试用例 =====
@@ -149,10 +153,10 @@ test('TC-PLN-MGT-005: 激活计划进度卡片', async ({ page }) => {
 test('TC-EXTRA-001: 首页加学确认框', async ({ page }) => {
   await addWords(page, [['apple', '苹果'], ['banana', '香蕉'], ['cat', '猫']])
   // 每日新词=1，有 3 个词 → 学满1个后 remainingNew=2 → 弹加学框
-  await createPlanWithQuota1(page, '加学计划')
+  const planId = await createPlanWithQuota1(page, '加学计划')
 
   // 学 1 个词（回忆式认识）。等完成页出现 → 确保 markWordStarted 已写入 DB
-  await page.goto(url('/study?plan=1&mode=learn'))
+   await page.goto(url(`/study?plan=${planId}&mode=learn`))
   await startStudyTest(page)
   await page.getByRole('button', { name: '认识', exact: true }).click()
   await expect(page.getByText('今日学习已完成!')).toBeVisible({ timeout: 10000 })
@@ -167,8 +171,8 @@ test('TC-EXTRA-001: 首页加学确认框', async ({ page }) => {
 
 test('TC-EXTRA-005: 取消加学', async ({ page }) => {
   await addWords(page, [['apple', '苹果'], ['banana', '香蕉']])
-  await createPlanWithQuota1(page, '取消加学')
-  await page.goto(url('/study?plan=1&mode=learn'))
+  const planId = await createPlanWithQuota1(page, '取消加学')
+  await page.goto(url(`/study?plan=${planId}&mode=learn`))
   await startStudyTest(page)
   await page.getByRole('button', { name: '认识', exact: true }).click()
   await expect(page.getByText('今日学习已完成!')).toBeVisible({ timeout: 10000 })

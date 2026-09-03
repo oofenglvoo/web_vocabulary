@@ -21,7 +21,7 @@ export function FlipCard({ item, flipped, onSpeak, entityType = 'word', children
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.2 }}
-      className="card flex-1 flex flex-col p-6 overflow-auto"
+      className="card flex-1 min-w-0 flex flex-col p-6 overflow-auto"
       style={{ perspective: '1000px' }}
     >
       <AnimatePresence mode="wait">
@@ -32,11 +32,11 @@ export function FlipCard({ item, flipped, onSpeak, entityType = 'word', children
             animate={{ rotateY: 0, opacity: 1 }}
             exit={{ rotateY: 90, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex-1 flex flex-col"
+            className="flex-1 min-w-0 flex flex-col"
             style={{ backfaceVisibility: 'hidden' }}
           >
-            <div className="flex items-center justify-center gap-3 mb-2">
-              <h2 className="text-3xl font-bold text-gradient text-center break-words">
+            <div className="flex items-center justify-center gap-3 mb-2 min-w-0 flex-wrap">
+              <h2 className="min-w-0 max-w-full text-3xl font-bold text-gradient text-center break-all">
                 {item.title}
               </h2>
               <button
@@ -73,11 +73,11 @@ export function FlipCard({ item, flipped, onSpeak, entityType = 'word', children
             animate={{ rotateY: 0, opacity: 1 }}
             exit={{ rotateY: -90, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex-1 flex flex-col"
+            className="flex-1 min-w-0 flex flex-col"
             style={{ backfaceVisibility: 'hidden' }}
           >
-            <div className="flex items-center justify-center gap-3 mb-2">
-              <h2 className="text-xl font-bold text-gray-700 dark:text-gray-200 text-center break-words">
+            <div className="flex items-center justify-center gap-3 mb-2 min-w-0 flex-wrap">
+              <h2 className="min-w-0 max-w-full text-xl font-bold text-gray-700 dark:text-gray-200 text-center break-all">
                 {item.title}
               </h2>
             </div>

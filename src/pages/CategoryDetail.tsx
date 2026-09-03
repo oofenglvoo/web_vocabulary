@@ -290,7 +290,7 @@ export function CategoryDetail() {
                 search={search}
                 onSearchChange={setSearch}
                 searchPlaceholder={isJa ? '搜索表记、假名、释义...' : '搜索单词、释义...'}
-                onWordClick={(w) => navigate(`/word/${w.id}?scope=category&category=${encodeURIComponent(decoded)}`)}
+                onWordClick={(w) => navigate(`/word/${w.id}?scope=category&category=${encodeURIComponent(decoded)}&returnTo=${encodeURIComponent(`/categories/${decoded}`)}`)}
                 onFavorite={(w) => toggleLangFavorite(w.id!, w.isFavorite)}
                 onDelete={(w) => setConfirmDeleteWordId(w.id!)}
                 renderItem={
