@@ -18,6 +18,8 @@ export interface Word {
   // 新字段：多个释义
   definitions: Definition[]
   example: string
+  // 例句中文翻译（可选，非索引字段，旧记录为 undefined）
+  exampleTranslation?: string
   category: string
   difficulty: number
   createdAt: number

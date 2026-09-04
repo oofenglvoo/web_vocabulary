@@ -25,6 +25,7 @@ function AddEnglishWord() {
     word: '',
     phonetic: '',
     example: '',
+    exampleTranslation: '',
     category: presetCategory,
     difficulty: 1,
     notes: '',
@@ -75,6 +76,7 @@ function AddEnglishWord() {
           trans: d.trans.trim(),
         })),
         example: form.example.trim(),
+        exampleTranslation: form.exampleTranslation.trim(),
         category: form.category,
         difficulty: form.difficulty,
         notes: form.notes.trim(),
@@ -197,6 +199,16 @@ function AddEnglishWord() {
             onChange={(e) => setForm({ ...form, example: e.target.value })}
             className="input-field min-h-[60px]"
             placeholder="输入例句"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">例句翻译</label>
+          <input
+            value={form.exampleTranslation}
+            onChange={(e) => setForm({ ...form, exampleTranslation: e.target.value })}
+            className="input-field"
+            placeholder="例句中文翻译（可选）"
           />
         </div>
 

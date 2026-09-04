@@ -383,18 +383,6 @@ export function Study() {
   const speak = (item: StudyItem) =>
     isJa ? speakWord(item.title, { lang: 'ja' }) : speakWord(item.title)
 
-  function startTestFromCompletion() {
-    setQueue(initialItems)
-    setStartTotal(initialItems.length)
-    setIndex(0)
-    setDone(false)
-    setQuickRatings({})
-    clearQuickProgress(lang, planIdNum, isExtra)
-    clearStudyProgress(lang, planIdNum, isReviewMode, isExtra)
-    setStudyStarted(true)
-    requeuedRef.current = new Set()
-  }
-
   function confirmStudyStart() {
     markStudyStartedToday(lang, planIdNum)
     setConfirmStartTest(false)
@@ -486,11 +474,6 @@ export function Study() {
               </Link>
             )}
           </div>
-          {!isReviewMode && initialItems.length > 0 && (
-            <button onClick={startTestFromCompletion} className="btn-primary w-full mt-3">
-              开始测试
-            </button>
-          )}
         </motion.div>
       </div>
     )
@@ -525,12 +508,6 @@ export function Study() {
             </div>
           )}
 
-          <button
-            onClick={startTestFromCompletion}
-            className="btn-primary w-full mb-2"
-          >
-            开始测试
-          </button>
           <button
             onClick={() => navigate(planIdNum ? '/plan' : '/')}
             className="btn-secondary w-full"

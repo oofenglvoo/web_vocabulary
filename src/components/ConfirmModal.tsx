@@ -8,6 +8,7 @@ interface ConfirmModalProps {
   confirmText?: string
   cancelText?: string
   danger?: boolean
+  icon?: ReactNode
   onConfirm: () => void
   onCancel: () => void
 }
@@ -19,6 +20,7 @@ export function ConfirmModal({
   confirmText = '确认',
   cancelText = '取消',
   danger = true,
+  icon,
   onConfirm,
   onCancel,
 }: ConfirmModalProps) {
@@ -35,7 +37,7 @@ export function ConfirmModal({
             danger ? 'bg-gradient-warn' : 'bg-gradient-primary'
           } flex items-center justify-center shadow-glow`}
         >
-          <Trash2 size={28} className="text-white" />
+          {icon ?? <Trash2 size={28} className="text-white" />}
         </div>
         <h3 className="font-bold text-lg mb-1 dark:text-gray-100">{title}</h3>
         {message && (

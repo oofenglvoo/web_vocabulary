@@ -58,6 +58,7 @@ function buildWord(raw: Record<string, any>): ImportableWord | null {
     phonetic: String(raw.phonetic ?? '').trim(),
     definition: String(raw.definition ?? '').trim(),
     example: String(raw.example ?? '').trim(),
+    exampleTranslation: String(raw.exampleTranslation ?? raw.exampletranslation ?? '').trim(),
     translation: String(raw.translation ?? '').trim(),
     definitions,
     category: String(raw.category ?? '默认').trim() || '默认',
