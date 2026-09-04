@@ -112,6 +112,8 @@ import {
   ensureJapaneseDefaultFolder,
 } from './useFavorites'
 import { getDefinitions, getPrimaryTranslation } from '../utils/definitions'
+import { splitNumberedJapaneseText } from '../utils/japaneseText'
+import { SpeakButton } from '../components/SpeakButton'
 import { StudyItem } from '../components/study/types'
 
 // ================== 通用类型 ==================
@@ -263,6 +265,19 @@ export function getLangPrimaryTranslation(w: LangWord): string {
   return getPrimaryTranslation(w)
 }
 
+/** 日语释义文本：编号多义（1、… 2、…）拆成列表逐条换行，否则单段显示 */
+function JaMeaningText({ text, className }: { text: string; className: string }) {
+  const { items, numbered } = splitNumberedJapaneseText(text)
+  if (!numbered) return <p className={className}>{text}</p>
+  return (
+    <ol className={`list-decimal pl-5 space-y-1 ${className}`}>
+      {items.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ol>
+  )
+}
+
 function renderJaDefs(w: JapaneseWord): ReactNode {
   const definitions = (w.definitions ?? []).filter((d) => d.pos || d.meaning || d.translation)
   return (
@@ -283,15 +298,18 @@ function renderJaDefs(w: JapaneseWord): ReactNode {
       {definitions.length > 0 ? definitions.map((d, i) => (
         <div key={i} className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
           {d.pos && <div className="text-xs text-primary-500 mb-1">{d.pos}</div>}
-          {d.translation && <p className="text-sm font-medium dark:text-gray-200">{d.translation}</p>}
-          {d.meaning && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{d.meaning}</p>}
+          {d.translation && <JaMeaningText text={d.translation} className="text-sm font-medium dark:text-gray-200" />}
+          {d.meaning && <JaMeaningText text={d.meaning} className="text-xs text-gray-500 dark:text-gray-400 mt-1" />}
         </div>
       )) : <div className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
         <p className="text-sm text-gray-500 dark:text-gray-400">暂无释义</p>
       </div>}
       {w.example && (
         <div className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
-          <div className="text-xs font-medium text-primary-600 dark:text-primary-400 mb-1">例句</div>
+          <div className="flex items-center justify-between mb-1">
+            <div className="text-xs font-medium text-primary-600 dark:text-primary-400">例句</div>
+            <SpeakButton text={w.example} lang="ja" label="播放例句" />
+          </div>
           <p className="text-sm dark:text-gray-200">{w.example}</p>
           {w.exampleReading && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{w.exampleReading}</p>}
           {w.exampleTranslation && <p className="text-sm text-primary-700 dark:text-primary-300 mt-1">{w.exampleTranslation}</p>}
@@ -328,7 +346,16 @@ function renderEnDefs(w: Word): ReactNode {
           </>
         )}
       </div>
-      {w.example && <InfoBlock title="例句" content={w.example} highlight />}
+      {w.example && (
+        <div className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
+          <div className="flex items-center justify-between mb-1">
+            <div className="text-xs font-medium text-primary-600 dark:text-primary-400">例句</div>
+            <SpeakButton text={w.example} lang="en" label="播放例句" />
+          </div>
+          <p className="text-sm italic text-primary-700 dark:text-primary-300">{w.example}</p>
+          {w.exampleTranslation && <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{w.exampleTranslation}</p>}
+        </div>
+      )}
       {w.notes && <InfoBlock title="笔记" content={w.notes} />}
     </>
   )

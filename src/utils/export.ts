@@ -7,6 +7,7 @@ export function exportWordsToJson(words: Word[]): string {
       phonetic: w.phonetic,
       definition: w.definition,
       example: w.example,
+      exampleTranslation: w.exampleTranslation ?? '',
       translation: w.translation,
       category: w.category,
       difficulty: w.difficulty,
@@ -23,12 +24,13 @@ export function exportWordsToJson(words: Word[]): string {
 }
 
 export function exportWordsToCsv(words: Word[]): string {
-  const headers = ['word', 'phonetic', 'definition', 'example', 'translation', 'category', 'difficulty', 'onlineTranslation', 'onlineTranslationSource', 'definitions']
+  const headers = ['word', 'phonetic', 'definition', 'example', 'exampleTranslation', 'translation', 'category', 'difficulty', 'onlineTranslation', 'onlineTranslationSource', 'definitions']
   const rows = words.map((w) => [
     w.word,
     w.phonetic,
     w.definition,
     w.example,
+    w.exampleTranslation ?? '',
     w.translation,
     w.category,
     String(w.difficulty),

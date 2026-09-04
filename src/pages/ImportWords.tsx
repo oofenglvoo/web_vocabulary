@@ -32,6 +32,7 @@ const EN_SAMPLES: Record<Format, string> = {
       { "pos": "v.", "def": "to deposit money", "trans": "存钱" }
     ],
     "example": "I need to go to the bank.",
+    "exampleTranslation": "我需要去银行。",
     "category": "CET-4",
     "difficulty": 2
   },
@@ -45,9 +46,9 @@ const EN_SAMPLES: Record<Format, string> = {
     "difficulty": 1
   }
 ]`,
-  csv: `word,phonetic,definition,example,translation,category,difficulty,definitions
-bank,/bæŋk/,a financial institution,"I need to go to the bank.",银行,CET-4,2,"[{""pos"":""n."",""def"":""a financial institution"",""trans"":""银行""},{""pos"":""n."",""def"":""the land alongside a river"",""trans"":""河岸""},{""pos"":""v."",""def"":""to deposit money"",""trans"":""存钱""}]"
-hello,/həˈloʊ/,used as a greeting,"Hello, world!",你好,日常用语,1,`,
+  csv: `word,phonetic,definition,example,exampleTranslation,translation,category,difficulty,definitions
+bank,/bæŋk/,a financial institution,"I need to go to the bank.",我需要去银行。,银行,CET-4,2,"[{""pos"":""n."",""def"":""a financial institution"",""trans"":""银行""},{""pos"":""n."",""def"":""the land alongside a river"",""trans"":""河岸""},{""pos"":""v."",""def"":""to deposit money"",""trans"":""存钱""}]"
+hello,/həˈloʊ/,used as a greeting,"Hello, world!",,你好,日常用语,1,`,
   text: `hello	你好	/həˈloʊ/
 world	世界
 bank	银行;河岸;存钱`,

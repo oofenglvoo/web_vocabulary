@@ -12,6 +12,7 @@ import {
   Pencil,
   Check,
   Languages,
+  RotateCcw,
 } from 'lucide-react'
 import { useLang } from '../context/Language'
 import {
@@ -22,11 +23,14 @@ import {
   useLangCategories,
   deleteLangWord,
   markLangWordLearned,
+  unmarkLangWordLearned,
   updateLangWord,
 } from '../hooks/languageAware'
 import { FavoriteButton } from '../components/FavoriteButton'
+import { SpeakButton } from '../components/SpeakButton'
 import { speakWord } from '../utils/tts'
 import { getDefinitions } from '../utils/definitions'
+import { splitNumberedJapaneseText } from '../utils/japaneseText'
 import { BackButton } from '../components/BackButton'
 import { ConfirmModal } from '../components/ConfirmModal'
 import { useToast } from '../components/Toast'
@@ -37,18 +41,6 @@ import type { LangWord } from '../hooks/languageAware'
 import { translateWithMyMemory } from '../utils/translation'
 
 const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
-
-function splitNumberedJapaneseText(text: string): { items: string[]; numbered: boolean } {
-  const matches = [...text.matchAll(/(?:^|(?<=[^\d]))\d{1,3}[、．.)](?=\s|[\u3000-\u9fff\u3040-\u30ff])/g)]
-  if (matches.length < 2) return { items: [text.trim()], numbered: false }
-  const items = matches.map((match, index) => {
-    const marker = match[0].match(/\d{1,3}[、．.)]/)!
-    const start = (match.index ?? 0) + (match[0].indexOf(marker[0]) + marker[0].length)
-    const end = index + 1 < matches.length ? matches[index + 1].index : text.length
-    return text.slice(start, end).trim()
-  }).filter(Boolean)
-  return { items, numbered: true }
-}
 
 // 浏览来源:从哪个列表进入了这个详情页 → 决定上一个/下一个的取数集
 type Scope = 'all' | 'favorites' | 'category'
@@ -70,6 +62,7 @@ export function WordDetail() {
   const [editingJa, setEditingJa] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [markingLearned, setMarkingLearned] = useState(false)
+  const [confirmUnmark, setConfirmUnmark] = useState(false)
   const [onlineTranslation, setOnlineTranslation] = useState<string | null>(null)
   const [translationLoading, setTranslationLoading] = useState(false)
   const [translationError, setTranslationError] = useState(false)
@@ -196,6 +189,17 @@ export function WordDetail() {
     }
   }
 
+  const handleUnmarkLearned = async () => {
+    if (!word.isLearned || markingLearned) return
+    setMarkingLearned(true)
+    try {
+      await unmarkLangWordLearned(word.id!)
+      toast('info', '已取消掌握标记')
+    } finally {
+      setMarkingLearned(false)
+    }
+  }
+
   const handleOnlineTranslate = async () => {
     setTranslationLoading(true)
     setTranslationError(false)
@@ -266,13 +270,21 @@ export function WordDetail() {
       <div className="flex items-center justify-between mb-4">
         <BackButton onBack={backToCategory ? () => navigate(backToCategory, { replace: true }) : undefined} />
         <div className="flex items-center gap-2">
-          {!word.isLearned && (
+          {!word.isLearned ? (
             <button
               onClick={handleMarkLearned}
               disabled={markingLearned}
               className="btn-success px-3 py-1.5 text-sm disabled:opacity-50"
             >
               {markingLearned ? '处理中...' : '掌握'}
+            </button>
+          ) : (
+            <button
+              onClick={() => setConfirmUnmark(true)}
+              disabled={markingLearned}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm text-warn-600 dark:text-warn-400 bg-warn-50 dark:bg-warn-900/30 hover:bg-warn-100 dark:hover:bg-warn-900/50 transition-colors disabled:opacity-50"
+            >
+              <RotateCcw size={14} /> {markingLearned ? '处理中...' : '取消掌握'}
             </button>
           )}
           <button
@@ -525,7 +537,18 @@ export function WordDetail() {
               </div>
             )}
 
-            {enWord!.example && <SectionCard title="例句" content={enWord!.example} highlight />}
+            {enWord!.example && (
+              <div className="card p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400">例句</h3>
+                  <SpeakButton text={enWord!.example} lang="en" label="播放例句" />
+                </div>
+                <p className="text-lg italic text-primary-700 dark:text-primary-300">{enWord!.example}</p>
+                {enWord!.exampleTranslation && (
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{enWord!.exampleTranslation}</p>
+                )}
+              </div>
+            )}
             {enWord!.notes && <SectionCard title="笔记" content={enWord!.notes} />}
           </>
         )}
@@ -585,6 +608,17 @@ export function WordDetail() {
           confirmText="删除"
           onConfirm={handleDelete}
           onCancel={() => setConfirmDelete(false)}
+        />
+      )}
+
+      {confirmUnmark && (
+        <ConfirmModal
+          title="取消掌握?"
+          message="取消后该单词将重新进入复习队列"
+          confirmText="确认取消"
+          icon={<RotateCcw size={28} className="text-white" />}
+          onConfirm={handleUnmarkLearned}
+          onCancel={() => setConfirmUnmark(false)}
         />
       )}
     </div>
@@ -809,7 +843,10 @@ function JapaneseDetailBody({
       </div>
       {word.example && (
         <div className="card p-4">
-          <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400 mb-2">例句</h3>
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400">例句</h3>
+            <SpeakButton text={word.example} lang="ja" label="播放例句" />
+          </div>
           <p className="text-base dark:text-gray-200">{word.example}</p>
           {word.exampleReading && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{word.exampleReading}</p>}
           {word.exampleTranslation && <p className="text-sm text-primary-700 dark:text-primary-300 mt-1">{word.exampleTranslation}</p>}
