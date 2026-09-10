@@ -212,8 +212,11 @@ test('TC-LANG-011: 学习翻面显示笔记并可现场编辑', async ({ page })
   await page.goto(url('/study'))
   await page.waitForTimeout(1500)
   await startStudyTest(page)
-  // 翻面看释义
-  await page.getByText('勉強').click()
+  // 点击单词标题不再翻卡（翻卡仅限音标下方空白区）
+  await page.getByText('勉強', { exact: true }).click()
+  await expect(page.getByText('词性', { exact: true })).toHaveCount(0)
+  // 翻面看释义：点击音标下方空白翻卡区
+  await page.locator('[data-flip-zone]').first().click()
   await expect(page.getByText('词性', { exact: true })).toBeVisible()
   await expect(page.getByText('名', { exact: true })).toBeVisible()
   await expect(page.getByText('初始笔记')).toBeVisible()
