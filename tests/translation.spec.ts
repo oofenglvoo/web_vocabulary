@@ -2,6 +2,14 @@ import { test, expect } from '@playwright/test'
 import { url } from './helpers'
 
 async function mockTranslation(page: import('@playwright/test').Page, translation = '测试译文') {
+  // Google 为主通道，优先命中；MyMemory 作为回退也一并 mock
+  await page.route('**translate.googleapis.com/**', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify([[[translation, 'source', null, null, 10]], null, 'en', []]),
+    })
+  })
   await page.route('**/api.mymemory.translated.net/get**', async (route) => {
     await route.fulfill({
       status: 200,
@@ -13,6 +21,10 @@ async function mockTranslation(page: import('@playwright/test').Page, translatio
       }),
     })
   })
+}
+
+async function mockGoogleFailure(page: import('@playwright/test').Page) {
+  await page.route('**translate.googleapis.com/**', (route) => route.abort())
 }
 
 async function addEnglishWord(page: import('@playwright/test').Page, word: string) {
@@ -40,7 +52,7 @@ test.describe('在线翻译增量测试', () => {
     await page.goto(url('/translate?q=hello%20world'))
     await expect(page.getByText('已识别为：英语')).toBeVisible()
     await expect(page.getByText('你好世界', { exact: true })).toBeVisible()
-    await expect(page.getByText('在线翻译（MyMemory）')).toBeVisible()
+    await expect(page.getByText('在线翻译（Google）')).toBeVisible()
   })
 
   test('TC-TRANS-003: 日语输入自动识别并翻译', async ({ page }) => {
@@ -73,7 +85,8 @@ test.describe('在线翻译增量测试', () => {
     await expect(page.getByText('本地释义', { exact: true })).toBeVisible()
   })
 
-  test('TC-TRANS-006: 短词原文候选优先使用实际译文', async ({ page }) => {
+  test('TC-TRANS-006: Google 失败回退 MyMemory 且短词优先用实际译文', async ({ page }) => {
+    await mockGoogleFailure(page)
     await page.route('**/api.mymemory.translated.net/get**', async (route) => {
       await route.fulfill({
         status: 200,
@@ -91,5 +104,6 @@ test.describe('在线翻译增量测试', () => {
     await page.goto(url('/translate?q=address'))
     await expect(page.getByText('地址', { exact: true })).toBeVisible()
     await expect(page.getByText('address', { exact: true })).toHaveCount(1)
+    await expect(page.getByText('在线翻译（MyMemory）')).toBeVisible()
   })
 })

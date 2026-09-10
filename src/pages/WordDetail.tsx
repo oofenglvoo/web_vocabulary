@@ -38,7 +38,7 @@ import { NotesBlock } from '../components/NotesBlock'
 import { SkeletonCard } from '../components/Skeleton'
 import { Definition, JapaneseDefinition, JapaneseWord, Word } from '../types/word'
 import type { LangWord } from '../hooks/languageAware'
-import { translateWithMyMemory } from '../utils/translation'
+import { translateOnline, type TranslationProvider } from '../utils/translation'
 
 const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
 
@@ -64,6 +64,7 @@ export function WordDetail() {
   const [markingLearned, setMarkingLearned] = useState(false)
   const [confirmUnmark, setConfirmUnmark] = useState(false)
   const [onlineTranslation, setOnlineTranslation] = useState<string | null>(null)
+  const [translationProvider, setTranslationProvider] = useState<TranslationProvider | null>(null)
   const [translationLoading, setTranslationLoading] = useState(false)
   const [translationError, setTranslationError] = useState(false)
 
@@ -73,8 +74,9 @@ export function WordDetail() {
     setEditDefinitions([])
     setEditingJa(false)
     setOnlineTranslation(word?.onlineTranslation ?? null)
+    setTranslationProvider((word?.onlineTranslationSource as TranslationProvider) ?? null)
     setTranslationError(false)
-  }, [id, word?.onlineTranslation])
+  }, [id, word?.onlineTranslation, word?.onlineTranslationSource])
 
   // 上一个/下一个的来源
   const scopeParam = (searchParams.get('scope') as Scope) || 'all'
@@ -204,12 +206,13 @@ export function WordDetail() {
     setTranslationLoading(true)
     setTranslationError(false)
     try {
-      const translated = await translateWithMyMemory(word.word, isJa ? 'ja' : 'en')
+      const result = await translateOnline(word.word, isJa ? 'ja' : 'en')
       await updateLangWord(word.id!, {
-        onlineTranslation: translated,
-        onlineTranslationSource: 'MyMemory',
+        onlineTranslation: result.text,
+        onlineTranslationSource: result.provider,
       })
-      setOnlineTranslation(translated)
+      setOnlineTranslation(result.text)
+      setTranslationProvider(result.provider)
     } catch {
       setOnlineTranslation(null)
       setTranslationError(true)
@@ -292,7 +295,7 @@ export function WordDetail() {
             disabled={translationLoading}
             className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
             aria-label="在线翻译"
-            title="使用 MyMemory 在线翻译"
+            title="在线翻译（Google / MyMemory）"
           >
             <Languages size={20} className="text-gray-400" />
           </button>
@@ -397,7 +400,7 @@ export function WordDetail() {
       {(translationLoading || onlineTranslation || translationError) && (
         <div className="card p-4 mb-4">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400">在线翻译（MyMemory）</h3>
+            <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400">在线翻译（{translationProvider ?? 'Google'}）</h3>
             {onlineTranslation && (
               <button onClick={handleOnlineTranslate} className="text-xs text-primary-600 dark:text-primary-400">
                 重新翻译
