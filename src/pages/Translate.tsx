@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { Check, Copy, Languages, RotateCw, X } from 'lucide-react'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
-import { translateWithMyMemory } from '../utils/translation'
+import { translateOnline, type TranslationProvider } from '../utils/translation'
 import { getDefinitions } from '../utils/definitions'
 import { isJaWord, type LangWord } from '../hooks/languageAware'
 import { useAllWords } from '../hooks/useWords'
@@ -29,6 +29,7 @@ export function Translate() {
   const query = searchParams.get('q')?.trim() ?? ''
   const [input, setInput] = useState(query)
   const [translation, setTranslation] = useState<string | null>(null)
+  const [provider, setProvider] = useState<TranslationProvider | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
@@ -43,16 +44,20 @@ export function Translate() {
     if (!normalized) {
       setSearchParams({}, { replace: true })
       setTranslation(null)
+      setProvider(null)
       setError('请输入要翻译的单词或句子')
       return
     }
     setInput(normalized)
     setTranslation(null)
+    setProvider(null)
     setError('')
     setCopied(false)
     setLoading(true)
     try {
-      setTranslation(await translateWithMyMemory(normalized, detectSourceLang(normalized)))
+      const result = await translateOnline(normalized, detectSourceLang(normalized))
+      setTranslation(result.text)
+      setProvider(result.provider)
     } catch {
       setError('翻译失败，请检查网络后重试')
     } finally {
@@ -63,14 +68,18 @@ export function Translate() {
   useEffect(() => {
     setInput(query)
     setTranslation(null)
+    setProvider(null)
     setError('')
     setCopied(false)
     if (!query) {
       setLoading(false)
       return
     }
-    void translateWithMyMemory(query, source)
-      .then(setTranslation)
+    void translateOnline(query, source)
+      .then((result) => {
+        setTranslation(result.text)
+        setProvider(result.provider)
+      })
       .catch(() => setError('翻译失败，请检查网络后重试'))
       .finally(() => setLoading(false))
     setLoading(true)
@@ -154,7 +163,7 @@ export function Translate() {
           {loading && <p className="text-sm text-gray-500 dark:text-gray-400">翻译中...</p>}
           {!loading && translation && <p className="text-lg whitespace-pre-wrap dark:text-gray-200">{translation}</p>}
           {!loading && error && <p className="text-sm text-red-500">{error}</p>}
-          {translation && <p className="text-xs text-gray-400">在线翻译（MyMemory）</p>}
+          {translation && <p className="text-xs text-gray-400">在线翻译（{provider ?? 'Google'}）</p>}
         </div>
       )}
 
