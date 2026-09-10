@@ -41,8 +41,8 @@ export function RecallMode({ item, onRate, onMaster, onSpeak, entityType = 'word
   }
 
   return (
-    <div onClick={handleFlip} className="flex-1 flex flex-col cursor-pointer select-none">
-      <FlipCard item={item} flipped={flipped} onSpeak={onSpeak} entityType={entityType}>
+    <div className="flex-1 flex flex-col">
+      <FlipCard item={item} flipped={flipped} onSpeak={onSpeak} entityType={entityType} onFlip={handleFlip}>
         {/* 自评按钮常驻（点按钮不触发翻面） */}
         <div
           className="mt-4 grid grid-cols-3 gap-2"
