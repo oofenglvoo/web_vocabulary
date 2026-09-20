@@ -28,6 +28,7 @@ const SentenceDetail = lazy(() => import('./pages/SentenceDetail').then((m) => (
 const SentenceStudy = lazy(() => import('./pages/SentenceStudy').then((m) => ({ default: m.SentenceStudy })))
 const CheckIn = lazy(() => import('./pages/CheckIn').then((m) => ({ default: m.CheckIn })))
 const Translate = lazy(() => import('./pages/Translate').then((m) => ({ default: m.Translate })))
+const Dictionary = lazy(() => import('./pages/Dictionary').then((m) => ({ default: m.Dictionary })))
 
 function PageFallback() {
   return (
@@ -84,6 +85,7 @@ function App() {
                   <Route path="/stats" element={<Stats />} />
                   <Route path="/checkin" element={<CheckIn />} />
                   <Route path="/translate" element={<Translate />} />
+                  <Route path="/dictionary" element={<Dictionary />} />
                   {/* 旧日语路由 → 统一页面（自动切换语言） */}
                   <Route path="/japanese" element={<JapaneseRedirect to="/words" />} />
                   <Route path="/japanese/study" element={<JapaneseRedirect to="/study" />} />

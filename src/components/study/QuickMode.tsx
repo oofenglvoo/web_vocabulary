@@ -59,7 +59,7 @@ export function QuickMode({ items, onRateAll, initialRatings = {}, onRatingChang
   // 自动展开下一项后，把"忘记/记得/掌握"操作区滚到可视区域。
   // 用按钮区而不是整卡作目标：内容长于视口时 nearest 只能把卡顶滚进来，
   // 按钮仍会被挡住；以按钮区为目标能保证可以直接开始评分。
-  // 底部有固定的主导航栏，用 scroll-margin-bottom 让按钮最终停在菜单上方。
+  // 底部有固定的主导航栏，需要保证按钮完整停在菜单上方（仅移动端有底部菜单）。
   useEffect(() => {
     const id = autoScrollId.current
     if (id === null) return
@@ -68,10 +68,22 @@ export function QuickMode({ items, onRateAll, initialRatings = {}, onRatingChang
       const target =
         document.getElementById(`quick-actions-${id}`) ?? itemRefs.current[id]
       if (!target) return
-      const nav = document.querySelector('nav')
+      // 列表内部容器通常不产生滚动（内容未溢出），scrollIntoView 不会生效；
+      // 直接基于视口计算偏移并滚动窗口，保证按钮区完整露出且不被底部导航栏遮挡。
+      const nav = Array.from(document.querySelectorAll('nav')).find(
+        (element) => getComputedStyle(element).position === 'fixed' && element.getBoundingClientRect().top > 0
+      )
       const navHeight = nav ? nav.getBoundingClientRect().height : 0
-      target.style.scrollMarginBottom = `${Math.round(navHeight + 8)}px`
-      target.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      const margin = navHeight + 16
+      const rect = target.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+      const overflowBottom = rect.bottom - (viewportHeight - margin)
+      const overflowTop = rect.top - margin
+      if (overflowBottom > 0) {
+        window.scrollBy({ top: overflowBottom, behavior: 'smooth' })
+      } else if (overflowTop < 0) {
+        window.scrollBy({ top: overflowTop, behavior: 'smooth' })
+      }
     })
     return () => window.cancelAnimationFrame(frame)
   }, [expanded])

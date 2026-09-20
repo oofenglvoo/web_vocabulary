@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { Save, Plus, X } from 'lucide-react'
+import { Save, Plus, X, BookMarked, RotateCw } from 'lucide-react'
 import { useLang } from '../context/Language'
 import { addWord, useCategories } from '../hooks/useWords'
 import { addJapaneseWord } from '../hooks/useJapaneseWords'
 import { useToast } from '../components/Toast'
 import { BackButton } from '../components/BackButton'
+import { DictionaryPanel } from '../components/DictionaryPanel'
+import { emptyDictionaryResult, lookupDictionary, type DictionaryResult } from '../utils/dictionary'
 import { Definition, JapaneseDefinition } from '../types/word'
 
-const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
+const POS_OPTIONS = ['', 'n.', 'v.', 'vt.', 'vi.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', 'det.', 'num.', '名', '动', '形', '副']
 
 export function AddWord() {
   const lang = useLang()
@@ -34,6 +36,42 @@ function AddEnglishWord() {
     { pos: '', def: '', trans: '' },
   ])
   const [error, setError] = useState('')
+  const [dict, setDict] = useState<DictionaryResult | null>(null)
+  const [dictLoading, setDictLoading] = useState(false)
+  const [dictError, setDictError] = useState('')
+
+  const lookupOnline = async () => {
+    const word = form.word.trim()
+    if (!word) {
+      setDictError('请先输入单词')
+      return
+    }
+    setDictLoading(true)
+    setDictError('')
+    setDict(null)
+    try {
+      setDict(await lookupDictionary(word))
+    } catch {
+      setDictError('未找到该词的词典释义，请检查拼写或网络后重试')
+    } finally {
+      setDictLoading(false)
+    }
+  }
+
+  const fillFromDictionary = {
+    onFillPhonetic: (phonetic: string) => setForm((f) => ({ ...f, phonetic })),
+    onFillSense: (sense: { pos: string; trans: string }) => {
+      setDefinitions((prev) => {
+        const index = prev.findIndex((item) => !item.def.trim() && !item.trans.trim())
+        if (index === -1) return [...prev, { pos: sense.pos, def: '', trans: sense.trans }]
+        const next = [...prev]
+        next[index] = { ...next[index], pos: sense.pos || next[index].pos, trans: sense.trans }
+        return next
+      })
+    },
+    onFillExample: (example: { en: string; zh: string }) =>
+      setForm((f) => ({ ...f, example: example.en, exampleTranslation: example.zh })),
+  }
 
   const addDefinition = () => {
     setDefinitions([...definitions, { pos: '', def: '', trans: '' }])
@@ -118,13 +156,34 @@ function AddEnglishWord() {
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">单词 *</label>
-          <input
-            value={form.word}
-            onChange={(e) => setForm({ ...form, word: e.target.value })}
-            className="input-field"
-            placeholder="输入单词（英/日）"
-          />
+          <div className="flex gap-2">
+            <input
+              value={form.word}
+              onChange={(e) => setForm({ ...form, word: e.target.value })}
+              className="input-field flex-1 min-w-0"
+              placeholder="输入单词（英/日）"
+            />
+            <button
+              type="button"
+              onClick={() => void lookupOnline()}
+              disabled={dictLoading || !form.word.trim()}
+              className="btn-secondary px-3 py-2 text-sm gap-1.5 shrink-0 disabled:opacity-50"
+            >
+              {dictLoading ? <RotateCw size={15} className="animate-spin" /> : <BookMarked size={15} />}
+              查词典
+            </button>
+          </div>
         </div>
+
+        {(dictLoading || dictError || dict) && (
+          <DictionaryPanel
+            result={dict ?? emptyDictionaryResult(form.word.trim())}
+            loading={dictLoading}
+            error={dictError}
+            title="在线词典"
+            fill={fillFromDictionary}
+          />
+        )}
 
         <div>
           <label className="block text-sm font-medium mb-1.5 dark:text-gray-300">音标</label>

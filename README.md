@@ -17,6 +17,8 @@
 - **详情页操作**: 单词详情页可直接将词条标记为已掌握；单词和短语详情页均支持在顶部使用「上一个 / 下一个」浏览同一列表内容；从分类单词列表进入详情后可直接返回当前分类
 - **在线翻译**: 单词详情页可手动调用 MyMemory 翻译英语或日语词条，结果标注来源并保存到单词记录，后续打开详情页无需重复请求
 - **快速翻译**: 首页提供独立搜索框，输入英语或日语单词、短语或句子后跳转到翻译页，自动识别语言并翻译成中文；同时按输入语言查询对应本地词库，命中时展示本地释义、例句、笔记和分类
+- **在线词典**: 首页搜索框「查词」或首页「在线词典」入口进入 `/dictionary`，单个英文单词可查美/英音标、英汉释义、网络释义、带来源的双语例句、短语与近义词；有道通道额外提供柯林斯星级词典（双语释义+例句）、词形变化（派生词）与近义词辨析；结果缓存 30 天
+- **添加单词时查词典**: 添加英文单词页可按当前输入的单词查词典，并把音标、释义（含词性）、双语例句一键回填到表单后再保存
 
 ### 学习体验（复刻 Moji辞书）
 - **三种学习题型**（新学/复习可分别配置）:
@@ -104,7 +106,7 @@ src/
   context/        # 全局上下文 (Language: 英语/日语切换与持久化)
   components/     # 通用组件 (Layout, StatCard, WordCard, JapaneseWordCard, SentenceCard, ConfirmModal, ErrorBoundary, ...)
     study/        # 学题型组件 (RecallMode, ChoiceMode, QuickMode, FlipCard)
-  pages/          # 统一页面 (Home, Study, WordList, AddWord, WordDetail, Stats, Sentences, SentenceStudy, StudyPlan, CheckIn, Favorites, Categories, ...)
+  pages/          # 统一页面 (Home, Study, WordList, AddWord, WordDetail, Stats, Sentences, SentenceStudy, StudyPlan, CheckIn, Favorites, Categories, Translate, Dictionary, ...)
   hooks/          # 数据操作 hooks
     languageAware.tsx     # 语言感知数据层：统一页面按 lang 分发到英语/日语数据源
     useWords / useSentences / useStudyPlan / useSentencePlan   # 英语数据源
@@ -112,7 +114,7 @@ src/
     useFavorites / useCheckIn                                  # 收藏夹与打卡
   db/             # Dexie 数据库配置与迁移 (v14: 分类语言归属)
   types/          # TypeScript 类型定义
-  utils/          # 工具函数 (srs 7周期算法, tts, import, export, search, achievements, studyPrefs, categoryType)
+  utils/          # 工具函数 (srs 7周期算法, tts, dictionary 在线词典多通道, translation 在线翻译多通道, import, export, search, achievements, studyPrefs, categoryType)
 ```
 
 ## 架构说明：双语言统一页面

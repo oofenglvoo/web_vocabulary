@@ -17,6 +17,7 @@ import {
   CalendarCheck,
   Languages,
   Search,
+  BookMarked,
 } from 'lucide-react'
 import { useLang, useSetLang, Lang } from '../context/Language'
 import { useLangStats, useLangFavoriteWords, useLangActivePlan, useLangPlanProgress } from '../hooks/languageAware'
@@ -48,12 +49,17 @@ export function Home() {
   const canResumePlanStudy = resumeStudy || hasInterruptedStudy || hasQuickStudy
   const canResumeFreeStudy = resumeFreeStudy || hasInterruptedFreeStudy || hasQuickFreeStudy
   const [confirmExtra, setConfirmExtra] = useState(false)
-  const [translationQuery, setTranslationQuery] = useState('')
+  const [heroQuery, setHeroQuery] = useState('')
 
   const submitTranslation = (event: FormEvent) => {
     event.preventDefault()
-    const query = translationQuery.trim()
+    const query = heroQuery.trim()
     if (query) navigate(`/translate?q=${encodeURIComponent(query)}`)
+  }
+
+  const submitDictionaryLookup = () => {
+    const query = heroQuery.trim()
+    if (query) navigate(`/dictionary?q=${encodeURIComponent(query)}`)
   }
 
   return (
@@ -93,14 +99,24 @@ export function Home() {
             <div className="relative flex-1 min-w-0">
               <Search size={17} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
-                value={translationQuery}
-                onChange={(event) => setTranslationQuery(event.target.value)}
+                value={heroQuery}
+                onChange={(event) => setHeroQuery(event.target.value)}
                 placeholder="输入单词或句子..."
                 className="input-field w-full min-w-0 pl-9"
                 aria-label="翻译内容"
               />
             </div>
-            <button type="submit" disabled={!translationQuery.trim()} className="btn-primary shrink-0 px-3 text-sm disabled:opacity-50">翻译</button>
+            <button type="submit" disabled={!heroQuery.trim()} className="btn-primary shrink-0 px-3 text-sm disabled:opacity-50">翻译</button>
+            {lang === 'en' && (
+              <button
+                type="button"
+                onClick={submitDictionaryLookup}
+                disabled={!heroQuery.trim()}
+                className="shrink-0 px-3 text-sm rounded-xl font-medium bg-white/20 backdrop-blur text-white hover:bg-white/30 transition-colors disabled:opacity-50"
+              >
+                查词
+              </button>
+            )}
           </form>
 
           {/* 语言切换入口：切换后全应用页面数据源随之切换 */}
@@ -456,6 +472,32 @@ export function Home() {
                 </p>
               </div>
               <span className="text-accent-600 dark:text-accent-400 text-xs font-medium">→</span>
+            </Link>
+          </motion.div>
+        )}
+
+        {/* 词典入口（英语专属，日语模式下隐藏） */}
+        {lang === 'en' && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="home-col-12"
+          >
+            <Link
+              to="/dictionary"
+              className="card p-4 flex items-center gap-3 hover:shadow-glow transition-all"
+            >
+              <div className="w-11 h-11 rounded-xl bg-gradient-success flex items-center justify-center text-white shadow-soft">
+                <BookMarked size={20} />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-sm dark:text-gray-100">在线词典</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  查音标、释义、网络释义与双语例句
+                </p>
+              </div>
+              <span className="text-success-600 dark:text-success-400 text-xs font-medium">→</span>
             </Link>
           </motion.div>
         )}
