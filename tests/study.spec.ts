@@ -188,16 +188,21 @@ test('TC-STUDY-RCL-012: 重复出现的模糊单词仍可继续评分', async ({
   await page.goto(url('/study'))
   await waitCard(page)
 
+  // 队列顺序是随机洗牌过的，用开始时的词作为「被模糊的词」（它会被重排到队尾）
+  const fuzzyWord = await currentWord(page)
   await page.getByRole('button', { name: '模糊', exact: true }).click()
-  const secondWord = await currentWord(page)
+  // 模糊后当前词换成另一个词
+  await waitWordChange(page, fuzzyWord)
+  // 认识另一个词 → 它被移除，模糊词回到队首，且按钮仍可继续评分
   await page.getByRole('button', { name: '认识', exact: true }).click()
-  await expect(page.locator('h2').first()).not.toHaveText(secondWord)
   const fuzzyButton = page.getByRole('button', { name: '模糊', exact: true })
   await expect(fuzzyButton).toBeEnabled()
+  await expect(page.locator('h2').first()).toHaveText(fuzzyWord)
+  // 再次模糊 → 重新计数；随后连续两次认识即可完成（模糊需 2 次认识）
   await fuzzyButton.click()
-  await expect(page.locator('h2').first()).toHaveText(secondWord)
+  await expect(page.locator('h2').first()).toHaveText(fuzzyWord)
   await page.getByRole('button', { name: '认识', exact: true }).click()
-  await expect(page.locator('h2').first()).toHaveText(secondWord)
+  await expect(page.locator('h2').first()).toHaveText(fuzzyWord)
   await page.getByRole('button', { name: '认识', exact: true }).click()
   await expect(page.getByText('今日学习已完成!')).toBeVisible()
 })
@@ -309,6 +314,8 @@ test('TC-STUDY-QCK-009: 自动展开下一词并滚动到可见区域', async ({
 })
 
 test('TC-STUDY-QCK-010: 长内容展开时评分按钮进入视口', async ({ page }) => {
+  // 底部导航栏只在移动端布局出现，桌面端是左侧栏；此用例验证的是移动端被底部导航遮挡的问题
+  await page.setViewportSize({ width: 390, height: 720 })
   // 通过 JSON 导入创建两个释义超长的单词，保证展开内容高度超过视口
   const longTrans = '很'.repeat(500)
   await page.goto(url('/import'))
@@ -334,8 +341,12 @@ test('TC-STUDY-QCK-010: 长内容展开时评分按钮进入视口', async ({ pa
   await expect(forget).toHaveCount(1)
   await expect.poll(async () => {
     return forget.evaluate((element) => {
-      const nav = document.querySelector('nav')
-      const limit = nav ? nav.getBoundingClientRect().top : window.innerHeight
+      // 桌面端是左侧栏、移动端是底部导航栏；只有底部导航栏才会遮挡内容
+      const bottomNav = Array.from(document.querySelectorAll('nav')).find((nav) => {
+        const rect = nav.getBoundingClientRect()
+        return getComputedStyle(nav).position === 'fixed' && rect.top > 0 && rect.height > 0
+      })
+      const limit = bottomNav ? bottomNav.getBoundingClientRect().top : window.innerHeight
       const rect = element.getBoundingClientRect()
       return rect.top >= 0 && rect.bottom <= limit && rect.height > 0
     })
