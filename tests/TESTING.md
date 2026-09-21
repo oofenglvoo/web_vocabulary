@@ -49,15 +49,22 @@
 | 编号 | 测试点 | 预期结果 |
 |------|--------|---------|
 | TC-DICT-001 | 首页词典入口 | 首页显示「在线词典」卡片；搜索框点「查词」跳转 `/dictionary?q=...` |
-| TC-DICT-002 | 有道主通道结果渲染 | 展示美/英音标、词性+释义、网络释义、带来源双语例句、短语、近义词，来源标注「有道词典」 |
-| TC-DICT-003 | 主通道失败回退 | 有道不可用时走 FreeDictionary，并用 Wiktionary 补例句、翻译通道回填中文，来源标注「FreeDictionary」 |
+| TC-DICT-002 | 必应通道结果渲染 | 展示美/英音标、词性+释义、网络释义、带来源双语例句，来源标注「必应词典」 |
+| TC-DICT-003 | 必应空结果报错 | 必应返回 200 但无有效词条时提示「未找到该词的词典释义…」 |
 | TC-DICT-004 | 多词输入拦截 | `hello world` 直接提示失败，且不发起任何在线请求 |
 | TC-DICT-005 | 查询结果缓存 | 二次进入同一单词不再请求在线接口（localStorage 30 天缓存） |
 | TC-DICT-006 | 添加页查词典回填 | `/add` 点「查词典」后，可填入音标（自动补斜杠）、释义（含词性下拉）、例句与例句翻译 |
 | TC-DICT-007 | 回填后保存 | 回填的释义随新单词一起保存，详情页可见 |
-| TC-DICT-008 | 柯林斯词典块/词形变化/近义词辨析 | 有道结果额外展示柯林斯星级+双语释义+例句、词形变化（派生词）与近义词辨析 |
+| TC-DICT-009 | 翻译页查词典入口 | `/translate` 翻译单个英文单词后，点「查词典」就地展开必应词典卡片，再点「收起词典」收起 |
+| TC-DICT-010 | 句子不显示词典入口 | `/translate` 输入句子时不出现「查词典」按钮 |
+| TC-DICT-011 | 详情页查词典入口 | 单词详情页点右上角「查词典」展开必应词典卡片（音标/释义/来源可见），再点「收起词典」收起 |
+| TC-DICT-012 | 详情页覆盖本地翻译 | 点「覆盖本地翻译」后释义与音标被词典内容替换、本地英文释义按位置保留（词典无对应 def），重进详情页仍生效 |
+| TC-DICT-013 | 详情页按钮不再是在线翻译 | 详情页顶部为「查词典」按钮，旧的「在线翻译」按钮已移除 |
+| TC-DICT-014 | 同词性多义项拆分 | 必应把多义项用「；」并在一行时，覆盖后按分号拆成独立 `definitions`，同词性共用 `pos` |
+| TC-DICT-015 | 多例句独立字段 | 全部例句写入 `dictionaryExamples` 并在详情页多行展示；首条同时写入 `example`/`exampleTranslation`；不再写入笔记 |
+| TC-DICT-016 | 覆盖后导出完整可往返 | `exportWordsToJson/Csv` 含全部 `definitions`、`dictionaryExamples`、`example`、`onlineTranslation`；导出的 JSON 经 `parseWordsJson` 重新解析无损 |
 
-在线接口同样用 `page.route` mock（有道走 `r.jina.ai` 代理、FreeDictionary、Wiktionary、Datamuse、Google 翻译），保证结果确定。
+在线接口同样用 `page.route` mock：词典 mock 必应通道（经 `r.jina.ai` 代理返回 HTML 片段），翻译 mock Google / MyMemory，保证结果确定。
 
 ## 1. 单词管理
 
@@ -468,3 +475,50 @@ E2E 测试覆盖单词/短句/学习/计划/加学/复习/打卡/导入/分类/�
 | 全量执行 | 122 passed / 1 skipped（全部 spec 均绿） |
 | 新增用例 | TC-DICT-008 |
 | 修复用例 | TC-STUDY-RCL-012、TC-STUDY-QCK-010 |
+
+## 附录 F：词典改为必应通道（2026-09-21）
+
+### 变更摘要
+
+`utils/dictionary.ts` 由「有道为主 + FreeDictionary 备」的多通道实现，改为**必应词典单通道**：请求 `cn.bing.com/dict/search?q=...` 经 `r.jina.ai` 代理取回 HTML（请求头 `x-respond-with: html`），再用 `DOMParser` 解析。移除了有道 JSON 解析器、FreeDictionary / Wiktionary / Datamuse 备通道与中文翻译回填逻辑（必应自带中文），`DictionaryProvider` 收窄为 `'Bing'`。
+
+| 选择器 | 含义 |
+|--------|------|
+| `.hd_prUS` / `.hd_pr` | 美音 / 英音音标（方括号已剥离） |
+| `.qdef ul li` → `.pos` + `.def` | 词性释义；`.pos.web`（`classList.contains('web')`）为网络释义 |
+| `#sentenceSeg .se_li` → `.sen_en` / `.sen_cn` | 双语例句；来源在嵌套的 `div.sen_li a` |
+
+`DictionaryPanel` 视觉重做：词头大字 + 美/英音标、词性释义列表、`词形：`、网络释义、编号双语例句（例句中高亮目标词、来源域名置灰）。`/translate` 结果卡片新增「查词典 / 收起词典」入口，仅当输入为单个英文单词时显示。
+
+### 测试变更
+
+`tests/dictionary.spec.ts` 的 mock 由有道 JSON 改为**必应 HTML 片段**；`TC-DICT-002` 断言数据来源为「必应词典」；`TC-DICT-003` 改为「必应返回空页面时报错」；删除 `TC-DICT-008`（柯林斯/词形辨析，必应不再提供）；新增 `TC-DICT-009`（翻译页展开/收起词典）与 `TC-DICT-010`（句子不显示入口）。
+
+| 项目 | 结果 |
+|------|------|
+| dictionary.spec 执行 | 9 passed |
+| 新增用例 | TC-DICT-009、TC-DICT-010 |
+| 移除用例 | TC-DICT-003（旧回退链路）、TC-DICT-008 |
+
+## 附录 G：详情页改查词典 + 覆盖本地翻译（2026-09-21）
+
+### 变更摘要
+
+单词详情页（`WordDetail.tsx`）右上角的「在线翻译」按钮（Google / MyMemory）替换为「查词典」按钮，调用必应词典并在词头卡片下方就地展开 `DictionaryPanel`；面板上方新增「覆盖本地翻译」，一键把词典结果写回词条。
+
+- 覆盖字段：`definitions`（词典 `senses` → `pos` + `trans`；**必应把同词性多义项用「；」并在一行，覆盖时按中文分号拆成独立义项，同词性共用 `pos`**）、音标（美音优先，带 `/.../`）、`dictionaryExamples`（全部例句，详情页多行展示）、`example` / `exampleTranslation`（与 `dictionaryExamples[0]` 一致，兼容学习页/卡片）、`onlineTranslation` / `onlineTranslationSource`（首条释义 + `'Bing'`）。
+- **保留保护**：词典 senses 不含英文 `def`，覆盖时若本地对应位置已有英文释义则保留，避免英文释义被清空。
+- 与 `/translate` 一致，含空格或假名的内容不显示入口（`canLookupDictionary`）；详情页与本页面已移除 `translateOnline` 依赖，该工具仅剩翻译页使用。
+- 导出：`export.ts` 的单词 JSON/CSV 增加 `notes` 与 `dictionaryExamples` 字段/列，`import.ts` 同步解析 `dictionaryExamples`，使「覆盖后」的全部释义与例句都能完整导出并再导入；完整备份仍整表存储。
+
+### 测试变更
+
+新增 `TC-DICT-011`（详情页展开/收起词典）、`TC-DICT-012`（覆盖本地翻译并落库、英文释义保留）、`TC-DICT-013`（详情页按钮不再是「在线翻译」）、`TC-DICT-014`（同词性多义项按分号拆成独立义项）、`TC-DICT-015`（全部例句写入 `dictionaryExamples` 并多行展示、不再入笔记）、`TC-DICT-016`（导出 JSON/CSV 含全部释义与例句且经 `parseWordsJson` 往返无损，测试内直接 import 导出/解析函数断言）。
+
+| 项目 | 结果 |
+|------|------|
+| dictionary.spec 执行 | 15 passed |
+| translation.spec 执行 | 6 passed |
+| words.spec 执行 | 25 passed |
+| 新增用例 | TC-DICT-011、TC-DICT-012、TC-DICT-013、TC-DICT-014、TC-DICT-015、TC-DICT-016 |
+

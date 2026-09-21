@@ -1,4 +1,4 @@
-import { BookMarked, Lightbulb, Repeat2, Star } from 'lucide-react'
+import { BookMarked, Lightbulb, Star } from 'lucide-react'
 import { SpeakButton } from './SpeakButton'
 import type { DictionaryResult } from '../utils/dictionary'
 
@@ -18,11 +18,26 @@ interface DictionaryPanelProps {
 }
 
 const PROVIDER_LABELS: Record<DictionaryResult['provider'], string> = {
-  Youdao: '有道词典',
-  FreeDictionary: 'FreeDictionary',
+  Bing: '必应词典',
 }
 
-/** 词典结果展示：音标 / 释义 / 网络释义 / 双语例句 / 短语 / 近义词，三处复用 */
+/** 高亮例句中的目标词（大小写不敏感，按词边界匹配） */
+function highlightWord(sentence: string, word: string) {
+  if (!word) return sentence
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const parts = sentence.split(new RegExp(`(${escaped})`, 'gi'))
+  return parts.map((part, index) =>
+    part.toLowerCase() === word.toLowerCase() ? (
+      <mark key={index} className="bg-transparent text-accent-500 dark:text-accent-400 font-medium">
+        {part}
+      </mark>
+    ) : (
+      part
+    )
+  )
+}
+
+/** 词典结果展示：音标 / 释义 / 词形 / 网络释义 / 双语例句 / 短语 / 近义词 */
 export function DictionaryPanel({ result, loading, error, title = '词典释义', fill }: DictionaryPanelProps) {
   const hasSenses = result.senses.length > 0
   const hasWeb = result.webDefinitions.length > 0
@@ -49,42 +64,49 @@ export function DictionaryPanel({ result, loading, error, title = '词典释义'
 
       {!loading && !error && (
         <>
-          {(result.usPhonetic || result.ukPhonetic) && (
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5">
-              {result.usPhonetic && (
-                <span className="inline-flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
-                  <span className="text-xs text-gray-400">美</span>
-                  <span className="font-mono">{result.usPhonetic}</span>
-                  <SpeakButton text={result.word} label="播放美音" size={14} />
-                </span>
-              )}
-              {result.ukPhonetic && (
-                <span className="inline-flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
-                  <span className="text-xs text-gray-400">英</span>
-                  <span className="font-mono">{result.ukPhonetic}</span>
-                  <SpeakButton text={result.word} label="播放英音" size={14} />
-                </span>
-              )}
-              {fill?.onFillPhonetic && phonetic && (
-                <button
-                  type="button"
-                  onClick={() => fill.onFillPhonetic!(`/${phonetic}/`)}
-                  className="text-xs text-primary-600 dark:text-primary-400 hover:underline"
-                >
-                  填入音标
-                </button>
-              )}
-            </div>
-          )}
+          {/* 词头：单词大字 + 美/英音标 */}
+          <div className="space-y-2">
+            <h3 className="text-3xl font-bold text-gradient break-all">{result.word}</h3>
+            {(result.usPhonetic || result.ukPhonetic) && (
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5">
+                {result.usPhonetic && (
+                  <span className="inline-flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
+                    <span className="text-xs text-gray-400">美</span>
+                    <span className="font-mono">{result.usPhonetic}</span>
+                    <SpeakButton text={result.word} label="播放美音" size={14} />
+                  </span>
+                )}
+                {result.ukPhonetic && (
+                  <span className="inline-flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
+                    <span className="text-xs text-gray-400">英</span>
+                    <span className="font-mono">{result.ukPhonetic}</span>
+                    <SpeakButton text={result.word} label="播放英音" size={14} />
+                  </span>
+                )}
+                {fill?.onFillPhonetic && phonetic && (
+                  <button
+                    type="button"
+                    onClick={() => fill.onFillPhonetic!(`/${phonetic}/`)}
+                    className="text-xs text-primary-600 dark:text-primary-400 hover:underline"
+                  >
+                    填入音标
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
 
+          {/* 词性释义：每行一个词性 + 释义 */}
           {hasSenses && (
-            <div className="space-y-1.5">
+            <ul className="space-y-1.5">
               {result.senses.map((sense, index) => (
-                <div key={index} className="flex items-start gap-2 text-sm" data-dictionary-sense>
+                <li key={index} className="flex items-start gap-2 text-sm" data-dictionary-sense>
                   {sense.pos && (
-                    <span className="shrink-0 font-medium text-primary-500 dark:text-primary-400 mt-0.5">{sense.pos}</span>
+                    <span className="shrink-0 font-semibold text-primary-500 dark:text-primary-400 mt-0.5">
+                      {sense.pos}
+                    </span>
                   )}
-                  <span className="flex-1 dark:text-gray-200">{sense.trans}</span>
+                  <span className="flex-1 text-gray-700 dark:text-gray-200">{sense.trans}</span>
                   {fill?.onFillSense && (
                     <button
                       type="button"
@@ -94,8 +116,20 @@ export function DictionaryPanel({ result, loading, error, title = '词典释义'
                       填入
                     </button>
                   )}
-                </div>
+                </li>
               ))}
+            </ul>
+          )}
+
+          {/* 词形：词形: women */}
+          {hasWordForms && (
+            <div data-dictionary-forms className="text-sm">
+              <span className="text-gray-400">词形：</span>
+              <span className="dark:text-gray-200">
+                {result.wordForms
+                  .map((form) => (form.pos ? `${form.pos} ${form.word}` : form.word))
+                  .join('、')}
+              </span>
             </div>
           )}
 
@@ -152,34 +186,44 @@ export function DictionaryPanel({ result, loading, error, title = '词典释义'
             </div>
           )}
 
+          {/* 双语例句：编号列表，例句中高亮目标词 */}
           {hasExamples && (
             <div>
-              <div className="text-xs text-gray-400 mb-1.5">双语例句</div>
-              <div className="space-y-2.5">
+              <div className="text-xs text-gray-400 mb-2">双语例句</div>
+              <ol className="space-y-3">
                 {result.examples.map((example, index) => (
-                  <div key={index} className="rounded-xl bg-gray-50 dark:bg-slate-700/60 p-3" data-dictionary-example>
-                    <div className="flex items-start gap-1.5">
-                      <SpeakButton text={example.en} lang="en" label="播放例句" size={14} className="mt-0.5" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm dark:text-gray-200">{example.en}</p>
-                        {example.zh && <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{example.zh}</p>}
-                        <div className="flex items-center justify-between gap-2 mt-1">
-                          <span className="text-xs text-gray-400 truncate">{example.source ?? ''}</span>
-                          {fill?.onFillExample && (
-                            <button
-                              type="button"
-                              onClick={() => fill.onFillExample!({ en: example.en, zh: example.zh })}
-                              className="shrink-0 text-xs text-primary-600 dark:text-primary-400 hover:underline"
-                            >
-                              设为例句
-                            </button>
+                  <li key={index} className="flex gap-2.5" data-dictionary-example>
+                    <span className="shrink-0 text-sm text-gray-400 tabular-nums">{index + 1}.</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start gap-1.5">
+                        <SpeakButton text={example.en} lang="en" label="播放例句" size={14} className="mt-0.5" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm leading-relaxed text-gray-800 dark:text-gray-100">
+                            {highlightWord(example.en, result.word)}
+                          </p>
+                          {example.zh && (
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                              {highlightWord(example.zh, result.word)}
+                            </p>
                           )}
+                          <div className="flex items-center justify-between gap-2 mt-1.5">
+                            <span className="text-xs text-gray-400 truncate">{example.source ?? ''}</span>
+                            {fill?.onFillExample && (
+                              <button
+                                type="button"
+                                onClick={() => fill.onFillExample!({ en: example.en, zh: example.zh })}
+                                className="shrink-0 text-xs text-primary-600 dark:text-primary-400 hover:underline"
+                              >
+                                设为例句
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ol>
             </div>
           )}
 
@@ -191,25 +235,6 @@ export function DictionaryPanel({ result, loading, error, title = '词典释义'
                   <div key={index} className="flex items-start gap-2 text-sm">
                     <span className="shrink-0 font-medium text-primary-500 dark:text-primary-400">{item.phrase}</span>
                     <span className="flex-1 text-gray-600 dark:text-gray-300">{item.trans}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {hasWordForms && (
-            <div data-dictionary-forms>
-              <div className="text-xs text-gray-400 mb-1.5 flex items-center gap-1">
-                <Repeat2 size={12} /> 词形变化
-              </div>
-              <div className="space-y-1.5">
-                {result.wordForms.map((form, index) => (
-                  <div key={index} className="flex items-start gap-2 text-sm">
-                    {form.pos && (
-                      <span className="shrink-0 text-xs font-medium text-primary-500 dark:text-primary-400 mt-0.5">{form.pos}</span>
-                    )}
-                    <span className="shrink-0 font-medium dark:text-gray-200">{form.word}</span>
-                    {form.trans && <span className="flex-1 text-gray-600 dark:text-gray-300">{form.trans}</span>}
                   </div>
                 ))}
               </div>

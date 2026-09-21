@@ -84,7 +84,7 @@ export function Dictionary() {
             查询
           </button>
         </div>
-        <p className="text-xs text-gray-400">释义、例句与音标来自在线词典，仅支持单个英文单词。</p>
+        <p className="text-xs text-gray-400">音标、词性释义、词形、网络释义与双语例句来自必应词典，仅支持单个英文单词。</p>
       </form>
 
       {query && !loading && !error && result && (
@@ -101,7 +101,7 @@ export function Dictionary() {
 
       {!query && (
         <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
-          输入一个英文单词，查看音标、释义、双语例句与近义词。
+          输入一个英文单词，查看音标、词性释义、词形、网络释义与双语例句。
         </p>
       )}
     </div>

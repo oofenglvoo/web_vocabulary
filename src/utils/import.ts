@@ -1,4 +1,4 @@
-import { Word, Sentence, Definition } from '../types/word'
+import { Word, Sentence, Definition, WordExample } from '../types/word'
 
 export type ImportableWord = Omit<Word, 'id' | 'createdAt'>
 export type ImportableSentence = Omit<Sentence, 'id' | 'createdAt'>
@@ -33,6 +33,17 @@ function buildWord(raw: Record<string, any>): ImportableWord | null {
   const definition = String(raw.definition ?? raw.def ?? '').trim()
   const translation = String(raw.translation ?? raw.trans ?? raw.meaning ?? '').trim()
 
+  // 词典批量例句（可选，旧数据无）
+  const dictionaryExamples: WordExample[] = Array.isArray(raw.dictionaryExamples)
+    ? raw.dictionaryExamples
+        .filter((e: any) => e && String(e.en ?? '').trim())
+        .map((e: any) => ({
+          en: String(e.en ?? '').trim(),
+          zh: String(e.zh ?? '').trim(),
+          source: e.source ? String(e.source).trim() : undefined,
+        }))
+    : []
+
   // 必要字段：word + 有释义（definitions 数组或旧字段至少有一个非空）
   if (definitions.length === 0 && !definition && !translation) return null
 
@@ -61,6 +72,7 @@ function buildWord(raw: Record<string, any>): ImportableWord | null {
     exampleTranslation: String(raw.exampleTranslation ?? raw.exampletranslation ?? '').trim(),
     translation: String(raw.translation ?? '').trim(),
     definitions,
+    ...(dictionaryExamples.length > 0 ? { dictionaryExamples } : {}),
     category: String(raw.category ?? '默认').trim() || '默认',
     difficulty,
     notes: String(raw.notes ?? '').trim(),
