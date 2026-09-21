@@ -11,7 +11,7 @@ import {
   X,
   Pencil,
   Check,
-  Languages,
+  BookMarked,
   RotateCcw,
 } from 'lucide-react'
 import { useLang } from '../context/Language'
@@ -36,14 +36,20 @@ import { ConfirmModal } from '../components/ConfirmModal'
 import { useToast } from '../components/Toast'
 import { NotesBlock } from '../components/NotesBlock'
 import { SkeletonCard } from '../components/Skeleton'
+import { DictionaryPanel } from '../components/DictionaryPanel'
+import { emptyDictionaryResult, lookupDictionary, type DictionaryResult } from '../utils/dictionary'
 import { Definition, JapaneseDefinition, JapaneseWord, Word } from '../types/word'
 import type { LangWord } from '../hooks/languageAware'
-import { translateOnline, type TranslationProvider } from '../utils/translation'
 
 const POS_OPTIONS = ['', 'n.', 'v.', 'adj.', 'adv.', 'prep.', 'conj.', 'pron.', 'interj.', 'art.', '名', '动', '形', '副']
 
 // 浏览来源:从哪个列表进入了这个详情页 → 决定上一个/下一个的取数集
 type Scope = 'all' | 'favorites' | 'category'
+
+/** 必应词典仅支持单个英文单词；含空格或假名的内容不提供词典入口 */
+function canLookupDictionary(text: string): boolean {
+  return !!text && !/\s/.test(text) && !/[\u3040-\u30ff]/.test(text)
+}
 
 export function WordDetail() {
   const { id } = useParams<{ id: string }>()
@@ -63,20 +69,19 @@ export function WordDetail() {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [markingLearned, setMarkingLearned] = useState(false)
   const [confirmUnmark, setConfirmUnmark] = useState(false)
-  const [onlineTranslation, setOnlineTranslation] = useState<string | null>(null)
-  const [translationProvider, setTranslationProvider] = useState<TranslationProvider | null>(null)
-  const [translationLoading, setTranslationLoading] = useState(false)
-  const [translationError, setTranslationError] = useState(false)
+  const [dictResult, setDictResult] = useState<DictionaryResult | null>(null)
+  const [dictLoading, setDictLoading] = useState(false)
+  const [dictError, setDictError] = useState('')
 
-  // 切换单词时重置编辑状态，避免残留上一个单词的释义编辑面板
+  // 切换单词时重置编辑状态与词典结果，避免残留上一个单词的面板
   useEffect(() => {
     setEditingDefs(false)
     setEditDefinitions([])
     setEditingJa(false)
-    setOnlineTranslation(word?.onlineTranslation ?? null)
-    setTranslationProvider((word?.onlineTranslationSource as TranslationProvider) ?? null)
-    setTranslationError(false)
-  }, [id, word?.onlineTranslation, word?.onlineTranslationSource])
+    setDictResult(null)
+    setDictError('')
+    setDictLoading(false)
+  }, [id])
 
   // 上一个/下一个的来源
   const scopeParam = (searchParams.get('scope') as Scope) || 'all'
@@ -202,24 +207,83 @@ export function WordDetail() {
     }
   }
 
-  const handleOnlineTranslate = async () => {
-    setTranslationLoading(true)
-    setTranslationError(false)
+  const handleLookupDictionary = async () => {
+    if (!word) return
+    const normalized = word.word.trim()
+    if (!normalized) return
+    // 已展开或加载中则收起
+    if (dictResult || dictLoading) {
+      setDictResult(null)
+      setDictError('')
+      setDictLoading(false)
+      return
+    }
+    setDictLoading(true)
+    setDictError('')
+    setDictResult(null)
     try {
-      const result = await translateOnline(word.word, isJa ? 'ja' : 'en')
-      await updateLangWord(word.id!, {
-        onlineTranslation: result.text,
-        onlineTranslationSource: result.provider,
-      })
-      setOnlineTranslation(result.text)
-      setTranslationProvider(result.provider)
+      const data = await lookupDictionary(normalized)
+      setDictResult(data)
     } catch {
-      setOnlineTranslation(null)
-      setTranslationError(true)
+      setDictError('未找到该词的词典释义，请检查拼写或网络后重试')
     } finally {
-      setTranslationLoading(false)
+      setDictLoading(false)
     }
   }
+
+  /** 用必应词典结果覆盖本地字段（释义/音标/例句/笔记/在线翻译来源） */
+  const handleOverwriteTranslation = async () => {
+    if (!word || !dictResult) return
+    const { senses, usPhonetic, ukPhonetic, examples } = dictResult
+    const phonetic = (usPhonetic || ukPhonetic || '').replace(/^\/+|\/+$/g, '')
+    const changes: Partial<Word> = {}
+
+    if (senses.length > 0) {
+      // 必应把同一词性的多个义项用「；」并在一行，这里拆成独立义项（同词性共用 pos）
+      const nextDefs = senses.flatMap((sense) =>
+        sense.trans
+          .split(/[；;]/)
+          .map((part) => part.trim())
+          .filter(Boolean)
+          .map((trans) => ({ pos: sense.pos, def: '', trans }))
+      )
+      // 词典无英文释义时保留本地已有英文 def，避免覆盖后英文释义被清空
+      const existing = getDefinitions(word as Word)
+      nextDefs.forEach((def, index) => {
+        if (existing[index]?.def) def.def = existing[index].def
+      })
+      changes.definitions = nextDefs
+      changes.definition = nextDefs[0]?.def ?? ''
+      changes.translation = nextDefs[0]?.trans ?? ''
+      changes.onlineTranslation = nextDefs[0]?.trans ?? ''
+      changes.onlineTranslationSource = 'Bing'
+    }
+
+    if (phonetic) changes.phonetic = `/${phonetic}/`
+
+    if (examples.length > 0) {
+      // 全部例句存独立字段，详情页多行展示；首条同时写入旧单数字段保持兼容
+      changes.dictionaryExamples = examples.map((example) => ({
+        en: example.en,
+        zh: example.zh,
+        source: example.source,
+      }))
+      changes.example = examples[0].en
+      changes.exampleTranslation = examples[0].zh
+    }
+
+    if (Object.keys(changes).length === 0) {
+      toast('warning', '词典未返回可覆盖的内容')
+      return
+    }
+
+    await updateLangWord(word.id!, changes)
+    toast('success', '已覆盖本地翻译')
+  }
+
+  const canOverwrite =
+    !!dictResult &&
+    (dictResult.senses.length > 0 || !!dictResult.usPhonetic || !!dictResult.ukPhonetic || dictResult.examples.length > 0)
 
   const startEditDefs = () => {
     const defs = getDefinitions(word as Word)
@@ -290,15 +354,17 @@ export function WordDetail() {
               <RotateCcw size={14} /> {markingLearned ? '处理中...' : '取消掌握'}
             </button>
           )}
-          <button
-            onClick={handleOnlineTranslate}
-            disabled={translationLoading}
-            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
-            aria-label="在线翻译"
-            title="在线翻译（Google / MyMemory）"
-          >
-            <Languages size={20} className="text-gray-400" />
-          </button>
+          {canLookupDictionary(word.word) && (
+            <button
+              onClick={handleLookupDictionary}
+              disabled={dictLoading}
+              className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+              aria-label={dictResult ? '收起词典' : '查词典'}
+              title={dictResult ? '收起词典' : '查词典（必应词典）'}
+            >
+              <BookMarked size={20} className={dictResult ? 'text-primary-500 dark:text-primary-400' : 'text-gray-400'} />
+            </button>
+          )}
           <FavoriteButton
             entityType={isJa ? 'japaneseWord' : 'word'}
             entityId={word.id!}
@@ -397,19 +463,24 @@ export function WordDetail() {
         </div>
       </div>
 
-      {(translationLoading || onlineTranslation || translationError) && (
-        <div className="card p-4 mb-4">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400">在线翻译（{translationProvider ?? 'Google'}）</h3>
-            {onlineTranslation && (
-              <button onClick={handleOnlineTranslate} className="text-xs text-primary-600 dark:text-primary-400">
-                重新翻译
+      {canLookupDictionary(word.word) && (dictResult || dictLoading || dictError) && (
+        <div className="mb-4 space-y-2">
+          {canOverwrite && (
+            <div className="flex justify-end">
+              <button
+                onClick={handleOverwriteTranslation}
+                className="btn-secondary px-3 py-1.5 text-xs gap-1.5"
+              >
+                <Check size={14} /> 覆盖本地翻译
               </button>
-            )}
-          </div>
-          {translationLoading && <p className="text-sm text-gray-500 dark:text-gray-400">翻译中...</p>}
-          {!translationLoading && onlineTranslation && <p className="text-lg dark:text-gray-200">{onlineTranslation}</p>}
-          {!translationLoading && translationError && <p className="text-sm text-red-500">翻译失败，请稍后重试</p>}
+            </div>
+          )}
+          <DictionaryPanel
+            result={dictResult ?? emptyDictionaryResult(word.word)}
+            loading={dictLoading}
+            error={dictError}
+            title="必应词典"
+          />
         </div>
       )}
 
@@ -550,6 +621,33 @@ export function WordDetail() {
                 {enWord!.exampleTranslation && (
                   <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{enWord!.exampleTranslation}</p>
                 )}
+              </div>
+            )}
+
+            {enWord!.dictionaryExamples && enWord!.dictionaryExamples.length > 1 && (
+              <div className="card p-4" data-word-dictionary-examples>
+                <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400 mb-3">词典例句</h3>
+                <ol className="space-y-3">
+                  {enWord!.dictionaryExamples.map((example, index) => (
+                    <li key={index} className="flex gap-2.5">
+                      <span className="shrink-0 text-sm text-gray-400 tabular-nums">{index + 1}.</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start gap-1.5">
+                          <SpeakButton text={example.en} lang="en" label="播放例句" size={14} className="mt-0.5" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm italic text-primary-700 dark:text-primary-300">{example.en}</p>
+                            {example.zh && (
+                              <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{example.zh}</p>
+                            )}
+                            {example.source && (
+                              <p className="text-xs text-gray-400 mt-1">{example.source}</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
               </div>
             )}
             {enWord!.notes && <SectionCard title="笔记" content={enWord!.notes} />}

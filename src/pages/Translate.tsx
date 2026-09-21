@@ -1,9 +1,11 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Check, Copy, Languages, RotateCw, X } from 'lucide-react'
+import { BookMarked, Check, Copy, Languages, RotateCw, X } from 'lucide-react'
 import { BackButton } from '../components/BackButton'
+import { DictionaryPanel } from '../components/DictionaryPanel'
 import { useToast } from '../components/Toast'
 import { translateOnline, type TranslationProvider } from '../utils/translation'
+import { emptyDictionaryResult, lookupDictionary, type DictionaryResult } from '../utils/dictionary'
 import { getDefinitions } from '../utils/definitions'
 import { isJaWord, type LangWord } from '../hooks/languageAware'
 import { useAllWords } from '../hooks/useWords'
@@ -14,6 +16,11 @@ type SourceLang = 'en' | 'ja'
 
 function detectSourceLang(text: string): SourceLang {
   return /[\u3040-\u30ff]/.test(text) ? 'ja' : 'en'
+}
+
+/** 必应词典仅支持单个英文单词；含空格或假名的内容不提供词典入口 */
+function canLookupDictionary(text: string): boolean {
+  return !!text && !/\s/.test(text) && !/[\u3040-\u30ff]/.test(text)
 }
 
 function findLocalWords(words: LangWord[], text: string): LangWord[] {
@@ -33,11 +40,38 @@ export function Translate() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
+  const [dictResult, setDictResult] = useState<DictionaryResult | null>(null)
+  const [dictLoading, setDictLoading] = useState(false)
+  const [dictError, setDictError] = useState('')
 
   const source = detectSourceLang(query)
   // 翻译页按输入内容选择词库，不受当前首页语言切换状态影响。
   const localWords = source === 'ja' ? japaneseWords : englishWords
   const localWordsMatched = query ? findLocalWords(localWords, query) : []
+  const dictAvailable = canLookupDictionary(query)
+
+  const handleLookupDictionary = async () => {
+    const normalized = query.trim()
+    if (!normalized) return
+    // 已展开则收起
+    if (dictResult || dictLoading) {
+      setDictResult(null)
+      setDictError('')
+      setDictLoading(false)
+      return
+    }
+    setDictLoading(true)
+    setDictError('')
+    setDictResult(null)
+    try {
+      const data = await lookupDictionary(normalized)
+      setDictResult(data)
+    } catch {
+      setDictError('未找到该词的词典释义，请检查拼写或网络后重试')
+    } finally {
+      setDictLoading(false)
+    }
+  }
 
   const requestTranslation = async (text: string) => {
     const normalized = text.trim()
@@ -71,6 +105,9 @@ export function Translate() {
     setProvider(null)
     setError('')
     setCopied(false)
+    setDictResult(null)
+    setDictError('')
+    setDictLoading(false)
     if (!query) {
       setLoading(false)
       return
@@ -153,18 +190,38 @@ export function Translate() {
               <h2 className="text-sm font-medium text-primary-600 dark:text-primary-400">翻译结果</h2>
               {query && <p className="text-xs text-gray-400 mt-1">已识别为：{source === 'ja' ? '日语' : '英语'}</p>}
             </div>
-            {translation && (
-              <button onClick={handleCopy} className="text-xs text-primary-600 dark:text-primary-400 flex items-center gap-1">
-                {copied ? <Check size={14} /> : <Copy size={14} />}
-                {copied ? '已复制' : '复制译文'}
-              </button>
-            )}
+            <div className="flex items-center gap-3">
+              {dictAvailable && !loading && (
+                <button
+                  onClick={handleLookupDictionary}
+                  className="text-xs text-primary-600 dark:text-primary-400 flex items-center gap-1"
+                >
+                  {dictLoading ? <RotateCw size={14} className="animate-spin" /> : <BookMarked size={14} />}
+                  {dictResult ? '收起词典' : '查词典'}
+                </button>
+              )}
+              {translation && (
+                <button onClick={handleCopy} className="text-xs text-primary-600 dark:text-primary-400 flex items-center gap-1">
+                  {copied ? <Check size={14} /> : <Copy size={14} />}
+                  {copied ? '已复制' : '复制译文'}
+                </button>
+              )}
+            </div>
           </div>
           {loading && <p className="text-sm text-gray-500 dark:text-gray-400">翻译中...</p>}
           {!loading && translation && <p className="text-lg whitespace-pre-wrap dark:text-gray-200">{translation}</p>}
           {!loading && error && <p className="text-sm text-red-500">{error}</p>}
           {translation && <p className="text-xs text-gray-400">在线翻译（{provider ?? 'Google'}）</p>}
         </div>
+      )}
+
+      {dictAvailable && (dictResult || dictLoading || dictError) && (
+        <DictionaryPanel
+          result={dictResult ?? emptyDictionaryResult(query)}
+          loading={dictLoading}
+          error={dictError}
+          title="必应词典"
+        />
       )}
 
       {localWordsMatched.map((word) => <LocalWordResult key={word.id} word={word} />)}

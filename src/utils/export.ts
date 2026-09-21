@@ -11,6 +11,7 @@ export function exportWordsToJson(words: Word[]): string {
       translation: w.translation,
       category: w.category,
       difficulty: w.difficulty,
+      notes: w.notes ?? '',
       onlineTranslation: w.onlineTranslation ?? '',
       onlineTranslationSource: w.onlineTranslationSource ?? '',
     }
@@ -18,13 +19,17 @@ export function exportWordsToJson(words: Word[]): string {
     if (w.definitions && w.definitions.length > 0) {
       base.definitions = w.definitions
     }
+    // 词典批量例句（非索引字段，旧记录无）
+    if (w.dictionaryExamples && w.dictionaryExamples.length > 0) {
+      base.dictionaryExamples = w.dictionaryExamples
+    }
     return base
   })
   return JSON.stringify(exports, null, 2)
 }
 
 export function exportWordsToCsv(words: Word[]): string {
-  const headers = ['word', 'phonetic', 'definition', 'example', 'exampleTranslation', 'translation', 'category', 'difficulty', 'onlineTranslation', 'onlineTranslationSource', 'definitions']
+  const headers = ['word', 'phonetic', 'definition', 'example', 'exampleTranslation', 'translation', 'category', 'difficulty', 'notes', 'onlineTranslation', 'onlineTranslationSource', 'definitions', 'dictionaryExamples']
   const rows = words.map((w) => [
     w.word,
     w.phonetic,
@@ -34,9 +39,11 @@ export function exportWordsToCsv(words: Word[]): string {
     w.translation,
     w.category,
     String(w.difficulty),
+    w.notes ?? '',
     w.onlineTranslation ?? '',
     w.onlineTranslationSource ?? '',
     w.definitions && w.definitions.length > 0 ? JSON.stringify(w.definitions) : '',
+    w.dictionaryExamples && w.dictionaryExamples.length > 0 ? JSON.stringify(w.dictionaryExamples) : '',
   ])
   // 前缀 ﻿ (UTF-8 BOM)，让 Excel 正确识别 UTF-8 编码，避免中文乱码
   return '﻿' + [headers.join(','), ...rows.map((r) => r.map(escapeCsv).join(','))].join('\n')

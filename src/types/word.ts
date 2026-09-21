@@ -8,6 +8,13 @@ export interface Definition {
 // IndexedDB 只能索引 number，布尔用 0|1 表示并收紧类型，避免任意 number 漏过类型检查
 export type Flag = 0 | 1
 
+/** 词典查到的双语例句（可多条，独立于单数的 example 字段） */
+export interface WordExample {
+  en: string
+  zh: string
+  source?: string
+}
+
 export interface Word {
   id?: number
   word: string
@@ -20,6 +27,8 @@ export interface Word {
   example: string
   // 例句中文翻译（可选，非索引字段，旧记录为 undefined）
   exampleTranslation?: string
+  // 词典批量例句（非索引字段，旧记录为 undefined）
+  dictionaryExamples?: WordExample[]
   category: string
   difficulty: number
   createdAt: number
