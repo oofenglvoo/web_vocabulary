@@ -97,17 +97,18 @@ export function WordDetail() {
   const studyIds = searchParams.get('studyPreview') === '1'
     ? (searchParams.get('studyIds') || '').split(',').map(Number).filter((value) => Number.isFinite(value))
     : []
+  const isStudyPreview = searchParams.get('studyPreview') === '1' && studyIds.length > 0
   const studyWordMap = new Map(allWords.map((item) => [item.id, item]))
   const studyPreviewList = studyIds
     .map((studyId) => studyWordMap.get(studyId))
     .filter((item): item is LangWord => !!item)
-  const list = studyPreviewList.length > 0
+  // 预习模式下数据未就绪时不得回退到词库列表，否则 nextWord 会短暂误判、按钮闪现
+  const list = isStudyPreview
     ? studyPreviewList
     : scope === 'favorites' ? favWords : scope === 'category' ? catWords : allWords
   const currentIdx = list.findIndex((w) => w.id === Number(id))
   const prevWord = currentIdx > 0 ? list[currentIdx - 1] : null
   const nextWord = currentIdx >= 0 && currentIdx < list.length - 1 ? list[currentIdx + 1] : null
-  const isStudyPreview = searchParams.get('studyPreview') === '1' && studyIds.length > 0
   const studyPath = searchParams.get('studyPath')
   const returnTo = searchParams.get('returnTo')
   const backToCategory = returnTo?.startsWith('/categories/')

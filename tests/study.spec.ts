@@ -99,6 +99,25 @@ test('TC-STUDY-PREVIEW-002: 最后一个详情页可直接开始测试', async (
   await expect(page.getByText('新学 · 回忆式')).toBeVisible()
 })
 
+test('TC-STUDY-PREVIEW-003: 非最后一个详情页不闪现开始测试按钮', async ({ page }) => {
+  await addWords(page, [['flash-a', '甲'], ['flash-b', '乙'], ['flash-c', '丙']])
+  await page.goto(url('/study'))
+  await expect(page.getByRole('heading', { name: '先学习当天词条' })).toBeVisible()
+
+  // 进入第一个（非最后一个）预习词详情页
+  await page.locator('a[href*="studyPreview=1"]').first().click()
+  await page.waitForURL(/\/word\/\d+\?studyPreview=1/)
+
+  // 「开始测试」按钮只在最后一个词出现，非最后词必须始终不存在
+  await expect(page.getByRole('button', { name: '开始测试', exact: true })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: /下一个/ })).toBeVisible()
+  await expect(page.getByRole('button', { name: '开始测试', exact: true })).toHaveCount(0)
+
+  // 切到中间的词仍不应出现该按钮
+  await page.getByRole('button', { name: /下一个/ }).click()
+  await expect(page.getByRole('button', { name: '开始测试', exact: true })).toHaveCount(0)
+})
+
 test('TC-STUDY-RCL-002: 忘记重排到队尾', async ({ page }) => {
   await addWords(page, [['cat', '猫'], ['dog', '狗']])
   await page.goto(url('/study'))
