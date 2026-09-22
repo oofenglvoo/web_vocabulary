@@ -3,7 +3,7 @@ import { downloadFile } from './export'
 import { DARK_KEY } from './theme'
 
 const BACKUP_VERSION = 3
-const PREF_KEYS = ['vocab.dark', 'vocab.tts.accent', 'vocab.tts.provider', 'vocab.study.prefs', 'vocab.achievements']
+const PREF_KEYS = ['vocab.dark', 'vocab.tts.accent', 'vocab.tts.provider', 'vocab.study.prefs', 'vocab.achievements', 'vocab.autotranslate']
 
 export interface BackupPayload {
   format: 'web-vocabulary-backup'
