@@ -102,7 +102,10 @@ export function WordDetail() {
   const studyPreviewList = studyIds
     .map((studyId) => studyWordMap.get(studyId))
     .filter((item): item is LangWord => !!item)
-  // 预习模式下数据未就绪时不得回退到词库列表，否则 nextWord 会短暂误判、按钮闪现
+  // 预习队列是否已完整加载：useLangWordById 可能先于 useLangWords 解析，
+  // 若此时就渲染，list 为空会让 nextWord 误判为 null、「开始测试」按钮闪现
+  const studyPreviewReady = isStudyPreview && studyPreviewList.length === studyIds.length
+  // 预习模式下数据未就绪时不得回退到词库列表，避免 nextWord 短暂误判
   const list = isStudyPreview
     ? studyPreviewList
     : scope === 'favorites' ? favWords : scope === 'category' ? catWords : allWords
@@ -150,7 +153,7 @@ export function WordDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [prevWord?.id, nextWord?.id, scope, scopeCategory])
 
-  if (!word) {
+  if (!word || (isStudyPreview && !studyPreviewReady)) {
     return (
       <div className="p-4 space-y-3">
         <SkeletonCard />

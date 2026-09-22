@@ -3,6 +3,7 @@ import { Heart, Trash2, Volume2 } from 'lucide-react'
 import { Word } from '../types/word'
 import { speakWord } from '../utils/tts'
 import { getDefinitions, getPrimaryTranslation, getPrimaryDefinition } from '../utils/definitions'
+import { prefetchWordDetail } from '../App'
 
 interface WordCardProps {
   word: Word
@@ -28,6 +29,8 @@ export const WordCard = memo(function WordCard({ word, onClick, onFavorite, onDe
   return (
     <div
       onClick={onClick}
+      onMouseEnter={prefetchWordDetail}
+      onFocus={prefetchWordDetail}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()

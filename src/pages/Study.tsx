@@ -28,6 +28,7 @@ import { RecallMode } from '../components/study/RecallMode'
 import { ChoiceMode } from '../components/study/ChoiceMode'
 import { QuickMode, QuickRating } from '../components/study/QuickMode'
 import { StudyTypeSettings } from '../components/StudyTypeSettings'
+import { prefetchWordDetail } from '../App'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
 import {
@@ -81,6 +82,11 @@ export function Study() {
 
   // 延迟回调定时器：组件卸载时统一清理
   const timersRef = useRef<number[]>([])
+
+  // 预习词表点击后要进详情页：提前预取 chunk，避免 lazy 过渡期间旧页「开始测试」按钮闪现
+  useEffect(() => {
+    prefetchWordDetail()
+  }, [])
   // 全表翻译缓存(选择题干扰项)
   const allTranslationsRef = useRef<string[] | null>(null)
   // 复习答错重排去重：同一词一轮只重排一次，避免无限循环
@@ -549,6 +555,8 @@ export function Study() {
           <div className="space-y-2">
             {queue.map((item) => (
               <Link
+                onMouseEnter={prefetchWordDetail}
+                onFocus={prefetchWordDetail}
                 key={item.id}
                 to={`/word/${item.id}?studyPreview=1&studyIds=${queue.map((entry) => entry.id).join(',')}&studyPath=${encodeURIComponent(`/study?${searchParams.toString()}`)}`}
                 aria-label={item.title}
