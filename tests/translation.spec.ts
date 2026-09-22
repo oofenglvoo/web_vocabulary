@@ -37,14 +37,6 @@ async function addEnglishWord(page: import('@playwright/test').Page, word: strin
   await page.waitForURL(/\/words/)
 }
 
-/** 通过列表点击进入指定单词的详情页 */
-async function openWordDetail(page: import('@playwright/test').Page, word: string) {
-  await page.goto(url('/words'))
-  await page.getByText(word, { exact: true }).first().waitFor({ timeout: 10000 })
-  await page.getByText(word, { exact: true }).first().click()
-  await page.waitForURL(/\/word\/\d+/)
-}
-
 test.describe('在线翻译增量测试', () => {
   test('TC-TRANS-001: 首页搜索框跳转到翻译页', async ({ page }) => {
     await page.goto(url('/'))
@@ -113,90 +105,5 @@ test.describe('在线翻译增量测试', () => {
     await expect(page.getByText('地址', { exact: true })).toBeVisible()
     await expect(page.getByText('address', { exact: true })).toHaveCount(1)
     await expect(page.getByText('在线翻译（MyMemory）')).toBeVisible()
-  })
-
-  test('TC-TRANS-AUTO-001: 开关默认关闭，详情页不自动翻译', async ({ page }) => {
-    const word = `auto-off-${Date.now()}`
-    await addEnglishWord(page, word)
-    let googleCalls = 0
-    await page.route('**translate.googleapis.com/**', async (route) => {
-      googleCalls += 1
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([[[`译文-${word}`, 'source', null, null, 10]], null, 'en', []]),
-      })
-    })
-    await openWordDetail(page, word)
-    await expect(page.getByRole('heading', { name: word })).toBeVisible()
-    await expect(page.locator('[data-auto-translation]')).toHaveCount(0)
-    expect(googleCalls).toBe(0)
-  })
-
-  test('TC-TRANS-AUTO-002: 开启后进入英语词详情自动翻译并持久化', async ({ page }) => {
-    const word = `auto-on-${Date.now()}`
-    await addEnglishWord(page, word)
-    await mockTranslation(page, `自动译文-${word}`)
-    await openWordDetail(page, word)
-    await page.getByRole('button', { name: '开启自动翻译' }).click()
-    await expect(page.locator('[data-auto-translation]')).toBeVisible()
-    await expect(page.getByText(`自动译文-${word}`, { exact: true })).toBeVisible()
-    await expect(page.getByText('在线翻译（Google）')).toBeVisible()
-
-    // 刷新后开关保持开启并继续自动翻译
-    await page.reload()
-    await expect(page.locator('[data-auto-translation]')).toBeVisible()
-    await expect(page.getByText(`自动译文-${word}`, { exact: true })).toBeVisible()
-  })
-
-  test('TC-TRANS-AUTO-003: 切换单词后译文随之更新', async ({ page }) => {
-    const word = `auto-switch-${Date.now()}`
-    const other = `auto-switch2-${Date.now()}`
-    await addEnglishWord(page, word)
-    await addEnglishWord(page, other)
-    await page.route('**translate.googleapis.com/**', async (route) => {
-      const q = new URL(route.request().url()).searchParams.get('q') ?? ''
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([[[`译文:${q}`, 'source', null, null, 10]], null, 'en', []]),
-      })
-    })
-    await openWordDetail(page, word)
-    await page.getByRole('button', { name: '开启自动翻译' }).click()
-    await expect(page.getByText(`译文:${word}`, { exact: true })).toBeVisible()
-
-    // 点上一个词，译文应更新为另一个词
-    await page.getByRole('button', { name: /上一个/ }).click()
-    await expect(page.getByText(`译文:${other}`, { exact: true })).toBeVisible()
-    await expect(page.getByText(`译文:${word}`, { exact: true })).toHaveCount(0)
-  })
-
-  test('TC-TRANS-AUTO-004: 关闭开关后不再自动翻译', async ({ page }) => {
-    const word = `auto-close-${Date.now()}`
-    await addEnglishWord(page, word)
-    await mockTranslation(page, `关闭前译文-${word}`)
-    await openWordDetail(page, word)
-    await page.getByRole('button', { name: '开启自动翻译' }).click()
-    await expect(page.locator('[data-auto-translation]')).toBeVisible()
-
-    await page.getByRole('button', { name: '关闭自动翻译' }).click()
-    await expect(page.locator('[data-auto-translation]')).toHaveCount(0)
-  })
-
-  test('TC-TRANS-AUTO-005: 日语词详情不自动翻译', async ({ page }) => {
-    await page.goto(url('/'))
-    await page.getByRole('button', { name: '日语', exact: true }).click()
-    await page.goto(url('/add'))
-    await page.getByPlaceholder('如：食べる').fill('ねこ')
-    await page.getByPlaceholder('如：たべる').fill('ねこ')
-    await page.getByPlaceholder('中文翻译').first().fill('猫')
-    await page.getByRole('button', { name: '保存', exact: true }).click()
-    await page.waitForURL(/\/words/)
-
-    await mockTranslation(page, '不该出现')
-    await openWordDetail(page, 'ねこ')
-    await expect(page.getByRole('button', { name: '开启自动翻译' })).toHaveCount(0)
-    await expect(page.locator('[data-auto-translation]')).toHaveCount(0)
   })
 })

@@ -39,11 +39,6 @@
 | TC-TRANS-004 | 英语本地词库匹配 | 显示本地释义、例句和分类 |
 | TC-TRANS-005 | 日语页面搜索英语词 | 仍匹配英语本地词库，不受当前页面语言影响 |
 | TC-TRANS-006 | 短词候选译文解析 | MyMemory 首选结果为原文时显示候选中文译文 |
-| TC-TRANS-AUTO-001 | 自动翻译开关默认关闭 | 详情页不发起在线翻译、不显示翻译卡片 |
-| TC-TRANS-AUTO-002 | 开启后自动翻译并持久化 | 英语词详情自动展示译文与来源；刷新后开关仍开启 |
-| TC-TRANS-AUTO-003 | 切换单词译文更新 | 上下切换后译文更新为新词、不残留旧译文 |
-| TC-TRANS-AUTO-004 | 关闭开关停止翻译 | 关闭后翻译卡片消失 |
-| TC-TRANS-AUTO-005 | 日语词不自动翻译 | 日语词详情无自动翻译按钮与卡片 |
 
 测试通过 `page.route` mock 在线接口，避免 E2E 结果受第三方网络服务波动影响；本地词条通过真实添加流程创建。
 
@@ -68,6 +63,10 @@
 | TC-DICT-014 | 同词性多义项拆分 | 必应把多义项用「；」并在一行时，覆盖后按分号拆成独立 `definitions`，同词性共用 `pos` |
 | TC-DICT-015 | 多例句独立字段 | 全部例句写入 `dictionaryExamples` 并在详情页多行展示；首条同时写入 `example`/`exampleTranslation`；不再写入笔记 |
 | TC-DICT-016 | 覆盖后导出完整可往返 | `exportWordsToJson/Csv` 含全部 `definitions`、`dictionaryExamples`、`example`、`onlineTranslation`；导出的 JSON 经 `parseWordsJson` 重新解析无损 |
+| TC-DICT-017 | 自动查词典开关默认关闭 | 详情页不自动展开词典、不请求在线接口 |
+| TC-DICT-018 | 开启后自动查词典并持久化 | 英语词详情自动展开必应词典卡片；刷新后开关仍开启 |
+| TC-DICT-019 | 关闭后收起且不再自动展开 | 点「关闭自动查词典」后面板收起 |
+| TC-DICT-020 | 日语词不自动查词典 | 日语词详情无自动查词典按钮、不展开面板 |
 
 在线接口同样用 `page.route` mock：词典 mock 必应通道（经 `r.jina.ai` 代理返回 HTML 片段），翻译 mock Google / MyMemory，保证结果确定。
 
@@ -528,10 +527,12 @@ E2E 测试覆盖单词/短句/学习/计划/加学/复习/打卡/导入/分类/�
 
 新增 `TC-DICT-011`（详情页展开/收起词典）、`TC-DICT-012`（覆盖本地翻译并落库、英文释义保留）、`TC-DICT-013`（详情页按钮不再是「在线翻译」）、`TC-DICT-014`（同词性多义项按分号拆成独立义项）、`TC-DICT-015`（全部例句写入 `dictionaryExamples` 并多行展示、不再入笔记）、`TC-DICT-016`（导出 JSON/CSV 含全部释义与例句且经 `parseWordsJson` 往返无损，测试内直接 import 导出/解析函数断言）。
 
+后续迭代把详情页右上角开关改为「自动查词典」（`vocab.autolookup`，仅英语，仅展示不写库），并移除早前试做的 Google/MyMemory 自动翻译卡片；新增 `TC-DICT-017` ~ `TC-DICT-020`。
+
 | 项目 | 结果 |
 |------|------|
-| dictionary.spec 执行 | 15 passed |
-| translation.spec 执行 | 11 passed |
+| dictionary.spec 执行 | 19 passed |
+| translation.spec 执行 | 6 passed |
 | words.spec 执行 | 25 passed |
-| 新增用例 | TC-DICT-011、TC-DICT-012、TC-DICT-013、TC-DICT-014、TC-DICT-015、TC-DICT-016 |
+| 新增用例 | TC-DICT-011 ~ TC-DICT-020 |
 

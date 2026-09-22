@@ -266,7 +266,7 @@ test.describe('在线词典增量测试', () => {
     await addEnglishWord(page, 'adequate')
     await page.goto(url('/words'))
     await page.getByText('adequate', { exact: true }).click()
-    const dictButton = page.getByRole('button', { name: '查词典' })
+    const dictButton = page.getByRole('button', { name: '查词典', exact: true })
     await expect(dictButton).toBeVisible()
     await dictButton.click()
     const panel = page.locator('[data-dictionary-panel]')
@@ -284,7 +284,7 @@ test.describe('在线词典增量测试', () => {
     await addEnglishWord(page, 'adequate')
     await page.goto(url('/words'))
     await page.getByText('adequate', { exact: true }).click()
-    await page.getByRole('button', { name: '查词典' }).click()
+    await page.getByRole('button', { name: '查词典', exact: true }).click()
     await page.getByRole('button', { name: '覆盖本地翻译' }).click()
     await expect(page.getByText('已覆盖本地翻译')).toBeVisible()
     // 释义卡片被词典内容替换（本地英文释义保留：词典 senses 无对应 def）
@@ -305,7 +305,7 @@ test.describe('在线词典增量测试', () => {
     await addEnglishWord(page, word)
     await page.goto(url('/words'))
     await page.getByText(word, { exact: true }).click()
-    await expect(page.getByRole('button', { name: '查词典' })).toBeVisible()
+    await expect(page.getByRole('button', { name: '查词典', exact: true })).toBeVisible()
     await expect(page.getByRole('button', { name: '在线翻译' })).toHaveCount(0)
   })
 
@@ -314,7 +314,7 @@ test.describe('在线词典增量测试', () => {
     await addEnglishWord(page, 'young')
     await page.goto(url('/words'))
     await page.getByText('young', { exact: true }).click()
-    await page.getByRole('button', { name: '查词典' }).click()
+    await page.getByRole('button', { name: '查词典', exact: true }).click()
     await page.getByRole('button', { name: '覆盖本地翻译' }).click()
     await expect(page.getByText('已覆盖本地翻译')).toBeVisible()
     const record = await readWordRecord(page, 'young')
@@ -333,7 +333,7 @@ test.describe('在线词典增量测试', () => {
     await addEnglishWord(page, 'young')
     await page.goto(url('/words'))
     await page.getByText('young', { exact: true }).click()
-    await page.getByRole('button', { name: '查词典' }).click()
+    await page.getByRole('button', { name: '查词典', exact: true }).click()
     await page.getByRole('button', { name: '覆盖本地翻译' }).click()
     await expect(page.getByText('已覆盖本地翻译')).toBeVisible()
     const record = await readWordRecord(page, 'young')
@@ -358,7 +358,7 @@ test.describe('在线词典增量测试', () => {
     await addEnglishWord(page, 'young')
     await page.goto(url('/words'))
     await page.getByText('young', { exact: true }).click()
-    await page.getByRole('button', { name: '查词典' }).click()
+    await page.getByRole('button', { name: '查词典', exact: true }).click()
     await page.getByRole('button', { name: '覆盖本地翻译' }).click()
     await expect(page.getByText('已覆盖本地翻译')).toBeVisible()
     const record = await readWordRecord(page, 'young')
@@ -382,5 +382,60 @@ test.describe('在线词典增量测试', () => {
     expect(parsed.words[0].dictionaryExamples).toHaveLength(3)
     expect(parsed.words[0].dictionaryExamples![1].en).toBe('The tires are extremely worn, suggesting the chariot was used by the young king.')
     expect(parsed.words[0].example).toBe(record.example)
+  })
+
+  test('TC-DICT-017: 自动查词典开关默认关闭，详情页不自动展开', async ({ page }) => {
+    await addEnglishWord(page, 'young')
+    const bing = await mockBing(page, BING_YOUNG_HTML)
+    await page.goto(url('/words'))
+    await page.getByText('young', { exact: true }).click()
+    await expect(page.getByRole('heading', { name: 'young' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: '必应词典' })).toHaveCount(0)
+    expect(bing.calls).toBe(0)
+  })
+
+  test('TC-DICT-018: 开启后进英语词详情自动展开词典并持久化', async ({ page }) => {
+    await addEnglishWord(page, 'young')
+    await mockBing(page, BING_YOUNG_HTML)
+    await page.goto(url('/words'))
+    await page.getByText('young', { exact: true }).click()
+    await page.getByRole('button', { name: '开启自动查词典' }).click()
+    // 自动展开词典卡片，无需点「查词典」
+    await expect(page.getByRole('heading', { name: '必应词典' })).toBeVisible()
+    await expect(page.getByText('青年人；幼崽；幼兽；幼鸟', { exact: true })).toBeVisible()
+
+    // 刷新后开关保持开启并继续自动展开
+    await page.reload()
+    await expect(page.getByText('青年人；幼崽；幼兽；幼鸟', { exact: true })).toBeVisible()
+  })
+
+  test('TC-DICT-019: 关闭自动查词典后收起且不再自动展开', async ({ page }) => {
+    await addEnglishWord(page, 'young')
+    await mockBing(page, BING_YOUNG_HTML)
+    await page.goto(url('/words'))
+    await page.getByText('young', { exact: true }).click()
+    await page.getByRole('button', { name: '开启自动查词典' }).click()
+    await expect(page.getByText('青年人；幼崽；幼兽；幼鸟', { exact: true })).toBeVisible()
+
+    await page.getByRole('button', { name: '关闭自动查词典' }).click()
+    await expect(page.getByText('青年人；幼崽；幼兽；幼鸟', { exact: true })).toHaveCount(0)
+  })
+
+  test('TC-DICT-020: 日语词不自动查词典', async ({ page }) => {
+    await page.goto(url('/'))
+    await page.getByRole('button', { name: '日语', exact: true }).click()
+    await page.goto(url('/add'))
+    await page.getByPlaceholder('如：食べる').fill('ねこ')
+    await page.getByPlaceholder('如：たべる').fill('ねこ')
+    await page.getByPlaceholder('中文翻译').first().fill('猫')
+    await page.getByRole('button', { name: '保存', exact: true }).click()
+    await page.waitForURL(/\/words/)
+
+    await mockBing(page, BING_YOUNG_HTML)
+    await page.goto(url('/words'))
+    await page.getByText('ねこ', { exact: true }).first().click()
+    await expect(page.getByRole('button', { name: '开启自动查词典' })).toHaveCount(0)
+    // 日语词不显示词典面板内容
+    await expect(page.getByRole('heading', { name: '必应词典' })).toHaveCount(0)
   })
 })
