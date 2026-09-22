@@ -39,6 +39,11 @@
 | TC-TRANS-004 | 英语本地词库匹配 | 显示本地释义、例句和分类 |
 | TC-TRANS-005 | 日语页面搜索英语词 | 仍匹配英语本地词库，不受当前页面语言影响 |
 | TC-TRANS-006 | 短词候选译文解析 | MyMemory 首选结果为原文时显示候选中文译文 |
+| TC-TRANS-AUTO-001 | 自动翻译开关默认关闭 | 详情页不发起在线翻译、不显示翻译卡片 |
+| TC-TRANS-AUTO-002 | 开启后自动翻译并持久化 | 英语词详情自动展示译文与来源；刷新后开关仍开启 |
+| TC-TRANS-AUTO-003 | 切换单词译文更新 | 上下切换后译文更新为新词、不残留旧译文 |
+| TC-TRANS-AUTO-004 | 关闭开关停止翻译 | 关闭后翻译卡片消失 |
+| TC-TRANS-AUTO-005 | 日语词不自动翻译 | 日语词详情无自动翻译按钮与卡片 |
 
 测试通过 `page.route` mock 在线接口，避免 E2E 结果受第三方网络服务波动影响；本地词条通过真实添加流程创建。
 
@@ -526,7 +531,7 @@ E2E 测试覆盖单词/短句/学习/计划/加学/复习/打卡/导入/分类/�
 | 项目 | 结果 |
 |------|------|
 | dictionary.spec 执行 | 15 passed |
-| translation.spec 执行 | 6 passed |
+| translation.spec 执行 | 11 passed |
 | words.spec 执行 | 25 passed |
 | 新增用例 | TC-DICT-011、TC-DICT-012、TC-DICT-013、TC-DICT-014、TC-DICT-015、TC-DICT-016 |
 
