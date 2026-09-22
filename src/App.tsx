@@ -13,7 +13,14 @@ import { ensureDefaultFolder, ensureJapaneseDefaultFolder } from './hooks/useFav
 const Study = lazy(() => import('./pages/Study').then((m) => ({ default: m.Study })))
 const WordList = lazy(() => import('./pages/WordList').then((m) => ({ default: m.WordList })))
 const AddWord = lazy(() => import('./pages/AddWord').then((m) => ({ default: m.AddWord })))
-const WordDetail = lazy(() => import('./pages/WordDetail').then((m) => ({ default: m.WordDetail })))
+
+// 详情页在预习/列表点击时才进入；提前预取 chunk，避免 lazy 过渡期间仍显示上一页
+// （如 /study 词表页的「开始测试」按钮一闪而过）
+const loadWordDetail = () => import('./pages/WordDetail').then((m) => ({ default: m.WordDetail }))
+const WordDetail = lazy(loadWordDetail)
+export function prefetchWordDetail() {
+  loadWordDetail().catch(() => {})
+}
 const Stats = lazy(() => import('./pages/Stats').then((m) => ({ default: m.Stats })))
 const ImportWords = lazy(() => import('./pages/ImportWords').then((m) => ({ default: m.ImportWords })))
 const ImportSentences = lazy(() => import('./pages/ImportSentences').then((m) => ({ default: m.ImportSentences })))
