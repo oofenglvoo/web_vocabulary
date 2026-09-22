@@ -1,11 +1,7 @@
-// 在线翻译偏好：是否在英语单词详情页自动翻译
-export interface TranslationPrefs {
-  autoTranslate: boolean
-}
+// 词典偏好：是否在英语单词详情页自动展开必应词典
+const AUTO_KEY = 'vocab.autolookup'
 
-const AUTO_KEY = 'vocab.autotranslate'
-
-export function getAutoTranslate(): boolean {
+export function getAutoLookup(): boolean {
   if (typeof localStorage === 'undefined') return false
   try {
     return localStorage.getItem(AUTO_KEY) === '1'
@@ -14,7 +10,7 @@ export function getAutoTranslate(): boolean {
   }
 }
 
-export function setAutoTranslate(value: boolean) {
+export function setAutoLookup(value: boolean) {
   try {
     localStorage.setItem(AUTO_KEY, value ? '1' : '0')
   } catch {

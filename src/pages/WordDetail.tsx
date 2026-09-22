@@ -14,7 +14,6 @@ import {
   BookMarked,
   RotateCcw,
   Languages,
-  RotateCw,
 } from 'lucide-react'
 import { useLang } from '../context/Language'
 import {
@@ -40,8 +39,7 @@ import { NotesBlock } from '../components/NotesBlock'
 import { SkeletonCard } from '../components/Skeleton'
 import { DictionaryPanel } from '../components/DictionaryPanel'
 import { emptyDictionaryResult, lookupDictionary, type DictionaryResult } from '../utils/dictionary'
-import { translateOnline, type TranslationProvider } from '../utils/translation'
-import { getAutoTranslate, setAutoTranslate } from '../utils/translationPrefs'
+import { getAutoLookup, setAutoLookup } from '../utils/dictionaryPrefs'
 import { Definition, JapaneseDefinition, JapaneseWord, Word } from '../types/word'
 import type { LangWord } from '../hooks/languageAware'
 
@@ -76,12 +74,9 @@ export function WordDetail() {
   const [dictResult, setDictResult] = useState<DictionaryResult | null>(null)
   const [dictLoading, setDictLoading] = useState(false)
   const [dictError, setDictError] = useState('')
-  const [autoTranslateOn, setAutoTranslateOn] = useState(() => getAutoTranslate())
-  const [autoResult, setAutoResult] = useState<{ text: string; provider: TranslationProvider } | null>(null)
-  const [autoLoading, setAutoLoading] = useState(false)
-  const [autoError, setAutoError] = useState('')
+  const [autoLookupOn, setAutoLookupOn] = useState(() => getAutoLookup())
 
-  // 切换单词时重置编辑状态与词典/自动翻译结果，避免残留上一个单词的面板
+  // 切换单词时重置编辑状态与词典结果，避免残留上一个单词的面板
   useEffect(() => {
     setEditingDefs(false)
     setEditDefinitions([])
@@ -89,9 +84,6 @@ export function WordDetail() {
     setDictResult(null)
     setDictError('')
     setDictLoading(false)
-    setAutoResult(null)
-    setAutoError('')
-    setAutoLoading(false)
   }, [id])
 
   // 上一个/下一个的来源
@@ -164,30 +156,29 @@ export function WordDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [prevWord?.id, nextWord?.id, scope, scopeCategory])
 
-  // 自动翻译：开关开启时，切入英语词详情自动请求在线翻译（仅展示，不写库）
+  // 自动查词典：开关开启时，切入英语词详情自动展开必应词典（仅展示，不写库）
   useEffect(() => {
-    if (!autoTranslateOn || isJa) return
-    if (!word) return
+    if (!autoLookupOn || isJa) return
+    if (!word || !canLookupDictionary(word.word)) return
     const normalized = word.word.trim()
-    if (!normalized) return
     let cancelled = false
-    setAutoLoading(true)
-    setAutoError('')
-    setAutoResult(null)
-    translateOnline(normalized, 'en')
-      .then((result) => {
-        if (!cancelled) setAutoResult(result)
+    setDictLoading(true)
+    setDictError('')
+    setDictResult(null)
+    lookupDictionary(normalized)
+      .then((data) => {
+        if (!cancelled) setDictResult(data)
       })
       .catch(() => {
-        if (!cancelled) setAutoError('在线翻译失败，请稍后重试')
+        if (!cancelled) setDictError('未找到该词的词典释义，请检查拼写或网络后重试')
       })
       .finally(() => {
-        if (!cancelled) setAutoLoading(false)
+        if (!cancelled) setDictLoading(false)
       })
     return () => {
       cancelled = true
     }
-  }, [autoTranslateOn, isJa, id, word?.word])
+  }, [autoLookupOn, isJa, id, word?.word])
 
   if (!word || (isStudyPreview && !studyPreviewReady)) {
     return (
@@ -271,14 +262,14 @@ export function WordDetail() {
     }
   }
 
-  const handleToggleAutoTranslate = () => {
-    const next = !autoTranslateOn
-    setAutoTranslateOn(next)
-    setAutoTranslate(next)
-    if (!next) {
-      setAutoResult(null)
-      setAutoError('')
-      setAutoLoading(false)
+  const handleToggleAutoLookup = () => {
+    const next = !autoLookupOn
+    setAutoLookupOn(next)
+    setAutoLookup(next)
+    if (!next && !dictLoading) {
+      // 关闭时收起自动展开的词典面板
+      setDictResult(null)
+      setDictError('')
     }
   }
 
@@ -416,16 +407,16 @@ export function WordDetail() {
               <BookMarked size={20} className={dictResult ? 'text-primary-500 dark:text-primary-400' : 'text-gray-400'} />
             </button>
           )}
-          {!isJa && (
+          {!isJa && canLookupDictionary(word.word) && (
             <button
-              onClick={handleToggleAutoTranslate}
+              onClick={handleToggleAutoLookup}
               className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
-              aria-label={autoTranslateOn ? '关闭自动翻译' : '开启自动翻译'}
-              title={autoTranslateOn ? '关闭自动翻译' : '开启自动翻译'}
+              aria-label={autoLookupOn ? '关闭自动查词典' : '开启自动查词典'}
+              title={autoLookupOn ? '关闭自动查词典' : '开启自动查词典'}
             >
               <Languages
                 size={20}
-                className={autoTranslateOn ? 'text-primary-500 dark:text-primary-400' : 'text-gray-400'}
+                className={autoLookupOn ? 'text-primary-500 dark:text-primary-400' : 'text-gray-400'}
               />
             </button>
           )}
@@ -545,22 +536,6 @@ export function WordDetail() {
             error={dictError}
             title="必应词典"
           />
-        </div>
-      )}
-
-      {!isJa && autoTranslateOn && (autoLoading || autoResult || autoError) && (
-        <div className="card p-4 mb-4" data-auto-translation>
-          <h3 className="text-sm font-medium text-primary-600 dark:text-primary-400 flex items-center gap-1.5 mb-2">
-            <Languages size={15} /> 在线翻译
-            {autoLoading && <RotateCw size={13} className="animate-spin text-gray-400" />}
-          </h3>
-          {autoError && <p className="text-sm text-red-500">{autoError}</p>}
-          {autoResult && (
-            <>
-              <p className="text-lg whitespace-pre-wrap dark:text-gray-200">{autoResult.text}</p>
-              <p className="text-xs text-gray-400 mt-1">在线翻译（{autoResult.provider}）</p>
-            </>
-          )}
         </div>
       )}
 
