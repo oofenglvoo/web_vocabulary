@@ -33,7 +33,7 @@ export interface EmbedCollectResultPayload {
 }
 
 /** app iframe 地址（本地 dev 服务器） */
-export const APP_EMBED_URL = 'http://127.0.0.1:5199/web_vocabulary/?embed=1'
+export const APP_EMBED_URL = 'http://127.0.0.1:8457/web_vocabulary/?embed=1'
 
 /** popup 与 background/content 之间用的内部消息类型 */
 export const RUNTIME_MESSAGE = {

@@ -23,8 +23,8 @@
     "<all_urls>",
     "https://r.jina.ai/*",
     "https://cn.bing.com/*",
-    "http://127.0.0.1:5199/*",
-    "http://localhost:5199/*"
+    "http://127.0.0.1:8457/*",
+    "http://localhost:8457/*"
   ],
   "icons": {
     "16": "icons/icon16.png",

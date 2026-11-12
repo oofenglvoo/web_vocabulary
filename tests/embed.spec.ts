@@ -239,7 +239,7 @@ test.describe('embed 精简模式', () => {
     expect(result.added).toBe(1)
 
     // 断言确实落到了 iframe 的 origin 词库
-    const childFrame = page.frames().find((f) => f.url().includes('5199'))
+    const childFrame = page.frames().find((f) => f.url().includes('8457'))
     expect(childFrame).toBeTruthy()
     const words = await childFrame!.evaluate(() => {
       return new Promise<any[]>((resolve, reject) => {

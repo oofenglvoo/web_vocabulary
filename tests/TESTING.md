@@ -98,7 +98,7 @@
 
 - **必须 headful**：MV3 无头模式不注入 content script。
 - **词典请求走本地 mock**：`r.jina.ai` 对自动化 profile 触发 Cloudflare 挑战，故 `npm run build:extension:test` 把 `VITE_DICT_PROXY` 指向本地 mock 服务器（端口 5397）；offscreen 文档发起的 fetch 不被 Playwright 路由拦截，只能改端点。
-- **dev 服务器由测试自行启停**：popup 内嵌 `http://127.0.0.1:5199/web_vocabulary/?embed=1`。
+- **dev 服务器由测试自行启停**：popup 内嵌 `http://127.0.0.1:8457/web_vocabulary/?embed=1`。
 - 运行前需先构建扩展：`npm run test:e2e:extension` 已内置测试构建。
 
 ## 1. 单词管理

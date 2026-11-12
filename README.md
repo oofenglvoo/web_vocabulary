@@ -75,6 +75,8 @@
 
 ## 安装与运行
 
+Windows 下可直接双击根目录的 `启动.bat`：自动检查 Node/npm、依赖缺失时执行 `npm install`、端口 8457 已占用则直接打开浏览器，否则启动 dev server（`127.0.0.1:8457`）并自动打开 `http://127.0.0.1:8457/web_vocabulary/`。该脚本为 GBK(CP936) 编码 + CRLF，勿改为 UTF-8。
+
 ```bash
 # 进入项目目录
 cd web-vocabulary-app
@@ -233,7 +235,7 @@ npm run typecheck:extension
 npm run test:e2e:extension
 ```
 
-**加载扩展**：Chrome → `chrome://extensions` → 开启开发者模式 → 「加载已解压的扩展程序」→ 选 `extension/dist`。默认 iframe 指向本地 dev 服务器 `http://127.0.0.1:5199/web_vocabulary/?embed=1`，使用前需先 `npm run dev`。
+**加载扩展**：Chrome → `chrome://extensions` → 开启开发者模式 → 「加载已解压的扩展程序」→ 选 `extension/dist`。默认 iframe 指向本地 dev 服务器 `http://127.0.0.1:8457/web_vocabulary/?embed=1`，使用前需先 `npm run dev`。
 
 ### 测试
 

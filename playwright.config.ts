@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
 // 测试访问路径：dev server 默认 base=/web_vocabulary/（必须带尾斜杠，否则 404）
-const BASE_URL = process.env.PW_BASE_URL || 'http://127.0.0.1:5199/web_vocabulary/'
+const BASE_URL = process.env.PW_BASE_URL || 'http://127.0.0.1:8457/web_vocabulary/'
 
 export default defineConfig({
   testDir: './tests',
@@ -24,7 +24,7 @@ export default defineConfig({
   ],
   // 启动 dev server（--host 监听所有接口，避免 IPv6/IPv4 探测不一致）
   webServer: {
-    command: 'npx vite --port 5199 --strictPort --host 0.0.0.0',
+    command: 'npx vite --port 8457 --strictPort --host 0.0.0.0',
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 30000,

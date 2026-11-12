@@ -11,7 +11,7 @@ import { rmSync, mkdirSync } from 'node:fs'
 //  - MV3 无头模式不注入 content script，必须 headful 运行。
 //  - 词典请求由 offscreen 文档发起，不被 Playwright 路由拦截，故测试构建时把
 //    代理前缀 VITE_DICT_PROXY 指向本地 mock 服务器（端口 5397）。
-//  - popup 内嵌的 app 指向本地 dev 服务器（5199），由本测试自行启动/关闭。
+//  - popup 内嵌的 app 指向本地 dev 服务器（8457），由本测试自行启动/关闭。
 //  运行：npm run test:e2e:extension（内部先 build:extension:test 再跑测试）
 
 const here = fileURLToPath(new URL('.', import.meta.url))
@@ -19,7 +19,7 @@ const ROOT = resolve(here, '..')
 const EXT_DIST = resolve(ROOT, 'extension/dist')
 const PROFILE_DIR = resolve(ROOT, 'tmp-ext-profile-test')
 const MOCK_PORT = 5397
-const DEV_PORT = 5199
+const DEV_PORT = 8457
 const APP_URL = `http://127.0.0.1:${DEV_PORT}/web_vocabulary/`
 
 // 必应词典页面结构（与 tests/dictionary.spec.ts 的 fixture 同源）

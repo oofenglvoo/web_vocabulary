@@ -5,10 +5,11 @@ React 18 + TypeScript + Vite + Tailwind + Dexie (IndexedDB) vocabulary app. No b
 ## Commands
 
 - `npm run dev` — Vite dev server (web base `/web_vocabulary/`).
+- `启动.bat` — Windows 一键启动（双击）：检查 Node/npm、缺依赖时自动 `npm install`、端口 8457 已占用则直接开浏览器，否则 `npm run dev -- --port 8457 --strictPort --host 127.0.0.1 --open`。**该文件用 GBK（CP936）编码 + CRLF 保存，不要改成 UTF-8**：UTF-8 批处理配 `chcp 65001` 会让含中文的 `echo` 行在 CP936 控制台被误判为命令。
 - `npx tsc --noEmit` — typecheck (there is no lint script and no ESLint config). `npm run build` = `tsc && vite build`.
 - `npm run test:e2e` — Playwright. Single spec: `npx playwright test tests/words.spec.ts`. Single case: add `-g "TC-ADD-001"`. Online-dependent specs have shortcuts: `npm run test:e2e:translation`, `npm run test:e2e:dictionary`.
 - `npm run build:android` — not defined; use `$env:VITE_ANDROID=1; npm run build` (outputs `dist-android/`, base `/`).
-- Browser scratch extension (`extension/`, MV3, built separately): `npm run build:extension` (→ `extension/dist`), `npm run typecheck:extension`, `npm run test:e2e:extension` (own config `playwright.extension.config.ts`, headful). Load `extension/dist` unpacked in Chrome; its popup iframes the dev server at `http://127.0.0.1:5199/web_vocabulary/?embed=1`.
+- Browser scratch extension (`extension/`, MV3, built separately): `npm run build:extension` (→ `extension/dist`), `npm run typecheck:extension`, `npm run test:e2e:extension` (own config `playwright.extension.config.ts`, headful). Load `extension/dist` unpacked in Chrome; its popup iframes the dev server at `http://127.0.0.1:8457/web_vocabulary/?embed=1`.
 
 ## Architecture
 
@@ -24,7 +25,7 @@ React 18 + TypeScript + Vite + Tailwind + Dexie (IndexedDB) vocabulary app. No b
 ## Testing quirks
 
 - `playwright.config.ts` runs `workers: 1` (serial) because IndexedDB state is shared per store; each test gets a fresh browser context.
-- Dev server is fixed to `--port 5199 --strictPort`; base URL is `http://127.0.0.1:5199/web_vocabulary/` — **the trailing slash is required**. Use `url('/path')` from `tests/helpers.ts`; `page.goto('/path')` loses the base.
+- Dev server is fixed to `--port 8457 --strictPort`; base URL is `http://127.0.0.1:8457/web_vocabulary/` — **the trailing slash is required**. Use `url('/path')` from `tests/helpers.ts`; `page.goto('/path')` loses the base.
 - Tests reach into IndexedDB directly for SRS time-travel (`makeAllWordsDue`) and old-data scenarios (`moveSentencesCategory`).
 - Online calls are mocked with `page.route` (translation/dictionary tests) to stay deterministic.
 - The study queue is **randomly shuffled** (`getRandomWords` in `src/hooks/useWords.ts`), so study tests must not assume a fixed word order — track words by name.
