@@ -142,9 +142,12 @@ extension/
 
 ### 本地目录与忽略规则
 
-以下目录只存在于本机，**不入版本库**（已写入 `.gitignore`）：
+`英语单词/`、`日语单词/` 只把 **json 导入数据**入库，源资料与中间产物仍不入版本库（见 `.gitignore`）：
 
-- `英语单词/`、`日语单词/`：原始学习资料与导入流水线中间产物（`*_convert.json` / `*_import.json` / `.work/`），仅用于生成导入文件
+- 入库：两目录下所有 `.json`（如 `*_convert.json` / `*_import.json`、`json/` 与 `手机端生成/json/` 下的词表）
+- 不入库：`.md`、`.pdf`、`.txt`、`*.json.bak`，以及 `英语单词/.work/` 下的流水线中间产物
+
+以下目录只存在于本机，**不入版本库**（已写入 `.gitignore`）：
 - `node_modules/`、`dist/`、`dist-android/`、`extension/dist/`：依赖与构建产物
 - `test-results/`、`playwright-report/`、`playwright-artifacts/`、`.playwright-cli/`：测试产物
 - `.claude/settings.local.json`：本机 Claude Code 权限配置

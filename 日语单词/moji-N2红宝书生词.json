@@ -1,0 +1,4794 @@
+﻿[
+  {
+    "word": "養殖",
+    "reading": "ようしょく",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "养殖",
+    "category": "N2"
+  },
+  {
+    "word": "養分",
+    "reading": "ようぶん",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "养分",
+    "category": "N2"
+  },
+  {
+    "word": "類義語",
+    "reading": "るいぎご",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "近义词，类义词，同义词",
+    "category": "N2"
+  },
+  {
+    "word": "類似",
+    "reading": "るいじ",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "类似，相似",
+    "category": "N2"
+  },
+  {
+    "word": "領収",
+    "reading": "りょうしゅう",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "收取；收款；领收",
+    "category": "N2"
+  },
+  {
+    "word": "領事館",
+    "reading": "りょうじかん",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "领事馆",
+    "category": "N2"
+  },
+  {
+    "word": "領事",
+    "reading": "りょうじ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "领事",
+    "category": "N2"
+  },
+  {
+    "word": "領",
+    "reading": "りょう",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "领地，领土",
+    "category": "N2"
+  },
+  {
+    "word": "預金",
+    "reading": "よきん",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "存款",
+    "category": "N2"
+  },
+  {
+    "word": "隣人",
+    "reading": "りんじん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "邻人邻居街坊",
+    "category": "N2"
+  },
+  {
+    "word": "陽気",
+    "reading": "ようき",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "开朗，朝气蓬勃；心情、气氛等活泼明亮开朗；热闹明朗；季节，时令；万物生成根本的二气之一，万物都在此刻诞生并活动。（与之相对的则为“阴气”）",
+    "category": "N2"
+  },
+  {
+    "word": "陸地",
+    "reading": "りくち",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "陆地",
+    "category": "N2"
+  },
+  {
+    "word": "陸",
+    "reading": "おか",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "陆地；研墨部分，砚心；冲洗处",
+    "category": "N2"
+  },
+  {
+    "word": "録音",
+    "reading": "ろくおん",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "录音",
+    "category": "N2"
+  },
+  {
+    "word": "録画",
+    "reading": "ろくが",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "录像",
+    "category": "N2"
+  },
+  {
+    "word": "野生",
+    "reading": "やせい",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "野生（动植物）动植物在山野里自然生长；野（人）未经别人管教，完全自然地生长发育的人；男子对自己的一种谦称",
+    "category": "N2"
+  },
+  {
+    "word": "郵送",
+    "reading": "ゆうそう",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "邮，寄，邮寄",
+    "category": "N2"
+  },
+  {
+    "word": "避ける",
+    "reading": "さける",
+    "accent": "②",
+    "partOfSpeech": "他动·一段",
+    "meaning": "避，避开；躲避；逃避；躲避；避开",
+    "category": "N2"
+  },
+  {
+    "word": "遣り通す",
+    "reading": "やりとおす",
+    "accent": "③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "做完，完成",
+    "category": "N2"
+  },
+  {
+    "word": "連続",
+    "reading": "れんぞく",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "接连，连续；连续",
+    "category": "N2"
+  },
+  {
+    "word": "連想",
+    "reading": "れんそう",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "联想随着某个观念，头脑中浮现出与其相关联的其他观念，亦指该观念",
+    "category": "N2"
+  },
+  {
+    "word": "連合",
+    "reading": "れんごう",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "联合，联盟；联想",
+    "category": "N2"
+  },
+  {
+    "word": "輸送",
+    "reading": "ゆそう",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "运输，运送，输送",
+    "category": "N2"
+  },
+  {
+    "word": "輸血",
+    "reading": "ゆけつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "输血",
+    "category": "N2"
+  },
+  {
+    "word": "輪",
+    "reading": "わ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "环圆圈；连成细长物两端的东西；车轮",
+    "category": "N2"
+  },
+  {
+    "word": "論理",
+    "reading": "ろんり",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "逻辑，论理；道理，规律",
+    "category": "N2"
+  },
+  {
+    "word": "論争",
+    "reading": "ろんそう",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "争论，辩论，论战，论争",
+    "category": "N2"
+  },
+  {
+    "word": "論",
+    "reading": "ろん",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "讨论，议论，争论，争辩；意见，见解，看法，观点",
+    "category": "N2"
+  },
+  {
+    "word": "論じる",
+    "reading": "ろんじる",
+    "accent": "⓪③",
+    "partOfSpeech": "他动·一段",
+    "meaning": "论述，讨论",
+    "category": "N2"
+  },
+  {
+    "word": "読み取る",
+    "reading": "よみとる",
+    "accent": "③⓪",
+    "partOfSpeech": "他动·五段",
+    "meaning": "领会，读懂，看明白，理解",
+    "category": "N2"
+  },
+  {
+    "word": "読み",
+    "reading": "よみ",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "念，读；读汉字读出汉字的日语意思，也指日文汉字的训读假名和符号；预见，看出事先洞察事物的变化或趋势；看步，算步在围棋和将棋中预测此后棋的步骤",
+    "category": "N2"
+  },
+  {
+    "word": "詫びる",
+    "reading": "わびる",
+    "accent": "⓪",
+    "partOfSpeech": "他动·一段",
+    "meaning": "道歉，赔不是，谢罪，承认错误",
+    "category": "N2"
+  },
+  {
+    "word": "詫び",
+    "reading": "わび",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "赔不是，道歉，表示歉意",
+    "category": "N2"
+  },
+  {
+    "word": "訳する",
+    "reading": "やくする",
+    "accent": "③",
+    "partOfSpeech": "名·他动",
+    "meaning": "译，翻译；解释",
+    "category": "N2"
+  },
+  {
+    "word": "訳",
+    "reading": "やく",
+    "accent": "①②",
+    "partOfSpeech": "名",
+    "meaning": "译，翻，翻译",
+    "category": "N2"
+  },
+  {
+    "word": "要領",
+    "reading": "ようりょう",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "要领，要点；精明诀窍，窍门",
+    "category": "N2"
+  },
+  {
+    "word": "要請",
+    "reading": "ようせい",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "请求，要求；先决条件，必要，条件请求",
+    "category": "N2"
+  },
+  {
+    "word": "要素",
+    "reading": "ようそ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "要素；〈理・化〉因素，因数，因子",
+    "category": "N2"
+  },
+  {
+    "word": "要点",
+    "reading": "ようてん",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "要点，要领",
+    "category": "N2"
+  },
+  {
+    "word": "要望",
+    "reading": "ようぼう",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "要求，迫切期望",
+    "category": "N2"
+  },
+  {
+    "word": "要旨",
+    "reading": "ようし",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "大意，要旨，要点，重点主要内容，内容的要点",
+    "category": "N2"
+  },
+  {
+    "word": "要は",
+    "reading": "ようは",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "要紧的是，要之，总之；总而言之",
+    "category": "N2"
+  },
+  {
+    "word": "要件",
+    "reading": "ようけん",
+    "accent": "③⓪",
+    "partOfSpeech": "名",
+    "meaning": "要紧〔重要〕的事情；必要条件",
+    "category": "N2"
+  },
+  {
+    "word": "要するに",
+    "reading": "ようするに",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "总之，总归",
+    "category": "N2"
+  },
+  {
+    "word": "行方",
+    "reading": "ゆくえ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "去向，目的地，下落，行踪；将来",
+    "category": "N2"
+  },
+  {
+    "word": "行く先",
+    "reading": "いくさき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "去处，目的地；前途将来",
+    "category": "N2"
+  },
+  {
+    "word": "行く",
+    "reading": "いく",
+    "accent": "⓪",
+    "partOfSpeech": "自动·五段",
+    "meaning": "出嫁。（嫁に行く。とつぐ。）；（事物）进行；进展。（物事が進展、実現する。）；上年纪。（ある年齢に達する。）；做满足；满意。（気持ちが、満足した状態になる。）；去,走。（人、動物、乗り物が、遠くへ移動する。）；到……去，往……去，赴。（人、動物、乗り物が目的地に向かって進む。また至りつく。）；走过，经过，通过；离去。通り過ぎる",
+    "category": "N2"
+  },
+  {
+    "word": "行き過ぎる",
+    "reading": "ゆきすぎる",
+    "accent": "④",
+    "partOfSpeech": "自动·一段",
+    "meaning": "通过、经过、走过",
+    "category": "N2"
+  },
+  {
+    "word": "行き来",
+    "reading": "ゆきき",
+    "accent": "②⓪③",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "往返，往来 ；交往，来往",
+    "category": "N2"
+  },
+  {
+    "word": "行き先",
+    "reading": "いきさき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "去的地方，目的地",
+    "category": "N2"
+  },
+  {
+    "word": "行き",
+    "reading": "ゆき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "去，往",
+    "category": "N2"
+  },
+  {
+    "word": "蝋燭",
+    "reading": "ろうそく",
+    "accent": "③④",
+    "partOfSpeech": "名",
+    "meaning": "蜡烛",
+    "category": "N2"
+  },
+  {
+    "word": "薬品",
+    "reading": "やくひん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "药，药物〔薬物〕；药品，化学试剂",
+    "category": "N2"
+  },
+  {
+    "word": "落第",
+    "reading": "らくだい",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "不及格，留级",
+    "category": "N2"
+  },
+  {
+    "word": "若々しい",
+    "reading": "わかわかしい",
+    "accent": "⑤",
+    "partOfSpeech": "形",
+    "meaning": "感觉很年轻，朝气蓬勃",
+    "category": "N2"
+  },
+  {
+    "word": "良質",
+    "reading": "りょうしつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "质量良好，上等，优质",
+    "category": "N2"
+  },
+  {
+    "word": "良し悪し",
+    "reading": "よしあし",
+    "accent": "①②",
+    "partOfSpeech": "名",
+    "meaning": "好与坏，善与恶；很难说是好是坏有优点也有缺点",
+    "category": "N2"
+  },
+  {
+    "word": "良し",
+    "reading": "よし",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "好；行，可以",
+    "category": "N2"
+  },
+  {
+    "word": "臨時",
+    "reading": "りんじ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "临时；暂时",
+    "category": "N2"
+  },
+  {
+    "word": "脇",
+    "reading": "わき",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "腋下；胳肢窝；侧面；旁边；偏离主题；其次",
+    "category": "N2"
+  },
+  {
+    "word": "老後",
+    "reading": "ろうご",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "晚年",
+    "category": "N2"
+  },
+  {
+    "word": "翌朝",
+    "reading": "よくあさ",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "第二天早晨，次日早晨",
+    "category": "N2"
+  },
+  {
+    "word": "翌日",
+    "reading": "よくじつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "次日，翌日『書』，第二天",
+    "category": "N2"
+  },
+  {
+    "word": "翌年",
+    "reading": "よくねん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "翌年，第二年，次年",
+    "category": "N2"
+  },
+  {
+    "word": "翌",
+    "reading": "よく",
+    "accent": "⓪①",
+    "partOfSpeech": "名",
+    "meaning": "翌，次，第二；明……，次……",
+    "category": "N2"
+  },
+  {
+    "word": "羊毛",
+    "reading": "ようもう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "羊毛从绵羊、山羊身上剪下的毛",
+    "category": "N2"
+  },
+  {
+    "word": "綿",
+    "reading": "わた",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "〈植〉棉，棉花锦葵科棉属植物的总称；棉花",
+    "category": "N2"
+  },
+  {
+    "word": "累計",
+    "reading": "るいけい",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "累计，计算总数",
+    "category": "N2"
+  },
+  {
+    "word": "稍",
+    "reading": "やや",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "不大工夫，一会儿；稍，稍稍，稍微",
+    "category": "N2"
+  },
+  {
+    "word": "私事",
+    "reading": "わたくしごと",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "个人的事私事；隐私隐情秘密的事",
+    "category": "N2"
+  },
+  {
+    "word": "禍",
+    "reading": "わざわい",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "灾祸，灾难",
+    "category": "N2"
+  },
+  {
+    "word": "破れる",
+    "reading": "やぶれる",
+    "accent": "③",
+    "partOfSpeech": "自动·一段",
+    "meaning": "撕，撕破，破；打破，破；决裂；灭亡",
+    "category": "N2"
+  },
+  {
+    "word": "矢印",
+    "reading": "やじるし",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "箭纹；箭形符号",
+    "category": "N2"
+  },
+  {
+    "word": "病",
+    "reading": "やまい",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "病；毛病，坏习惯，恶癖",
+    "category": "N2"
+  },
+  {
+    "word": "略す",
+    "reading": "りゃくす",
+    "accent": "②",
+    "partOfSpeech": "他动·五段",
+    "meaning": "简略；省略略去；夺取",
+    "category": "N2"
+  },
+  {
+    "word": "用途",
+    "reading": "ようと",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "用途，用处",
+    "category": "N2"
+  },
+  {
+    "word": "用語",
+    "reading": "ようご",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "用语，措词；用语，术语",
+    "category": "N2"
+  },
+  {
+    "word": "用心深い",
+    "reading": "ようじんぶかい",
+    "accent": "⑥",
+    "partOfSpeech": "形",
+    "meaning": "十分小心的，十分谨慎的",
+    "category": "N2"
+  },
+  {
+    "word": "用心",
+    "reading": "ようじん",
+    "accent": "①",
+    "partOfSpeech": "名·サ变",
+    "meaning": "注意，小心，提防，留神，留意，留心；警惕；警戒",
+    "category": "N2"
+  },
+  {
+    "word": "煉瓦",
+    "reading": "れんが",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "砖；土坯",
+    "category": "N2"
+  },
+  {
+    "word": "火傷",
+    "reading": "やけど",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "烧伤，火伤，烫伤；遭殃，吃亏",
+    "category": "N2"
+  },
+  {
+    "word": "漁師",
+    "reading": "りょうし",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "渔夫",
+    "category": "N2"
+  },
+  {
+    "word": "溶接",
+    "reading": "ようせつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "熔接，焊接",
+    "category": "N2"
+  },
+  {
+    "word": "溶岩",
+    "reading": "ようがん",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "〈地〉熔岩",
+    "category": "N2"
+  },
+  {
+    "word": "湾",
+    "reading": "わん",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "海湾海面深入陆地，向外海敞开的地方",
+    "category": "N2"
+  },
+  {
+    "word": "湧く",
+    "reading": "わく",
+    "accent": "⓪",
+    "partOfSpeech": "自动·五段",
+    "meaning": "涌出，冒出，喷出；涌现，产生，发生；大量涌现，孳生",
+    "category": "N2"
+  },
+  {
+    "word": "浪費",
+    "reading": "ろうひ",
+    "accent": "⓪①",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "浪费乱用钱",
+    "category": "N2"
+  },
+  {
+    "word": "浪人",
+    "reading": "ろうにん",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "（离开主家）四处流浪的的武士；失学的学生；失业的人",
+    "category": "N2"
+  },
+  {
+    "word": "流域",
+    "reading": "りゅういき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "流域",
+    "category": "N2"
+  },
+  {
+    "word": "油",
+    "reading": "ゆ",
+    "accent": "",
+    "partOfSpeech": "名",
+    "meaning": "油.",
+    "category": "N2"
+  },
+  {
+    "word": "沸く",
+    "reading": "わく",
+    "accent": "⓪",
+    "partOfSpeech": "自动·五段",
+    "meaning": "沸腾，烧开，烧热；激动，兴奋；熔化；哄闹，吵嚷",
+    "category": "N2"
+  },
+  {
+    "word": "止す",
+    "reading": "よす",
+    "accent": "①",
+    "partOfSpeech": "他动·五段",
+    "meaning": "停止。中止。",
+    "category": "N2"
+  },
+  {
+    "word": "横書き",
+    "reading": "よこがき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "横写",
+    "category": "N2"
+  },
+  {
+    "word": "様式",
+    "reading": "ようしき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "样式，方式；一定的形式，格式；式样，风格，格调",
+    "category": "N2"
+  },
+  {
+    "word": "林業",
+    "reading": "りんぎょう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "林业",
+    "category": "N2"
+  },
+  {
+    "word": "来日",
+    "reading": "らいにち",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "来日本，外国人到日本来。",
+    "category": "N2"
+  },
+  {
+    "word": "来年度",
+    "reading": "らいねんど",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "下一年度",
+    "category": "N2"
+  },
+  {
+    "word": "朗読",
+    "reading": "ろうどく",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "朗读，朗诵",
+    "category": "N2"
+  },
+  {
+    "word": "有能",
+    "reading": "ゆうのう",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "能干，有才能，有才干，有才",
+    "category": "N2"
+  },
+  {
+    "word": "有意義",
+    "reading": "ゆういぎ",
+    "accent": "③",
+    "partOfSpeech": "名·形动",
+    "meaning": "有意义；有价值",
+    "category": "N2"
+  },
+  {
+    "word": "易易",
+    "reading": "やすやす",
+    "accent": "③",
+    "partOfSpeech": "形动",
+    "meaning": "很容易地；轻易地；容容易易地；轻易地.",
+    "category": "N2"
+  },
+  {
+    "word": "旅費",
+    "reading": "りょひ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "旅费，路费",
+    "category": "N2"
+  },
+  {
+    "word": "抑制",
+    "reading": "よくせい",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "抑制，制止",
+    "category": "N2"
+  },
+  {
+    "word": "技",
+    "reading": "わざ",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "技，技能；本领；招儿，招数",
+    "category": "N2"
+  },
+  {
+    "word": "我々",
+    "reading": "われわれ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "我们，咱们，我等",
+    "category": "N2"
+  },
+  {
+    "word": "態と",
+    "reading": "わざと",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "（多为贬义）故意地",
+    "category": "N2"
+  },
+  {
+    "word": "わざわざ",
+    "reading": "わざわざ",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "故意；特地",
+    "category": "N2"
+  },
+  {
+    "word": "悪者",
+    "reading": "わるもの",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "坏人",
+    "category": "N2"
+  },
+  {
+    "word": "悪口",
+    "reading": "わるくち",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "坏话，诽谤，骂人",
+    "category": "N2"
+  },
+  {
+    "word": "悠々",
+    "reading": "ゆうゆう",
+    "accent": "⓪",
+    "partOfSpeech": "形动",
+    "meaning": "浩瀚无垠，无限广阔；不紧不慢，十分沉着；绰绰有余",
+    "category": "N2"
+  },
+  {
+    "word": "役職",
+    "reading": "やくしょく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "在政府机关或公司里具有掌管其组织的工作责任的职务官职，职务要职",
+    "category": "N2"
+  },
+  {
+    "word": "役者",
+    "reading": "やくしゃ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "演员；有才干的人，人才；官吏身居某职位的人",
+    "category": "N2"
+  },
+  {
+    "word": "役所",
+    "reading": "やくしょ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "政府机关，官署，官厅，衙门",
+    "category": "N2"
+  },
+  {
+    "word": "役場",
+    "reading": "やくば",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "区（乡、村）公所，办事处",
+    "category": "N2"
+  },
+  {
+    "word": "役",
+    "reading": "やく",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "任务，工作；职务；角色；役务（公役）",
+    "category": "N2"
+  },
+  {
+    "word": "弱まる",
+    "reading": "よわまる",
+    "accent": "③",
+    "partOfSpeech": "自动·五段",
+    "meaning": "变弱，衰弱",
+    "category": "N2"
+  },
+  {
+    "word": "弱々しい",
+    "reading": "よわよわしい",
+    "accent": "",
+    "partOfSpeech": "形",
+    "meaning": "孱弱，软弱",
+    "category": "N2"
+  },
+  {
+    "word": "幼稚",
+    "reading": "ようち",
+    "accent": "⓪①",
+    "partOfSpeech": "名·形动",
+    "meaning": "年幼，幼稚，年纪小；幼稚，想法、做法等不成熟；不熟练",
+    "category": "N2"
+  },
+  {
+    "word": "幼児",
+    "reading": "ようじ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "幼儿，幼童",
+    "category": "N2"
+  },
+  {
+    "word": "履歴",
+    "reading": "りれき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "履历；经历；记录",
+    "category": "N2"
+  },
+  {
+    "word": "寄越す",
+    "reading": "よこす",
+    "accent": "②",
+    "partOfSpeech": "他动·五段",
+    "meaning": "寄来；送来；派来；交给；递给；……来",
+    "category": "N2"
+  },
+  {
+    "word": "宿る",
+    "reading": "やどる",
+    "accent": "②",
+    "partOfSpeech": "自动·五段",
+    "meaning": "住宿，投宿在旅途中住宿，临时置身于其他场所；寄生，寄居；存在，有",
+    "category": "N2"
+  },
+  {
+    "word": "容積",
+    "reading": "ようせき",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "容量；体积",
+    "category": "N2"
+  },
+  {
+    "word": "容易",
+    "reading": "ようい",
+    "accent": "⓪",
+    "partOfSpeech": "形动",
+    "meaning": "容易，简单",
+    "category": "N2"
+  },
+  {
+    "word": "容器",
+    "reading": "ようき",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "容器，器皿",
+    "category": "N2"
+  },
+  {
+    "word": "家主",
+    "reading": "やぬし",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "户主，房东，房主",
+    "category": "N2"
+  },
+  {
+    "word": "安らか",
+    "reading": "やすらか",
+    "accent": "②",
+    "partOfSpeech": "形动",
+    "meaning": "安乐，安定，平安，无苦无忧；安静，平静，安稳",
+    "category": "N2"
+  },
+  {
+    "word": "奴",
+    "reading": "やつ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "贬低他人或以友好地对身份低于自己的人说的话；表示贬义或轻蔑他人时使用",
+    "category": "N2"
+  },
+  {
+    "word": "夜間",
+    "reading": "やかん",
+    "accent": "①⓪",
+    "partOfSpeech": "名",
+    "meaning": "夜间，夜晚从日落到日出这段时间",
+    "category": "N2"
+  },
+  {
+    "word": "夜行",
+    "reading": "やこう",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动",
+    "meaning": "夜间行动；夜间的火车，夜车",
+    "category": "N2"
+  },
+  {
+    "word": "夜更かし",
+    "reading": "よふかし",
+    "accent": "③②",
+    "partOfSpeech": "名·サ变",
+    "meaning": "熬夜",
+    "category": "N2"
+  },
+  {
+    "word": "夕刊",
+    "reading": "ゆうかん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "晚报",
+    "category": "N2"
+  },
+  {
+    "word": "善くも",
+    "reading": "よくも",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "竟敢，竟能",
+    "category": "N2"
+  },
+  {
+    "word": "唯一",
+    "reading": "ゆいいつ",
+    "accent": "①",
+    "partOfSpeech": "名·形动",
+    "meaning": "唯一；独一无二",
+    "category": "N2"
+  },
+  {
+    "word": "和英",
+    "reading": "わえい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "日语与英语；日英词典",
+    "category": "N2"
+  },
+  {
+    "word": "和",
+    "reading": "わ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "和好，和睦，协调，和平；〈数〉和，总和",
+    "category": "N2"
+  },
+  {
+    "word": "呼び止める",
+    "reading": "よびとめる",
+    "accent": "④",
+    "partOfSpeech": "他动·一段",
+    "meaning": "叫住，叫停",
+    "category": "N2"
+  },
+  {
+    "word": "呼び掛ける",
+    "reading": "よびかける",
+    "accent": "④",
+    "partOfSpeech": "他动·一段",
+    "meaning": "（打）招呼，呼唤（使对方注意）；号召，呼吁",
+    "category": "N2"
+  },
+  {
+    "word": "呼び捨て",
+    "reading": "よびすて",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "光叫姓名（名字）直呼其名",
+    "category": "N2"
+  },
+  {
+    "word": "呼び出す",
+    "reading": "よびだす",
+    "accent": "③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "唤出来，叫出来；邀请；传唤",
+    "category": "N2"
+  },
+  {
+    "word": "厄介",
+    "reading": "やっかい",
+    "accent": "①",
+    "partOfSpeech": "名·形动",
+    "meaning": "麻烦，难为，难对付；照料，照应，照顾；帮助；寄食，寄宿（的人）",
+    "category": "N2"
+  },
+  {
+    "word": "勤労者",
+    "reading": "きんろうしゃ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "劳动者",
+    "category": "N2"
+  },
+  {
+    "word": "割り込む",
+    "reading": "わりこむ",
+    "accent": "③",
+    "partOfSpeech": "自他动·五段",
+    "meaning": "挤进，加塞儿；硬加入，插嘴；跌破，股票下跌到某价格之下",
+    "category": "N2"
+  },
+  {
+    "word": "割り引く",
+    "reading": "わりびく",
+    "accent": "③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "打折，减价；保守估计，低估；（把期票）贴现",
+    "category": "N2"
+  },
+  {
+    "word": "利息",
+    "reading": "りそく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "利息，利钱；在中国借款的利息和存款的利息用的是同样的词语",
+    "category": "N2"
+  },
+  {
+    "word": "利害",
+    "reading": "りがい",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "利害，得失，损益，利弊",
+    "category": "N2"
+  },
+  {
+    "word": "利子",
+    "reading": "りし",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "利息，利钱",
+    "category": "N2"
+  },
+  {
+    "word": "冷静",
+    "reading": "れいせい",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "冷静，镇静，沉着，清醒，心平气和",
+    "category": "N2"
+  },
+  {
+    "word": "冷蔵",
+    "reading": "れいぞう",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "冷藏，冷冻",
+    "category": "N2"
+  },
+  {
+    "word": "冷凍",
+    "reading": "れいとう",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "冷冻",
+    "category": "N2"
+  },
+  {
+    "word": "優良",
+    "reading": "ゆうりょう",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "优良",
+    "category": "N2"
+  },
+  {
+    "word": "優先的",
+    "reading": "ゆうせんてき",
+    "accent": "⓪",
+    "partOfSpeech": "形动·动",
+    "meaning": "优先的，先于其他办理",
+    "category": "N2"
+  },
+  {
+    "word": "優先",
+    "reading": "ゆうせん",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动·自动·サ变",
+    "meaning": "优先",
+    "category": "N2"
+  },
+  {
+    "word": "余計",
+    "reading": "よけい",
+    "accent": "⓪",
+    "partOfSpeech": "副词·形动",
+    "meaning": "多余，剩下；富余，多余；多余，无用；更多，更加，格外，分外",
+    "category": "N2"
+  },
+  {
+    "word": "余程",
+    "reading": "よほど",
+    "accent": "⓪",
+    "partOfSpeech": "副词·形动",
+    "meaning": "很，颇，相当，大量，在很大程度上；很想……，差一点就……",
+    "category": "N2"
+  },
+  {
+    "word": "余暇",
+    "reading": "よか",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "余暇，业余时间",
+    "category": "N2"
+  },
+  {
+    "word": "余分",
+    "reading": "よぶん",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "多余，剩余",
+    "category": "N2"
+  },
+  {
+    "word": "予期",
+    "reading": "よき",
+    "accent": "①",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "预期，预料，预想",
+    "category": "N2"
+  },
+  {
+    "word": "予備",
+    "reading": "よび",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "预备，准备；备品",
+    "category": "N2"
+  },
+  {
+    "word": "ライバル",
+    "reading": "らいばる",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "rival; 对手，敌手，竞争者；情敌",
+    "category": "N2"
+  },
+  {
+    "word": "わさび",
+    "reading": "わさび",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "〈植〉芥末，辣根，山葵",
+    "category": "N2"
+  },
+  {
+    "word": "より",
+    "reading": "より",
+    "accent": "⓪",
+    "partOfSpeech": "助词",
+    "meaning": "更；自，从，由，由于表示动作，作用的出发点；比，较之，甚于表示比较的基准；除了……（以外）；只……表示只限于某一个的意思",
+    "category": "N2"
+  },
+  {
+    "word": "よし",
+    "reading": "よし",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "（植物）芦苇；好，行，可以；好，妥",
+    "category": "N2"
+  },
+  {
+    "word": "よいしょ",
+    "reading": "よいしょ",
+    "accent": "①",
+    "partOfSpeech": "感动",
+    "meaning": "嗨哟，嗨呀用力提起重物时会发出的声音、吆喝声；准备做某动作时的吆喝声；民谣等的插入语呀呼嘿；拍马屁，阿谀奉承恭维",
+    "category": "N2"
+  },
+  {
+    "word": "ゆとり",
+    "reading": "ゆとり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "宽裕,余裕，余地",
+    "category": "N2"
+  },
+  {
+    "word": "ゆったり",
+    "reading": "ゆったり",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "宽敞舒适；舒畅",
+    "category": "N2"
+  },
+  {
+    "word": "やり遂げる",
+    "reading": "やりとげる",
+    "accent": "④",
+    "partOfSpeech": "他动·一段",
+    "meaning": "完成，做完",
+    "category": "N2"
+  },
+  {
+    "word": "やむを得ない",
+    "reading": "やむをえない",
+    "accent": "⓪④",
+    "partOfSpeech": "接续",
+    "meaning": "出于无奈，不得已，没有办法，无可奈何",
+    "category": "N2"
+  },
+  {
+    "word": "やむを得ず",
+    "reading": "やむをえず",
+    "accent": "④",
+    "partOfSpeech": "副词",
+    "meaning": "不得已,无可奈何",
+    "category": "N2"
+  },
+  {
+    "word": "やっつける",
+    "reading": "やっつける",
+    "accent": "④",
+    "partOfSpeech": "他动·一段",
+    "meaning": "干掉；杀掉；打败，击败；干完；做事草率",
+    "category": "N2"
+  },
+  {
+    "word": "やった",
+    "reading": "やった",
+    "accent": "③",
+    "partOfSpeech": "感动",
+    "meaning": "成功了；太好啦",
+    "category": "N2"
+  },
+  {
+    "word": "やがて",
+    "reading": "やがて",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "不久；马上。；归根到底。结果，结局。到底还是。；大约，将近，差不多，几乎。",
+    "category": "N2"
+  },
+  {
+    "word": "ロッカー",
+    "reading": "ろっかー",
+    "accent": "",
+    "partOfSpeech": "名",
+    "meaning": "〔書類の〕文件柜.；〔衣類などの〕橱柜,带锁橱柜.",
+    "category": "N2"
+  },
+  {
+    "word": "齎す",
+    "reading": "もたらす",
+    "accent": "③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "带来；造成；招致；引发；带来",
+    "category": "N2"
+  },
+  {
+    "word": "黙認",
+    "reading": "もくにん",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "默认，默许",
+    "category": "N2"
+  },
+  {
+    "word": "饅頭",
+    "reading": "まんじゅう",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "包子",
+    "category": "N2"
+  },
+  {
+    "word": "鞭",
+    "reading": "むち",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "鞭子，马鞭；杖，教鞭；鞭策",
+    "category": "N2"
+  },
+  {
+    "word": "雄",
+    "reading": "おす",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "雄，公，汉字可写成“牡”",
+    "category": "N2"
+  },
+  {
+    "word": "雌",
+    "reading": "めす",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "雌，母",
+    "category": "N2"
+  },
+  {
+    "word": "間近",
+    "reading": "まぢか",
+    "accent": "①⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "临近，接近；跟前，眼前",
+    "category": "N2"
+  },
+  {
+    "word": "都",
+    "reading": "みやこ",
+    "accent": "⓪①",
+    "partOfSpeech": "名",
+    "meaning": "京城，首府。；都市，城市。；以某种东西为特色的地方。",
+    "category": "N2"
+  },
+  {
+    "word": "道順",
+    "reading": "みちじゅん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "路线，应走的路；顺序，程序",
+    "category": "N2"
+  },
+  {
+    "word": "道端",
+    "reading": "みちばた",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "道旁，路边道路的旁边",
+    "category": "N2"
+  },
+  {
+    "word": "迷信",
+    "reading": "めいしん",
+    "accent": "⓪③",
+    "partOfSpeech": "名",
+    "meaning": "迷信。缺乏科学根据，会给社会生活带来很多妨碍的一种信仰，如与占卜、厄日、丙午等有关的信仰",
+    "category": "N2"
+  },
+  {
+    "word": "身近",
+    "reading": "みぢか",
+    "accent": "⓪",
+    "partOfSpeech": "形动",
+    "meaning": "切身，亲近的；身边，近旁，身旁，近身处",
+    "category": "N2"
+  },
+  {
+    "word": "身ぶり",
+    "reading": "みぶり",
+    "accent": "",
+    "partOfSpeech": "名",
+    "meaning": "姿态，动作，试图将意志和感情告诉他人的身体姿势",
+    "category": "N2"
+  },
+  {
+    "word": "身",
+    "reading": "み",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "身，身体，身子『口』；自己,自身",
+    "category": "N2"
+  },
+  {
+    "word": "跨ぐ",
+    "reading": "またぐ",
+    "accent": "②",
+    "partOfSpeech": "他动·五段",
+    "meaning": "跨立，跨过，跨越",
+    "category": "N2"
+  },
+  {
+    "word": "負け",
+    "reading": "まけ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "输，败，败北；减价，让价，少算，多给，搭上，赠品",
+    "category": "N2"
+  },
+  {
+    "word": "負かす",
+    "reading": "まかす",
+    "accent": "⓪",
+    "partOfSpeech": "他动·五段",
+    "meaning": "打败，击败，战胜；说服，驳倒；还价，驳价，打价",
+    "category": "N2"
+  },
+  {
+    "word": "豆",
+    "reading": "まめ",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "豆子，豆类；大豆，黄豆；腰子，肾；小的，小型的",
+    "category": "N2"
+  },
+  {
+    "word": "詣でる",
+    "reading": "もうでる",
+    "accent": "③",
+    "partOfSpeech": "自他动·一段",
+    "meaning": "参拜，礼拜",
+    "category": "N2"
+  },
+  {
+    "word": "見覚え",
+    "reading": "みおぼえ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "仿佛见过，眼熟；认识",
+    "category": "N2"
+  },
+  {
+    "word": "見落とす",
+    "reading": "みおとす",
+    "accent": "⓪③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "看漏；没看出来；忽略过去",
+    "category": "N2"
+  },
+  {
+    "word": "見積書",
+    "reading": "みつもりしょ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "报价单，估价单经费等报价类文件",
+    "category": "N2"
+  },
+  {
+    "word": "見積り",
+    "reading": "みつもり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "报价，报价单，估价",
+    "category": "N2"
+  },
+  {
+    "word": "見積もる",
+    "reading": "みつもる",
+    "accent": "⓪③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "估计，估算，折合计算从事某项工作所需要的费用、人员、时间等；测算，预计，估计，估算，折合概算，用眼睛估测",
+    "category": "N2"
+  },
+  {
+    "word": "見渡す限り",
+    "reading": "みわたすかぎり",
+    "accent": "⑤",
+    "partOfSpeech": "接续",
+    "meaning": "一望无际",
+    "category": "N2"
+  },
+  {
+    "word": "見渡す",
+    "reading": "みわたす",
+    "accent": "⓪③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "放眼望去；瞭望；远望；张望；扫视，环视",
+    "category": "N2"
+  },
+  {
+    "word": "見捨てる",
+    "reading": "みすてる",
+    "accent": "⓪",
+    "partOfSpeech": "他动·一段",
+    "meaning": "弃而不顾，抛弃，离弃，背离眼睁睁的舍弃",
+    "category": "N2"
+  },
+  {
+    "word": "見抜く",
+    "reading": "みぬく",
+    "accent": "②",
+    "partOfSpeech": "他动·五段",
+    "meaning": "看穿，看透，认清",
+    "category": "N2"
+  },
+  {
+    "word": "見慣れる",
+    "reading": "みなれる",
+    "accent": "⓪③",
+    "partOfSpeech": "自动·一段",
+    "meaning": "看惯，看熟",
+    "category": "N2"
+  },
+  {
+    "word": "見守る",
+    "reading": "みまもる",
+    "accent": "⓪",
+    "partOfSpeech": "他动·五段",
+    "meaning": "注视、关注；监护；照看，照料",
+    "category": "N2"
+  },
+  {
+    "word": "見回る",
+    "reading": "みまわる",
+    "accent": "⓪③",
+    "partOfSpeech": "自动·五段",
+    "meaning": "巡视；巡逻；游览",
+    "category": "N2"
+  },
+  {
+    "word": "見合い",
+    "reading": "みあい",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "相抵，平衡，相称；相亲，相看",
+    "category": "N2"
+  },
+  {
+    "word": "見分ける",
+    "reading": "みわける",
+    "accent": "③",
+    "partOfSpeech": "他动·一段",
+    "meaning": "区分，辨别，分辨，鉴别通过看来区别",
+    "category": "N2"
+  },
+  {
+    "word": "見出し",
+    "reading": "みだし",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "标题，题目；索引，目录",
+    "category": "N2"
+  },
+  {
+    "word": "見下ろす",
+    "reading": "みおろす",
+    "accent": "⓪③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "俯视，往下看；小看，瞧〔看〕不起；轻视，蔑视",
+    "category": "N2"
+  },
+  {
+    "word": "街角",
+    "reading": "まちかど",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "街角；街口；巷口",
+    "category": "N2"
+  },
+  {
+    "word": "蜜蜂",
+    "reading": "みつばち",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "蜜蜂",
+    "category": "N2"
+  },
+  {
+    "word": "蜜",
+    "reading": "みつ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "蜜，蜂蜜；糖蜜；甜水，甜汁",
+    "category": "N2"
+  },
+  {
+    "word": "虫歯",
+    "reading": "むしば",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "虫牙；蛀齿，龋齿牙齿的釉质遭到侵蚀的一种疾患，亦指有这种疾患的牙齿",
+    "category": "N2"
+  },
+  {
+    "word": "薪",
+    "reading": "まき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "木柴；劈柴，薪柴；柴火为作燃料而截成适当长度的木头",
+    "category": "N2"
+  },
+  {
+    "word": "若しかすると",
+    "reading": "もしかすると",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "也许，或许，可能",
+    "category": "N2"
+  },
+  {
+    "word": "若しかしたら",
+    "reading": "もしかしたら",
+    "accent": "①⓪",
+    "partOfSpeech": "副词",
+    "meaning": "或许，可能",
+    "category": "N2"
+  },
+  {
+    "word": "芽",
+    "reading": "め",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "芽；将要壮大、发展的东西事物",
+    "category": "N2"
+  },
+  {
+    "word": "自ら",
+    "reading": "みずから",
+    "accent": "①",
+    "partOfSpeech": "名·副词",
+    "meaning": "自己；亲自；自己；亲身；亲手；亲口；亲眼；亲笔",
+    "category": "N2"
+  },
+  {
+    "word": "群れ",
+    "reading": "むれ",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "群，伙",
+    "category": "N2"
+  },
+  {
+    "word": "結びつける",
+    "reading": "むすびつける",
+    "accent": "⑤",
+    "partOfSpeech": "他动·一段",
+    "meaning": "系上，系结，套结，拴上拴绑上；结合，联系，挂钩使发生关系",
+    "category": "N2"
+  },
+  {
+    "word": "結び付く",
+    "reading": "むすびつく",
+    "accent": "④",
+    "partOfSpeech": "动·五段",
+    "meaning": "结合。（結ばれて一つになる。ある目的などのために一緒になる。）；有关系，连带。（関係ができる。関連する。つながる。）",
+    "category": "N2"
+  },
+  {
+    "word": "結び",
+    "reading": "むすび",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "系，结，连结，打结；结束，末尾，终结；饭团子；〈語〉结尾，结语",
+    "category": "N2"
+  },
+  {
+    "word": "紫",
+    "reading": "むらさき",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "紫，紫色；紫丁香；（药用）紫草；酱油（的别称）",
+    "category": "N2"
+  },
+  {
+    "word": "眉",
+    "reading": "まゆ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "眉，眉毛生在眼皮上部呈弓形的毛",
+    "category": "N2"
+  },
+  {
+    "word": "稀",
+    "reading": "まれ",
+    "accent": "⓪②",
+    "partOfSpeech": "名·形动",
+    "meaning": "少（有）；稀；稀少；稀罕；罕见；稀奇",
+    "category": "N2"
+  },
+  {
+    "word": "矛盾",
+    "reading": "むじゅん",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "矛盾",
+    "category": "N2"
+  },
+  {
+    "word": "真ん前",
+    "reading": "まんまえ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "正前方，正前面，（正）对面",
+    "category": "N2"
+  },
+  {
+    "word": "目覚める",
+    "reading": "めざめる",
+    "accent": "③",
+    "partOfSpeech": "自动·一段",
+    "meaning": "睡醒，觉醒；自觉，醒悟，觉醒；发生，发动",
+    "category": "N2"
+  },
+  {
+    "word": "目覚まし",
+    "reading": "めざまし",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "醒来，睡醒；闹钟；小孩午睡后的点心",
+    "category": "N2"
+  },
+  {
+    "word": "目蓋",
+    "reading": "まぶた",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "眼睑眼皮",
+    "category": "N2"
+  },
+  {
+    "word": "目次",
+    "reading": "もくじ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "目次，目录",
+    "category": "N2"
+  },
+  {
+    "word": "目方",
+    "reading": "めかた",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "重量，分量",
+    "category": "N2"
+  },
+  {
+    "word": "目撃",
+    "reading": "もくげき",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "目击，目睹，亲眼看到",
+    "category": "N2"
+  },
+  {
+    "word": "目指す",
+    "reading": "めざす",
+    "accent": "②",
+    "partOfSpeech": "他动·五段",
+    "meaning": "以...为目标",
+    "category": "N2"
+  },
+  {
+    "word": "目安",
+    "reading": "めやす",
+    "accent": "⓪①",
+    "partOfSpeech": "名",
+    "meaning": "大致目标，基准，大致标准；定位的标识算盘横梁上用来定位的字或记号；（古时)告状的状子",
+    "category": "N2"
+  },
+  {
+    "word": "目印",
+    "reading": "めじるし",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "目标，记号",
+    "category": "N2"
+  },
+  {
+    "word": "目先",
+    "reading": "めさき",
+    "accent": "③⓪",
+    "partOfSpeech": "名",
+    "meaning": "目前；眼前；预见",
+    "category": "N2"
+  },
+  {
+    "word": "目付き",
+    "reading": "めつき",
+    "accent": "",
+    "partOfSpeech": "名",
+    "meaning": "眼神；眼神",
+    "category": "N2"
+  },
+  {
+    "word": "盛る",
+    "reading": "さかる",
+    "accent": "⓪",
+    "partOfSpeech": "自动·五段",
+    "meaning": "旺，旺盛；繁盛，兴隆；发情，交尾",
+    "category": "N2"
+  },
+  {
+    "word": "盛り上がる",
+    "reading": "もりあがる",
+    "accent": "④⓪",
+    "partOfSpeech": "自动·五段",
+    "meaning": "鼓，凸起，隆起；涌起，涌上来；（气氛）热烈，高涨起来",
+    "category": "N2"
+  },
+  {
+    "word": "町並み",
+    "reading": "まちなみ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "街道，街上（房屋的排列情况）",
+    "category": "N2"
+  },
+  {
+    "word": "申し訳",
+    "reading": "もうしわけ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "申辩，辩解；以“～程度の”、“～ばかり”、“～に”等形式表示只有形式，内容不相符形式表示敷衍塞责",
+    "category": "N2"
+  },
+  {
+    "word": "申し出る",
+    "reading": "もうしでる",
+    "accent": "④",
+    "partOfSpeech": "他动·一段",
+    "meaning": "提议，建议，提出，报名",
+    "category": "N2"
+  },
+  {
+    "word": "申し出",
+    "reading": "もうしで",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "提出；申请；提议",
+    "category": "N2"
+  },
+  {
+    "word": "用いる",
+    "reading": "もちいる",
+    "accent": "③⓪",
+    "partOfSpeech": "他动·一段",
+    "meaning": "用，使用；采用；采纳；录用，任用；用（心），注（意）",
+    "category": "N2"
+  },
+  {
+    "word": "猛～",
+    "reading": "もう～",
+    "accent": "",
+    "partOfSpeech": "",
+    "meaning": "[] 接在名词前，强调程度强烈。（勢いがさかんであること。）",
+    "category": "N2"
+  },
+  {
+    "word": "物語る",
+    "reading": "ものがたる",
+    "accent": "④",
+    "partOfSpeech": "他动·五段",
+    "meaning": "讲，谈；说明",
+    "category": "N2"
+  },
+  {
+    "word": "物置",
+    "reading": "ものおき",
+    "accent": "③④",
+    "partOfSpeech": "名",
+    "meaning": "库房，杂物间；堆房",
+    "category": "N2"
+  },
+  {
+    "word": "物差し",
+    "reading": "ものさし",
+    "accent": "③④",
+    "partOfSpeech": "名",
+    "meaning": "尺子，尺；尺度，标准",
+    "category": "N2"
+  },
+  {
+    "word": "無邪気",
+    "reading": "むじゃき",
+    "accent": "①",
+    "partOfSpeech": "名·形动",
+    "meaning": "天真无邪，单纯，天真，纯朴；老实，听话；天真烂漫，幼稚，孩子气",
+    "category": "N2"
+  },
+  {
+    "word": "無責任",
+    "reading": "むせきにん",
+    "accent": "②",
+    "partOfSpeech": "惯用",
+    "meaning": "没有责任，不负责任；缺乏责任感",
+    "category": "N2"
+  },
+  {
+    "word": "無神経",
+    "reading": "むしんけい",
+    "accent": "②",
+    "partOfSpeech": "惯用",
+    "meaning": "反应迟钝，反应慢，没反应，没感觉",
+    "category": "N2"
+  },
+  {
+    "word": "無理やり",
+    "reading": "むりやり",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "硬；强迫；强逼",
+    "category": "N2"
+  },
+  {
+    "word": "無断",
+    "reading": "むだん",
+    "accent": "⓪①",
+    "partOfSpeech": "名",
+    "meaning": "擅自，私自，事前未经允许，自做主张『成』，事先不打招呼",
+    "category": "N2"
+  },
+  {
+    "word": "無数",
+    "reading": "むすう",
+    "accent": "⓪②",
+    "partOfSpeech": "名·形动",
+    "meaning": "无数；无数",
+    "category": "N2"
+  },
+  {
+    "word": "無意義",
+    "reading": "むいぎ",
+    "accent": "",
+    "partOfSpeech": "名·形动",
+    "meaning": "无意义; 不起作用",
+    "category": "N2"
+  },
+  {
+    "word": "無地",
+    "reading": "むじ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "纯色，单色。",
+    "category": "N2"
+  },
+  {
+    "word": "滅茶滅茶",
+    "reading": "めちゃめちゃ",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "乱七八糟；一塌糊涂",
+    "category": "N2"
+  },
+  {
+    "word": "滅多に",
+    "reading": "めったに",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "难得，罕见，很少。后面多接否定表示\"不轻易发生\",引申为\"极其少见\" 源自古典日语为\"轻率,轻易,随便\"",
+    "category": "N2"
+  },
+  {
+    "word": "満ちる",
+    "reading": "みちる",
+    "accent": "②",
+    "partOfSpeech": "自动·一段",
+    "meaning": "充满；涨潮；期满；完整",
+    "category": "N2"
+  },
+  {
+    "word": "満たす",
+    "reading": "みたす",
+    "accent": "②",
+    "partOfSpeech": "他动·五段",
+    "meaning": "充满；填满，填充；补充，弥补；满足",
+    "category": "N2"
+  },
+  {
+    "word": "混ぜる",
+    "reading": "まぜる",
+    "accent": "②",
+    "partOfSpeech": "他动·一段",
+    "meaning": "搅拌，混合；插嘴",
+    "category": "N2"
+  },
+  {
+    "word": "混ざる",
+    "reading": "まざる",
+    "accent": "②",
+    "partOfSpeech": "自动·五段",
+    "meaning": "掺混，掺杂，混杂，夹杂",
+    "category": "N2"
+  },
+  {
+    "word": "況して",
+    "reading": "まして",
+    "accent": "①⓪",
+    "partOfSpeech": "副词",
+    "meaning": "何况，况且，更不能，更别说；更，更加",
+    "category": "N2"
+  },
+  {
+    "word": "水色",
+    "reading": "すいしょく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "水色；水景",
+    "category": "N2"
+  },
+  {
+    "word": "水っぽい",
+    "reading": "みずっぽい",
+    "accent": "④",
+    "partOfSpeech": "形",
+    "meaning": "水分多，味道淡",
+    "category": "N2"
+  },
+  {
+    "word": "模型",
+    "reading": "もけい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "模型，仿照实物制作的物品",
+    "category": "N2"
+  },
+  {
+    "word": "模倣",
+    "reading": "もほう",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "模仿；效仿",
+    "category": "N2"
+  },
+  {
+    "word": "未満",
+    "reading": "みまん",
+    "accent": "①",
+    "partOfSpeech": "名·副词",
+    "meaning": "未满，不足",
+    "category": "N2"
+  },
+  {
+    "word": "明確",
+    "reading": "めいかく",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "明确",
+    "category": "N2"
+  },
+  {
+    "word": "明日",
+    "reading": "みょうにち",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "明日，明天。（あす。あした。）",
+    "category": "N2"
+  },
+  {
+    "word": "明後日",
+    "reading": "みょうごにち",
+    "accent": "③",
+    "partOfSpeech": "名·副词",
+    "meaning": "后日，后天",
+    "category": "N2"
+  },
+  {
+    "word": "明年",
+    "reading": "みょうねん",
+    "accent": "⓪①",
+    "partOfSpeech": "名",
+    "meaning": "明年，来年",
+    "category": "N2"
+  },
+  {
+    "word": "摩擦",
+    "reading": "まさつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·自他动·サ变",
+    "meaning": "摩擦；摩擦，意见分歧，不和，倾轧",
+    "category": "N2"
+  },
+  {
+    "word": "揉む",
+    "reading": "もむ",
+    "accent": "⓪",
+    "partOfSpeech": "他动·五段",
+    "meaning": "搓，揉用双手夹住东西并使反复相互摩擦；捏，推拿，按摩用指尖或手等抓住后反复用力按压；（许多人）互相推挤，乱成一团许多人混在一起身体相互接触而互相挤住；争论，争辩针对某一事情，相互提出意见，进行充分讨论；（经过）锤炼，磨练，锻炼犹在体育运动、对抗性比赛中使用；猛烈地摇动，用力摆动使神與剧烈晃动；心神不定，不安，不平静使情绪产生动摇",
+    "category": "N2"
+  },
+  {
+    "word": "持て成す",
+    "reading": "もてなす",
+    "accent": "③⓪",
+    "partOfSpeech": "他动·五段",
+    "meaning": "对待，接待；款待，招待；请吃饭",
+    "category": "N2"
+  },
+  {
+    "word": "持ち込む",
+    "reading": "もちこむ",
+    "accent": "⓪③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "带入，拿进；提出",
+    "category": "N2"
+  },
+  {
+    "word": "持ち出す",
+    "reading": "もちだす",
+    "accent": "⓪③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "拿出去，拿到外边去，带出去，搬出去；挪用，盗用，偷走；提出，谈及，谈起；控告；掏腰包『口』，分担一部分费用；开始有",
+    "category": "N2"
+  },
+  {
+    "word": "持ち主",
+    "reading": "もちぬし",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "持有者，所有人；物主",
+    "category": "N2"
+  },
+  {
+    "word": "持ち",
+    "reading": "もち",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "拿，携带；……负担；持有者，所有者；持久性，耐久性；负担；适合……用；有很多",
+    "category": "N2"
+  },
+  {
+    "word": "問答",
+    "reading": "もんどう",
+    "accent": "③",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "问答；商量，议论，争论",
+    "category": "N2"
+  },
+  {
+    "word": "恵み",
+    "reading": "めぐみ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "恩惠，恩泽，周济，施舍",
+    "category": "N2"
+  },
+  {
+    "word": "恵まれる",
+    "reading": "めぐまれる",
+    "accent": "⓪④",
+    "partOfSpeech": "自动·一段",
+    "meaning": "被赋予，受惠于，富有",
+    "category": "N2"
+  },
+  {
+    "word": "待ち望む",
+    "reading": "まちのぞむ",
+    "accent": "④",
+    "partOfSpeech": "他动·五段",
+    "meaning": "盼望，期待，翘企，殷切希望",
+    "category": "N2"
+  },
+  {
+    "word": "店屋",
+    "reading": "みせや",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "店铺，商店",
+    "category": "N2"
+  },
+  {
+    "word": "幕",
+    "reading": "まく",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "幕，帐幕，帷幕，帷幔；〈劇〉幕；场面，时候",
+    "category": "N2"
+  },
+  {
+    "word": "巡る",
+    "reading": "めぐる",
+    "accent": "⓪",
+    "partOfSpeech": "自动·五段",
+    "meaning": "绕一圈，转一圈；循环，旋转；巡游；围，环绕，绕行；围绕",
+    "category": "N2"
+  },
+  {
+    "word": "巡り合う",
+    "reading": "めぐりあう",
+    "accent": "④",
+    "partOfSpeech": "自动·五段",
+    "meaning": "（在转了许多圈后终于）碰上意外相逢邂逅",
+    "category": "N2"
+  },
+  {
+    "word": "峰",
+    "reading": "みね",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "峰,山峰,山顶〔山頂〕；刀剣などの刃の、背の部分。；东西的凸起部分；可作为姓氏；像孤高耸立的山峰，简练、硬朗，有黑白画风或老电影的冷艳与复古感。",
+    "category": "N2"
+  },
+  {
+    "word": "岬",
+    "reading": "みさき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "岬角；岬；海角",
+    "category": "N2"
+  },
+  {
+    "word": "寧ろ",
+    "reading": "むしろ",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "② AよりBを望む・好ましい 表达偏好；与其A，不如B（偏好/选择）；AというよりB（表現の正確性） 更正语义；与其说A，不如说B（更准确）；④ 意外な逆転・正反对照 出乎意料，事情反而往相反方向发展；本来应是A，但结果却B（出乎意料）；⑤ “过犹不及”式反效果 Aしすぎて、かえってBになった 做得太过导致反效果。；① AよりBのほうが適している 比起A，B更合适／更恰当 与预期相反、B更正确／更贴切／更符合事实。",
+    "category": "N2"
+  },
+  {
+    "word": "実",
+    "reading": "み",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "果实;水果；种子；汤里的青菜〔肉〕；内容；成功;实现",
+    "category": "N2"
+  },
+  {
+    "word": "妙",
+    "reading": "みょう",
+    "accent": "①",
+    "partOfSpeech": "名·形动",
+    "meaning": "奥妙，玄妙巧妙；奇怪，奇异格外，分外，异常；奥妙，玄妙巧妙",
+    "category": "N2"
+  },
+  {
+    "word": "増す",
+    "reading": "ます",
+    "accent": "⓪",
+    "partOfSpeech": "自他动·五段",
+    "meaning": "增添，添加；增加，增多，增大；增长，增进，增高；比……，胜过；加强，增加",
+    "category": "N2"
+  },
+  {
+    "word": "基づく",
+    "reading": "もとづく",
+    "accent": "③",
+    "partOfSpeech": "自动·五段",
+    "meaning": "根据，基于，按照；本着；由于；起因于；由……而来",
+    "category": "N2"
+  },
+  {
+    "word": "回り道",
+    "reading": "まわりみち",
+    "accent": "⓪③",
+    "partOfSpeech": "名·サ变",
+    "meaning": "绕路",
+    "category": "N2"
+  },
+  {
+    "word": "味方",
+    "reading": "みかた",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "我（方），自己这一方；同伙，伙伴，朋友；参加〔袒护,拥护〕……一方",
+    "category": "N2"
+  },
+  {
+    "word": "向ける",
+    "reading": "むける",
+    "accent": "⓪",
+    "partOfSpeech": "他动·一段",
+    "meaning": "向；派遣；归入，挪用；前往",
+    "category": "N2"
+  },
+  {
+    "word": "名所旧跡",
+    "reading": "めいしょきゅうせき",
+    "accent": "⓪③",
+    "partOfSpeech": "名",
+    "meaning": "名胜古迹",
+    "category": "N2"
+  },
+  {
+    "word": "名刺",
+    "reading": "めいし",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "名片",
+    "category": "N2"
+  },
+  {
+    "word": "勿体ない",
+    "reading": "もったいない",
+    "accent": "⑤",
+    "partOfSpeech": "形",
+    "meaning": "可惜的，浪费的，糟蹋掉的；过分（好）的，好得与身份不相符的；不胜感激；不胜惶恐",
+    "category": "N2"
+  },
+  {
+    "word": "前もって",
+    "reading": "まえもって",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "预先，事先",
+    "category": "N2"
+  },
+  {
+    "word": "凭れる",
+    "reading": "もたれる",
+    "accent": "③",
+    "partOfSpeech": "自动·一段",
+    "meaning": "凭靠，倚靠；积食，不消化",
+    "category": "N2"
+  },
+  {
+    "word": "元々",
+    "reading": "もともと",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "不赔不赚；同原来一样；根本；本来，从来，原来",
+    "category": "N2"
+  },
+  {
+    "word": "催す",
+    "reading": "もよおす",
+    "accent": "③⓪",
+    "partOfSpeech": "自他动·五段",
+    "meaning": "举行，举办；主办；感觉（要……）；有征兆；萌起；感觉；预示",
+    "category": "N2"
+  },
+  {
+    "word": "催し",
+    "reading": "もよおし",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "筹划，计划；举办，主办；集会；活动",
+    "category": "N2"
+  },
+  {
+    "word": "乱れる",
+    "reading": "みだれる",
+    "accent": "③",
+    "partOfSpeech": "自动·一段",
+    "meaning": "乱，不平静；不太平；紊乱，错乱；散乱，蓬乱；混乱，搅在一起",
+    "category": "N2"
+  },
+  {
+    "word": "丸ごと",
+    "reading": "まるごと",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "整个，完整，囫囵个儿，保持原来形状的全部，原样全部",
+    "category": "N2"
+  },
+  {
+    "word": "三日月",
+    "reading": "みかづき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "新月；月牙『口』，娥眉月",
+    "category": "N2"
+  },
+  {
+    "word": "万一",
+    "reading": "まんいち",
+    "accent": "①",
+    "partOfSpeech": "名·副词",
+    "meaning": "万分之一万一，不测，意外；万一，倘若，假如",
+    "category": "N2"
+  },
+  {
+    "word": "モーター",
+    "reading": "もーたー",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "motor电动机。一种把电能转变为旋转机械能的装置。（電気エネルギーを回転などの機会エネルギーに変える装置。電動機。）；马达。原动机，发动机。（原動機。発動機。）；机动车。（自動車。）",
+    "category": "N2"
+  },
+  {
+    "word": "モノレール",
+    "reading": "ものれーる",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "Monorail单轨铁路；单轨电车；独轨车",
+    "category": "N2"
+  },
+  {
+    "word": "モニター",
+    "reading": "もにたー",
+    "accent": "①",
+    "partOfSpeech": "名·サ变",
+    "meaning": "monitor评论员。从普通群众中推选出的，对广播，报纸或商品等阐述意见或感想的人；监听，监视器。监视播放的图像或声音状态，亦指其装置；显示器与计算机连接的显示设备；监控。对系统或程序的执行情况进行监视，及其相关的设备或软件",
+    "category": "N2"
+  },
+  {
+    "word": "モダン",
+    "reading": "もだん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "modern现代，近代，新式，时髦，流行，摩登",
+    "category": "N2"
+  },
+  {
+    "word": "メーター",
+    "reading": "めーたー",
+    "accent": "⓪①",
+    "partOfSpeech": "名",
+    "meaning": "meter米；计量表计量计",
+    "category": "N2"
+  },
+  {
+    "word": "メーカー",
+    "reading": "めーかー",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "maker制造厂，厂商，制造商；制造者（製造業者，製造元，特に名の通った製造会社）",
+    "category": "N2"
+  },
+  {
+    "word": "メダル",
+    "reading": "めだる",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "medal奖章，奖牌，纪念章",
+    "category": "N2"
+  },
+  {
+    "word": "ミネラルウォーター",
+    "reading": "みねらるうぉーたー",
+    "accent": "⑤",
+    "partOfSpeech": "名",
+    "meaning": "mineralwater矿泉水，矿质水，碳酸水",
+    "category": "N2"
+  },
+  {
+    "word": "ミシン",
+    "reading": "みしん",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "缝纫机；虚线",
+    "category": "N2"
+  },
+  {
+    "word": "マニュアル",
+    "reading": "まにゅある",
+    "accent": "⓪①",
+    "partOfSpeech": "名",
+    "meaning": "manual手册,便览,指南；(汽车)手动档",
+    "category": "N2"
+  },
+  {
+    "word": "マナー",
+    "reading": "まなー",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "manner(s)礼貌；规矩符合礼仪的举止和态度",
+    "category": "N2"
+  },
+  {
+    "word": "マスメディア",
+    "reading": "ますめでぃあ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "massmedia(报刊、电视、广播等)宣传媒介，宣传工具",
+    "category": "N2"
+  },
+  {
+    "word": "マスコミ",
+    "reading": "ますこみ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "大众传播，大规模宣传",
+    "category": "N2"
+  },
+  {
+    "word": "めっきり",
+    "reading": "めっきり",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "显著，急剧",
+    "category": "N2"
+  },
+  {
+    "word": "まごまご",
+    "reading": "まごまご",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "张皇失措；手忙脚乱；着慌；不知所措，不知如何是好；闲荡，闲逛；游荡，懒散，磨磨蹭蹭；犹豫不决",
+    "category": "N2"
+  },
+  {
+    "word": "震わせる",
+    "reading": "ふるわせる",
+    "accent": "⓪",
+    "partOfSpeech": "他动·一段",
+    "meaning": "震动，震撼，使发抖，使哆嗦",
+    "category": "N2"
+  },
+  {
+    "word": "隔たる",
+    "reading": "へだたる",
+    "accent": "③",
+    "partOfSpeech": "自动·五段",
+    "meaning": "相隔，离，距；不同，不一致，有差别；疏远，发生隔阂，隔膜",
+    "category": "N2"
+  },
+  {
+    "word": "防犯",
+    "reading": "ぼうはん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "防止犯罪",
+    "category": "N2"
+  },
+  {
+    "word": "閉鎖",
+    "reading": "へいさ",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "封闭，关闭；封闭，关闭",
+    "category": "N2"
+  },
+  {
+    "word": "閉口",
+    "reading": "へいこう",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "为难；受不了，吃不消；没办法；腻烦；折服；闭口无言",
+    "category": "N2"
+  },
+  {
+    "word": "閉会",
+    "reading": "へいかい",
+    "accent": "⓪",
+    "partOfSpeech": "名·自他动·サ变",
+    "meaning": "闭会",
+    "category": "N2"
+  },
+  {
+    "word": "返答",
+    "reading": "へんとう",
+    "accent": "③⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "回答，回话",
+    "category": "N2"
+  },
+  {
+    "word": "返済",
+    "reading": "へんさい",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "偿还；还债",
+    "category": "N2"
+  },
+  {
+    "word": "返却",
+    "reading": "へんきゃく",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "还，归还，退还",
+    "category": "N2"
+  },
+  {
+    "word": "返信",
+    "reading": "へんしん",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "回信，回电",
+    "category": "N2"
+  },
+  {
+    "word": "辺",
+    "reading": "ほとり",
+    "accent": "⓪①",
+    "partOfSpeech": "名",
+    "meaning": "边，畔。也写作「畔」。",
+    "category": "N2"
+  },
+  {
+    "word": "豊作",
+    "reading": "ほうさく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "丰收",
+    "category": "N2"
+  },
+  {
+    "word": "誇る",
+    "reading": "ほこる",
+    "accent": "②",
+    "partOfSpeech": "自他动·五段",
+    "meaning": "夸耀",
+    "category": "N2"
+  },
+  {
+    "word": "誇り",
+    "reading": "ほこり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "自豪，骄傲；自尊心荣誉，骄傲；值得夸耀",
+    "category": "N2"
+  },
+  {
+    "word": "解ける",
+    "reading": "ほどける",
+    "accent": "③",
+    "partOfSpeech": "自动·一段",
+    "meaning": "解开，松开；心情缓和",
+    "category": "N2"
+  },
+  {
+    "word": "襤褸",
+    "reading": "ぼろ",
+    "accent": "⓪①",
+    "partOfSpeech": "名",
+    "meaning": "破布，褴褛，破衣服，破烂衣服；缺点；破",
+    "category": "N2"
+  },
+  {
+    "word": "補助",
+    "reading": "ほじょ",
+    "accent": "①",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "补助",
+    "category": "N2"
+  },
+  {
+    "word": "舗装",
+    "reading": "ほそう",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "铺修，铺路",
+    "category": "N2"
+  },
+  {
+    "word": "臍",
+    "reading": "へそ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "脐，肚脐；小坑；中心，中央，关键点",
+    "category": "N2"
+  },
+  {
+    "word": "膨大",
+    "reading": "ぼうだい",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "肿胀，肿大，膨胀，庞大，巨大",
+    "category": "N2"
+  },
+  {
+    "word": "編集",
+    "reading": "へんしゅう",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "编辑",
+    "category": "N2"
+  },
+  {
+    "word": "紛失",
+    "reading": "ふんしつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·自他动·サ变",
+    "meaning": "遗失，丢失，失落",
+    "category": "N2"
+  },
+  {
+    "word": "紛争",
+    "reading": "ふんそう",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "纠纷；争端",
+    "category": "N2"
+  },
+  {
+    "word": "ほぼ",
+    "reading": "ほぼ",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "大致，大体，基本上",
+    "category": "N2"
+  },
+  {
+    "word": "牧畜",
+    "reading": "ぼくちく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "畜牧畜牧业",
+    "category": "N2"
+  },
+  {
+    "word": "牧場",
+    "reading": "ぼくじょう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "牧场，牧地",
+    "category": "N2"
+  },
+  {
+    "word": "炎",
+    "reading": "ほのお",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "火焰燃烧的火；怒火",
+    "category": "N2"
+  },
+  {
+    "word": "没取",
+    "reading": "ぼっしゅ",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "(行政处分的)没收",
+    "category": "N2"
+  },
+  {
+    "word": "母校",
+    "reading": "ぼこう",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "母校",
+    "category": "N2"
+  },
+  {
+    "word": "母国",
+    "reading": "ぼこく",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "祖国（自分の生まれ育った国）写作「母国」",
+    "category": "N2"
+  },
+  {
+    "word": "枚数",
+    "reading": "まいすう",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "张数，件数",
+    "category": "N2"
+  },
+  {
+    "word": "本質的",
+    "reading": "ほんしつてき",
+    "accent": "⓪",
+    "partOfSpeech": "形动·动",
+    "meaning": "根本，本质上的",
+    "category": "N2"
+  },
+  {
+    "word": "本格的",
+    "reading": "ほんかくてき",
+    "accent": "⓪",
+    "partOfSpeech": "形动·动",
+    "meaning": "正式的正式地做；真正的，真的完全变成那种样子",
+    "category": "N2"
+  },
+  {
+    "word": "本物",
+    "reading": "ほんもの",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "真东西，真货，真的；正式，正规，专门（的事物）",
+    "category": "N2"
+  },
+  {
+    "word": "本来",
+    "reading": "ほんらい",
+    "accent": "①",
+    "partOfSpeech": "名·副词",
+    "meaning": "原来，本来；按说，按理",
+    "category": "N2"
+  },
+  {
+    "word": "暴風雪",
+    "reading": "ぼうふうせつ",
+    "accent": "",
+    "partOfSpeech": "名",
+    "meaning": "暴风雪",
+    "category": "N2"
+  },
+  {
+    "word": "暴風雨",
+    "reading": "ぼうふうう",
+    "accent": "③⓪",
+    "partOfSpeech": "名",
+    "meaning": "暴风雨",
+    "category": "N2"
+  },
+  {
+    "word": "施す",
+    "reading": "ほどこす",
+    "accent": "③⓪",
+    "partOfSpeech": "动·五段",
+    "meaning": "施，施加，施行；施舍，周济；做出改善事态的行动；通过做好某事来保持较高的声誉。",
+    "category": "N2"
+  },
+  {
+    "word": "方角",
+    "reading": "ほうがく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "方位；方向；惯用语",
+    "category": "N2"
+  },
+  {
+    "word": "方程式",
+    "reading": "ほうていしき",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "〈数〉方程（式）；解决方式，解答方法",
+    "category": "N2"
+  },
+  {
+    "word": "方々",
+    "reading": "ほうぼう",
+    "accent": "②①",
+    "partOfSpeech": "名·副词",
+    "meaning": "各处，到处",
+    "category": "N2"
+  },
+  {
+    "word": "文芸",
+    "reading": "ぶんげい",
+    "accent": "⓪①",
+    "partOfSpeech": "名",
+    "meaning": "文艺诗、小说、戏曲等用语言表达的艺术，（狭义也指）文学；学问和技艺学术和艺术；（杂志名）《文艺》",
+    "category": "N2"
+  },
+  {
+    "word": "文脈",
+    "reading": "ぶんみゃく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "上下文的连贯性，前后文的逻辑性，文章的前后关系；纹脉，条理，脉络",
+    "category": "N2"
+  },
+  {
+    "word": "文献",
+    "reading": "ぶんけん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "文献，文件，参考资料",
+    "category": "N2"
+  },
+  {
+    "word": "文明",
+    "reading": "ぶん めい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "文明；物质文化",
+    "category": "N2"
+  },
+  {
+    "word": "文化財",
+    "reading": "ぶんかざい",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "文物，文化遗产，文化财富",
+    "category": "N2"
+  },
+  {
+    "word": "放り込む",
+    "reading": "ほうりこむ",
+    "accent": "④",
+    "partOfSpeech": "他动·五段",
+    "meaning": "投入，扔进去",
+    "category": "N2"
+  },
+  {
+    "word": "放っておく",
+    "reading": "ほうっておく",
+    "accent": "⓪",
+    "partOfSpeech": "动·五段",
+    "meaning": "放一边，别管",
+    "category": "N2"
+  },
+  {
+    "word": "彫る",
+    "reading": "ほる",
+    "accent": "①",
+    "partOfSpeech": "他动·五段",
+    "meaning": "雕刻，刻写；文身，刺青墨刑",
+    "category": "N2"
+  },
+  {
+    "word": "弁論",
+    "reading": "べんろん",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "辩论；辩护，申辩，申述，陈述",
+    "category": "N2"
+  },
+  {
+    "word": "平行線",
+    "reading": "へいこうせん",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "平行线",
+    "category": "N2"
+  },
+  {
+    "word": "平米",
+    "reading": "へいべい",
+    "accent": "①⓪",
+    "partOfSpeech": "名",
+    "meaning": "平方米",
+    "category": "N2"
+  },
+  {
+    "word": "平方メートル",
+    "reading": "へいほうめーとる",
+    "accent": "⑤",
+    "partOfSpeech": "名",
+    "meaning": "平方米，平方公尺",
+    "category": "N2"
+  },
+  {
+    "word": "平和",
+    "reading": "へいわ",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "平静；和平",
+    "category": "N2"
+  },
+  {
+    "word": "平凡",
+    "reading": "へいぼん",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "平凡",
+    "category": "N2"
+  },
+  {
+    "word": "干し物",
+    "reading": "ほしもの",
+    "accent": "⓪②③",
+    "partOfSpeech": "名",
+    "meaning": "晾晒物；晒衣物",
+    "category": "N2"
+  },
+  {
+    "word": "変革",
+    "reading": "へんかく",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "变革，改革，变化自他两用动词",
+    "category": "N2"
+  },
+  {
+    "word": "変動",
+    "reading": "へんどう",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "变动，波动，改变，变化",
+    "category": "N2"
+  },
+  {
+    "word": "堀",
+    "reading": "ほり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "护城河；沟，渠",
+    "category": "N2"
+  },
+  {
+    "word": "坊主",
+    "reading": "ぼうず",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "僧（人），和尚；秃头，光头；光，秃；男孩子；儿子，自己的男孩儿",
+    "category": "N2"
+  },
+  {
+    "word": "坊や",
+    "reading": "ぼうや",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "小男孩。古时候也会用来称呼女儿；毛头小子、不懂事故的年轻人",
+    "category": "N2"
+  },
+  {
+    "word": "坊さん",
+    "reading": "ぼうさん",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "和尚",
+    "category": "N2"
+  },
+  {
+    "word": "噴火",
+    "reading": "ふんか",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "（火山）喷火",
+    "category": "N2"
+  },
+  {
+    "word": "噴水",
+    "reading": "ふんすい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "喷泉，喷水池",
+    "category": "N2"
+  },
+  {
+    "word": "噴出",
+    "reading": "ふんしゅつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "喷出；射出",
+    "category": "N2"
+  },
+  {
+    "word": "参る",
+    "reading": "まいる",
+    "accent": "①",
+    "partOfSpeech": "自动·五段",
+    "meaning": "去，来（「行く」「来る」的自谦语，表示对对方的敬意）；参拜；认输，败；受不了，吃不消；叫人为难；不堪，累垮",
+    "category": "N2"
+  },
+  {
+    "word": "包帯",
+    "reading": "ほうたい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "〈医〉绷带",
+    "category": "N2"
+  },
+  {
+    "word": "分類",
+    "reading": "ぶんるい",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "分类，分门别类",
+    "category": "N2"
+  },
+  {
+    "word": "分離",
+    "reading": "ぶんり",
+    "accent": "⓪",
+    "partOfSpeech": "名·自他动·サ变",
+    "meaning": "分离，分开，脱离，隔离",
+    "category": "N2"
+  },
+  {
+    "word": "分量",
+    "reading": "ぶんりょう",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "程度比例；（自、他动词）分量计量长度，重量等",
+    "category": "N2"
+  },
+  {
+    "word": "分野",
+    "reading": "ぶんや",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "领域，范围，战线，方面，岗位",
+    "category": "N2"
+  },
+  {
+    "word": "分配",
+    "reading": "ぶんぱい",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "配分，配给，分给",
+    "category": "N2"
+  },
+  {
+    "word": "分解",
+    "reading": "ぶんかい",
+    "accent": "⓪",
+    "partOfSpeech": "名·自他动·サ变",
+    "meaning": "拆开，拆卸；分析，分为；〈化〉分解；裂化",
+    "category": "N2"
+  },
+  {
+    "word": "分析",
+    "reading": "ぶんせき",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "〈化〉分析，化验；分析，剖析",
+    "category": "N2"
+  },
+  {
+    "word": "分布",
+    "reading": "ぶんぷ",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "分布；分布",
+    "category": "N2"
+  },
+  {
+    "word": "冒険",
+    "reading": "ぼうけん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "冒险",
+    "category": "N2"
+  },
+  {
+    "word": "保障",
+    "reading": "ほしょう",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "保障",
+    "category": "N2"
+  },
+  {
+    "word": "保険",
+    "reading": "ほけん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "保险；保证",
+    "category": "N2"
+  },
+  {
+    "word": "保守的",
+    "reading": "ほしゅてき",
+    "accent": "⓪",
+    "partOfSpeech": "形动",
+    "meaning": "保守的",
+    "category": "N2"
+  },
+  {
+    "word": "保守",
+    "reading": "ほしゅ",
+    "accent": "①",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "保守；保养",
+    "category": "N2"
+  },
+  {
+    "word": "並進",
+    "reading": "へいしん",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "（齐头）并进",
+    "category": "N2"
+  },
+  {
+    "word": "並列",
+    "reading": "へいれつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "并列并排；并联",
+    "category": "N2"
+  },
+  {
+    "word": "マーク",
+    "reading": "まーく",
+    "accent": "①",
+    "partOfSpeech": "名·サ变",
+    "meaning": "mark（划）记号，符号，（打）印记，（做）标记.；商标；标签，标志（レッテル）徽章；（体育竞赛中）创造记录；特别留意，盯人，看人，尾随",
+    "category": "N2"
+  },
+  {
+    "word": "マイク",
+    "reading": "まいく",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "microphone话筒，麦克风",
+    "category": "N2"
+  },
+  {
+    "word": "ポイント",
+    "reading": "ぽいんと",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "point点，句点；小数点；要点，要领，旨趣；得分，分数；点，磅表示铅字、填充材料等大小的单位1点为0.3514mm；幺扑克牌中的一点的牌；辙尖，岔尖，转辙器；地点，目标；点，百分点百分比的别称",
+    "category": "N2"
+  },
+  {
+    "word": "ボランティア",
+    "reading": "ぼらんてぃあ",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "volunteer 志愿者；义勇军；志愿军；社会事业义务工作人员（自発的にある活動に参加する人特に，社会事業活動に無報酬で参加する人篤志奉仕家）",
+    "category": "N2"
+  },
+  {
+    "word": "ホチキス",
+    "reading": "ほちきす",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "hotchkiss钉〔订〕书机，钉〔订〕书器",
+    "category": "N2"
+  },
+  {
+    "word": "ペースト",
+    "reading": "ぺーすと",
+    "accent": "①⓪",
+    "partOfSpeech": "名",
+    "meaning": "糊状食品，糊；粘贴，贴附",
+    "category": "N2"
+  },
+  {
+    "word": "ベテラン",
+    "reading": "べてらん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "veteran老手，老把式，老练的人",
+    "category": "N2"
+  },
+  {
+    "word": "ベストテン",
+    "reading": "べすとてん",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "bestten前十名",
+    "category": "N2"
+  },
+  {
+    "word": "ベストセラー",
+    "reading": "べすとせらー",
+    "accent": "④",
+    "partOfSpeech": "名",
+    "meaning": "畅销书",
+    "category": "N2"
+  },
+  {
+    "word": "ベスト",
+    "reading": "べすと",
+    "accent": "①",
+    "partOfSpeech": "名·形动",
+    "meaning": "最好的；最优秀的；最上等的；尽全力；马甲；背心",
+    "category": "N2"
+  },
+  {
+    "word": "ブローチ",
+    "reading": "ぶろーち",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "brooch胸针，别针，饰针",
+    "category": "N2"
+  },
+  {
+    "word": "フロント",
+    "reading": "ふろんと",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "front正面，前面（正面）；（总）服务台；战线，前线；球队负责人",
+    "category": "N2"
+  },
+  {
+    "word": "ぼろぼろ",
+    "reading": "ぼろぼろ",
+    "accent": "①⓪",
+    "partOfSpeech": "副词",
+    "meaning": "破破烂烂，破烂不堪；干巴巴；扑簌扑簌，哩哩啦啦；扑拉拉的往下掉",
+    "category": "N2"
+  },
+  {
+    "word": "ぼうっと",
+    "reading": "ぼうっと",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "精神恍惚发呆出神；朦胧貌模糊貌；火燃烧状",
+    "category": "N2"
+  },
+  {
+    "word": "ふんだん",
+    "reading": "ふんだん",
+    "accent": "⓪",
+    "partOfSpeech": "形动",
+    "meaning": "很多，大量",
+    "category": "N2"
+  },
+  {
+    "word": "風習",
+    "reading": "ふうしゅう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "风俗习惯，习惯，风俗",
+    "category": "N2"
+  },
+  {
+    "word": "風土",
+    "reading": "ふうど",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "风土，水土",
+    "category": "N2"
+  },
+  {
+    "word": "風",
+    "reading": "ふう",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "样子，态度；风度；风习，习俗；风格；方式，方法；打扮，外表",
+    "category": "N2"
+  },
+  {
+    "word": "頻繁",
+    "reading": "ひんぱん",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "频繁，屡次",
+    "category": "N2"
+  },
+  {
+    "word": "響く",
+    "reading": "ひびく",
+    "accent": "②",
+    "partOfSpeech": "自动·五段",
+    "meaning": "响；发出回音，有回响，震响；传播振动；影响；扬名",
+    "category": "N2"
+  },
+  {
+    "word": "響き",
+    "reading": "ひびき",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "听到时的感觉，反应，反响；响声；回声，回音，回响；音响（效果）；振响，振动；响；响声；回响；回音；振动；影响",
+    "category": "N2"
+  },
+  {
+    "word": "非難",
+    "reading": "ひなん",
+    "accent": "①",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "非难，责备，责难，谴责，指责，非议",
+    "category": "N2"
+  },
+  {
+    "word": "雛祭り",
+    "reading": "ひなまつり",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "女儿节，桃花节，偶人节",
+    "category": "N2"
+  },
+  {
+    "word": "附属",
+    "reading": "ふぞく",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "附属，配套从属于总体的；附属学校",
+    "category": "N2"
+  },
+  {
+    "word": "部門",
+    "reading": "ぶもん",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "部门，部类，方面",
+    "category": "N2"
+  },
+  {
+    "word": "部分的",
+    "reading": "ぶぶんてき",
+    "accent": "⓪",
+    "partOfSpeech": "形动·动",
+    "meaning": "部分的",
+    "category": "N2"
+  },
+  {
+    "word": "踏み切り",
+    "reading": "ふみきり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "（体育）起跳，起跳点；（相扑）脚踩到圈外；下定决心，毅然决然；道口铁路与公路在同一平面上的交叉处",
+    "category": "N2"
+  },
+  {
+    "word": "貧弱",
+    "reading": "ひんじゃく",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "贫乏，欠缺贫弱无内容，必要的东西不足；贫弱寒酸逊色，不漂亮，寒碜瘦弱",
+    "category": "N2"
+  },
+  {
+    "word": "貧困",
+    "reading": "ひんこん",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "贫困，贫穷；贫乏，极度缺乏",
+    "category": "N2"
+  },
+  {
+    "word": "貧乏",
+    "reading": "びんぼう",
+    "accent": "①",
+    "partOfSpeech": "名·形动·自动·サ变",
+    "meaning": "穷，贫穷，贫困，贫苦",
+    "category": "N2"
+  },
+  {
+    "word": "負担",
+    "reading": "ふたん",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "承担，负担（的责任，义务，工作）；负；背（行李等）",
+    "category": "N2"
+  },
+  {
+    "word": "負傷",
+    "reading": "ふしょう",
+    "accent": "⓪",
+    "partOfSpeech": "名·自他动·サ变",
+    "meaning": "负伤，受伤",
+    "category": "N2"
+  },
+  {
+    "word": "負",
+    "reading": "ふ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "负，负号，负数",
+    "category": "N2"
+  },
+  {
+    "word": "複数",
+    "reading": "ふくすう",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "复数；〈語〉复数",
+    "category": "N2"
+  },
+  {
+    "word": "複写",
+    "reading": "ふくしゃ",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "抄写，誊写；复写，拷贝；复制，复印",
+    "category": "N2"
+  },
+  {
+    "word": "表面",
+    "reading": "ひょうめん",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "表面",
+    "category": "N2"
+  },
+  {
+    "word": "表紙",
+    "reading": "ひょうし",
+    "accent": "③⓪",
+    "partOfSpeech": "名",
+    "meaning": "封面，书皮，封皮『方』",
+    "category": "N2"
+  },
+  {
+    "word": "船便",
+    "reading": "ふなびん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "通航，通船，便船船舶的班次；海运，海上运输，用船邮寄",
+    "category": "N2"
+  },
+  {
+    "word": "膨れ上がる",
+    "reading": "ふくれあがる",
+    "accent": "⑤",
+    "partOfSpeech": "自动·五段",
+    "meaning": "膨胀，鼓起，肿胀，肿起，庞大",
+    "category": "N2"
+  },
+  {
+    "word": "膨れる",
+    "reading": "ふくれる",
+    "accent": "⓪",
+    "partOfSpeech": "自动·一段",
+    "meaning": "胀，鼓出；噘嘴，不高兴",
+    "category": "N2"
+  },
+  {
+    "word": "膨らむ",
+    "reading": "ふくらむ",
+    "accent": "⓪",
+    "partOfSpeech": "自动·五段",
+    "meaning": "鼓起，膨胀，凸起；涨大，膨胀规模变大",
+    "category": "N2"
+  },
+  {
+    "word": "膨らます",
+    "reading": "ふくらます",
+    "accent": "⓪④",
+    "partOfSpeech": "他动·五段",
+    "meaning": "使鼓起来",
+    "category": "N2"
+  },
+  {
+    "word": "肥料",
+    "reading": "ひりょう",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "肥料施与土壤、植物，使土壤肥沃并有助于植物生长的物质",
+    "category": "N2"
+  },
+  {
+    "word": "老ける",
+    "reading": "ふける",
+    "accent": "②",
+    "partOfSpeech": "自动·一段",
+    "meaning": "上年纪，老亦指看起来像老人；老，老化因陈旧而质量变差",
+    "category": "N2"
+  },
+  {
+    "word": "縁",
+    "reading": "ふち",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "边，缘；框；檐；旁侧",
+    "category": "N2"
+  },
+  {
+    "word": "節",
+    "reading": "ふし",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "竹节，节子；竹子、芦苇等茎上的节；关节，骨节；（线）疙瘩；线或绳子打结的地方。；调子，曲调；点，地方；分隔之处；断句；段落",
+    "category": "N2"
+  },
+  {
+    "word": "等しい",
+    "reading": "ひとしい",
+    "accent": "③",
+    "partOfSpeech": "形",
+    "meaning": "相等，相同，一样，等于",
+    "category": "N2"
+  },
+  {
+    "word": "符号",
+    "reading": "ふごう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "符号为表示某事物，根据一定体系制定的标记；（数）符号表示数是正还是负的记号，有表示正数的正号（+）和表示表示负数的负号（-）；符号，记号为了核对互相关系而加的标记",
+    "category": "N2"
+  },
+  {
+    "word": "笛",
+    "reading": "ふえ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "笛子，横笛，哨子；暗号，道具",
+    "category": "N2"
+  },
+  {
+    "word": "福祉",
+    "reading": "ふくし",
+    "accent": "②⓪",
+    "partOfSpeech": "名",
+    "meaning": "福利，福祉",
+    "category": "N2"
+  },
+  {
+    "word": "瞳",
+    "reading": "ひとみ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "瞳孔，瞳仁；眼珠子，眼睛",
+    "category": "N2"
+  },
+  {
+    "word": "相応しい",
+    "reading": "ふさわしい",
+    "accent": "④",
+    "partOfSpeech": "形",
+    "meaning": "适合，适称，相称",
+    "category": "N2"
+  },
+  {
+    "word": "皮肉る",
+    "reading": "ひにくる",
+    "accent": "③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "挖苦，讽刺",
+    "category": "N2"
+  },
+  {
+    "word": "皮肉",
+    "reading": "ひにく",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "挖苦，讥讽，讽刺；嘲讽，冷嘲热讽；令人啼笑皆非；皮和肉",
+    "category": "N2"
+  },
+  {
+    "word": "病状",
+    "reading": "びょうじょう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "病情，病状，病况",
+    "category": "N2"
+  },
+  {
+    "word": "独り言",
+    "reading": "ひとりごと",
+    "accent": "⓪④",
+    "partOfSpeech": "名",
+    "meaning": "自言自语（的话）并非说给别人听，而是一个人无意识地说亦指其说的话",
+    "category": "N2"
+  },
+  {
+    "word": "独りでに",
+    "reading": "ひとりでに",
+    "accent": "②",
+    "partOfSpeech": "副词",
+    "meaning": "自动地，自然而然地",
+    "category": "N2"
+  },
+  {
+    "word": "物騒",
+    "reading": "ぶっそう",
+    "accent": "③",
+    "partOfSpeech": "名·形动",
+    "meaning": "骚然不安，不安定；危险",
+    "category": "N2"
+  },
+  {
+    "word": "物質",
+    "reading": "ぶっしつ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "物体，实体；（物理）物质；（哲学）物质",
+    "category": "N2"
+  },
+  {
+    "word": "物体",
+    "reading": "ぶったい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "物体",
+    "category": "N2"
+  },
+  {
+    "word": "沸騰",
+    "reading": "ふっとう",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "沸腾；群情激昂，情绪高涨，热烈，沸腾",
+    "category": "N2"
+  },
+  {
+    "word": "比率",
+    "reading": "ひりつ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "比率，比例",
+    "category": "N2"
+  },
+  {
+    "word": "比例",
+    "reading": "ひれい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "比例；相称，成比例关系",
+    "category": "N2"
+  },
+  {
+    "word": "殖える",
+    "reading": "ふえる",
+    "accent": "②",
+    "partOfSpeech": "自动·一段",
+    "meaning": "增加，增多；繁殖",
+    "category": "N2"
+  },
+  {
+    "word": "標語",
+    "reading": "ひょうご",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "标语",
+    "category": "N2"
+  },
+  {
+    "word": "標準",
+    "reading": "ひょうじゅん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "比较，判断的依据或准则；平均或普通程度",
+    "category": "N2"
+  },
+  {
+    "word": "普遍的",
+    "reading": "ふへんてき",
+    "accent": "⓪",
+    "partOfSpeech": "形动",
+    "meaning": "普遍的。所有事物共通的，适用于所有事物的。",
+    "category": "N2"
+  },
+  {
+    "word": "普遍",
+    "reading": "ふへん",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "普遍",
+    "category": "N2"
+  },
+  {
+    "word": "日焼け",
+    "reading": "ひやけ",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "晒黑；（因为天旱田里的水）晒干",
+    "category": "N2"
+  },
+  {
+    "word": "日増しに",
+    "reading": "ひましに",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "日益，一天比一天",
+    "category": "N2"
+  },
+  {
+    "word": "日の出",
+    "reading": "ひので",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "日出（时分）；蒸蒸日上的势头",
+    "category": "N2"
+  },
+  {
+    "word": "日の入り",
+    "reading": "ひのいり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "日落，黄昏",
+    "category": "N2"
+  },
+  {
+    "word": "描写",
+    "reading": "びょうしゃ",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "描写，描绘，描画，描述",
+    "category": "N2"
+  },
+  {
+    "word": "捻る",
+    "reading": "ひねる",
+    "accent": "②",
+    "partOfSpeech": "他动·五段",
+    "meaning": "拈，捻，拧，扭，捏；扭转；打败，击败，治；使别具风格，使与众不同；费尽心机，搜索枯肠",
+    "category": "N2"
+  },
+  {
+    "word": "振るう",
+    "reading": "ふるう",
+    "accent": "⓪",
+    "partOfSpeech": "他动·五段",
+    "meaning": "挥动；充分发挥力量等使起作用；兴旺，兴盛；（以「ふるっている」的形式）离奇，古怪",
+    "category": "N2"
+  },
+  {
+    "word": "振る",
+    "reading": "ふる",
+    "accent": "⓪",
+    "partOfSpeech": "他动·五段",
+    "meaning": "挥，摇，摆；撒；丢扔，掷；放弃，牺牲，白扔，白丢；拒绝，甩；分派，分配；标注（假名）",
+    "category": "N2"
+  },
+  {
+    "word": "振り込む",
+    "reading": "ふりこむ",
+    "accent": "③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "撒入、撒进；转账；汇款；点炮",
+    "category": "N2"
+  },
+  {
+    "word": "振り仮名",
+    "reading": "ふりがな",
+    "accent": "⓪③",
+    "partOfSpeech": "名",
+    "meaning": "注音假名",
+    "category": "N2"
+  },
+  {
+    "word": "披露宴",
+    "reading": "ひろうえん",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "宴会；婚宴",
+    "category": "N2"
+  },
+  {
+    "word": "披露",
+    "reading": "ひろう",
+    "accent": "①",
+    "partOfSpeech": "名·サ变",
+    "meaning": "公布，告知众人，公开发表；宣布结婚、开店等消息",
+    "category": "N2"
+  },
+  {
+    "word": "打つ",
+    "reading": "うつ",
+    "accent": "①",
+    "partOfSpeech": "他动·五段",
+    "meaning": "打或以类似打的动作，一下子打进去；以打的动作做什么或制作什么；标上记号；采取必要的措施或做必要的动作；马上反应，马上见效",
+    "category": "N2"
+  },
+  {
+    "word": "微力",
+    "reading": "びりょく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "（力量，能力，势力）微薄；微力，绵薄",
+    "category": "N2"
+  },
+  {
+    "word": "広々",
+    "reading": "ひろびろ",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "宽敞广阔",
+    "category": "N2"
+  },
+  {
+    "word": "巫山戯る",
+    "reading": "ふざける",
+    "accent": "③",
+    "partOfSpeech": "自动·一段",
+    "meaning": "开玩笑；嘲笑；调情",
+    "category": "N2"
+  },
+  {
+    "word": "封じる",
+    "reading": "ふうじる",
+    "accent": "⓪③",
+    "partOfSpeech": "他动·一段",
+    "meaning": "封，封上，封锁，禁止",
+    "category": "N2"
+  },
+  {
+    "word": "夫人",
+    "reading": "ふじん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "夫人;对别人妻子的尊称；后宫中位居皇后之下的女性；贵人的正妻",
+    "category": "N2"
+  },
+  {
+    "word": "塞ぐ",
+    "reading": "ふさぐ",
+    "accent": "⓪",
+    "partOfSpeech": "他动·五段",
+    "meaning": "堵，塞；挡，阻挡；占占据场所地方；郁闷，不痛快，不快乐，不开心，心情不舒畅",
+    "category": "N2"
+  },
+  {
+    "word": "塞がる",
+    "reading": "ふさがる",
+    "accent": "⓪",
+    "partOfSpeech": "自动·五段",
+    "meaning": "堵，塞堵塞塞满了，不通了；关，合，闭；占用，占满，占着因其他东西占据而进入余地；堵，闷，憋因有放心不下的事等而感到心里不舒畅",
+    "category": "N2"
+  },
+  {
+    "word": "噴き出す",
+    "reading": "ふきだす",
+    "accent": "③⓪",
+    "partOfSpeech": "自他动·五段",
+    "meaning": "(水,油,火,血等)冒出，喷出；忍不住笑；发芽；喷出",
+    "category": "N2"
+  },
+  {
+    "word": "品種",
+    "reading": "ひんしゅ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "种类；品种",
+    "category": "N2"
+  },
+  {
+    "word": "吹雪",
+    "reading": "ふぶき",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "暴风雪",
+    "category": "N2"
+  },
+  {
+    "word": "双子",
+    "reading": "ふたご",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "双生子，孪生；双胞胎",
+    "category": "N2"
+  },
+  {
+    "word": "副",
+    "reading": "ふく",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "副本，抄件，副件；副附属物附加物",
+    "category": "N2"
+  },
+  {
+    "word": "再び",
+    "reading": "ふたたび",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "再，又，重",
+    "category": "N2"
+  },
+  {
+    "word": "便箋",
+    "reading": "びんせん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "信笺，信纸",
+    "category": "N2"
+  },
+  {
+    "word": "人通り",
+    "reading": "ひとどおり",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "人来人往，通行，来往行人",
+    "category": "N2"
+  },
+  {
+    "word": "人目",
+    "reading": "ひとめ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "世人的眼目，众目；旁人看见",
+    "category": "N2"
+  },
+  {
+    "word": "人ごみ",
+    "reading": "ひとごみ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "人群人多拥挤的地方",
+    "category": "N2"
+  },
+  {
+    "word": "不運",
+    "reading": "ふうん",
+    "accent": "①",
+    "partOfSpeech": "名·形动",
+    "meaning": "不幸，背运，倒霉，晦气",
+    "category": "N2"
+  },
+  {
+    "word": "不通",
+    "reading": "ふつう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "不通，断绝；断绝关系，不来往",
+    "category": "N2"
+  },
+  {
+    "word": "不規則",
+    "reading": "ふきそく",
+    "accent": "③②",
+    "partOfSpeech": "惯用",
+    "meaning": "不规则，无规律",
+    "category": "N2"
+  },
+  {
+    "word": "不確実",
+    "reading": "ふかくじつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "不确实，不可靠",
+    "category": "N2"
+  },
+  {
+    "word": "不確定",
+    "reading": "ふかくてい",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "未确定，不明确",
+    "category": "N2"
+  },
+  {
+    "word": "不確か",
+    "reading": "ふたしか",
+    "accent": "②",
+    "partOfSpeech": "形动",
+    "meaning": "不确实，含糊",
+    "category": "N2"
+  },
+  {
+    "word": "不潔",
+    "reading": "ふけつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "不清洁，不洁净，不干净，肮脏；不纯洁，秽亵",
+    "category": "N2"
+  },
+  {
+    "word": "不況",
+    "reading": "ふきょう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "不景气，萧条",
+    "category": "N2"
+  },
+  {
+    "word": "不正",
+    "reading": "ふせい",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "不正当；不正经",
+    "category": "N2"
+  },
+  {
+    "word": "不当",
+    "reading": "ふとう",
+    "accent": "⓪",
+    "partOfSpeech": "形动",
+    "meaning": "不正当，不当，不合理，非法",
+    "category": "N2"
+  },
+  {
+    "word": "不平",
+    "reading": "ふへい",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "不平，不满意，牢骚",
+    "category": "N2"
+  },
+  {
+    "word": "不図",
+    "reading": "ふと",
+    "accent": "⓪①",
+    "partOfSpeech": "副词",
+    "meaning": "偶然，一下，突然，忽然",
+    "category": "N2"
+  },
+  {
+    "word": "不器用",
+    "reading": "ぶきよう",
+    "accent": "②",
+    "partOfSpeech": "名·形动",
+    "meaning": "笨，拙笨，不熟练，不灵巧",
+    "category": "N2"
+  },
+  {
+    "word": "不可欠",
+    "reading": "ふかけつ",
+    "accent": "②",
+    "partOfSpeech": "名·形动",
+    "meaning": "不可缺少，必需，必须。",
+    "category": "N2"
+  },
+  {
+    "word": "不可",
+    "reading": "ふか",
+    "accent": "②①",
+    "partOfSpeech": "名",
+    "meaning": "不可，不行；不好；不及格",
+    "category": "N2"
+  },
+  {
+    "word": "不作法",
+    "reading": "ぶさほう",
+    "accent": "②",
+    "partOfSpeech": "名·形动",
+    "meaning": "没规矩，没礼貌，粗鲁",
+    "category": "N2"
+  },
+  {
+    "word": "一通り",
+    "reading": "ひととおり",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "大概，大略，粗略；普通，一般；一套，整套，全部",
+    "category": "N2"
+  },
+  {
+    "word": "一目",
+    "reading": "いちもく",
+    "accent": "⓪②",
+    "partOfSpeech": "名·副词·カ变",
+    "meaning": "一只眼；一个子儿；一目，一看；见例句",
+    "category": "N2"
+  },
+  {
+    "word": "一先ず",
+    "reading": "ひとまず",
+    "accent": "②",
+    "partOfSpeech": "副词",
+    "meaning": "暂且，姑且",
+    "category": "N2"
+  },
+  {
+    "word": "ブーツ",
+    "reading": "ぶーつ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "长筒皮靴",
+    "category": "N2"
+  },
+  {
+    "word": "フライパン",
+    "reading": "ふらいぱん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "frypan长柄平锅，扁锅，平底炒菜锅，煎锅",
+    "category": "N2"
+  },
+  {
+    "word": "ビニールハウス",
+    "reading": "びにーるはうす",
+    "accent": "⑤",
+    "partOfSpeech": "名",
+    "meaning": "vinyl house塑料简易温室，塑料大棚",
+    "category": "N2"
+  },
+  {
+    "word": "ビニール",
+    "reading": "びにーる",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "乙烯基，乙烯基树脂。塑料",
+    "category": "N2"
+  },
+  {
+    "word": "ヒント",
+    "reading": "ひんと",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "hint提示，暗示，启发，指引",
+    "category": "N2"
+  },
+  {
+    "word": "ぶら下げる",
+    "reading": "ぶらさげる",
+    "accent": "⓪④",
+    "partOfSpeech": "他动·一段",
+    "meaning": "佩带,悬挂.；提.",
+    "category": "N2"
+  },
+  {
+    "word": "ぶら下がる",
+    "reading": "ぶらさがる",
+    "accent": "⓪④",
+    "partOfSpeech": "自动·五段",
+    "meaning": "吊垂，悬，耷拉；眼看到手",
+    "category": "N2"
+  },
+  {
+    "word": "ぶらぶら",
+    "reading": "ぶらぶら",
+    "accent": "⓪",
+    "partOfSpeech": "副词·形动",
+    "meaning": "摇晃，摆动，晃荡，下垂而摇晃的样子；溜达，信步而行，闲逛，漫步；无所事事，无工作，赋闲，闲呆着；（病）拖长，缠绵；（不停地）摇晃晃荡",
+    "category": "N2"
+  },
+  {
+    "word": "ぶつぶつ",
+    "reading": "ぶつぶつ",
+    "accent": "①⓪",
+    "partOfSpeech": "副词",
+    "meaning": "抱怨，牢骚，唠叨，嘟哝；一段一段地（切）；一颗颗……；一个个（粒状）疙瘩；噗嗤噗嗤",
+    "category": "N2"
+  },
+  {
+    "word": "ふとした",
+    "reading": "ふとした",
+    "accent": "②①④",
+    "partOfSpeech": "连体词",
+    "meaning": "想不到的，突然的，意外的，偶然的；一点点的，小小不言的",
+    "category": "N2"
+  },
+  {
+    "word": "鳩",
+    "reading": "はと",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "鸽",
+    "category": "N2"
+  },
+  {
+    "word": "馬鹿",
+    "reading": "ばか",
+    "accent": "①",
+    "partOfSpeech": "名·形动",
+    "meaning": "愚蠢，傻子，糊涂，笨蛋；非常专注某事不顾其他[的人]，傻认真，有傻劲；荒唐事，瞎胡扯；无聊，无价值；不好使，不中用；程度悬殊，格外，非常，特别",
+    "category": "N2"
+  },
+  {
+    "word": "非行",
+    "reading": "ひこう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "不正当的行为，违背道德规范的行为，流氓行为严重不良行为，失足特指青少年的违法行为和违反社会规范的行为等",
+    "category": "N2"
+  },
+  {
+    "word": "非常勤",
+    "reading": "ひじょうきん",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "不定期出勤，非正常上班",
+    "category": "N2"
+  },
+  {
+    "word": "非",
+    "reading": "ひ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "错误，缺点；非，不对，不好，罪行；非难，责难；错误，不对，不……",
+    "category": "N2"
+  },
+  {
+    "word": "鉢",
+    "reading": "はち",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "盆，钵；钵头，钵盂；头盖骨；盔的顶部；钵盂；大碗；（栽种花木的）盆；头盖骨；盔的顶部",
+    "category": "N2"
+  },
+  {
+    "word": "針金",
+    "reading": "はりがね",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "铁丝，铜丝，钢丝",
+    "category": "N2"
+  },
+  {
+    "word": "配慮",
+    "reading": "はいりょ",
+    "accent": "①",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "关怀，照顾，照料，关照",
+    "category": "N2"
+  },
+  {
+    "word": "遥か",
+    "reading": "はるか",
+    "accent": "①",
+    "partOfSpeech": "副词·形动",
+    "meaning": "遥远，远远，远为；遥远，远远，远为",
+    "category": "N2"
+  },
+  {
+    "word": "迫力",
+    "reading": "はくりょく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "震撼力；感染力；冲击力。",
+    "category": "N2"
+  },
+  {
+    "word": "跳ねる",
+    "reading": "はねる",
+    "accent": "②",
+    "partOfSpeech": "自动·一段",
+    "meaning": "跳，跳跃；溅，飞溅；爆，裂开，绷开；散戏，散场；〈商〉（行情）飞涨",
+    "category": "N2"
+  },
+  {
+    "word": "話し言葉",
+    "reading": "はなしことば",
+    "accent": "④",
+    "partOfSpeech": "名",
+    "meaning": "口语，口头语言",
+    "category": "N2"
+  },
+  {
+    "word": "話し上手",
+    "reading": "はなしじょうず",
+    "accent": "④",
+    "partOfSpeech": "形动·动",
+    "meaning": "能说善道，会说的人",
+    "category": "N2"
+  },
+  {
+    "word": "被災地",
+    "reading": "ひさいち",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "灾区",
+    "category": "N2"
+  },
+  {
+    "word": "被災",
+    "reading": "ひさい",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "受灾，遭灾",
+    "category": "N2"
+  },
+  {
+    "word": "華やか",
+    "reading": "はなやか",
+    "accent": "②",
+    "partOfSpeech": "形动",
+    "meaning": "华丽，华美，华贵；辉煌，显赫，活跃；引人注目；显眼",
+    "category": "N2"
+  },
+  {
+    "word": "莫大",
+    "reading": "ばくだい",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "莫大程度非常严重，数量非常大，极其多的样子",
+    "category": "N2"
+  },
+  {
+    "word": "肌着",
+    "reading": "はだぎ",
+    "accent": "③⓪",
+    "partOfSpeech": "名",
+    "meaning": "内衣，衬衣。直接贴身的衣服。",
+    "category": "N2"
+  },
+  {
+    "word": "羽",
+    "reading": "はね",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "羽毛翎毛鸡毛；（鸟和蝙蝠或昆虫的）翅膀，翼（亦作「翅」）；（飞机的）机翼；（机器、器具等的）翼叶片叶子；箭翎；羽毛毽子（亦作「羽根」）",
+    "category": "N2"
+  },
+  {
+    "word": "美",
+    "reading": "び",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "美，美丽；出色",
+    "category": "N2"
+  },
+  {
+    "word": "繁盛",
+    "reading": "はんじょう",
+    "accent": "①",
+    "partOfSpeech": "名·サ变",
+    "meaning": "繁荣昌盛，兴旺，兴隆",
+    "category": "N2"
+  },
+  {
+    "word": "繁殖",
+    "reading": "はんしょく",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "繁殖，滋生；繁殖，滋生",
+    "category": "N2"
+  },
+  {
+    "word": "繁栄",
+    "reading": "はんえい",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "繁荣，昌盛，兴旺",
+    "category": "N2"
+  },
+  {
+    "word": "筆記",
+    "reading": "ひっき",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "笔记，记下来亦指写下来的东西",
+    "category": "N2"
+  },
+  {
+    "word": "破片",
+    "reading": "はへん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "破片；碎片",
+    "category": "N2"
+  },
+  {
+    "word": "破壊",
+    "reading": "はかい",
+    "accent": "⓪",
+    "partOfSpeech": "名·自他动·サ变",
+    "meaning": "破坏",
+    "category": "N2"
+  },
+  {
+    "word": "発言",
+    "reading": "はつげん",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "发言；发言",
+    "category": "N2"
+  },
+  {
+    "word": "発行",
+    "reading": "はっこう",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "发行；发放，发售",
+    "category": "N2"
+  },
+  {
+    "word": "発揮",
+    "reading": "はっき",
+    "accent": "⓪",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "发挥，施展",
+    "category": "N2"
+  },
+  {
+    "word": "発",
+    "reading": "はつ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "颗，发；开出；发出，拍发",
+    "category": "N2"
+  },
+  {
+    "word": "生やす",
+    "reading": "はやす",
+    "accent": "②",
+    "partOfSpeech": "他动·五段",
+    "meaning": "使（让）……生长；留",
+    "category": "N2"
+  },
+  {
+    "word": "甚だしい",
+    "reading": "はなはだしい",
+    "accent": "⑤",
+    "partOfSpeech": "形",
+    "meaning": "很，甚，非常，太甚程度远远越过一般的状态",
+    "category": "N2"
+  },
+  {
+    "word": "犯行",
+    "reading": "はんこう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "罪行，犯罪，犯罪行为",
+    "category": "N2"
+  },
+  {
+    "word": "爆発的",
+    "reading": "ばくはつてき",
+    "accent": "⓪",
+    "partOfSpeech": "形动",
+    "meaning": "爆炸性的，惊人的",
+    "category": "N2"
+  },
+  {
+    "word": "爆発",
+    "reading": "ばくはつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "爆炸；爆炸；爆发",
+    "category": "N2"
+  },
+  {
+    "word": "爆弾",
+    "reading": "ばくだん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "炸弹；爆炸性的",
+    "category": "N2"
+  },
+  {
+    "word": "灯",
+    "reading": "ひ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "灯，灯光",
+    "category": "N2"
+  },
+  {
+    "word": "浜辺",
+    "reading": "はまべ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "海滨，湖滨",
+    "category": "N2"
+  },
+  {
+    "word": "浜",
+    "reading": "はま",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "海滨，湖滨；吃下来的棋子；港口横滨",
+    "category": "N2"
+  },
+  {
+    "word": "泊",
+    "reading": "はく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "宿，晚，夜",
+    "category": "N2"
+  },
+  {
+    "word": "歯車",
+    "reading": "はぐるま",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "齿轮",
+    "category": "N2"
+  },
+  {
+    "word": "梯子",
+    "reading": "はしご",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "梯子；由这家喝到那家，逐店闹饮，串酒馆",
+    "category": "N2"
+  },
+  {
+    "word": "果たす",
+    "reading": "はたす",
+    "accent": "②",
+    "partOfSpeech": "他动·五段",
+    "meaning": "完成，实现，实行；（接动词连用形后表示）光，尽",
+    "category": "N2"
+  },
+  {
+    "word": "果たして",
+    "reading": "はたして",
+    "accent": "②",
+    "partOfSpeech": "副词",
+    "meaning": "果然；果真，真的，到底，与表示疑问、假定的词一起使用",
+    "category": "N2"
+  },
+  {
+    "word": "早寝",
+    "reading": "はやね",
+    "accent": "②③",
+    "partOfSpeech": "名·サ变",
+    "meaning": "早睡，提前就寝；早睡，提前就寝",
+    "category": "N2"
+  },
+  {
+    "word": "早口",
+    "reading": "はやくち",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "说话快；嘴快",
+    "category": "N2"
+  },
+  {
+    "word": "日頃",
+    "reading": "ひごろ",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "平时，素日，平常",
+    "category": "N2"
+  },
+  {
+    "word": "日帰り",
+    "reading": "ひがえり",
+    "accent": "⓪④",
+    "partOfSpeech": "名·サ变",
+    "meaning": "当天去当天回",
+    "category": "N2"
+  },
+  {
+    "word": "斜",
+    "reading": "はす",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "斜歪倾斜",
+    "category": "N2"
+  },
+  {
+    "word": "排除",
+    "reading": "はいじょ",
+    "accent": "①",
+    "partOfSpeech": "名·他动·サ变",
+    "meaning": "排除",
+    "category": "N2"
+  },
+  {
+    "word": "挟む",
+    "reading": "はさむ",
+    "accent": "②",
+    "partOfSpeech": "他动·五段",
+    "meaning": "相隔；夹在中间；夹，掖插；惯用语",
+    "category": "N2"
+  },
+  {
+    "word": "払い込む",
+    "reading": "はらいこむ",
+    "accent": "④⓪",
+    "partOfSpeech": "他动·五段",
+    "meaning": "缴纳，交纳；缴纳金銭を相手方に納め入れる",
+    "category": "N2"
+  },
+  {
+    "word": "払い戻す",
+    "reading": "はらいもどす",
+    "accent": "⑤⓪",
+    "partOfSpeech": "他动·五段",
+    "meaning": "退还(多余的钱)；付还存款",
+    "category": "N2"
+  },
+  {
+    "word": "悲惨",
+    "reading": "ひさん",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "悲惨，凄惨",
+    "category": "N2"
+  },
+  {
+    "word": "喜劇",
+    "reading": "きげき",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "笑剧，喜剧；闹剧，滑稽剧搞笑事儿",
+    "category": "N2"
+  },
+  {
+    "word": "悲劇",
+    "reading": "ひげき",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "悲剧",
+    "category": "N2"
+  },
+  {
+    "word": "必需品",
+    "reading": "ひつじゅひん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "必需品",
+    "category": "N2"
+  },
+  {
+    "word": "微笑",
+    "reading": "びしょう",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "微笑",
+    "category": "N2"
+  },
+  {
+    "word": "弾く",
+    "reading": "はじく",
+    "accent": "②",
+    "partOfSpeech": "他动·五段",
+    "meaning": "排斥；弹；打算盘；漏接球棒球运动中，守门队员接球时触手而未接住",
+    "category": "N2"
+  },
+  {
+    "word": "張り切る",
+    "reading": "はりきる",
+    "accent": "③",
+    "partOfSpeech": "自动·五段",
+    "meaning": "干劲十足；紧张；拉紧，绷紧",
+    "category": "N2"
+  },
+  {
+    "word": "引っ込む",
+    "reading": "ひっこむ",
+    "accent": "③",
+    "partOfSpeech": "自动·五段",
+    "meaning": "隐退；退居，深居（家中）；畏缩，退缩；塌，凹下，凹进，缩进",
+    "category": "N2"
+  },
+  {
+    "word": "引っ繰り返る",
+    "reading": "ひっくりかえる",
+    "accent": "⑤",
+    "partOfSpeech": "自动·五段",
+    "meaning": "倒，翻倒，颠倒过来",
+    "category": "N2"
+  },
+  {
+    "word": "引っ繰り返す",
+    "reading": "ひっくりかえす",
+    "accent": "⑤",
+    "partOfSpeech": "他动·五段",
+    "meaning": "翻过来、翻个儿、颠倒；翻倒把站着或正确放置的东西弄倒；翻阅、查找；推翻",
+    "category": "N2"
+  },
+  {
+    "word": "引っ掛ける",
+    "reading": "ひっかける",
+    "accent": "④",
+    "partOfSpeech": "他动·一段",
+    "meaning": "挂（上）；绊住；撞上；披上；欺骗；借引子，借机会；一口喝掉少量的酒；稍微喝一些。；溅（水）；吐（唾沫）",
+    "category": "N2"
+  },
+  {
+    "word": "引っ張る",
+    "reading": "ひっぱる",
+    "accent": "③",
+    "partOfSpeech": "他动·五段",
+    "meaning": "拉，拽，扯，拉上，拖，牵引（抓住棒或带状物的一端）向自己所在方向用力拉；拉上，拉紧，绷紧引进，拉近，架设把铁路，自来水管等铺设到某一地点；强拉走，硬拉来带走，拉走；拉拢，引诱；拖长，拉长；拖延；拖拉拖音，拉长音把发音拖长；侧面击球棒球右击球员瞄准左方，左击球员瞄准右方击球",
+    "category": "N2"
+  },
+  {
+    "word": "引っかかる",
+    "reading": "ひっかかる",
+    "accent": "④",
+    "partOfSpeech": "自动·五段",
+    "meaning": "挂上，剐上；挂住，卡住；牵连，受牵连；受骗，上当，中圈套；受阻，被检查出来",
+    "category": "N2"
+  }
+]

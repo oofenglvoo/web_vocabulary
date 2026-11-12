@@ -1,0 +1,3612 @@
+[
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To remove clothing.",
+        "trans": "脱掉（衣服）"
+      },
+      {
+        "pos": "v.",
+        "def": "To leave the ground and start flying (a plane).",
+        "trans": "起飞"
+      },
+      {
+        "pos": "v.",
+        "def": "To become successful quickly.",
+        "trans": "迅速成功；走红"
+      }
+    ],
+    "example": "The plane took off on time, and his business really took off last year.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "take off",
+    "exampleTranslation": "飞机准时起飞了，他的事业去年也真正腾飞了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To start a hobby or activity.",
+        "trans": "开始从事（爱好）"
+      },
+      {
+        "pos": "v.",
+        "def": "To occupy space or time.",
+        "trans": "占用（空间/时间）"
+      },
+      {
+        "pos": "v.",
+        "def": "To continue after someone stops.",
+        "trans": "接续；接手"
+      }
+    ],
+    "example": "She took up painting after she retired.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "take up",
+    "exampleTranslation": "她退休后开始学画画。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To resemble a parent or relative in appearance or character.",
+        "trans": "长得像；性格像"
+      }
+    ],
+    "example": "He takes after his mother - they both love music.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "take after",
+    "exampleTranslation": "他长得像他母亲——他们都喜欢音乐。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To understand or absorb information.",
+        "trans": "理解；吸收"
+      },
+      {
+        "pos": "v.",
+        "def": "To deceive or trick someone.",
+        "trans": "欺骗；蒙蔽"
+      },
+      {
+        "pos": "v.",
+        "def": "To provide shelter or accommodation.",
+        "trans": "收留；接纳"
+      }
+    ],
+    "example": "It took me a while to take in what she was saying.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "take in",
+    "exampleTranslation": "我过了一会儿才理解她在说什么。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To gain control of something.",
+        "trans": "接管；接手"
+      },
+      {
+        "pos": "v.",
+        "def": "To become more important or dominant.",
+        "trans": "占据主导"
+      }
+    ],
+    "example": "A new company took over the business last month.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "take over",
+    "exampleTranslation": "上个月一家新公司收购了这家企业。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To accept a challenge or responsibility.",
+        "trans": "承担；接受（挑战）"
+      },
+      {
+        "pos": "v.",
+        "def": "To hire someone.",
+        "trans": "雇用"
+      },
+      {
+        "pos": "v.",
+        "def": "To compete against someone.",
+        "trans": "与……较量"
+      }
+    ],
+    "example": "She was asked to take on more responsibilities at work.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "take on",
+    "exampleTranslation": "她被要求在工作中承担更多责任。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To rise from bed or from a sitting position.",
+        "trans": "起床；站起来"
+      }
+    ],
+    "example": "I get up at six every morning.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "get up",
+    "exampleTranslation": "我每天早上六点起床。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To have a friendly relationship.",
+        "trans": "相处融洽"
+      },
+      {
+        "pos": "v.",
+        "def": "To manage or make progress.",
+        "trans": "进展；应付"
+      }
+    ],
+    "example": "She gets along well with her colleagues.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "get along",
+    "exampleTranslation": "她和同事们相处得很好。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To recover from illness or sadness.",
+        "trans": "从（疾病/悲伤）中恢复"
+      },
+      {
+        "pos": "v.",
+        "def": "To overcome a problem.",
+        "trans": "克服（困难）"
+      }
+    ],
+    "example": "It took him months to get over the flu.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "get over",
+    "exampleTranslation": "他花了好几个月才从流感中恢复过来。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To manage to contact someone by phone.",
+        "trans": "打通电话"
+      },
+      {
+        "pos": "v.",
+        "def": "To finish or pass something difficult.",
+        "trans": "熬过；通过（难关）"
+      }
+    ],
+    "example": "I couldn't get through to the office this morning.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "get through",
+    "exampleTranslation": "今天早上我没能打通办公室的电话。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To escape or leave a place.",
+        "trans": "逃离；脱身"
+      },
+      {
+        "pos": "v.",
+        "def": "To take a short holiday.",
+        "trans": "外出度假"
+      }
+    ],
+    "example": "We're hoping to get away for the weekend.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "get away",
+    "exampleTranslation": "我们希望能出去过个周末。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To remove or discard something unwanted.",
+        "trans": "摆脱；除掉"
+      }
+    ],
+    "example": "I need to get rid of all this old furniture.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "get rid of",
+    "exampleTranslation": "我得把这些旧家具都处理掉。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be mentioned or discussed.",
+        "trans": "被提及；出现"
+      },
+      {
+        "pos": "v.",
+        "def": "To happen soon.",
+        "trans": "即将发生"
+      }
+    ],
+    "example": "The subject came up during our meeting.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "come up",
+    "exampleTranslation": "我们开会时谈到了这个话题。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To think of or produce an idea or plan.",
+        "trans": "想出；提出（主意）"
+      }
+    ],
+    "example": "She came up with a great solution to the problem.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "come up with",
+    "exampleTranslation": "她想出了一个解决这个问题的好办法。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To meet or find someone or something by chance.",
+        "trans": "偶然遇到；发现"
+      },
+      {
+        "pos": "v.",
+        "def": "To give a particular impression.",
+        "trans": "给人……印象"
+      }
+    ],
+    "example": "I came across an old photo album while cleaning.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "come across",
+    "exampleTranslation": "打扫时我偶然发现了一本旧相册。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To visit someone's home.",
+        "trans": "过来（拜访）"
+      },
+      {
+        "pos": "v.",
+        "def": "To be understood or felt.",
+        "trans": "被理解"
+      }
+    ],
+    "example": "Why don't you come over for dinner on Saturday?",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "come over",
+    "exampleTranslation": "你周六为什么不过来吃晚饭呢？"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To return to a place.",
+        "trans": "回来；返回"
+      },
+      {
+        "pos": "v.",
+        "def": "To become popular or successful again.",
+        "trans": "再度流行；回归"
+      }
+    ],
+    "example": "He came back to his hometown after ten years.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "come back",
+    "exampleTranslation": "十年后他回到了家乡。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To enter a room or building.",
+        "trans": "进来"
+      },
+      {
+        "pos": "v.",
+        "def": "To be involved or useful.",
+        "trans": "发挥作用；有用"
+      }
+    ],
+    "example": "Please come in and take a seat.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "come in",
+    "exampleTranslation": "请进，坐。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To leave home to go to social events.",
+        "trans": "外出（社交）"
+      },
+      {
+        "pos": "v.",
+        "def": "To stop burning or shining.",
+        "trans": "熄灭"
+      }
+    ],
+    "example": "We went out for dinner last night.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "go out",
+    "exampleTranslation": "我们昨晚出去吃饭了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To continue happening or doing something.",
+        "trans": "继续"
+      },
+      {
+        "pos": "v.",
+        "def": "To happen.",
+        "trans": "发生"
+      }
+    ],
+    "example": "The show went on despite the rain.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "go on",
+    "exampleTranslation": "尽管下雨，演出照常进行。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To experience a difficult situation.",
+        "trans": "经历（困境）"
+      },
+      {
+        "pos": "v.",
+        "def": "To examine or read carefully.",
+        "trans": "仔细检查；审阅"
+      }
+    ],
+    "example": "She went through a lot of stress during the exams.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "go through",
+    "exampleTranslation": "考试期间她经历了很大的压力。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To explode or make a sudden noise.",
+        "trans": "爆炸；响起"
+      },
+      {
+        "pos": "v.",
+        "def": "To stop liking or being interested.",
+        "trans": "不再喜欢"
+      },
+      {
+        "pos": "v.",
+        "def": "To leave a place.",
+        "trans": "离开"
+      }
+    ],
+    "example": "The alarm clock went off at six.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "go off",
+    "exampleTranslation": "闹钟六点钟响了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To increase in price or amount.",
+        "trans": "上涨；上升"
+      },
+      {
+        "pos": "v.",
+        "def": "To be built or constructed.",
+        "trans": "被建造"
+      }
+    ],
+    "example": "The price of petrol has gone up again.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "go up",
+    "exampleTranslation": "汽油价格又上涨了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To decrease or become lower.",
+        "trans": "下降；减少"
+      },
+      {
+        "pos": "v.",
+        "def": "To be recorded or remembered.",
+        "trans": "被记载；被记住"
+      }
+    ],
+    "example": "The temperature went down sharply at night.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "go down",
+    "exampleTranslation": "夜间气温急剧下降。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To return to a place or situation.",
+        "trans": "回去；返回"
+      },
+      {
+        "pos": "v.",
+        "def": "To date from a particular time in the past.",
+        "trans": "追溯到"
+      }
+    ],
+    "example": "I need to go back to the office to get my keys.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "go back",
+    "exampleTranslation": "我得回办公室去取钥匙。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To search for information in a book or on a device.",
+        "trans": "查阅；查找"
+      },
+      {
+        "pos": "v.",
+        "def": "To visit someone when you are in their area.",
+        "trans": "拜访（某人）"
+      },
+      {
+        "pos": "v.",
+        "def": "To improve or become better.",
+        "trans": "好转"
+      }
+    ],
+    "example": "You can look up the word online.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "look up",
+    "exampleTranslation": "你可以在网上查这个词。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To take care of someone or something.",
+        "trans": "照顾；照看"
+      }
+    ],
+    "example": "She looks after her elderly mother.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "look after",
+    "exampleTranslation": "她照顾年迈的母亲。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To search or try to find someone or something.",
+        "trans": "寻找；找"
+      }
+    ],
+    "example": "I'm looking for a new job at the moment.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "look for",
+    "exampleTranslation": "我目前正在找新工作。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To investigate or examine something carefully.",
+        "trans": "调查；研究"
+      }
+    ],
+    "example": "The police are looking into the matter.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "look into",
+    "exampleTranslation": "警方正在调查此事。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To feel excited and happy about something that will happen.",
+        "trans": "期待；盼望"
+      }
+    ],
+    "example": "We're looking forward to the holiday.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "look forward to",
+    "exampleTranslation": "我们期待着假期。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be careful or watch for danger.",
+        "trans": "小心；当心"
+      }
+    ],
+    "example": "Look out! There's a car coming.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "look out",
+    "exampleTranslation": "小心！有车来了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To invent a story or excuse.",
+        "trans": "编造（故事/借口）"
+      },
+      {
+        "pos": "v.",
+        "def": "To become friends again after a disagreement.",
+        "trans": "和好；和解"
+      },
+      {
+        "pos": "v.",
+        "def": "To form or constitute something.",
+        "trans": "组成；构成"
+      }
+    ],
+    "example": "Children often make up imaginary friends.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "make up",
+    "exampleTranslation": "孩子们常常编造想象中的朋友。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To see or understand with difficulty.",
+        "trans": "勉强辨认；理解"
+      },
+      {
+        "pos": "v.",
+        "def": "To pretend.",
+        "trans": "假装"
+      }
+    ],
+    "example": "I could barely make out the sign in the fog.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "make out",
+    "exampleTranslation": "在雾中我几乎看不清那块牌子。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To compensate for something bad.",
+        "trans": "弥补；补偿"
+      }
+    ],
+    "example": "We worked late to make up for the lost time.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "make up for",
+    "exampleTranslation": "我们工作到很晚以弥补失去的时间。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To check and confirm that something is done or is true.",
+        "trans": "确保；确认"
+      }
+    ],
+    "example": "Make sure you lock the door before you leave.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "make sure",
+    "exampleTranslation": "离开前务必锁好门。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be reasonable or understandable.",
+        "trans": "有道理；讲得通"
+      }
+    ],
+    "example": "His explanation finally made sense to me.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "make sense",
+    "exampleTranslation": "他的解释终于让我明白了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To postpone or delay something.",
+        "trans": "推迟；拖延"
+      },
+      {
+        "pos": "v.",
+        "def": "To discourage or make someone not want to do something.",
+        "trans": "使反感；打消念头"
+      }
+    ],
+    "example": "Don't put off today's work until tomorrow.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "put off",
+    "exampleTranslation": "今日事今日毕，别拖到明天。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To dress yourself in a piece of clothing.",
+        "trans": "穿上"
+      },
+      {
+        "pos": "v.",
+        "def": "To start a device or music.",
+        "trans": "打开（设备）"
+      },
+      {
+        "pos": "v.",
+        "def": "To gain weight.",
+        "trans": "增重"
+      }
+    ],
+    "example": "She put on her coat and left.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "put on",
+    "exampleTranslation": "她穿上外套就走了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To tolerate or endure something unpleasant.",
+        "trans": "忍受；容忍"
+      }
+    ],
+    "example": "I can't put up with the noise anymore.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "put up with",
+    "exampleTranslation": "我再也受不了这噪音了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To extinguish a fire or light.",
+        "trans": "熄灭（火/灯）"
+      },
+      {
+        "pos": "v.",
+        "def": "To cause inconvenience or trouble.",
+        "trans": "给……添麻烦"
+      }
+    ],
+    "example": "Firefighters quickly put out the fire.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "put out",
+    "exampleTranslation": "消防员迅速扑灭了大火。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To store something in its proper place.",
+        "trans": "收好；放好"
+      },
+      {
+        "pos": "v.",
+        "def": "To save money for future use.",
+        "trans": "攒钱"
+      }
+    ],
+    "example": "Put away your toys before dinner.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "put away",
+    "exampleTranslation": "晚饭前把玩具收起来。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To place something on a surface.",
+        "trans": "放下"
+      },
+      {
+        "pos": "v.",
+        "def": "To criticize or insult someone.",
+        "trans": "贬低；批评"
+      }
+    ],
+    "example": "He put down his bag and sat on the chair.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "put down",
+    "exampleTranslation": "他放下包，坐在了椅子上。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To start a device by pressing a button or switch.",
+        "trans": "打开（开关）"
+      },
+      {
+        "pos": "v.",
+        "def": "To suddenly attack someone.",
+        "trans": "突然攻击"
+      }
+    ],
+    "example": "Could you turn on the light, please?",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "turn on",
+    "exampleTranslation": "请把灯打开好吗？"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To stop a device by pressing a button or switch.",
+        "trans": "关掉（开关）"
+      },
+      {
+        "pos": "v.",
+        "def": "To exit a road or leave a path.",
+        "trans": "拐弯；离开"
+      }
+    ],
+    "example": "Don't forget to turn off the computer.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "turn off",
+    "exampleTranslation": "别忘了关电脑。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To increase volume or intensity.",
+        "trans": "调高（音量）"
+      },
+      {
+        "pos": "v.",
+        "def": "To arrive or appear, often unexpectedly.",
+        "trans": "出现；到达"
+      }
+    ],
+    "example": "He finally turned up an hour late.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "turn up",
+    "exampleTranslation": "他最终迟到了一个小时才出现。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To refuse an offer or request.",
+        "trans": "拒绝"
+      },
+      {
+        "pos": "v.",
+        "def": "To reduce volume or intensity.",
+        "trans": "调低（音量）"
+      }
+    ],
+    "example": "She turned down the job offer.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "turn down",
+    "exampleTranslation": "她拒绝了那份工作邀请。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To happen in a particular way, or to have a particular result.",
+        "trans": "结果是；证明是"
+      },
+      {
+        "pos": "v.",
+        "def": "To produce or make something.",
+        "trans": "生产；制造"
+      },
+      {
+        "pos": "v.",
+        "def": "To attend or be present.",
+        "trans": "出席；到场"
+      }
+    ],
+    "example": "The party turned out to be a great success.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "turn out",
+    "exampleTranslation": "聚会结果非常成功。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To change and become something different.",
+        "trans": "变成；转变为"
+      }
+    ],
+    "example": "The caterpillar turned into a butterfly.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "turn into",
+    "exampleTranslation": "毛毛虫变成了蝴蝶。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To raise a child.",
+        "trans": "抚养；养育"
+      },
+      {
+        "pos": "v.",
+        "def": "To mention a topic in conversation.",
+        "trans": "提出（话题）"
+      }
+    ],
+    "example": "She was brought up in a small town.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "bring up",
+    "exampleTranslation": "她在一个小镇长大。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To return something to where it came from.",
+        "trans": "带回；归还"
+      },
+      {
+        "pos": "v.",
+        "def": "To cause memories to return.",
+        "trans": "使想起；唤起"
+      }
+    ],
+    "example": "This song brings back happy memories.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "bring back",
+    "exampleTranslation": "这首歌勾起了快乐的回忆。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To cause something to happen.",
+        "trans": "引起；导致"
+      }
+    ],
+    "example": "The new law brought about many changes.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "bring about",
+    "exampleTranslation": "这项新法律带来了许多变化。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To introduce a new law or system.",
+        "trans": "引入（法律/制度）"
+      },
+      {
+        "pos": "v.",
+        "def": "To earn or produce money.",
+        "trans": "赚取；产生（收入）"
+      }
+    ],
+    "example": "The company brought in a new policy.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "bring in",
+    "exampleTranslation": "公司引入了一项新政策。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To stop working (a vehicle or machine).",
+        "trans": "（机器/车辆）出故障"
+      },
+      {
+        "pos": "v.",
+        "def": "To divide into smaller parts for analysis.",
+        "trans": "分解；细分"
+      },
+      {
+        "pos": "v.",
+        "def": "To lose control of emotions.",
+        "trans": "崩溃；情绪失控"
+      }
+    ],
+    "example": "My car broke down on the highway.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "break down",
+    "exampleTranslation": "我的车在高速公路上抛锚了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To end a relationship.",
+        "trans": "分手；结束关系"
+      },
+      {
+        "pos": "v.",
+        "def": "To divide into smaller pieces.",
+        "trans": "打碎；拆开"
+      }
+    ],
+    "example": "They broke up after five years together.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "break up",
+    "exampleTranslation": "在一起五年后他们分手了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To enter a building illegally.",
+        "trans": "闯入；破门而入"
+      },
+      {
+        "pos": "v.",
+        "def": "To start doing something suddenly.",
+        "trans": "突然开始（做某事）"
+      }
+    ],
+    "example": "Someone broke into our house last night.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "break into",
+    "exampleTranslation": "昨晚有人闯入了我们家。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To start suddenly (war, fire, disease).",
+        "trans": "爆发（战争/火灾/疾病）"
+      },
+      {
+        "pos": "v.",
+        "def": "To escape from prison.",
+        "trans": "越狱；逃脱"
+      }
+    ],
+    "example": "A fire broke out in the factory.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "break out",
+    "exampleTranslation": "工厂里发生了火灾。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To stop talking or doing something suddenly.",
+        "trans": "突然停止；中断"
+      },
+      {
+        "pos": "v.",
+        "def": "To separate a piece from something by breaking it.",
+        "trans": "折断；掰断"
+      }
+    ],
+    "example": "He broke off in the middle of his sentence.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "break off",
+    "exampleTranslation": "他话说了一半突然停了下来。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To cancel something that was planned.",
+        "trans": "取消"
+      }
+    ],
+    "example": "They called off the match due to the rain.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "call off",
+    "exampleTranslation": "由于下雨，他们取消了比赛。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To telephone someone.",
+        "trans": "打电话"
+      }
+    ],
+    "example": "I'll call you up when I arrive.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "call up",
+    "exampleTranslation": "我到了就给你打电话。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To return a telephone call.",
+        "trans": "回电话"
+      }
+    ],
+    "example": "Can you ask him to call me back?",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "call back",
+    "exampleTranslation": "你能让他给我回个电话吗？"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To demand or require something.",
+        "trans": "要求；呼吁"
+      },
+      {
+        "pos": "v.",
+        "def": "To come to collect someone.",
+        "trans": "来接（某人）"
+      }
+    ],
+    "example": "The situation calls for immediate action.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "call for",
+    "exampleTranslation": "形势需要立即采取行动。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To do or complete a task, order, or plan.",
+        "trans": "执行；实施；完成"
+      }
+    ],
+    "example": "The scientists carried out several experiments.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "carry out",
+    "exampleTranslation": "科学家们进行了几项实验。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To continue doing something.",
+        "trans": "继续做"
+      }
+    ],
+    "example": "Carry on with your work while I'm gone.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "carry on",
+    "exampleTranslation": "我不在的时候你们继续工作。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To continue or be transferred to another situation.",
+        "trans": "延续；转移"
+      }
+    ],
+    "example": "These skills carry over to other jobs.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "carry over",
+    "exampleTranslation": "这些技能可以迁移到其他工作中。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To reduce the amount of something.",
+        "trans": "减少；削减"
+      },
+      {
+        "pos": "v.",
+        "def": "To make a tree fall by cutting it.",
+        "trans": "砍倒（树）"
+      }
+    ],
+    "example": "You should cut down on sugar.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "cut down",
+    "exampleTranslation": "你应该减少糖的摄入。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To remove something by cutting.",
+        "trans": "切掉；剪断"
+      },
+      {
+        "pos": "v.",
+        "def": "To stop providing something like electricity or water.",
+        "trans": "切断（供应）"
+      },
+      {
+        "pos": "v.",
+        "def": "To interrupt someone during a conversation.",
+        "trans": "打断（说话）"
+      }
+    ],
+    "example": "They cut off our water supply.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "cut off",
+    "exampleTranslation": "他们切断了我们的供水。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To remove something from inside something by cutting.",
+        "trans": "剪掉；切除"
+      },
+      {
+        "pos": "v.",
+        "def": "To stop doing something harmful.",
+        "trans": "停止（坏习惯）"
+      }
+    ],
+    "example": "He cut out junk food from his diet.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "cut out",
+    "exampleTranslation": "他不再在饮食中吃垃圾食品。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To reduce the amount of something, especially spending.",
+        "trans": "削减；缩减（开支）"
+      }
+    ],
+    "example": "The company had to cut back on staff.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "cut back",
+    "exampleTranslation": "公司不得不裁减员工。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To break or be in very bad condition.",
+        "trans": "破碎；破裂"
+      },
+      {
+        "pos": "v.",
+        "def": "To become emotionally upset.",
+        "trans": "崩溃；情绪失控"
+      }
+    ],
+    "example": "After the divorce, she fell apart completely.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "fall apart",
+    "exampleTranslation": "离婚后，她彻底崩溃了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To fail to keep up with others or with a schedule.",
+        "trans": "落后；跟不上"
+      }
+    ],
+    "example": "He fell behind with his studies.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "fall behind",
+    "exampleTranslation": "他学业落后了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be tricked or deceived by something.",
+        "trans": "上当；轻信"
+      },
+      {
+        "pos": "v.",
+        "def": "To fall in love with someone.",
+        "trans": "爱上"
+      }
+    ],
+    "example": "I can't believe she fell for that old trick.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "fall for",
+    "exampleTranslation": "真不敢相信她竟然上那个老套的当。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To have an argument and stop being friends.",
+        "trans": "争吵；闹翻"
+      }
+    ],
+    "example": "They fell out over a misunderstanding.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "fall out",
+    "exampleTranslation": "他们因误会而闹翻了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To stop trying or quit.",
+        "trans": "放弃"
+      },
+      {
+        "pos": "v.",
+        "def": "To stop doing a habit.",
+        "trans": "戒除（习惯）"
+      }
+    ],
+    "example": "Don't give up on your dreams.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "give up",
+    "exampleTranslation": "不要放弃你的梦想。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To agree to do something you didn't want to after being persuaded.",
+        "trans": "妥协；让步"
+      }
+    ],
+    "example": "After hours of arguing, he finally gave in.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "give in",
+    "exampleTranslation": "争论了几个小时后，他最终让步了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To return something to its owner.",
+        "trans": "归还；还给"
+      }
+    ],
+    "example": "I need to give back the book I borrowed.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "give back",
+    "exampleTranslation": "我得把借的书还回去。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To give something for free, without asking for payment.",
+        "trans": "赠送；免费给"
+      },
+      {
+        "pos": "v.",
+        "def": "To reveal a secret.",
+        "trans": "泄露（秘密）"
+      }
+    ],
+    "example": "She gave away all her old clothes.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "give away",
+    "exampleTranslation": "她把所有旧衣服都送人了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To distribute something to people.",
+        "trans": "分发"
+      },
+      {
+        "pos": "v.",
+        "def": "To stop working; to be exhausted.",
+        "trans": "耗尽；停止运转"
+      }
+    ],
+    "example": "The teacher gave out the exam papers.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "give out",
+    "exampleTranslation": "老师分发了试卷。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To wait for a short time, especially on the phone.",
+        "trans": "稍等；别挂电话"
+      },
+      {
+        "pos": "v.",
+        "def": "To keep holding something tightly.",
+        "trans": "抓紧"
+      }
+    ],
+    "example": "Hold on, I'll be right there.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "hold on",
+    "exampleTranslation": "等一下，我马上到。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To delay someone or something.",
+        "trans": "耽搁；延误"
+      },
+      {
+        "pos": "v.",
+        "def": "To rob a place using a weapon.",
+        "trans": "抢劫"
+      }
+    ],
+    "example": "Traffic was held up due to the accident.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "hold up",
+    "exampleTranslation": "交通因事故而受阻。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To prevent something from advancing or happening.",
+        "trans": "阻止；抑制"
+      },
+      {
+        "pos": "v.",
+        "def": "To not show or express your emotions.",
+        "trans": "忍住（情绪）"
+      }
+    ],
+    "example": "She couldn't hold back her tears.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "hold back",
+    "exampleTranslation": "她忍不住流下了眼泪。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To move at the same speed as someone else.",
+        "trans": "跟上；不落后"
+      },
+      {
+        "pos": "v.",
+        "def": "To continue doing something.",
+        "trans": "坚持；继续"
+      }
+    ],
+    "example": "He walked so fast that I couldn't keep up.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "keep up",
+    "exampleTranslation": "他走得太快，我跟不上。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To continue doing something.",
+        "trans": "继续做"
+      }
+    ],
+    "example": "Keep on trying and you will succeed.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "keep on",
+    "exampleTranslation": "继续努力，你会成功的。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To avoid touching or stepping on something.",
+        "trans": "远离；不接触"
+      }
+    ],
+    "example": "Keep off the grass.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "keep off",
+    "exampleTranslation": "请勿践踏草坪。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To avoid coming near someone or something.",
+        "trans": "避开；远离"
+      }
+    ],
+    "example": "Keep away from the fire.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "keep away",
+    "exampleTranslation": "离火远点。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To remove something from a place.",
+        "trans": "拔出；取出"
+      },
+      {
+        "pos": "v.",
+        "def": "To withdraw from an agreement or situation.",
+        "trans": "退出；撤出"
+      }
+    ],
+    "example": "He pulled out of the competition.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "pull out",
+    "exampleTranslation": "他退出了比赛。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To drive a vehicle to the side of the road and stop.",
+        "trans": "靠边停车"
+      }
+    ],
+    "example": "The police officer told him to pull over.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "pull over",
+    "exampleTranslation": "警察让他靠边停车。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To succeed in doing something difficult.",
+        "trans": "成功做到（难事）"
+      },
+      {
+        "pos": "v.",
+        "def": "To remove clothing.",
+        "trans": "脱下（衣服）"
+      }
+    ],
+    "example": "She managed to pull off the deal.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "pull off",
+    "exampleTranslation": "她成功地做成了这笔交易。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To stop a vehicle, especially at the side of the road.",
+        "trans": "停下（车）"
+      }
+    ],
+    "example": "A taxi pulled up in front of the hotel.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "pull up",
+    "exampleTranslation": "一辆出租车在酒店门前停下。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To use up all of something so none is left.",
+        "trans": "用完；耗尽"
+      }
+    ],
+    "example": "We've run out of milk.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "run out",
+    "exampleTranslation": "我们的牛奶喝完了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To meet someone unexpectedly.",
+        "trans": "偶遇；碰见"
+      },
+      {
+        "pos": "v.",
+        "def": "To encounter a problem or difficulty.",
+        "trans": "遇到（问题）"
+      }
+    ],
+    "example": "I ran into an old friend at the supermarket.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "run into",
+    "exampleTranslation": "我在超市偶遇了一位老朋友。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To hit a person or animal with a vehicle.",
+        "trans": "（车辆）撞倒；碾过"
+      },
+      {
+        "pos": "v.",
+        "def": "To quickly review or read through something.",
+        "trans": "快速浏览；过一遍"
+      }
+    ],
+    "example": "The dog was almost run over by a car.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "run over",
+    "exampleTranslation": "那只狗差点被车轧到。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To leave a place secretly, especially to escape.",
+        "trans": "逃跑；逃走"
+      }
+    ],
+    "example": "He ran away from home when he was 15.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "run away",
+    "exampleTranslation": "他15岁时离家出走了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To have no more of something left.",
+        "trans": "用完；耗尽"
+      }
+    ],
+    "example": "We ran out of time before finishing the test.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "run out of",
+    "exampleTranslation": "考试没做完我们就没时间了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To start a business or organization.",
+        "trans": "建立；创办"
+      },
+      {
+        "pos": "v.",
+        "def": "To arrange or prepare something.",
+        "trans": "安排；准备"
+      }
+    ],
+    "example": "She set up her own company last year.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "set up",
+    "exampleTranslation": "她去年创办了自己的公司。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To start a journey.",
+        "trans": "出发；启程"
+      },
+      {
+        "pos": "v.",
+        "def": "To cause an explosion or alarm.",
+        "trans": "引发（爆炸/警报）"
+      }
+    ],
+    "example": "We set off early in the morning.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "set off",
+    "exampleTranslation": "我们清晨就出发了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To start a journey or long trip.",
+        "trans": "出发；启程"
+      },
+      {
+        "pos": "v.",
+        "def": "To begin a task with a clear purpose.",
+        "trans": "着手；开始（做某事）"
+      }
+    ],
+    "example": "They set out to explore the island.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "set out",
+    "exampleTranslation": "他们着手探索这座岛屿。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To delay or slow down the progress of something.",
+        "trans": "推迟；阻碍"
+      }
+    ],
+    "example": "The bad weather set back the construction.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "set back",
+    "exampleTranslation": "恶劣的天气延误了施工进度。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To arrive at a place, especially for a meeting or event.",
+        "trans": "到场；出现"
+      }
+    ],
+    "example": "Over 200 people showed up at the concert.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "show up",
+    "exampleTranslation": "音乐会上出现了两百多人。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To try to impress others by showing one's abilities or possessions.",
+        "trans": "炫耀；卖弄"
+      }
+    ],
+    "example": "He's always showing off his new gadgets.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "show off",
+    "exampleTranslation": "他总是在炫耀他的新小玩意。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To take someone on a tour of a place.",
+        "trans": "带……参观；带……转转"
+      }
+    ],
+    "example": "Let me show you around the city.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "show around",
+    "exampleTranslation": "我带你逛逛这座城市。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To rise to a standing position.",
+        "trans": "站起来"
+      },
+      {
+        "pos": "v.",
+        "def": "To fail to meet someone as arranged.",
+        "trans": "爽约；放鸽子"
+      }
+    ],
+    "example": "Everyone stood up when the judge entered.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "stand up",
+    "exampleTranslation": "法官进场时所有人都起立。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To represent or mean something (an abbreviation).",
+        "trans": "代表；表示"
+      },
+      {
+        "pos": "v.",
+        "def": "To support or tolerate a particular principle.",
+        "trans": "主张；支持"
+      }
+    ],
+    "example": "What does UNESCO stand for?",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "stand for",
+    "exampleTranslation": "UNESCO是什么意思？"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be very noticeable or much better than others.",
+        "trans": "突出；出众；显眼"
+      }
+    ],
+    "example": "Her red dress made her stand out in the crowd.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "stand out",
+    "exampleTranslation": "她的红裙子让她在人群中格外显眼。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To support someone in a difficult situation.",
+        "trans": "支持；站在……一边"
+      },
+      {
+        "pos": "v.",
+        "def": "To be ready to act if needed.",
+        "trans": "待命；做好准备"
+      }
+    ],
+    "example": "I'll stand by you no matter what.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "stand by",
+    "exampleTranslation": "无论如何我都支持你。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To exercise to improve fitness.",
+        "trans": "锻炼；健身"
+      },
+      {
+        "pos": "v.",
+        "def": "To find a solution to a problem.",
+        "trans": "解决；想出"
+      },
+      {
+        "pos": "v.",
+        "def": "To have a good result.",
+        "trans": "结果良好；顺利"
+      }
+    ],
+    "example": "I work out at the gym three times a week.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "work out",
+    "exampleTranslation": "我每周去健身房锻炼三次。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To spend time trying to improve or develop something.",
+        "trans": "致力于；从事"
+      }
+    ],
+    "example": "She's working on her English skills.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "work on",
+    "exampleTranslation": "她正在提高英语水平。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To develop or build up gradually.",
+        "trans": "逐步建立；逐渐发展"
+      },
+      {
+        "pos": "v.",
+        "def": "To make someone become excited, angry, or upset.",
+        "trans": "使激动；使恼怒"
+      }
+    ],
+    "example": "I need to work up the courage to speak to her.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "work up",
+    "exampleTranslation": "我需要鼓起勇气跟她说话。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To lift something or someone up.",
+        "trans": "捡起；拿起"
+      },
+      {
+        "pos": "v.",
+        "def": "To collect someone or something.",
+        "trans": "接人；取物"
+      },
+      {
+        "pos": "v.",
+        "def": "To learn or acquire a skill easily.",
+        "trans": "学会；掌握"
+      }
+    ],
+    "example": "Can you pick me up at the station at 5?",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "pick up",
+    "exampleTranslation": "你五点能到车站接我吗？"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To choose or select someone or something from a group.",
+        "trans": "挑选；选出"
+      }
+    ],
+    "example": "She picked out a red dress for the party.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "pick out",
+    "exampleTranslation": "她为聚会挑了一条红裙子。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To repeatedly treat someone unfairly or criticize them.",
+        "trans": "欺负；刁难"
+      }
+    ],
+    "example": "Stop picking on your little brother.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "pick on",
+    "exampleTranslation": "别再欺负你弟弟了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To arrive and register at a hotel or airport.",
+        "trans": "办理入住；办理登机"
+      },
+      {
+        "pos": "v.",
+        "def": "To contact someone to let them know you are safe.",
+        "trans": "汇报情况；报平安"
+      }
+    ],
+    "example": "We checked in at the hotel at 3pm.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "check in",
+    "exampleTranslation": "我们下午三点在酒店办理了入住。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To leave a hotel after paying the bill.",
+        "trans": "退房结账"
+      },
+      {
+        "pos": "v.",
+        "def": "To examine or investigate something.",
+        "trans": "检查；查看"
+      }
+    ],
+    "example": "Check out that cool car over there!",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "check out",
+    "exampleTranslation": "看那边那辆酷炫的车！"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To make sure someone is healthy or safe.",
+        "trans": "查看；探望（确保安全）"
+      }
+    ],
+    "example": "I call my mother every week to check up on her.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "check up on",
+    "exampleTranslation": "我每周给母亲打电话了解她的情况。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To visit someone informally, often without planning ahead.",
+        "trans": "顺路拜访；串门"
+      }
+    ],
+    "example": "Feel free to drop by anytime.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "drop by",
+    "exampleTranslation": "随时欢迎你来串门。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To take someone or something to a place.",
+        "trans": "顺便送（人/物）到某地"
+      },
+      {
+        "pos": "v.",
+        "def": "To fall asleep.",
+        "trans": "睡着"
+      },
+      {
+        "pos": "v.",
+        "def": "To decrease significantly.",
+        "trans": "下降；减少"
+      }
+    ],
+    "example": "I'll drop you off at the airport.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "drop off",
+    "exampleTranslation": "我开车送你去机场。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To leave school or a course before finishing.",
+        "trans": "辍学；退出"
+      }
+    ],
+    "example": "He dropped out of university to start a business.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "drop out",
+    "exampleTranslation": "他大学退学去创业了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To understand or solve a problem after thinking.",
+        "trans": "弄明白；想出"
+      }
+    ],
+    "example": "I can't figure out how to fix this.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "figure out",
+    "exampleTranslation": "我搞不懂怎么修这个。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To discover a fact or piece of information.",
+        "trans": "发现；查明"
+      }
+    ],
+    "example": "I need to find out what happened.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "find out",
+    "exampleTranslation": "我需要弄清楚发生了什么。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To draw attention to something or someone.",
+        "trans": "指出；指明"
+      }
+    ],
+    "example": "She pointed out a mistake in the report.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "point out",
+    "exampleTranslation": "她指出了报告中的一个错误。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To complete a form or document by adding information.",
+        "trans": "填写（表格）"
+      },
+      {
+        "pos": "v.",
+        "def": "To inform someone about recent events.",
+        "trans": "告知（最新情况）"
+      }
+    ],
+    "example": "Please fill in this form.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "fill in",
+    "exampleTranslation": "请填写这张表格。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To complete a form by writing information in the spaces.",
+        "trans": "填写（表格）"
+      }
+    ],
+    "example": "Fill out the application and send it to us.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "fill out",
+    "exampleTranslation": "填好申请表后寄给我们。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To spend time relaxing with friends.",
+        "trans": "闲逛；消磨时间"
+      }
+    ],
+    "example": "We usually hang out at the mall on weekends.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "hang out",
+    "exampleTranslation": "周末我们通常在商场闲逛。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To end a phone call.",
+        "trans": "挂断电话"
+      }
+    ],
+    "example": "He hung up without saying goodbye.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "hang up",
+    "exampleTranslation": "他没说再见就挂断了电话。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To leave a place or begin a journey.",
+        "trans": "出发；离开"
+      }
+    ],
+    "example": "We headed out at dawn.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "head out",
+    "exampleTranslation": "我们黎明时分出发了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To stop doing something and start something new.",
+        "trans": "继续前进；开始新事物"
+      }
+    ],
+    "example": "It's time to move on and find a new job.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "move on",
+    "exampleTranslation": "该向前看，找份新工作了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To start living in a new home.",
+        "trans": "搬进新家"
+      }
+    ],
+    "example": "We moved in last weekend.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "move in",
+    "exampleTranslation": "我们上周末搬进去了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To leave a home that you have been living in.",
+        "trans": "搬出"
+      }
+    ],
+    "example": "She moved out of her parents' house.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "move out",
+    "exampleTranslation": "她从父母家搬出来住了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To stay in bed later than usual in the morning.",
+        "trans": "睡懒觉"
+      }
+    ],
+    "example": "I love sleeping in on weekends.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "sleep in",
+    "exampleTranslation": "我喜欢周末睡懒觉。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To remain awake past the usual bedtime.",
+        "trans": "熬夜；不睡"
+      }
+    ],
+    "example": "We stayed up late watching movies.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "stay up",
+    "exampleTranslation": "我们熬夜看电影。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To stop sleeping and become conscious.",
+        "trans": "醒来；叫醒"
+      }
+    ],
+    "example": "I wake up at 7 every morning.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "wake up",
+    "exampleTranslation": "我每天早上七点醒来。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To prepare for physical activity by doing gentle exercises.",
+        "trans": "热身"
+      },
+      {
+        "pos": "v.",
+        "def": "To become friendlier or more enthusiastic.",
+        "trans": "变得热情"
+      }
+    ],
+    "example": "Always warm up before a run.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "warm up",
+    "exampleTranslation": "跑步前一定要热身。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To become less angry, anxious, or excited.",
+        "trans": "冷静下来；镇定"
+      }
+    ],
+    "example": "Calm down and tell me what happened.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "calm down",
+    "exampleTranslation": "冷静下来，告诉我发生了什么。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To go at a slower speed or become less active.",
+        "trans": "减速；放慢"
+      }
+    ],
+    "example": "Slow down! You're driving too fast.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "slow down",
+    "exampleTranslation": "慢点！你开太快了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To go faster or increase the rate of something.",
+        "trans": "加速；加快"
+      }
+    ],
+    "example": "We need to speed up the production process.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "speed up",
+    "exampleTranslation": "我们需要加快生产流程。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To close a business or stop a machine from operating.",
+        "trans": "关闭；停业；停机"
+      }
+    ],
+    "example": "The factory was shut down last year.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "shut down",
+    "exampleTranslation": "那家工厂去年关闭了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To stop talking or making noise.",
+        "trans": "闭嘴；住口"
+      }
+    ],
+    "example": "Shut up and listen to what I have to say.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "shut up",
+    "exampleTranslation": "闭嘴，听我把话说完。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To stop operating permanently (a business or organization).",
+        "trans": "关闭；停业"
+      }
+    ],
+    "example": "Many shops have closed down in the area.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "close down",
+    "exampleTranslation": "这一带许多商店都倒闭了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To speak louder.",
+        "trans": "大声点说"
+      },
+      {
+        "pos": "v.",
+        "def": "To express your opinion freely.",
+        "trans": "直言不讳"
+      }
+    ],
+    "example": "Could you speak up? I can't hear you.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "speak up",
+    "exampleTranslation": "你能大声点说吗？我听不见。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To state your opinion publicly and strongly.",
+        "trans": "公开表态；直言"
+      }
+    ],
+    "example": "She spoke out against the new policy.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "speak out",
+    "exampleTranslation": "她公开反对这项新政策。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To discuss a problem or situation thoroughly.",
+        "trans": "详细讨论"
+      }
+    ],
+    "example": "Let's talk over the details over lunch.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "talk over",
+    "exampleTranslation": "我们边吃午饭边商量细节吧。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To reply rudely to someone in authority.",
+        "trans": "顶嘴；回嘴"
+      }
+    ],
+    "example": "Don't talk back to your parents.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "talk back",
+    "exampleTranslation": "不要顶撞父母。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To give money in exchange for goods or services.",
+        "trans": "付款；支付"
+      },
+      {
+        "pos": "v.",
+        "def": "To suffer because of a mistake.",
+        "trans": "付出代价"
+      }
+    ],
+    "example": "I'll pay for dinner tonight.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "pay for",
+    "exampleTranslation": "今晚我请客吃饭。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To finish paying money that you owe.",
+        "trans": "还清（债务）"
+      },
+      {
+        "pos": "v.",
+        "def": "To have a positive result after effort.",
+        "trans": "得到回报；成功"
+      }
+    ],
+    "example": "Years of hard work finally paid off.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "pay off",
+    "exampleTranslation": "多年的努力终于有了回报。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To return money that you have borrowed.",
+        "trans": "偿还；还钱"
+      },
+      {
+        "pos": "v.",
+        "def": "To take revenge on someone.",
+        "trans": "报复"
+      }
+    ],
+    "example": "I'll pay you back as soon as I can.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "pay back",
+    "exampleTranslation": "我会尽快还你钱。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To pay all the money that you owe.",
+        "trans": "付清；缴清"
+      }
+    ],
+    "example": "The landlord threatened to take legal action if we didn't pay up.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "pay up",
+    "exampleTranslation": "房东威胁说如果我们不付清欠款就采取法律行动。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To request something from someone.",
+        "trans": "请求；要求"
+      },
+      {
+        "pos": "v.",
+        "def": "To behave in a way that is likely to cause trouble.",
+        "trans": "自找麻烦"
+      }
+    ],
+    "example": "He asked for a glass of water.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "ask for",
+    "exampleTranslation": "他要了一杯水。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To invite someone to go on a date.",
+        "trans": "邀请（约会）"
+      }
+    ],
+    "example": "He finally asked her out to dinner.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "ask out",
+    "exampleTranslation": "他终于约她出去吃晚饭了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To ask many people for information.",
+        "trans": "四处打听；问人"
+      }
+    ],
+    "example": "I'll ask around and see if anyone knows.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "ask around",
+    "exampleTranslation": "我去打听一下，看有没有人知道。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To handle or take action on a problem or situation.",
+        "trans": "处理；应对"
+      }
+    ],
+    "example": "We need to deal with this problem immediately.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "deal with",
+    "exampleTranslation": "我们必须立即处理这个问题。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To rely on someone or something for support.",
+        "trans": "依靠；依赖"
+      },
+      {
+        "pos": "v.",
+        "def": "To be affected or decided by something.",
+        "trans": "取决于"
+      }
+    ],
+    "example": "It depends on the weather.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "depend on",
+    "exampleTranslation": "这取决于天气。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To trust or depend on someone or something.",
+        "trans": "依赖；信赖"
+      }
+    ],
+    "example": "You can rely on her to do a good job.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "rely on",
+    "exampleTranslation": "你可以信赖她把工作做好。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To have the same opinion as someone.",
+        "trans": "同意（某人）"
+      },
+      {
+        "pos": "v.",
+        "def": "To be suitable for or not cause problems.",
+        "trans": "适合；相宜"
+      }
+    ],
+    "example": "I agree with your point of view.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "agree with",
+    "exampleTranslation": "我同意你的观点。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To reach a mutual decision about something.",
+        "trans": "就……达成一致"
+      }
+    ],
+    "example": "We finally agreed on a price.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "agree on",
+    "exampleTranslation": "我们最终就价格达成了一致。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To express disagreement with someone in words.",
+        "trans": "与……争吵；争论"
+      }
+    ],
+    "example": "I don't want to argue with you about this.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "argue with",
+    "exampleTranslation": "我不想就这件事跟你争论。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To think something is important and feel concerned.",
+        "trans": "关心；在乎"
+      }
+    ],
+    "example": "I really care about the environment.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "care about",
+    "exampleTranslation": "我真的很关心环境。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To look after someone who needs help.",
+        "trans": "照顾；照料"
+      },
+      {
+        "pos": "v.",
+        "def": "To like or want something.",
+        "trans": "喜欢；想要"
+      }
+    ],
+    "example": "She cared for her sick father.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "care for",
+    "exampleTranslation": "她照顾生病的父亲。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To feel anxious or concerned about something.",
+        "trans": "担心；忧虑"
+      }
+    ],
+    "example": "Don't worry about the exam.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "worry about",
+    "exampleTranslation": "别为考试担心。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To have a thought or consider something.",
+        "trans": "考虑；思考"
+      }
+    ],
+    "example": "I'll think about your offer.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "think about",
+    "exampleTranslation": "我会考虑你的提议。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To consider something carefully before deciding.",
+        "trans": "仔细考虑"
+      }
+    ],
+    "example": "Take your time to think it over.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "think over",
+    "exampleTranslation": "你慢慢考虑清楚。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To have a particular opinion about someone or something.",
+        "trans": "认为；看待"
+      },
+      {
+        "pos": "v.",
+        "def": "To produce an idea or memory.",
+        "trans": "想起；想出"
+      }
+    ],
+    "example": "What do you think of the new restaurant?",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "think of",
+    "exampleTranslation": "你觉得那家新餐馆怎么样？"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To stay in a place until someone arrives or something happens.",
+        "trans": "等待"
+      }
+    ],
+    "example": "I'll wait for you at the entrance.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "wait for",
+    "exampleTranslation": "我在入口处等你。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To pay attention to a sound or what someone says.",
+        "trans": "听；倾听"
+      }
+    ],
+    "example": "Listen to the instructions carefully.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "listen to",
+    "exampleTranslation": "仔细听指示。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To direct your eyes toward something.",
+        "trans": "看；看"
+      },
+      {
+        "pos": "v.",
+        "def": "To examine or consider something.",
+        "trans": "考虑；审视"
+      }
+    ],
+    "example": "Look at this beautiful painting.",
+    "category": "短语动词",
+    "difficulty": 1,
+    "notes": "",
+    "word": "look at",
+    "exampleTranslation": "看这幅美丽的画。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be sure that someone or something exists.",
+        "trans": "相信（存在）"
+      },
+      {
+        "pos": "v.",
+        "def": "To have confidence in someone's ability.",
+        "trans": "信任；相信"
+      }
+    ],
+    "example": "I believe in you.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "believe in",
+    "exampleTranslation": "我相信你。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To achieve what you have been trying to do.",
+        "trans": "成功做某事"
+      }
+    ],
+    "example": "She succeeded in passing the exam.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "succeed in",
+    "exampleTranslation": "她成功通过了考试。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To give all your attention to something.",
+        "trans": "集中注意力于"
+      }
+    ],
+    "example": "I need to concentrate on my studies.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "concentrate on",
+    "exampleTranslation": "我需要专心学习。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To give special attention to something.",
+        "trans": "专注于；聚焦"
+      }
+    ],
+    "example": "We should focus on the main issues.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "focus on",
+    "exampleTranslation": "我们应该专注于主要问题。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To express an opinion about something.",
+        "trans": "评论；就……发表意见"
+      }
+    ],
+    "example": "The president refused to comment on the matter.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "comment on",
+    "exampleTranslation": "总统拒绝对此事发表评论。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To demand something firmly and refuse to give up.",
+        "trans": "坚持；坚决要求"
+      }
+    ],
+    "example": "He insisted on paying for dinner.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "insist on",
+    "exampleTranslation": "他坚持要付晚饭钱。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To take part in an activity or event.",
+        "trans": "参加；参与"
+      }
+    ],
+    "example": "Students are encouraged to participate in sports.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "participate in",
+    "exampleTranslation": "学生们被鼓励参加体育运动。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be owned by someone.",
+        "trans": "属于"
+      }
+    ],
+    "example": "Does this book belong to you?",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "belong to",
+    "exampleTranslation": "这本书是你的吗？"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To say that you disagree with or oppose something.",
+        "trans": "反对；不赞成"
+      }
+    ],
+    "example": "Many people object to the new tax.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "object to",
+    "exampleTranslation": "许多人反对新税。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To answer or react to something.",
+        "trans": "回应；响应"
+      }
+    ],
+    "example": "She responded to my email quickly.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "respond to",
+    "exampleTranslation": "她很快回复了我的邮件。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To behave in a particular way because of something.",
+        "trans": "对……做出反应"
+      }
+    ],
+    "example": "How did he react to the news?",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "react to",
+    "exampleTranslation": "他对这个消息有什么反应？"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To make a formal request for a job, visa, etc.",
+        "trans": "申请（职位/签证等）"
+      }
+    ],
+    "example": "She applied for a job at the bank.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "apply for",
+    "exampleTranslation": "她申请了银行的一份工作。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be relevant or affect a particular person or situation.",
+        "trans": "适用于"
+      }
+    ],
+    "example": "The new rules apply to all employees.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "apply to",
+    "exampleTranslation": "新规定适用于所有员工。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be a particular amount or part of something.",
+        "trans": "占（比例）"
+      },
+      {
+        "pos": "v.",
+        "def": "To explain the reason for something.",
+        "trans": "解释；说明"
+      }
+    ],
+    "example": "Online sales account for 30% of total revenue.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "account for",
+    "exampleTranslation": "线上销售占总收入的30%。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be made up of or include something.",
+        "trans": "由……组成"
+      }
+    ],
+    "example": "The committee consists of 12 members.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "consist of",
+    "exampleTranslation": "委员会由12名成员组成。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To cause something to happen; to have a particular result.",
+        "trans": "导致；造成"
+      }
+    ],
+    "example": "The accident resulted in three injuries.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "result in",
+    "exampleTranslation": "这起事故造成了三人受伤。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To cause something to happen or develop.",
+        "trans": "导致；引起"
+      }
+    ],
+    "example": "Poor diet can lead to health problems.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "lead to",
+    "exampleTranslation": "不良饮食会导致健康问题。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be caused by or originate from something.",
+        "trans": "源于；来自"
+      }
+    ],
+    "example": "His problems stem from his childhood.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "stem from",
+    "exampleTranslation": "他的问题源于童年。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be one of the causes of something.",
+        "trans": "促成；导致"
+      },
+      {
+        "pos": "v.",
+        "def": "To give something, especially money or time.",
+        "trans": "贡献；捐献"
+      }
+    ],
+    "example": "Stress contributes to many health issues.",
+    "category": "短语动词",
+    "difficulty": 2,
+    "notes": "",
+    "word": "contribute to",
+    "exampleTranslation": "压力是许多健康问题的诱因之一。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To start to apply or be official (a law or rule).",
+        "trans": "生效；开始实施"
+      }
+    ],
+    "example": "The new law came into effect in January.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "come into effect",
+    "exampleTranslation": "新法律于一月份开始生效。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To have existed since a particular time in the past.",
+        "trans": "追溯到；始于"
+      }
+    ],
+    "example": "The building dates back to the 18th century.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "date back to",
+    "exampleTranslation": "这座建筑的历史可以追溯到18世纪。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To be closely connected and happen together.",
+        "trans": "密切相关；相辅相成"
+      }
+    ],
+    "example": "Wealth and happiness do not always go hand in hand.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "go hand in hand",
+    "exampleTranslation": "财富和幸福并不总是形影不离。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To propose an idea or plan for consideration.",
+        "trans": "提出（想法/计划）"
+      }
+    ],
+    "example": "She put forward a new proposal at the meeting.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "put forward",
+    "exampleTranslation": "她在会议上提出了一项新提案。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To apply a theory or idea in real situations.",
+        "trans": "付诸实践；实施"
+      }
+    ],
+    "example": "It's time to put the plan into practice.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "put into practice",
+    "exampleTranslation": "是时候把计划付诸实践了。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To start doing or implementing a plan.",
+        "trans": "开始实施；付诸行动"
+      }
+    ],
+    "example": "We put the strategy into action last week.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "put into action",
+    "exampleTranslation": "上周我们把战略付诸了行动。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To consider something when making a decision.",
+        "trans": "考虑到；顾及"
+      }
+    ],
+    "example": "We must take all costs into account.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "take into account",
+    "exampleTranslation": "我们必须把成本都考虑进去。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To participate in an activity.",
+        "trans": "参加；参与"
+      }
+    ],
+    "example": "She took part in the debate competition.",
+    "category": "学术搭配",
+    "difficulty": 2,
+    "notes": "",
+    "word": "take part in",
+    "exampleTranslation": "她参加了辩论比赛。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To happen, especially at a planned time and place.",
+        "trans": "发生；举行"
+      }
+    ],
+    "example": "The ceremony will take place next Monday.",
+    "category": "学术搭配",
+    "difficulty": 2,
+    "notes": "",
+    "word": "take place",
+    "exampleTranslation": "典礼将于下周一举行。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To use an opportunity in a beneficial way.",
+        "trans": "利用（机会）"
+      },
+      {
+        "pos": "v.",
+        "def": "To exploit someone unfairly.",
+        "trans": "占（某人）便宜"
+      }
+    ],
+    "example": "You should take advantage of this chance to study abroad.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "take advantage of",
+    "exampleTranslation": "你应该利用这次出国留学的机会。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To use something in an effective way.",
+        "trans": "利用；使用"
+      }
+    ],
+    "example": "Make full use of your time.",
+    "category": "学术搭配",
+    "difficulty": 2,
+    "notes": "",
+    "word": "make use of",
+    "exampleTranslation": "充分利用你的时间。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To have an important effect on something.",
+        "trans": "产生影响；有所作为"
+      }
+    ],
+    "example": "Small changes can make a big difference.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "make a difference",
+    "exampleTranslation": "小的改变也能带来大的不同。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To improve or move forward in something.",
+        "trans": "取得进步；进展"
+      }
+    ],
+    "example": "She has made great progress in English.",
+    "category": "学术搭配",
+    "difficulty": 2,
+    "notes": "",
+    "word": "make progress",
+    "exampleTranslation": "她的英语取得了很大进步。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To choose after thinking about the options.",
+        "trans": "做决定"
+      }
+    ],
+    "example": "You need to make a decision soon.",
+    "category": "学术搭配",
+    "difficulty": 2,
+    "notes": "",
+    "word": "make a decision",
+    "exampleTranslation": "你需要尽快做出决定。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To cause something to happen or exist.",
+        "trans": "引起；导致"
+      }
+    ],
+    "example": "The new policy gave rise to some controversy.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "give rise to",
+    "exampleTranslation": "新政策引发了一些争议。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To treat something as more important than others.",
+        "trans": "优先考虑"
+      }
+    ],
+    "example": "We should give priority to safety.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "give priority to",
+    "exampleTranslation": "我们应该把安全放在首位。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To watch, listen carefully and concentrate.",
+        "trans": "注意；关注"
+      }
+    ],
+    "example": "Pay attention to the details.",
+    "category": "学术搭配",
+    "difficulty": 2,
+    "notes": "",
+    "word": "pay attention to",
+    "exampleTranslation": "注意细节。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To continue to contact someone regularly.",
+        "trans": "保持联系"
+      }
+    ],
+    "example": "Let's keep in touch after we graduate.",
+    "category": "学术搭配",
+    "difficulty": 2,
+    "notes": "",
+    "word": "keep in touch",
+    "exampleTranslation": "毕业后我们保持联系。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To remember and consider something.",
+        "trans": "记住；铭记"
+      }
+    ],
+    "example": "Keep in mind that the exam is next week.",
+    "category": "学术搭配",
+    "difficulty": 2,
+    "notes": "",
+    "word": "keep in mind",
+    "exampleTranslation": "记住，考试在下周。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To move or develop at the same speed as something.",
+        "trans": "跟上（步伐）"
+      }
+    ],
+    "example": "Technology is hard to keep pace with.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "keep pace with",
+    "exampleTranslation": "科技日新月异，难以跟上。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To reach a final judgment or decision.",
+        "trans": "得出结论"
+      }
+    ],
+    "example": "After much research, we came to a conclusion.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "come to a conclusion",
+    "exampleTranslation": "经过大量研究，我们得出了结论。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To accept and deal with a difficult situation.",
+        "trans": "接受；适应（困境）"
+      }
+    ],
+    "example": "He finally came to terms with his illness.",
+    "category": "学术搭配",
+    "difficulty": 3,
+    "notes": "",
+    "word": "come to terms with",
+    "exampleTranslation": "他最终接受了自己患病的事实。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To contact someone.",
+        "trans": "联系；取得联系"
+      }
+    ],
+    "example": "I'll get in touch with you tomorrow.",
+    "category": "学术搭配",
+    "difficulty": 2,
+    "notes": "",
+    "word": "get in touch",
+    "exampleTranslation": "我明天和你联系。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To become familiar with something so it seems normal.",
+        "trans": "习惯于"
+      }
+    ],
+    "example": "You'll soon get used to the new environment.",
+    "category": "学术搭配",
+    "difficulty": 2,
+    "notes": "",
+    "word": "get used to",
+    "exampleTranslation": "你很快就会适应新环境的。"
+  },
+  {
+    "definitions": [
+      {
+        "pos": "v.",
+        "def": "To have a good relationship with someone.",
+        "trans": "与……相处融洽"
+      }
+    ],
+    "example": "I get on well with all my classmates.",
+    "category": "学术搭配",
+    "difficulty": 2,
+    "notes": "",
+    "word": "get on well with",
+    "exampleTranslation": "我和所有同学相处得很好。"
+  }
+]

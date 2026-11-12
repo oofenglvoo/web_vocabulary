@@ -1,0 +1,5711 @@
+﻿[
+  {
+    "word": "单词間隔",
+    "reading": "发音かんかく",
+    "accent": "音调 ⓪",
+    "partOfSpeech": "词性名",
+    "meaning": "1. 释义 间隔，距离",
+    "example": "例句 広い間隔。",
+    "exampleTranslation": "宽广的距 离。",
+    "notes": "笔记",
+    "category": "N4"
+  },
+  {
+    "word": "間接",
+    "reading": "かんせつ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 间接二事物间插入他物后相对的状 态，也指在二事物间隔以他物行事",
+    "example": "間接の効果。",
+    "exampleTranslation": "间接的效 果。",
+    "category": "N4"
+  },
+  {
+    "word": "開通",
+    "reading": "かいつう",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 开通\n2. 开通",
+    "example": "ぐだ。",
+    "exampleTranslation": "隧道马上就要通 トンネルの開通はもうす 车。",
+    "category": "N4"
+  },
+  {
+    "word": "開発",
+    "reading": "かいはつ",
+    "accent": "⓪",
+    "partOfSpeech": "他动·サ名·变",
+    "meaning": "1. 开辟开垦\n2. 开发创办（产业）实用 化开发开创研制发展\n3. 启发",
+    "example": "未開墾地を開発する。",
+    "exampleTranslation": "开垦荒地。",
+    "category": "N4"
+  },
+  {
+    "word": "訳",
+    "reading": "わけ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 缘故，情形成为这种状态结果的理 由\n2. 当然，怪不得作为结果当然是 这样，亦指安排使其那样\n3. 道理， 条理，常识\n4. 麻烦，费事\n5. 情况，",
+    "example": "たという訳です。",
+    "exampleTranslation": "所以， だからだれも知らなかっ 当然谁也不知道。",
+    "category": "N4"
+  },
+  {
+    "word": "笑わせる",
+    "reading": "わらわせる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 逗人笑\n2. 嘲笑",
+    "example": "わせる。",
+    "exampleTranslation": "那个程度也算 あれでプロだとは，わら 是专业的？别招人笑了。",
+    "category": "N4"
+  },
+  {
+    "word": "碗",
+    "reading": "わん",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 盛东西用的碗\n2. 助数词",
+    "example": "碗をもってきて。",
+    "exampleTranslation": "拿个 碗过来。",
+    "category": "N4"
+  },
+  {
+    "word": "笑う",
+    "reading": "わらう",
+    "accent": "⓪",
+    "partOfSpeech": "动·自他五段",
+    "meaning": "1. 笑\n2. 花开，开绽\n3. 嘲笑",
+    "example": "になる。",
+    "exampleTranslation": "当梅花的花苞 に訪れる鳥の声が賑やか 绽放时，院子里来访的鸟 梅のつぼみが笑う頃、庭 鸣声便热闹起来。",
+    "category": "N4"
+  },
+  {
+    "word": "沸く",
+    "reading": "わく",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 沸腾，烧开，烧热\n2. 激动，兴奋\n3. 熔化\n4. 哄闹，吵嚷",
+    "example": "ふろが沸く。",
+    "exampleTranslation": "洗澡水烧 热。",
+    "category": "N4"
+  },
+  {
+    "word": "沸かす",
+    "reading": "わかす",
+    "accent": "③⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 烧开，烧热\n2. 使……沸腾，使…… 狂热使……兴高采烈",
+    "example": "ふろを沸かす。",
+    "exampleTranslation": "烧洗澡 水。",
+    "category": "N4"
+  },
+  {
+    "word": "椀",
+    "reading": "わん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. べ物を盛る木や瀬戸物や金属の入 碗\n2. 木碗\n3. (助数词用法)碗。（食 れ物。）",
+    "example": "椀に味噌汁をよそう。",
+    "exampleTranslation": "碗里盛上酱汤。",
+    "category": "N4"
+  },
+  {
+    "word": "わがまま",
+    "reading": "わがまま",
+    "accent": "③④",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 任性\n2. 恣意\n3. 放肆",
+    "example": "わがままに振る舞う。",
+    "exampleTranslation": "放肆；任性。",
+    "category": "N4"
+  },
+  {
+    "word": "忘れ物",
+    "reading": "わすれもの",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 遗忘的东西，遗失品",
+    "example": "電車に忘れ物をする。",
+    "exampleTranslation": "忘东西在列车里了。",
+    "category": "N4"
+  },
+  {
+    "word": "和服",
+    "reading": "わふく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 和服，日本式衣服",
+    "example": "和服姿。",
+    "exampleTranslation": "和服打扮。",
+    "category": "N4"
+  },
+  {
+    "word": "割合",
+    "reading": "わりあい",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 比例\n2. 分摊额，分配量\n3. 比起， 比\n4. 比较",
+    "example": "割合のいい仕事",
+    "exampleTranslation": "比较好 的工作。",
+    "category": "N4"
+  },
+  {
+    "word": "割れる",
+    "reading": "われる",
+    "accent": "⓪",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 破，破碎\n2. 破裂，分裂\n3. 裂开\n4. 暴 露\n5. 除尽",
+    "example": "た。",
+    "exampleTranslation": "手一滑，碟〔盘〕 手がすべって皿が割れ 子打碎了。",
+    "category": "N4"
+  },
+  {
+    "word": "割る",
+    "reading": "わる",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 配\n2. 除，除以\n3. 使分开\n4. 分开\n5. 挤 开\n6. 推开\n7. 稀释，兑\n8. 毫不隐瞒地 说出来\n9. 敞开\n10. 亮出\n11. 挑明\n12. 坦 白\n13. 数量降到某一基准点以下\n14. 低",
+    "example": "た。",
+    "exampleTranslation": "打破了两三块玻 ガラスを二三枚割っ 璃。",
+    "category": "N4"
+  },
+  {
+    "word": "別れる",
+    "reading": "わかれる",
+    "accent": "③",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 离别，分手\n2. 离婚\n3. 分散，离散\n4. 死别",
+    "example": "手を振って別れる。",
+    "exampleTranslation": "挥 手而别。",
+    "category": "N4"
+  },
+  {
+    "word": "分かれる",
+    "reading": "わかれる",
+    "accent": "③",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 分开\n2. 区分，划分，分歧，区别",
+    "example": "が分かれた。",
+    "exampleTranslation": "在那个问 题上，大家的意见分歧 その問題でみんなの意見 了。",
+    "category": "N4"
+  },
+  {
+    "word": "ワープロ",
+    "reading": "わーぷろ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 文字处理机，语言处理机",
+    "example": "する。",
+    "exampleTranslation": "用文字处理机写 ワープロで企画書を作成 计划书。",
+    "category": "N4"
+  },
+  {
+    "word": "ワサビ",
+    "reading": "わさび",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 芥末",
+    "example": "こぼれた。",
+    "exampleTranslation": "吃了太多芥 ワサビを食べ過ぎて涙が 末，辣的眼泪都出来了。",
+    "category": "N4"
+  },
+  {
+    "word": "連絡先",
+    "reading": "れんらくさき",
+    "accent": "⓪④",
+    "partOfSpeech": "名",
+    "meaning": "1. 联系地址，联系方式",
+    "example": "い。",
+    "exampleTranslation": "请告诉我您的联系 連絡先を教えてくださ 方式。",
+    "category": "N4"
+  },
+  {
+    "word": "礼金",
+    "reading": "れいきん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 酬谢金",
+    "example": "礼金を払う。",
+    "exampleTranslation": "支付礼 金。",
+    "category": "N4"
+  },
+  {
+    "word": "冷暖房",
+    "reading": "れいだんぼう",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 冷气和暖气，冷暖气设备",
+    "example": "屋。",
+    "exampleTranslation": "冷暖气都有的房 冷暖房装置の完備した部 间。",
+    "category": "N4"
+  },
+  {
+    "word": "冷房",
+    "reading": "れいぼう",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 制冷设备，冷气设备\n2. 冷气使室内 变凉爽的设备\n3. 制冷，开冷气",
+    "example": "ください。",
+    "exampleTranslation": "好热啊，请 暑いから、冷房をつけて 开一下空调。",
+    "category": "N4"
+  },
+  {
+    "word": "レジ",
+    "reading": "れじ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 收银机\n2. 收银台 自动记录器，寄存 器，现金出纳机\n3. 现金出纳员，收 款员\n4. register登记，注册\n5. 登记 簿，注册簿",
+    "example": "レジで会計する。",
+    "exampleTranslation": "在收 银台结账。",
+    "category": "N4"
+  },
+  {
+    "word": "留守",
+    "reading": "るす",
+    "accent": "①",
+    "partOfSpeech": "名·形动·サ变",
+    "meaning": "1. 留人看家，看门\n2. 主人不在家\n3. 忽 略\n4. 开小差，思想不集中",
+    "example": "勉強がお留守になる",
+    "exampleTranslation": "学 习被忽略了。",
+    "category": "N4"
+  },
+  {
+    "word": "寮",
+    "reading": "りょう",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 宿舍\n2. 茶室\n3. 别墅",
+    "example": "独身寮",
+    "exampleTranslation": "单身宿舍",
+    "category": "N4"
+  },
+  {
+    "word": "両側",
+    "reading": "りょうがわ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 两侧，两边，两方面",
+    "example": "垣が築かれた。",
+    "exampleTranslation": "街道两 通りの両側は見物人の人 旁看热闹的人山人海。",
+    "category": "N4"
+  },
+  {
+    "word": "リーダー",
+    "reading": "りーだー",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 等的社论\n2. reader读本，课本\n3. 读 leader指导者\n4. 干部\n5. 先驱\n6. 报纸 者",
+    "example": "優秀なリーダー",
+    "exampleTranslation": "出色的 领导",
+    "category": "N4"
+  },
+  {
+    "word": "～リットル",
+    "reading": "～りっとる",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. litre。……升，……公升",
+    "example": "リットル·フラスコ。",
+    "exampleTranslation": "一公升的烧瓶。",
+    "category": "N4"
+  },
+  {
+    "word": "乱暴",
+    "reading": "らんぼう",
+    "accent": "⓪",
+    "partOfSpeech": "形动·サ名·变",
+    "meaning": "1. 粗暴\n2. 蛮横，胡乱\n3. 粗糙，粗鲁， 草率",
+    "example": "乱暴な要求。",
+    "exampleTranslation": "蛮横的要 求。",
+    "category": "N4"
+  },
+  {
+    "word": "用意",
+    "reading": "ようい",
+    "accent": "①",
+    "partOfSpeech": "名·自他动·サ变",
+    "meaning": "1. 准备，预备\n2. 注意，警惕，防备",
+    "example": "用意ができている。",
+    "exampleTranslation": "准 备好了。",
+    "category": "N4"
+  },
+  {
+    "word": "用事",
+    "reading": "ようじ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 事，事情",
+    "example": "ちょっと用事がある。",
+    "exampleTranslation": "有点事情。",
+    "category": "N4"
+  },
+  {
+    "word": "用",
+    "reading": "よう",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 用途，用处\n2. 事情\n3. 大小便",
+    "example": "人の用をする",
+    "exampleTranslation": "给别人办 事情。",
+    "category": "N4"
+  },
+  {
+    "word": "汚れる",
+    "reading": "よごれる",
+    "accent": "⓪",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 脏了，（被）污染",
+    "example": "煙で汚れた空気。",
+    "exampleTranslation": "被烟 污染了的空气。",
+    "category": "N4"
+  },
+  {
+    "word": "汚れ",
+    "reading": "よごれ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 污垢\n2. 污渍\n3. 脏",
+    "example": "汚れを取る。",
+    "exampleTranslation": "去污。",
+    "category": "N4"
+  },
+  {
+    "word": "様子",
+    "reading": "ようす",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 风度，姿态\n2. 迹象\n3. 缘故，根由\n4. 样子，神情\n5. 情况，动向\n6. 仪表， 文章",
+    "example": "様子をさぐる。",
+    "exampleTranslation": "探听情 况。",
+    "category": "N4"
+  },
+  {
+    "word": "寄る",
+    "reading": "よる",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 靠\n2. （相扑）跟对方扭在一起往前 于\n3. 顺便去顺路到\n4. 增多加重\n5. 凭 推搡\n6. （交易所）开盘（当日首次 聚集、集中\n7. 靠近、挨近\n8. 偏倾向 交易）成立",
+    "example": "冬がしのび寄る。",
+    "exampleTranslation": "冬天 不知不觉地临近了。",
+    "category": "N4"
+  },
+  {
+    "word": "宜しい",
+    "reading": "よろしい",
+    "accent": "③⓪",
+    "partOfSpeech": "形",
+    "meaning": "1. 好\n2. 恰好\n3. 适当\n4. 没关系，行，可 以不用\n5. “よい”的郑重语",
+    "example": "ようです。",
+    "exampleTranslation": "病人似乎比昨 病人はきのうより宜しい 天好些。",
+    "category": "N4"
+  },
+  {
+    "word": "夜中",
+    "reading": "よなか",
+    "accent": "③",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 夜半，半夜，子夜，午夜",
+    "example": "夜中の番組。",
+    "exampleTranslation": "深夜的节 目。",
+    "category": "N4"
+  },
+  {
+    "word": "喜ぶ",
+    "reading": "よろこぶ",
+    "accent": "③",
+    "partOfSpeech": "动·自他五段",
+    "meaning": "1. 欢喜，高兴，喜悦\n2. 欣然接受，欢 迎\n3. 值得庆贺",
+    "example": "友だちの成功を喜ぶ",
+    "exampleTranslation": "为 朋友成功而高兴。",
+    "category": "N4"
+  },
+  {
+    "word": "喜び",
+    "reading": "よろこび",
+    "accent": "⓪③ ④",
+    "partOfSpeech": "名",
+    "meaning": "1. 喜悦，愉快，高兴，欢喜\n2. 祝贺， 道喜\n3. 喜事，喜庆",
+    "example": "喜びにたえない",
+    "exampleTranslation": "不胜高 兴〔愉快〕。",
+    "category": "N4"
+  },
+  {
+    "word": "輸出入",
+    "reading": "つにゅゆしゅう",
+    "accent": "③⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 进出口进口和出口",
+    "example": "密輸出入。",
+    "exampleTranslation": "走私进出 口。",
+    "category": "N4"
+  },
+  {
+    "word": "輸出",
+    "reading": "ゆしゅつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 输出，出口",
+    "example": "コンピューターを輸出す る",
+    "exampleTranslation": "出口电子计算机。",
+    "category": "N4"
+  },
+  {
+    "word": "輸入",
+    "reading": "ゆにゅう",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 进口，输入",
+    "example": "密輸入",
+    "exampleTranslation": "走私进口。",
+    "category": "N4"
+  },
+  {
+    "word": "豊か",
+    "reading": "ゆたか",
+    "accent": "①",
+    "partOfSpeech": "形动",
+    "meaning": "1. 充实，精神上的丰富\n2. 丰盈，丰 物质上丰富\n3. 富裕，充裕，宽裕\n4. 满\n5. 足够，十足",
+    "example": "豊かな才能",
+    "exampleTranslation": "丰富的才 能。",
+    "category": "N4"
+  },
+  {
+    "word": "許す",
+    "reading": "ゆるす",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 饶恕，宽恕\n2. 免，免除\n3. 容许\n4. 承 允许，准许，许可，批准\n5. 原谅， 认，公认",
+    "example": "時間の許す限り。",
+    "exampleTranslation": "只要 在时间容许范围内。",
+    "category": "N4"
+  },
+  {
+    "word": "湯",
+    "reading": "ゆ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 开水，热水\n2. 洗澡水\n3. 浴池，澡 堂\n4. 温泉\n5. 融化的液体金属",
+    "example": "さ湯。",
+    "exampleTranslation": "白开水。",
+    "category": "N4"
+  },
+  {
+    "word": "揺れる",
+    "reading": "ゆれる",
+    "accent": "⓪",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 摇晃，摇摆，摆动，摇荡\n2. 晃荡， 颠簸\n3. 动摇，不稳定",
+    "example": "計画が揺れる。",
+    "exampleTranslation": "计划不 稳定。",
+    "category": "N4"
+  },
+  {
+    "word": "揺らす",
+    "reading": "ゆらす",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 摇晃，晃动",
+    "example": "川風が枝葉を揺らす。",
+    "exampleTranslation": "河 风吹拂枝叶。",
+    "category": "N4"
+  },
+  {
+    "word": "指輪",
+    "reading": "ゆびわ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 戒指，指环",
+    "example": "指輪を抜く",
+    "exampleTranslation": "摘下戒指。",
+    "category": "N4"
+  },
+  {
+    "word": "床",
+    "reading": "ゆか",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 地板，地上\n2. （歌舞伎）净琉璃太 夫等人坐的地方",
+    "example": "床に落ちた。",
+    "exampleTranslation": "掉地上 了。",
+    "category": "N4"
+  },
+  {
+    "word": "軟らかい",
+    "reading": "やわらかい",
+    "accent": "④",
+    "partOfSpeech": "形",
+    "meaning": "1. 软，嫩，柔软，柔和\n2. 通俗，轻松",
+    "example": "軟らかい肉。",
+    "exampleTranslation": "嫩肉。",
+    "category": "N4"
+  },
+  {
+    "word": "訳す",
+    "reading": "やくす",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 译，翻，翻译\n2. 解释",
+    "example": "訳せ。",
+    "exampleTranslation": "把下述中文译成 下記の中国語を日本語に 翻译成日文。",
+    "category": "N4"
+  },
+  {
+    "word": "矢張り",
+    "reading": "やはり",
+    "accent": "②",
+    "partOfSpeech": "副词",
+    "meaning": "1. 果然\n2. 仍然，依然，还是，照旧\n3. 也，同样，又\n4. 毕竟还是，归根结 底\n5. （虽然）……但仍，（尽 管）……还是",
+    "example": "矢張り北京にお住まいで すか。",
+    "exampleTranslation": "你还是（仍然， 依然，照旧）住在北京 吗？",
+    "category": "N4"
+  },
+  {
+    "word": "矢っ張り",
+    "reading": "やっぱり",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "1. 还是，仍然，依然，也\n2. 毕竟还是",
+    "example": "矢っ張りそうだったの か。",
+    "exampleTranslation": "果真如此啊。",
+    "category": "N4"
+  },
+  {
+    "word": "痩せる",
+    "reading": "やせる",
+    "accent": "⓪",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 瘠薄，贫瘠\n2. 瘦，变瘦",
+    "example": "やせて背の高い人。",
+    "exampleTranslation": "瘦 高的人，细高挑儿。",
+    "category": "N4"
+  },
+  {
+    "word": "焼肉",
+    "reading": "やきにく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 烤肉",
+    "example": "人気の焼肉",
+    "exampleTranslation": "人气烤肉",
+    "category": "N4"
+  },
+  {
+    "word": "焼ける",
+    "reading": "やける",
+    "accent": "⓪",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 心燥热难受\n2. 发红，变红天空或云 或热而使东西变色\n3. 胃酸过多，烧 变成红色\n4. 操心，添麻烦\n5. 烧热， （被太阳等）晒黑，晒褪色由于光 烤热，炽热，烧红加热后呈高温，",
+    "example": "家が焼ける。",
+    "exampleTranslation": "房子着火 （烧毁）。",
+    "category": "N4"
+  },
+  {
+    "word": "止める",
+    "reading": "やめる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 停止，中止\n2. 放弃\n3. 取消，作罢\n4. 戒，忌",
+    "example": "それで止めてくださ い。",
+    "exampleTranslation": "如果不好办的话， うまく行かなかったら、 就此停下吧。",
+    "category": "N4"
+  },
+  {
+    "word": "止む",
+    "reading": "やむ",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 万不得已\n2. 不得已，无可奈何，毫 休，止，停止，中止，停息\n3. 已\n4. 无办法",
+    "example": "雨が止むまで待つ。",
+    "exampleTranslation": "等 到雨停。",
+    "category": "N4"
+  },
+  {
+    "word": "柔らかい",
+    "reading": "やわらかい",
+    "accent": "④",
+    "partOfSpeech": "形",
+    "meaning": "1. 柔软的\n2. 柔和的\n3. 温柔，温和\n4. 灵 活",
+    "example": "体が柔らかい",
+    "exampleTranslation": "身体柔软",
+    "category": "N4"
+  },
+  {
+    "word": "役に立つ",
+    "reading": "やくにたつ",
+    "accent": "④",
+    "partOfSpeech": "惯用",
+    "meaning": "1. 有用处，有益处，有利，起作用\n2. 帮得上忙",
+    "example": "人になる。",
+    "exampleTranslation": "我要成为对 わたしは社会に役に立つ 社会有用的人。",
+    "category": "N4"
+  },
+  {
+    "word": "優しい",
+    "reading": "やさしい",
+    "accent": "⓪③",
+    "partOfSpeech": "形",
+    "meaning": "1. 和气\n2. 和善\n3. 温和，温顺，温柔\n4. 优美，柔和，优雅\n5. 亲切，和蔼\n6. 恳切\n7. 殷恳\n8. 慈祥\n9. 温情\n10. 体贴",
+    "example": "優しい声",
+    "exampleTranslation": "柔和的话音。",
+    "category": "N4"
+  },
+  {
+    "word": "やっと",
+    "reading": "やっと",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 好不容易，终于，才\n2. 勉勉强强\n3. 好容易\n4. 好歹\n5. 勉强",
+    "example": "やっと彼女をくどいた",
+    "exampleTranslation": "好不容易把她说服了。",
+    "category": "N4"
+  },
+  {
+    "word": "やって来る",
+    "reading": "やってくる",
+    "accent": "",
+    "partOfSpeech": "惯用",
+    "meaning": "1. 来，到来",
+    "example": "て来ました。",
+    "exampleTranslation": "作为留学 留学生として日本にやっ 生来日本留学。",
+    "category": "N4"
+  },
+  {
+    "word": "貰う",
+    "reading": "もらう",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 受\n2. 娶，收养\n3. 传上感染上\n4. 请 领到，收受，得到\n5. 受到\n6. 承担接 求\n7. 拿下来\n8. 买",
+    "example": "書いてもらう。",
+    "exampleTranslation": "请别人 写。",
+    "category": "N4"
+  },
+  {
+    "word": "若し",
+    "reading": "もし",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "1. 要，要是，如果，假如\n2. 假设，倘 若",
+    "example": "ら、連絡してくださ い。",
+    "exampleTranslation": "要是赶不上就给我 若し間に合わなかった 打电话吧。",
+    "category": "N4"
+  },
+  {
+    "word": "申し上げる",
+    "reading": "もうしあげる",
+    "accent": "⑤⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. （「言う」的自谦语）说，讲，提 及，说起，陈述\n2. 表谦逊",
+    "example": "り。",
+    "exampleTranslation": "正如上次我跟您讲 過日申し上げたとお 的那样。",
+    "category": "N4"
+  },
+  {
+    "word": "燃える",
+    "reading": "もえる",
+    "accent": "⓪",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 燃烧，着火\n2. 热情洋溢\n3. 火红",
+    "example": "燃えている石炭",
+    "exampleTranslation": "燃烧着 的煤。",
+    "category": "N4"
+  },
+  {
+    "word": "漏れる",
+    "reading": "もれる",
+    "accent": "②",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 出\n2. 泄漏，泄露，走漏\n3. 遗漏，漏 （表示液体、光等）漏，漏出，透 掉\n4. 被除外，被淘汰\n5. 流露，说出",
+    "example": "水が漏れるバケツ。",
+    "exampleTranslation": "漏 水的水桶。",
+    "category": "N4"
+  },
+  {
+    "word": "漏らす",
+    "reading": "もらす",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 漏，漏掉\n2. 露出\n3. 洒（液体、光 等）遗尿\n4. 尿床\n5. 遗漏\n6. 泄漏，走 漏，透露，吐露\n7. 流露，发出，发 泄",
+    "example": "細大もらさず話す",
+    "exampleTranslation": "详尽 无遗地讲述。",
+    "category": "N4"
+  },
+  {
+    "word": "木綿",
+    "reading": "もめん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 棉花，从棉桃种子上轧取的纤 维。\n2. 棉织品，棉纱、棉布，棉线",
+    "example": "か，絹ですか。",
+    "exampleTranslation": "这件衬衣 このシャツは木綿です 是布的还是绸的？",
+    "category": "N4"
+  },
+  {
+    "word": "戻る",
+    "reading": "もどる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 回去，返回，回到\n2. 倒退\n3. 折回\n4. 回家，回来\n5. 归还\n6. 退回",
+    "example": "本題に戻る",
+    "exampleTranslation": "回到本题上 来； 言归正传。",
+    "category": "N4"
+  },
+  {
+    "word": "もちろん",
+    "reading": "もちろん",
+    "accent": "②",
+    "partOfSpeech": "副词",
+    "meaning": "1. 当然\n2. 不用说\n3. 不待言",
+    "example": "もちろん出席します。",
+    "exampleTranslation": "当 然出席。",
+    "category": "N4"
+  },
+  {
+    "word": "もう少しで",
+    "reading": "もうすこしで",
+    "accent": "",
+    "partOfSpeech": "副词",
+    "meaning": "1. 差一点就（发生了不该发生的事 情）",
+    "example": "もう少しで完成するん だ。",
+    "exampleTranslation": "恩，会议的资料还 うーん、会議の資料、後 有一点就完成了。",
+    "category": "N4"
+  },
+  {
+    "word": "もうすぐ",
+    "reading": "もうすぐ",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "1. 马上就要，将要，快要",
+    "example": "もうすぐ着きますよ。",
+    "exampleTranslation": "马上就要到了。",
+    "category": "N4"
+  },
+  {
+    "word": "迷惑",
+    "reading": "めいわく",
+    "accent": "①",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 麻烦，烦扰，为难，打搅，困扰",
+    "example": "迷惑をかける",
+    "exampleTranslation": "添麻烦。",
+    "category": "N4"
+  },
+  {
+    "word": "目薬",
+    "reading": "めぐすり",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 眼药水。\n2. 小恩，小惠，小礼物， 小贿赂",
+    "example": "目薬をさす。",
+    "exampleTranslation": "上〔点〕眼 药（水）。",
+    "category": "N4"
+  },
+  {
+    "word": "目の前",
+    "reading": "めのまえ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 眼前，面前\n2. 迫在目前，迫在眉 睫，最近",
+    "example": "きてくれない。",
+    "exampleTranslation": "能把你 目の前にある本、持って 面前的那本书拿给我吗？",
+    "category": "N4"
+  },
+  {
+    "word": "目に入る",
+    "reading": "めにはいる",
+    "accent": "",
+    "partOfSpeech": "惯用",
+    "meaning": "1. 看到，映入眼帘",
+    "example": "る。",
+    "exampleTranslation": "看到报纸上的标 新聞の見出しが目に入 题。",
+    "category": "N4"
+  },
+  {
+    "word": "珍しい",
+    "reading": "めずらしい",
+    "accent": "④",
+    "partOfSpeech": "形",
+    "meaning": "1. 新奇，新颖\n2. 珍奇，稀奇\n3. 少有， 罕见\n4. 非常好，珍贵",
+    "example": "珍しい趣向のおもちゃ",
+    "exampleTranslation": "设计新颖的玩具。",
+    "category": "N4"
+  },
+  {
+    "word": "召し上がる",
+    "reading": "めしあがる",
+    "accent": "⓪④",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 吃，喝，吸烟",
+    "example": "たばこを召し上がります か。",
+    "exampleTranslation": "您抽烟吗?",
+    "category": "N4"
+  },
+  {
+    "word": "麦",
+    "reading": "むぎ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 麦，麦子，小麦",
+    "example": "麦畑。",
+    "exampleTranslation": "麦田；麦地。",
+    "category": "N4"
+  },
+  {
+    "word": "迎える",
+    "reading": "むかえる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 请，接\n2. 娶\n3. 招\n4. 迎合\n5. 迎击，应 迎，迎接\n6. 欢迎\n7. 接待\n8. 请，聘 战，对敌\n9. 来到，遇到",
+    "example": "むこを迎える。",
+    "exampleTranslation": "招女 婿。",
+    "category": "N4"
+  },
+  {
+    "word": "虫",
+    "reading": "むし",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 虫，虫子，昆虫\n2. 蛔虫\n3. 害虫\n4. 蛆\n5. 热衷于某一件事的人\n6. 心寄宿 于体内引起意识感情变化的思想\n7. 抽风\n8. 疳积\n9. 怒气，气愤\n10. 郁闷",
+    "example": "虫が鳴く",
+    "exampleTranslation": "虫鸣；虫子 叫。",
+    "category": "N4"
+  },
+  {
+    "word": "無駄",
+    "reading": "むだ",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 徒劳，无用，无益，白搭\n2. 浪费， 白费",
+    "example": "だ",
+    "exampleTranslation": "就是劝他也是白劝 あの男に忠告しても無駄 〔徒劳〕。",
+    "category": "N4"
+  },
+  {
+    "word": "無理",
+    "reading": "むり",
+    "accent": "①",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 勉强不合适\n2. 强制硬要硬逼强迫\n3. 无理，不讲理，不合理\n4. 难以办到 过分过度，不量力",
+    "example": "ろう。",
+    "exampleTranslation": "那个工作对他来 その仕事は彼には無理だ 说恐怕有些勉强。",
+    "category": "N4"
+  },
+  {
+    "word": "昔",
+    "reading": "むかし",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 从前，很早以前，古时候，往昔， 昔日，过去\n2. 十年",
+    "example": "很早（久）很早（久）以 昔昔，あるところにひと りの娘がおりました。",
+    "exampleTranslation": "前，有个地方住着一个 （小）姑娘。",
+    "category": "N4"
+  },
+  {
+    "word": "娘",
+    "reading": "むすめ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 女儿，闺女，女孩子\n2. 姑娘，少女",
+    "example": "上の3人が娘で、いちば ん下が息子です",
+    "exampleTranslation": "三个大 孩子都是女孩儿，最小的 是个男孩子。",
+    "category": "N4"
+  },
+  {
+    "word": "向かう",
+    "reading": "むかう",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 相对\n2. 面对着\n3. 朝着\n4. 对着\n5. 面 向，相对（某人）\n6. 出门，前往\n7. 往……去，朝……去\n8. 趋向，接 近，临近\n9. 反抗，抗拒",
+    "example": "る。",
+    "exampleTranslation": "面向东站着；朝东 東に向かって立ってい 站着。",
+    "category": "N4"
+  },
+  {
+    "word": "認める",
+    "reading": "みとめる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 承认\n2. 准许，同意\n3. 断定，认为\n4. 认识，赏识，重视\n5. 看见，看到",
+    "example": "欠点を認める。",
+    "exampleTranslation": "承认缺 点。",
+    "category": "N4"
+  },
+  {
+    "word": "見込む",
+    "reading": "みこむ",
+    "accent": "⓪②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 算在内\n2. 相信，信赖\n3. 期待，认为 预料，预想，估计\n4. 估计在内，计 有希望\n5. 盯上\n6. 纠缠住",
+    "example": "で金を出す。",
+    "exampleTranslation": "估计靠得住 だいじょうぶだと見込ん 而拿出钱来。",
+    "category": "N4"
+  },
+  {
+    "word": "見つける",
+    "reading": "みつける",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 看到，找到，发现\n2. 察觉\n3. 注意到",
+    "example": "た。",
+    "exampleTranslation": "找到了丢失的钱 落とした財布を見つけ 包。",
+    "category": "N4"
+  },
+  {
+    "word": "見つかる",
+    "reading": "みつかる",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 被看到，被发现\n2. 能找出，找到",
+    "example": "いようにしなさいね。",
+    "exampleTranslation": "あの人たちに見つからな 不要被他们发现啊。",
+    "category": "N4"
+  },
+  {
+    "word": "皆",
+    "reading": "みな",
+    "accent": "②",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 全体，大家，诸位\n2. 全部，都， 皆，一切",
+    "example": "皆さん。",
+    "exampleTranslation": "诸位。",
+    "category": "N4"
+  },
+  {
+    "word": "港",
+    "reading": "みなと",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 港，港口\n2. 码头",
+    "example": "港を出る。",
+    "exampleTranslation": "出港。",
+    "category": "N4"
+  },
+  {
+    "word": "土産",
+    "reading": "みやげ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 特产，土产\n2. （赠给人的）礼品， 礼物",
+    "example": "産",
+    "exampleTranslation": "旅行时买回来的土 旅先から買ってきた土 产。",
+    "category": "N4"
+  },
+  {
+    "word": "味噌汁",
+    "reading": "みそしる",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 豆酱，再放些青菜、豆腐、肉等材 酱汤，大酱汤，味增汤汤汁中溶入 料做成的汤",
+    "example": "（对昏聩者或无谓的失败 者说的话）别发昏。别糊 味噌汁で顔を洗え。",
+    "exampleTranslation": "涂。",
+    "category": "N4"
+  },
+  {
+    "word": "間違う",
+    "reading": "まちがう",
+    "accent": "③",
+    "partOfSpeech": "动·自他五段",
+    "meaning": "1. （他）弄错，搞错\n2. 不对\n3. （自） 误，错",
+    "example": "の薬を飲ませた。",
+    "exampleTranslation": "误给 まちがって子どもに大人 孩子服了大人的药。",
+    "category": "N4"
+  },
+  {
+    "word": "負ける",
+    "reading": "まける",
+    "accent": "⓪",
+    "partOfSpeech": "动·自他一段",
+    "meaning": "1. 屈服，示弱，不能抵制，不能克 差，不如，比不上\n2. 输，负，败\n3. 服\n4. 中，经不住\n5. 让价，减价",
+    "example": "暑さに負ける",
+    "exampleTranslation": "中暑。",
+    "category": "N4"
+  },
+  {
+    "word": "誠に",
+    "reading": "まことに",
+    "accent": "",
+    "partOfSpeech": "副词",
+    "meaning": "1. れていたのを思い出したとき、別 の話題に転じるときなどに発する 気づいたことを言い出すとき、忘 語。ほんとうにまあ。そうそう。",
+    "example": "誠にありがとうございま す。",
+    "exampleTranslation": "实在太感谢了。",
+    "category": "N4"
+  },
+  {
+    "word": "真面目",
+    "reading": "まじめ",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 认真老实踏实严肃\n2. 诚实正派正经",
+    "example": "ことがない。",
+    "exampleTranslation": "没看过那 あんな真面目な人は見た 样诚实〔正派〕的人。",
+    "category": "N4"
+  },
+  {
+    "word": "真ん中",
+    "reading": "まんなか",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 正中，正中间，正当中\n2. 是「まな か」添加鼻音（拨音）后的形式",
+    "example": "部屋の真ん中に座る。",
+    "exampleTranslation": "坐在屋子中间。",
+    "category": "N4"
+  },
+  {
+    "word": "未だ未だ",
+    "reading": "まだまだ",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "1. 算，还是\n2. 还会，还要，还，仍， 还，仍，尚\n3. （现在）还，未\n4. 还 尚",
+    "example": "まだまだたくさんあ る。",
+    "exampleTranslation": "还有很多。",
+    "category": "N4"
+  },
+  {
+    "word": "守る",
+    "reading": "まもる",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 保卫\n2. 守卫\n3. 防守，保护\n4. 维护\n5. 遵守\n6. 恪守\n7. 维持，保持",
+    "example": "身を守る。",
+    "exampleTranslation": "护身。",
+    "category": "N4"
+  },
+  {
+    "word": "回る",
+    "reading": "まわる",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 游，遍历\n2. 绕弯，绕道，迂回\n3. 转 动\n4. 绕着转，拐\n5. 巡回\n6. 巡视\n7. 周 移，转递，传递，轮流\n8. 营利\n9. 到 转，旋转，回转，转动\n10. 转，转 处移动，四处转",
+    "example": "月は地球の回りを回 る。",
+    "exampleTranslation": "月亮绕着地球转。",
+    "category": "N4"
+  },
+  {
+    "word": "周り",
+    "reading": "まわり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 附近\n2. 周围，四周\n3. 圈比较物体周 边的大小时所用的量词",
+    "example": "テーブルの周りに座を占 める。",
+    "exampleTranslation": "围着桌子坐下。",
+    "category": "N4"
+  },
+  {
+    "word": "又は",
+    "reading": "または",
+    "accent": "②",
+    "partOfSpeech": "接续",
+    "meaning": "1. 或，或者，或是",
+    "example": "払う。",
+    "exampleTranslation": "在便利店或者是 コンビニまたは銀行で支 银行支付。",
+    "category": "N4"
+  },
+  {
+    "word": "参る",
+    "reading": "まいる",
+    "accent": "①",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 去，来（「行く」「来る」的自谦 语，表示对对方的敬意）\n2. 参拜\n3. 认输，败\n4. 受不了，吃不消\n5. 叫人 为难\n6. 不堪，累垮",
+    "example": "り参る。",
+    "exampleTranslation": "因饥饿和寒冷 飢えと寒さで体がすっか 身体完全垮了。",
+    "category": "N4"
+  },
+  {
+    "word": "先ず",
+    "reading": "まず",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "1. 大体，差不多\n2. 姑且，暂且，不管 先，首先最初，开头\n3. 大概，大致 怎样，总之",
+    "example": "先ず健康。",
+    "exampleTranslation": "健康第一。",
+    "category": "N4"
+  },
+  {
+    "word": "任せる",
+    "reading": "まかせる",
+    "accent": "③",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 委托\n2. 托付\n3. 交给\n4. 听任\n5. 任凭， 一任\n6. 尽力，尽量\n7. 随心",
+    "example": "本人の判断に任せる",
+    "exampleTranslation": "任 凭本人判断。",
+    "category": "N4"
+  },
+  {
+    "word": "丸で",
+    "reading": "まるで",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 简直，好像，宛如，仿佛\n2. （后接 否定）完全，全然",
+    "example": "かのように話す。",
+    "exampleTranslation": "他说话 彼はまるで専門家である 就像专家一样。",
+    "category": "N4"
+  },
+  {
+    "word": "单词マヨネーズ",
+    "reading": "发音まよねーず",
+    "accent": "音调 ③",
+    "partOfSpeech": "词性名",
+    "meaning": "1. 释义 mayonnaise 蛋黄酱，美乃滋",
+    "example": "例句 マヨネーズをかける。",
+    "exampleTranslation": "浇（放）蛋黄酱。",
+    "notes": "笔记",
+    "category": "N4"
+  },
+  {
+    "word": "褒める",
+    "reading": "ほめる",
+    "accent": "②",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 赞扬，称赞，赞美，褒奖，表扬高 度评价人和事",
+    "example": "彼の作品を褒める。",
+    "exampleTranslation": "赞 扬他的作品。",
+    "category": "N4"
+  },
+  {
+    "word": "殆ど",
+    "reading": "ほとんど",
+    "accent": "②",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 大部分，大致，大体\n2. 几乎，差一 点",
+    "example": "る。",
+    "exampleTranslation": "几乎所有的人提出 殆どが異議を唱えてい 异议。",
+    "category": "N4"
+  },
+  {
+    "word": "方位",
+    "reading": "ほうい",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 方位\n2. 阴阳五行说的方位",
+    "example": "方位儀。",
+    "exampleTranslation": "哑罗经。",
+    "category": "N4"
+  },
+  {
+    "word": "方角",
+    "reading": "ほうがく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 方位\n2. 方向\n3. 惯用语",
+    "example": "南の方角。",
+    "exampleTranslation": "正南方位。",
+    "category": "N4"
+  },
+  {
+    "word": "方向",
+    "reading": "ほうこう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 方向\n2. 方针",
+    "example": "方向を誤る。",
+    "exampleTranslation": "走错方 向。",
+    "category": "N4"
+  },
+  {
+    "word": "放送",
+    "reading": "ほうそう",
+    "accent": "⓪",
+    "partOfSpeech": "他动·サ名·变",
+    "meaning": "1. 广播，播出\n2. 播放\n3. 播送\n4. 传播传 布（消息）",
+    "example": "第一放送。",
+    "exampleTranslation": "第一套广播 （节目）。",
+    "category": "N4"
+  },
+  {
+    "word": "ほうれん草",
+    "reading": "ほうれんそう",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 菠菜\n2. （公司团队合作三大法宝的 简称）报告、联系、商讨",
+    "example": "なことが多い。",
+    "exampleTranslation": "小孩多 子供はほうれん草が嫌い 半讨厌菠菜。",
+    "category": "N4"
+  },
+  {
+    "word": "返事",
+    "reading": "へんじ",
+    "accent": "⓪③",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 答应，回答，回话\n2. 回信，复信\n3. 回电",
+    "example": "いくら呼んでも返事がな い",
+    "exampleTranslation": "怎么叫也没人答应。",
+    "category": "N4"
+  },
+  {
+    "word": "変",
+    "reading": "へん",
+    "accent": "①",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 常\n2. 事变，意外\n3. 降半音，降半音 奇怪，古怪，反常，异常，不同寻 符号",
+    "example": "桜田門外の変。",
+    "exampleTranslation": "樱田门 外事变。",
+    "category": "N4"
+  },
+  {
+    "word": "ベル",
+    "reading": "べる",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. (英) bell\n2. 铃，电铃\n3. 钟",
+    "example": "ベルが鳴る。",
+    "exampleTranslation": "铃响。",
+    "category": "N4"
+  },
+  {
+    "word": "踏む",
+    "reading": "ふむ",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 上\n2. 实践，经验\n3. 估价，估计，评 踏，踩，践踏\n4. 跺脚\n5. 走上，踏 价\n6. 遵守\n7. 经历，经过",
+    "example": "ミシンを踏む。",
+    "exampleTranslation": "踩缝纫 机（做缝纫工作）。",
+    "category": "N4"
+  },
+  {
+    "word": "葡萄",
+    "reading": "ぶどう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 葡萄，紫红色",
+    "example": "ひと粒の葡萄。",
+    "exampleTranslation": "一颗 〔粒〕葡萄。",
+    "category": "N4"
+  },
+  {
+    "word": "普段",
+    "reading": "ふだん",
+    "accent": "①",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 平素，平时，平常，平日，日常",
+    "example": "普段は丈夫だ。",
+    "exampleTranslation": "平时身 体很好。",
+    "category": "N4"
+  },
+  {
+    "word": "拭く",
+    "reading": "ふく",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 擦，抹，揩，拭",
+    "example": "涙を拭く。",
+    "exampleTranslation": "拭〔抹〕泪; 擦眼泪。",
+    "category": "N4"
+  },
+  {
+    "word": "太る",
+    "reading": "ふとる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 胖，发福\n2. 肥\n3. 发财，增加",
+    "example": "丸々太った人",
+    "exampleTranslation": "胖乎乎的 人；胖得滚圆的人。",
+    "category": "N4"
+  },
+  {
+    "word": "髭",
+    "reading": "ひげ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 须（腮边胡）。\n2. （动物的）须， 毛。 胡须/胡子（泛指长在男性面 部的毛发），髭须（上唇胡），髯 触须动物嘴周围上的长毛或毛状突 起，亦指昆虫触角\n3. 鲸须须鲸亚目",
+    "example": "髭を生やす。",
+    "exampleTranslation": "留胡子；蓄 须。",
+    "category": "N4"
+  },
+  {
+    "word": "開く",
+    "reading": "ひらく",
+    "accent": "②",
+    "partOfSpeech": "动·自他五段",
+    "meaning": "1. 敞开\n2. 开放\n3. 开始，开张\n4. 加大、 拉开（数量、距离、价格等的差 距）\n5. 开朗、开阔\n6. 开拓，开辟\n7. 举办，开设\n8. 开导，教导",
+    "example": "戸は内に開く。",
+    "exampleTranslation": "门向里 开。",
+    "category": "N4"
+  },
+  {
+    "word": "酷い",
+    "reading": "ひどい",
+    "accent": "②",
+    "partOfSpeech": "形",
+    "meaning": "1. 残酷的，无情的，过分的\n2. 激烈 的，凶猛的，厉害的，严重的",
+    "example": "酷い仕打ち。",
+    "exampleTranslation": "残酷的对 待〔干法〕。",
+    "category": "N4"
+  },
+  {
+    "word": "昼夜",
+    "reading": "ひるよる",
+    "accent": "",
+    "partOfSpeech": "名",
+    "meaning": "1. 昼と夜。よるひる。ちゅうや。",
+    "category": "N4"
+  },
+  {
+    "word": "昼間",
+    "reading": "ひるま",
+    "accent": "③",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 白天，白日，昼间",
+    "example": "こうもりは昼間眠る",
+    "exampleTranslation": "蝙 蝠白天睡觉。",
+    "category": "N4"
+  },
+  {
+    "word": "拾う",
+    "reading": "ひろう",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 出\n2. 弄到手，意外地得到，接\n3. 拦 拾，捡\n4. 挑选，挑出，选出，拣 车",
+    "example": "財布を拾う。",
+    "exampleTranslation": "拾到钱 包。",
+    "category": "N4"
+  },
+  {
+    "word": "引越し",
+    "reading": "ひっこし",
+    "accent": "⓪",
+    "partOfSpeech": "自动·サ名·变",
+    "meaning": "1. 迁居，搬家",
+    "example": "ならないんです。",
+    "exampleTranslation": "今天一 今日は引越ししなければ 定得搬了。",
+    "category": "N4"
+  },
+  {
+    "word": "引き出し",
+    "reading": "ひきだし",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 抽出，提取\n2. 抽屉",
+    "example": "貯金の引き出し。",
+    "exampleTranslation": "提取 存款。",
+    "category": "N4"
+  },
+  {
+    "word": "広さ",
+    "reading": "ひろさ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 面积\n2. 宽度，宽窄，幅度\n3. 广博",
+    "example": "肩幅の広さを測る。",
+    "exampleTranslation": "测 量肩宽。",
+    "category": "N4"
+  },
+  {
+    "word": "びっくり",
+    "reading": "びっくり",
+    "accent": "③",
+    "partOfSpeech": "·自名·副词动·サ变",
+    "meaning": "1. 吃惊，受惊，吓一跳因意外，突然 地事而感到惊讶的样子",
+    "example": "まりそうになる。",
+    "exampleTranslation": "吓得 びっくりして、心臓が止 心脏快要停止跳动了。",
+    "category": "N4"
+  },
+  {
+    "word": "冷える",
+    "reading": "ひえる",
+    "accent": "②",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 变冷，变凉，放凉\n2. 觉得冷，觉得 凉\n3. （关系）冷淡下来，变冷淡",
+    "example": "ご飯が冷える。",
+    "exampleTranslation": "饭凉。",
+    "category": "N4"
+  },
+  {
+    "word": "光る",
+    "reading": "ひかる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 发光，发亮\n2. 出众，出类拔萃\n3. 监 视，盯视",
+    "example": "白く光るつゆ。",
+    "exampleTranslation": "亮晶晶 的露水。",
+    "category": "N4"
+  },
+  {
+    "word": "人々",
+    "reading": "ひとびと",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 人们，很多人\n2. 大家，你们",
+    "example": "る。",
+    "exampleTranslation": "激励灾害地区的人 災害地の人々を激励す 们。",
+    "category": "N4"
+  },
+  {
+    "word": "久しぶり",
+    "reading": "ひさしぶり",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. (隔了)好久，许久久违，（见面打 招呼）好久不见",
+    "example": "ね。",
+    "exampleTranslation": "啊呀，好久没见了 （久违久违，少见少 やあ，久しぶりです 见）。",
+    "category": "N4"
+  },
+  {
+    "word": "ビル",
+    "reading": "びる",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. ビルディング（building）的缩写 大楼，高楼，大厦",
+    "example": "高層ビル",
+    "exampleTranslation": "高层大楼",
+    "category": "N4"
+  },
+  {
+    "word": "鋏",
+    "reading": "はさみ",
+    "accent": "②③",
+    "partOfSpeech": "名",
+    "meaning": "1. 剪刀，剪子\n2. 剪票钳\n3. 螯足，螃蟹 夹子\n4. 剪子，在猜拳的时候",
+    "example": "的工作；没有创造性的编 鋏とのりの仕事。",
+    "exampleTranslation": "剪贴 辑等工作。",
+    "category": "N4"
+  },
+  {
+    "word": "運ぶ",
+    "reading": "はこぶ",
+    "accent": "⓪",
+    "partOfSpeech": "动·自他五段",
+    "meaning": "1. 运送，搬运\n2. 移步\n3. 前往\n4. 运笔\n5. 运针\n6. 开展，推进\n7. （事物）进展",
+    "example": "荷物を車で運ぶ。",
+    "exampleTranslation": "用车 运东西。",
+    "category": "N4"
+  },
+  {
+    "word": "薔薇",
+    "reading": "ばら",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 〈植〉蔷薇花，玫瑰花",
+    "example": "薔薇色。",
+    "exampleTranslation": "玫瑰色。",
+    "category": "N4"
+  },
+  {
+    "word": "腹",
+    "reading": "はら",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 绪\n2. 度量，器量\n3. 胎内，母体内\n4. 腹，肚子\n5. 内心，想法\n6. 心情，情 肚儿",
+    "example": "腹が冷える",
+    "exampleTranslation": "肚子着凉。",
+    "category": "N4"
+  },
+  {
+    "word": "発言",
+    "reading": "はつげん",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 发言\n2. 发言",
+    "example": "発言の機会を与える。",
+    "exampleTranslation": "给予发言机会。",
+    "category": "N4"
+  },
+  {
+    "word": "発展",
+    "reading": "はってん",
+    "accent": "⓪",
+    "partOfSpeech": "自动·サ名·变",
+    "meaning": "1. 步。\n2. 活跃，活动。\n3. （俗语）沉 发展，扩展，伸展。\n4. 发展，进 湎（于酒色等）放荡",
+    "example": "海外へ発展する。",
+    "exampleTranslation": "向海 外发展。",
+    "category": "N4"
+  },
+  {
+    "word": "番組",
+    "reading": "ばんぐみ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. (电视，广播，演剧，比赛等的)节 目",
+    "example": "スポーツ番組。",
+    "exampleTranslation": "体育节 目。",
+    "category": "N4"
+  },
+  {
+    "word": "～番地",
+    "reading": "～ばんち",
+    "accent": "◎",
+    "partOfSpeech": "名",
+    "meaning": "1. （号）。（居住地を明示するため に、町村などの区域内を細分して （表示行政区域的地址）门牌 つけた番号。）",
+    "example": "你家（府上）门牌是几 お宅は何番地ですか。",
+    "exampleTranslation": "号?",
+    "category": "N4"
+  },
+  {
+    "word": "林",
+    "reading": "はやし",
+    "accent": "③⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 林，树林，树丛\n2. 林，林立\n3. 林(姓 氏)",
+    "example": "松の林",
+    "exampleTranslation": "松〔树〕林。",
+    "category": "N4"
+  },
+  {
+    "word": "拝見",
+    "reading": "はいけん",
+    "accent": "⓪",
+    "partOfSpeech": "他动·サ名·变",
+    "meaning": "1. （「見る」的自谦语）拜读\n2. 瞻 仰，看（文などを読む）",
+    "example": "てください。",
+    "exampleTranslation": "请让我看 これをちょっと拝見させ 看这个。",
+    "category": "N4"
+  },
+  {
+    "word": "払う",
+    "reading": "はらう",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 支付\n2. 驱赶，赶走，除掉\n3. 卖掉， 处理掉\n4. 拂去，掸去\n5. 倾注\n6. 表示 (尊敬)\n7. 加以(注意等)\n8. 横扫，横 砍，横拉",
+    "example": "はえを払う。",
+    "exampleTranslation": "赶苍蝇。",
+    "category": "N4"
+  },
+  {
+    "word": "始める",
+    "reading": "はじめる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 犯（老毛病）\n2. 开始\n3. 犯（老毛 开始\n4. 开创，创办\n5. 起来，开始\n6. 病）\n7. 开创",
+    "example": "仕事を始める",
+    "exampleTranslation": "开始工 作。",
+    "category": "N4"
+  },
+  {
+    "word": "始め",
+    "reading": "はじめ",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 例\n2. 头一个，老大，前者，初，始 刚开始不久的阶段，时候，也用作 副词\n3. 初，始起源，起因，亦指先 许多中的第一个，亦指前面的东 西\n4. 以…为首表示具有代表性的例",
+    "example": "仕事はじめ。",
+    "exampleTranslation": "工作初 始。",
+    "category": "N4"
+  },
+  {
+    "word": "初め",
+    "reading": "はじめ",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 子 开始\n2. 开头\n3. 第一\n4. 起因，起源\n5. 前者\n6. 最初，起初，当初\n7. 原先",
+    "example": "初めの段階。",
+    "exampleTranslation": "开始阶 段。",
+    "category": "N4"
+  },
+  {
+    "word": "場合",
+    "reading": "ばあい",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 情况，情形\n2. 场合\n3. 时候\n4. 情况\n5. 情况\n6. 状态",
+    "example": "場合とでは事情がまった く違う",
+    "exampleTranslation": "你我的情况完全 あなたの場合とわたしの 不同。",
+    "category": "N4"
+  },
+  {
+    "word": "パート",
+    "reading": "ぱーと",
+    "accent": "①⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. part部分\n2. 篇，章\n3. 卷\n4. 职责\n5. 角 色\n6. 〈楽〉声部\n7. 乐曲的一部分\n8. （打）零工，短时间劳动，部分时 间劳动",
+    "example": "めいめいのパートが決ま る。",
+    "exampleTranslation": "定下各自的责任。",
+    "category": "N4"
+  },
+  {
+    "word": "バーハンガー",
+    "reading": "ばーはんがー",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. hamburger汉堡包",
+    "example": "ハンバーガーを食べすぎ るとふとっちゃった よ。",
+    "exampleTranslation": "汉堡吃多了会发胖 哦。",
+    "category": "N4"
+  },
+  {
+    "word": "ハンバーグ",
+    "reading": "はんばーぐ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 汉堡牛肉饼，也可以混合猪肉，跟 汉堡包不是同一样东西。",
+    "example": "ハンバーグを焼く。",
+    "exampleTranslation": "煎 汉堡牛排。",
+    "category": "N4"
+  },
+  {
+    "word": "はっきり",
+    "reading": "はっきり",
+    "accent": "③",
+    "partOfSpeech": "·形副词动",
+    "meaning": "1. 清楚，鲜明而能与其他东西明显分 状态等）清晰，清爽，痛痛快快\n2. 开\n3. 斩钉截铁『成』，直截了当 明白，明确，清楚\n4. （头脑、身体 『成』",
+    "example": "る。",
+    "exampleTranslation": "清清楚楚地看得很 遠くまではっきりと見え 远。",
+    "category": "N4"
+  },
+  {
+    "word": "夜明け",
+    "reading": "よあけ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 天亮的时候，拂晓，天明\n2. （新时 代的）黎明",
+    "example": "夜明けになる",
+    "exampleTranslation": "天亮。",
+    "category": "N4"
+  },
+  {
+    "word": "除く",
+    "reading": "のぞく",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 删除\n2. 除了……，……除外\n3. 杀 消除，去掉，除去\n4. 取消\n5. 铲除\n6. 死，干掉",
+    "example": "制限を除く",
+    "exampleTranslation": "取消限制。",
+    "category": "N4"
+  },
+  {
+    "word": "海苔",
+    "reading": "のり",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 紫菜红藻类、蓝藻类的海藻中，可 供食用的藻类的总称\n2. 甘紫菜把红 藻类的紫菜（尤其是浅草甘紫菜） 抄制成像纸一样然后晒干的食品",
+    "example": "海苔巻き。",
+    "exampleTranslation": "紫菜卷寿 司。",
+    "category": "N4"
+  },
+  {
+    "word": "残り",
+    "reading": "のこり",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 残余，剩余",
+    "example": "借金の残り。",
+    "exampleTranslation": "余债。",
+    "category": "N4"
+  },
+  {
+    "word": "残る",
+    "reading": "のこる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 留下\n2. 待\n3. 剩余，剩下\n4. 留，残 存，残留\n5. 遗留，留传（后世）",
+    "example": "家に残る。",
+    "exampleTranslation": "留在家里。",
+    "category": "N4"
+  },
+  {
+    "word": "乗り換える",
+    "reading": "のりかえる",
+    "accent": "④③",
+    "partOfSpeech": "动·自他一段",
+    "meaning": "1. 换车，倒车〔船〕，换乘，改乘\n2. 倒换\n3. 改变，改行",
+    "example": "売に乗り換えた。",
+    "exampleTranslation": "他这 回改行，做以外国人为对 彼は今度、外人相手の商 象的买卖了。",
+    "category": "N4"
+  },
+  {
+    "word": "眠る",
+    "reading": "ねむる",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 睡觉。强调已经入眠，睡着后的状 态。\n2. 搁置不用\n3. 死",
+    "example": "毎日8時間眠る。",
+    "exampleTranslation": "每天睡 八小时。",
+    "category": "N4"
+  },
+  {
+    "word": "眠い",
+    "reading": "ねむい",
+    "accent": "⓪②",
+    "partOfSpeech": "形",
+    "meaning": "1. 有睡意的，犯困的\n2. 困，困倦，想 睡觉",
+    "example": "眠くなる。",
+    "exampleTranslation": "发困，想睡 觉。",
+    "category": "N4"
+  },
+  {
+    "word": "寝坊",
+    "reading": "ねぼう",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动·サ变",
+    "meaning": "1. 睡懒觉，贪睡晚起（的人）",
+    "example": "寝坊で困る。",
+    "exampleTranslation": "因睡懒觉 的习惯而烦恼。",
+    "category": "N4"
+  },
+  {
+    "word": "値段",
+    "reading": "ねだん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 价格，价钱",
+    "example": "張ります",
+    "exampleTranslation": "那个价钱贵一 そのほうは少々お値段が 点。",
+    "category": "N4"
+  },
+  {
+    "word": "盗む",
+    "reading": "ぬすむ",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 偷盗，盗窃\n2. 背着……\n3. 偷空，偷 闲\n4. 挤",
+    "example": "人のデザインを盗む。",
+    "exampleTranslation": "剽窃别人的设计方案。",
+    "category": "N4"
+  },
+  {
+    "word": "濡れる",
+    "reading": "ぬれる",
+    "accent": "⓪",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 淋湿，弄湿，湿润，渗入水分\n2. 偷 情",
+    "example": "雨に濡れる。",
+    "exampleTranslation": "被雨淋 湿。",
+    "category": "N4"
+  },
+  {
+    "word": "塗る",
+    "reading": "ぬる",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 涂（颜料），擦，抹\n2. 厚厚地擦 粉\n3. 转嫁（罪责）",
+    "example": "色を塗る。",
+    "exampleTranslation": "上色。",
+    "category": "N4"
+  },
+  {
+    "word": "匂い",
+    "reading": "におい",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 味儿，气味儿\n2. 香味儿，香气，芳 香\n3. 气息\n4. 色彩\n5. 风格，情趣",
+    "example": "男の匂い。",
+    "exampleTranslation": "男人身上的 气味儿。",
+    "category": "N4"
+  },
+  {
+    "word": "似る",
+    "reading": "にる",
+    "accent": "⓪",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 像，相似",
+    "example": "娘は母親によく似てい る。",
+    "exampleTranslation": "女儿很像妈妈。",
+    "category": "N4"
+  },
+  {
+    "word": "人形",
+    "reading": "にんぎょう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 当做诅咒的对象等，后成为儿童喜 的人，古时用于附着灾厄邪秽后放 入水中流走或作为神灵的化身，也 爱的玩具，做成各种样式\n2. 木偶， 傀儡比喻不能按照自己的意志行",
+    "example": "人形。",
+    "exampleTranslation": "穿着漂亮裙子的 きれいなドレスを着たお 偶人。",
+    "category": "N4"
+  },
+  {
+    "word": "鳴る",
+    "reading": "なる",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. （非生物）鸣，响\n2. 著名，驰名， 闻名",
+    "example": "鐘が鳴る。",
+    "exampleTranslation": "钟响；响起 钟声。",
+    "category": "N4"
+  },
+  {
+    "word": "鳴く",
+    "reading": "なく",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 啼，鸣叫",
+    "example": "うぐいすが鳴く。",
+    "exampleTranslation": "黄莺 啼。",
+    "category": "N4"
+  },
+  {
+    "word": "長ネギ",
+    "reading": "ながねぎ",
+    "accent": "⓪③",
+    "partOfSpeech": "名",
+    "meaning": "1. 大葱",
+    "example": "にのせる。",
+    "exampleTranslation": "将切碎的大 刻んだ長ネギをラーメン 葱洒在拉面上。",
+    "category": "N4"
+  },
+  {
+    "word": "直る",
+    "reading": "なおる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 改正过来，矫正过来\n2. 改成\n3. 复 原\n4. 修理好",
+    "example": "市況が直りかけてい る。",
+    "exampleTranslation": "行情在逐渐恢复。",
+    "category": "N4"
+  },
+  {
+    "word": "直す",
+    "reading": "なおす",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 改正\n2. 修改，订正\n3. 矫正\n4. 修理， 恢复，复原\n5. 换算，折合\n6. 接在动 词连用形之后表示“再做一次”， 再，重",
+    "example": "欠点を直す",
+    "exampleTranslation": "改正缺点。",
+    "category": "N4"
+  },
+  {
+    "word": "無くなる",
+    "reading": "なくなる",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 消失，遗失，没了，丢了，用光了",
+    "example": "時間が無くなる。",
+    "exampleTranslation": "没时 间了。",
+    "category": "N4"
+  },
+  {
+    "word": "為さる",
+    "reading": "なさる",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 为，做，干\n2. 接在动词连用形后表 （“なす”、“する”的尊他语） 示尊敬之意",
+    "example": "卒業為さる時。",
+    "exampleTranslation": "毕业之 时。",
+    "category": "N4"
+  },
+  {
+    "word": "流れる",
+    "reading": "ながれる",
+    "accent": "③",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 流浪漂泊\n2. 流向……（意想不到的 地方）\n3. 中止停止\n4. 流产\n5. （典当 等）传播，传开\n6. 流逝\n7. 人的移动 物）断赎当死\n8. 电视图像乱码错",
+    "example": "流れるような筆跡。",
+    "exampleTranslation": "字 迹流利。",
+    "category": "N4"
+  },
+  {
+    "word": "殴る",
+    "reading": "なぐる",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 殴打\n2. 打，揍",
+    "example": "横つらを殴る",
+    "exampleTranslation": "打嘴巴。",
+    "category": "N4"
+  },
+  {
+    "word": "慣れる",
+    "reading": "なれる",
+    "accent": "②",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 习惯，习以为常\n2. 熟练\n3. 惯，合\n4. 味道恰到好处\n5. 亲近",
+    "example": "なれた手つき。",
+    "exampleTranslation": "手的动 作熟练。",
+    "category": "N4"
+  },
+  {
+    "word": "亡くなる",
+    "reading": "なくなる",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 死\n2. 杀\n3. 灭亡\n4. 亡故，去世",
+    "example": "彼はもう亡くなった。",
+    "exampleTranslation": "他已经死了。",
+    "category": "N4"
+  },
+  {
+    "word": "中々",
+    "reading": "なかなか",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 单，（不）容易\n2. 『古』反而\n3. 『古』（后接否定）绝不，无论如 颇，很\n4. （后常接否定）（不）简 何也不",
+    "example": "中々難しい問題だ。",
+    "exampleTranslation": "挺 难的问题。",
+    "category": "N4"
+  },
+  {
+    "word": "なるほど",
+    "reading": "なるほど",
+    "accent": "⓪",
+    "partOfSpeech": "·感副词动",
+    "meaning": "1. 的确可不是表示同意，赞同之意也 诚然，的确\n2. 果然\n3. 怪不得\n4. 诚然 可用于表示附和",
+    "example": "なるほど美しい人だ。",
+    "exampleTranslation": "的确是够漂亮的。",
+    "category": "N4"
+  },
+  {
+    "word": "なるべく",
+    "reading": "なるべく",
+    "accent": "⓪③",
+    "partOfSpeech": "副词",
+    "meaning": "1. 尽可能",
+    "example": "なるべく早くご返事くだ さい",
+    "exampleTranslation": "请尽早答复。",
+    "category": "N4"
+  },
+  {
+    "word": "遠く",
+    "reading": "とおく",
+    "accent": "③⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 远方，远处\n2. 远远距离、差距很大",
+    "example": "彼には遠く及ばない。",
+    "exampleTranslation": "远不如他。",
+    "category": "N4"
+  },
+  {
+    "word": "通り",
+    "reading": "とおり",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 解，领会\n2. ［評判になる］人缘， 声誉\n3. ［よく知られている］众所 周知『成』，通用。（世間に行わ れること。通用、流通のこと。受",
+    "example": "きた。",
+    "exampleTranslation": "买来了一套教科 教科書をひと通り買って 书。",
+    "category": "N4"
+  },
+  {
+    "word": "特に",
+    "reading": "とくに",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "1. える語。） 特，特别",
+    "example": "特に断っておくが。",
+    "exampleTranslation": "特 别先说一下。",
+    "category": "N4"
+  },
+  {
+    "word": "止める",
+    "reading": "とめる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 止住\n2. 堵住\n3. 憋住，屏住\n4. 关，关 使（交通工具等）停，止，停止\n5. 闭\n6. 戒掉，让其停止",
+    "example": "車を止める。",
+    "exampleTranslation": "把车停 下。",
+    "category": "N4"
+  },
+  {
+    "word": "泊まる",
+    "reading": "とまる",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 住下，投宿，住宿，过夜\n2. （船） 靠岸，停泊\n3. 值宿，值夜班",
+    "example": "今晩泊まる所がない。",
+    "exampleTranslation": "今晚没有住处。",
+    "category": "N4"
+  },
+  {
+    "word": "床屋",
+    "reading": "とこや",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 理发店",
+    "example": "床屋さんへ行くゾ",
+    "exampleTranslation": "去理 发店。",
+    "category": "N4"
+  },
+  {
+    "word": "届ける",
+    "reading": "とどける",
+    "accent": "③",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. （向上级）申报，上报，报告\n2. 登 送到\n3. 送给\n4. 送去\n5. 投递，递送\n6. 记\n7. 使达到",
+    "example": "この段お届け申し上げま す",
+    "exampleTranslation": "谨呈报如上。",
+    "category": "N4"
+  },
+  {
+    "word": "唐辛子",
+    "reading": "とうがらし",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 白花果实细长，成熟后为红或黄等 辣椒 茄科一年生草本原产于南美热 带，高60cm左右，夏季叶腋处开 色做香辛佐料其变种尖椒、柿子椒 等供食用",
+    "example": "唐辛子がからい。",
+    "exampleTranslation": "辣椒 辣。",
+    "category": "N4"
+  },
+  {
+    "word": "取り替える",
+    "reading": "とりかえる",
+    "accent": "⓪④ ③",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 交换，互换\n2. 换，更换，调换，换 成新的",
+    "example": "り替える。",
+    "exampleTranslation": "将旧桌子换 古い机を新しいものと取 成新的。",
+    "category": "N4"
+  },
+  {
+    "word": "到頭",
+    "reading": "とうとう",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "1. 终于，到底，终究",
+    "example": "た。",
+    "exampleTranslation": "终究还是不知道真 真相は到頭わからなかっ 相。",
+    "category": "N4"
+  },
+  {
+    "word": "何処か",
+    "reading": "どこか",
+    "accent": "①",
+    "partOfSpeech": "代名",
+    "meaning": "1. (表示不确定的)哪里，哪儿\n2. 某处 什么地方\n3. 总觉得,好像",
+    "example": "た。",
+    "exampleTranslation": "把那个放在某处 それをどこかに置い 了。",
+    "category": "N4"
+  },
+  {
+    "word": "何の様",
+    "reading": "どのよう",
+    "accent": "①③",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 怎么样的\n2. 如何，怎样",
+    "example": "たらいいのか。",
+    "exampleTranslation": "怎样教 子どもをどのように育て 育孩子呢？",
+    "category": "N4"
+  },
+  {
+    "word": "どんなに",
+    "reading": "どんなに",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "1. も」「でも」）无论怎么样，无论 如何……也，即使怎么…… 多么，如何，何等\n2. （后接「て 也……\n3. 不拘怎样……也……",
+    "example": "しょう。",
+    "exampleTranslation": "想您该多么失 どんなにかお力落としで 望呀。",
+    "category": "N4"
+  },
+  {
+    "word": "どんどん",
+    "reading": "どんどん",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "1. 不断，接二连三，一个劲儿\n2. （表 示事物的）进展顺利，顺当\n3. 旺 轰隆\n4. 咚咚，强烈的敲门声\n5. 连续 盛，旺，热火朝天\n6. 茁壮",
+    "example": "る",
+    "exampleTranslation": "建设在热火朝天地进 建設がどんどん進んでい 行。",
+    "category": "N4"
+  },
+  {
+    "word": "ところで",
+    "reading": "ところで",
+    "accent": "③",
+    "partOfSpeech": "接续",
+    "meaning": "1. 表示假定的转折条件。（逆接条件 る。）\n2. 即便，即使，纵令。以不 起作用或毫无结果的事情为前提， を表す。前の事柄が無益なもの に、また、好ましくない状態にな",
+    "example": "が勝つに決まっている よ。",
+    "exampleTranslation": "无论比多少次也准 何回やったところでぼく 是我赢。",
+    "category": "N4"
+  },
+  {
+    "word": "適当",
+    "reading": "てきとう",
+    "accent": "⓪",
+    "partOfSpeech": "·自名·形动动·サ变",
+    "meaning": "1. 恰当，适度\n2. 酌情，随意，随便， 适当，适合，恰当，适宜\n3. 正好， 马虎敷衍",
+    "example": "適当な語を補え。",
+    "exampleTranslation": "填一 下恰当的词。",
+    "category": "N4"
+  },
+  {
+    "word": "手軽",
+    "reading": "てがる",
+    "accent": "⓪",
+    "partOfSpeech": "形动",
+    "meaning": "1. 简单，简便，轻易",
+    "example": "手軽な食事",
+    "exampleTranslation": "便饭；小 吃。",
+    "category": "N4"
+  },
+  {
+    "word": "手袋",
+    "reading": "てぶくろ",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 手套",
+    "example": "革の手袋。",
+    "exampleTranslation": "皮手套。",
+    "category": "N4"
+  },
+  {
+    "word": "手伝う",
+    "reading": "てつだう",
+    "accent": "③",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 帮忙，帮助\n2. （与……有关系）加 上，还由于",
+    "example": "先生の研究を手伝う",
+    "exampleTranslation": "帮 助老师搞研究。",
+    "category": "N4"
+  },
+  {
+    "word": "手伝い",
+    "reading": "てつだい",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 帮忙，帮助\n2. 家庭助理，女佣人",
+    "example": "人の手伝いをする。",
+    "exampleTranslation": "帮 人的忙。",
+    "category": "N4"
+  },
+  {
+    "word": "出来るだけ",
+    "reading": "できるだけ",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 尽量地\n2. 尽可能地",
+    "example": "出来るだけのことをす る。",
+    "exampleTranslation": "尽力而为。",
+    "category": "N4"
+  },
+  {
+    "word": "出来る",
+    "reading": "できる",
+    "accent": "②",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 做好，做完\n2. 做出，建成\n3. 形成， 出现\n4. 产，发生，有\n5. 出产\n6. 出 色、有修养、有才能、成绩好\n7. 能 够（做某事）",
+    "example": "用事ができて行けなく なった",
+    "exampleTranslation": "因有事没去成。",
+    "category": "N4"
+  },
+  {
+    "word": "出入り口",
+    "reading": "でいりぐち",
+    "accent": "③⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 出入口",
+    "example": "ください。",
+    "exampleTranslation": "请不要堵住 出入り口を塞がらないで 出入口。",
+    "category": "N4"
+  },
+  {
+    "word": "出会う",
+    "reading": "であう",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 外出时偶然相遇，遇见，碰见\n2. 意 外地遭受到，遇到，遭到",
+    "example": "友人に出会う。",
+    "exampleTranslation": "遇见朋 友。",
+    "category": "N4"
+  },
+  {
+    "word": "出来れば",
+    "reading": "できれば",
+    "accent": "③",
+    "partOfSpeech": "接续",
+    "meaning": "1. 宁可，宁愿，较好\n2. 如果能行的 话，如果可以的話。",
+    "example": "てほしい。",
+    "exampleTranslation": "如果可以的 できれば今日中に仕上げ 话，希望今天可以完成。",
+    "category": "N4"
+  },
+  {
+    "word": "出来たら",
+    "reading": "できたら",
+    "accent": "①",
+    "partOfSpeech": "接尾",
+    "meaning": "1. 如果可以的话……",
+    "category": "N4"
+  },
+  {
+    "word": "都合",
+    "reading": "つごう",
+    "accent": "⓪①",
+    "partOfSpeech": "名",
+    "meaning": "1. 凑巧，顺利（与否）\n2. 障碍\n3. 准备 （某种）情况，关系理由，原因\n4. 〔状況〕方便合适（与否）\n5. 机会 安排设法通融挪用调度\n6. （注意： 读音为2）总共总计",
+    "example": "都合がよい",
+    "exampleTranslation": "方便;合适。",
+    "category": "N4"
+  },
+  {
+    "word": "連れる",
+    "reading": "つれる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 带，领\n2. （常用\"に連れて\"的形 式）伴随着\n3. 跟随",
+    "example": "子どもを連れて海に行 く",
+    "exampleTranslation": "领着孩子到海边去。",
+    "category": "N4"
+  },
+  {
+    "word": "通じる",
+    "reading": "つうじる",
+    "accent": "⓪",
+    "partOfSpeech": "动·自他一段",
+    "meaning": "1. 悉\n2. 领会\n3. 了解，理解\n4. 懂得\n5. 私 通\n6. 使（对方）理解，告知将自己 畅通\n7. 通到,通往\n8. 通晓，精通\n9. 熟 的心情或想法等告诉对方",
+    "example": "電話が通じる。",
+    "exampleTranslation": "通电 话。",
+    "category": "N4"
+  },
+  {
+    "word": "詰まり",
+    "reading": "つまり",
+    "accent": "①③",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 气，即\n2. 堵塞，充塞，爆满东西呈 塞满的现象\n3. 到头，（事物的）尽 归根到底总之\n4. 就是说用以加强语 头边际止境，结尾",
+    "example": "どん詰まり。",
+    "exampleTranslation": "末了，最 后。",
+    "notes": "总之，最终",
+    "category": "N4"
+  },
+  {
+    "word": "続ける",
+    "reading": "つづける",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 继续，连续，接连不断\n2. 连上，连 接起来\n3. 继续起来",
+    "example": "仕事を続ける。",
+    "exampleTranslation": "继续工 作；坚持工作。",
+    "category": "N4"
+  },
+  {
+    "word": "続く",
+    "reading": "つづく",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 继续\n2. 连续\n3. 连绵\n4. 接连发生\n5. 继……之后，接着，跟着\n6. 连着， 通到\n7. 接得上，够用\n8. 后继，跟 上，沿袭",
+    "example": "お天気が続く",
+    "exampleTranslation": "连续是好 天气。",
+    "category": "N4"
+  },
+  {
+    "word": "積もり",
+    "reading": "つもり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 图\n2. 估计，预计\n3. 就当作，就算 累积。重叠。\n4. 打算，意图，企 是\n5. 宴会时最后一杯（瓶）酒",
+    "example": "人の心をのみ動かし、恨 みを負ふ積もりにやあり けむ",
+    "exampleTranslation": "难道只是为了感动 人心，而招致怨恨吗？",
+    "category": "N4"
+  },
+  {
+    "word": "漬物",
+    "reading": "つけもの",
+    "accent": "⓪②",
+    "partOfSpeech": "名",
+    "meaning": "1. 腌渍在盐、醋、酱、曲子等里面的 储藏食品的总称，尤指把蔬菜腌渍 腌制品，盐渍，腌菜，咸菜，酱菜 在盐或米糠酱等中制成的食品",
+    "example": "飲む。",
+    "exampleTranslation": "边吃腌菜边喝 漬物を食べながらお酒を 酒。",
+    "category": "N4"
+  },
+  {
+    "word": "漬ける",
+    "reading": "つける",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 腌，泡（菜等）",
+    "example": "菜っぱを漬ける。",
+    "exampleTranslation": "腌 菜。",
+    "category": "N4"
+  },
+  {
+    "word": "捕まえる",
+    "reading": "つかまえる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 住\n2. 捕捉\n3. 揪住，抓住，揪住，捉 抓住（……不放）揪住\n4. 捉住，逮 住，逮住，捕捉",
+    "example": "袖をつかまえて放さ ぬ。",
+    "exampleTranslation": "揪住袖子不放。",
+    "category": "N4"
+  },
+  {
+    "word": "包む",
+    "reading": "つつむ",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 上\n2. 笼罩，覆盖\n3. 隐没\n4. 沉浸\n5. 藏 （用纸或布等）包\n6. 裹\n7. 包上\n8. 穿 在心里，隐藏\n9. 隐瞒",
+    "example": "包みきれないよろこ び。",
+    "exampleTranslation": "隐藏不住的喜悦。",
+    "category": "N4"
+  },
+  {
+    "word": "伝わる",
+    "reading": "つたわる",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 等从外部）传来，传入\n2. 传开\n3. 传 传开，流传\n4. （文化、知识、风俗 导\n5. 沿着",
+    "example": "る。",
+    "exampleTranslation": "顺着树枝下到山 枝を伝わって谷に下り 谷。",
+    "category": "N4"
+  },
+  {
+    "word": "付く",
+    "reading": "つく",
+    "accent": "①",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 附上\n2. 附着，粘附，沾上\n3. 生， 长\n4. 长进，增添，提高\n5. 跟随，伴 同\n6. 跟着\n7. 服侍，照料，护理，保 卫\n8. （火源或电源）开，着",
+    "example": "血のついた服。",
+    "exampleTranslation": "沾上血 的衣服。",
+    "category": "N4"
+  },
+  {
+    "word": "違い",
+    "reading": "ちがい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 差，差异，差别，区别，分别，不 同\n2. 差错，错误",
+    "example": "原則的な違い。",
+    "exampleTranslation": "原则上 的不同。",
+    "category": "N4"
+  },
+  {
+    "word": "近頃",
+    "reading": "ちかごろ",
+    "accent": "②",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 近来，近日，最近\n2. 这些日子",
+    "example": "近頃の傾向。",
+    "exampleTranslation": "近来的倾 向。",
+    "category": "N4"
+  },
+  {
+    "word": "血",
+    "reading": "けつ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 漢方で，血液·体液全般をさす 語。気とともに生命力の根源とさ れる。狭義には，血液をさす。 → 気",
+    "category": "N4"
+  },
+  {
+    "word": "血",
+    "reading": "ち",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 血，血液\n2. 血缘，血脉、血统",
+    "example": "血のかたまり。",
+    "exampleTranslation": "血块； 血饼。",
+    "category": "N4"
+  },
+  {
+    "word": "昼食",
+    "reading": "ちゅうしょく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 午饭\n2. 午餐",
+    "example": "昼食をとる。",
+    "exampleTranslation": "吃午饭。",
+    "category": "N4"
+  },
+  {
+    "word": "些とも",
+    "reading": "ちっとも",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "1. (下接否定语)一点(也不)毫(无)",
+    "example": "今日はちっとも暑くな い。",
+    "exampleTranslation": "今天一点都不热。",
+    "category": "N4"
+  },
+  {
+    "word": "～丁目",
+    "reading": "～ちょうめ",
+    "accent": "③",
+    "partOfSpeech": "接尾·名",
+    "meaning": "1. 日本的城镇的区划单位，大于门牌 号。（町の区分けの単位で、番地 第……街，第……巷，第……弄。 より大きいもの。）",
+    "example": "銀座1丁目。",
+    "exampleTranslation": "银座一条。",
+    "category": "N4"
+  },
+  {
+    "word": "木漏れ日",
+    "reading": "こもれび",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 从树叶空隙照进来的阳光",
+    "category": "N4"
+  },
+  {
+    "word": "～出す",
+    "reading": "～だす",
+    "accent": "",
+    "partOfSpeech": "文法",
+    "meaning": "1. 开始……，……起来\n2. ……出来。",
+    "example": "泣き出す。",
+    "exampleTranslation": "哭起来。",
+    "category": "N4"
+  },
+  {
+    "word": "黙る",
+    "reading": "だまる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 不说话，不作声，沉默\n2. 缄默\n3. 不 理\n4. 不问不管",
+    "example": "黙れ！",
+    "exampleTranslation": "住口！住嘴！",
+    "category": "N4"
+  },
+  {
+    "word": "駄目",
+    "reading": "だめ",
+    "accent": "②",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 不许，不可以\n2. 不好，坏\n3. 不行， 白费，无用，徒劳\n4. 无望\n5. 不行， 不可能",
+    "example": "いくら言ったって駄目 だ。",
+    "exampleTranslation": "怎样说也白费。",
+    "category": "N4"
+  },
+  {
+    "word": "足りる",
+    "reading": "たりる",
+    "accent": "⓪",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 足以，可以，将就\n2. 值得\n3. 足，足 够",
+    "example": "あれば足りる。",
+    "exampleTranslation": "一个月 的零用钱要是有两万日元 1か月のこづかいは2万円 就够了。",
+    "category": "N4"
+  },
+  {
+    "word": "足す",
+    "reading": "たす",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 加\n2. 添\n3. 续\n4. 补上\n5. 办事，办完",
+    "example": "数字を足す",
+    "exampleTranslation": "加数字。",
+    "category": "N4"
+  },
+  {
+    "word": "訪ねる",
+    "reading": "たずねる",
+    "accent": "③",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 访问，拜访",
+    "example": "先生の家を訪ねる。",
+    "exampleTranslation": "访 问老师家。",
+    "category": "N4"
+  },
+  {
+    "word": "畳",
+    "reading": "たたみ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 草席\n2. 草垫\n3. 草衬垫",
+    "example": "畳を上げて掃除する。",
+    "exampleTranslation": "掀开榻榻米打扫卫生。",
+    "category": "N4"
+  },
+  {
+    "word": "楽しむ",
+    "reading": "たのしむ",
+    "accent": "③",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 以……为消遣，使快活\n2. 期待，以 乐，快乐\n3. 享受，欣赏\n4. 喜欢\n5. 愉快的心情盼望",
+    "example": "観劇を楽しむ。",
+    "exampleTranslation": "观赏戏 剧演出。",
+    "category": "N4"
+  },
+  {
+    "word": "楽しみ",
+    "reading": "たのしみ",
+    "accent": "③④ ⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 乐，愉快，乐趣\n2. 消遣，安慰，兴 趣\n3. 希望，期望\n4. 期待，期盼",
+    "example": "人生の楽しみ",
+    "exampleTranslation": "人生的乐 趣。",
+    "category": "N4"
+  },
+  {
+    "word": "棚",
+    "reading": "たな",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 搁板，架子\n2. 棚，架",
+    "example": "ふじ棚",
+    "exampleTranslation": "藤萝架。",
+    "category": "N4"
+  },
+  {
+    "word": "暖房",
+    "reading": "だんぼう",
+    "accent": "⓪",
+    "partOfSpeech": "他动·サ名·变",
+    "meaning": "1. 供暖\n2. 暖气（设备）",
+    "example": "スチーム暖房。",
+    "exampleTranslation": "蒸气供 暖；气暖。",
+    "category": "N4"
+  },
+  {
+    "word": "怠い",
+    "reading": "だるい",
+    "accent": "②⓪",
+    "partOfSpeech": "形",
+    "meaning": "1. 懒倦的，慵懒的，发酸的，又懒又 乏的",
+    "example": "熱があるので体が怠い",
+    "exampleTranslation": "因为发烧人很疲惫。",
+    "category": "N4"
+  },
+  {
+    "word": "建てる",
+    "reading": "たてる",
+    "accent": "②",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 盖，修建，建造\n2. 创立，建立，树 立，创办",
+    "example": "アパートを建てる。",
+    "exampleTranslation": "盖 公寓。",
+    "category": "N4"
+  },
+  {
+    "word": "～建て",
+    "reading": "～だて",
+    "accent": "",
+    "partOfSpeech": "接尾",
+    "meaning": "1. のものであることを表す。）\n2. 用 房的层。 （建物の構造や階数を表 す語について、そのような建て方 某种货币支付。（通貨名につい て、その通貨で支払われることを",
+    "example": "1戸建て。",
+    "exampleTranslation": "独门独院房 屋。",
+    "category": "N4"
+  },
+  {
+    "word": "建つ",
+    "reading": "たつ",
+    "accent": "①",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 建，盖",
+    "example": "新しいビルが建った。",
+    "exampleTranslation": "新大楼建成了。",
+    "category": "N4"
+  },
+  {
+    "word": "尋ねる",
+    "reading": "たずねる",
+    "accent": "③",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 寻，找，寻找\n2. 问\n3. 询问\n4. 打听\n5. 探求，探索，寻求，查明",
+    "example": "どこを尋ねてもない。",
+    "exampleTranslation": "到处找也没有。",
+    "category": "N4"
+  },
+  {
+    "word": "宝くじ",
+    "reading": "たからくじ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 彩票",
+    "example": "宝くじにあたる",
+    "exampleTranslation": "中彩； 得奖。",
+    "category": "N4"
+  },
+  {
+    "word": "单词大都会",
+    "reading": "发音だいとかい",
+    "accent": "音调 ③",
+    "partOfSpeech": "词性名",
+    "meaning": "1. 释义 大城市",
+    "example": "例句 大都会はにぎやかだ。",
+    "exampleTranslation": "大城市很繁华。",
+    "notes": "笔记",
+    "category": "N4"
+  },
+  {
+    "word": "大抵",
+    "reading": "たいてい",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 分，差不多，大约，一般\n2. （表示 推测）大概，多半\n3. 一般，普通， 适度，不过分\n4. 大抵，大都，大部 容易\n5. 几乎，多少不管怎么说",
+    "example": "は大抵死ぬ。",
+    "exampleTranslation": "生了这个 この病気にかかったもの 病的人大都要死的。",
+    "category": "N4"
+  },
+  {
+    "word": "大変",
+    "reading": "たいへん",
+    "accent": "⓪",
+    "partOfSpeech": "·形副词动",
+    "meaning": "1. 得\n2. 非常，相当，很，太\n3. 够呛， 够受的，太费劲\n4. 大事变，大事 重大，严重，厉害，不得了，了不 故，大变动",
+    "example": "国の大変",
+    "exampleTranslation": "国家的重大事 变。",
+    "category": "N4"
+  },
+  {
+    "word": "大分",
+    "reading": "だいぶ",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 很，相当，很多，不少\n2. 很，很 多，很久",
+    "example": "ぶよくなりました。",
+    "exampleTranslation": "托 （您的）福，病已经好多 おかげさまで病気もだい 了。",
+    "category": "N4"
+  },
+  {
+    "word": "大体",
+    "reading": "だいたい",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 概要，大概，大略\n2. 大致，大体 上，差不多\n3. 本来，原本，根本",
+    "example": "大体を述べる。",
+    "exampleTranslation": "讲述概 要。",
+    "category": "N4"
+  },
+  {
+    "word": "助ける",
+    "reading": "たすける",
+    "accent": "③",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 助\n2. 搭救\n3. 拯救\n4. 救命，饶命\n5. 饶 助，帮助，帮忙，援助\n6. 救，救 恕\n7. 辅佐\n8. 救济\n9. 资助",
+    "example": "大いに助ける。",
+    "exampleTranslation": "这个运 动大大有助于儿童的发 この運動は児童の発育を 育。",
+    "category": "N4"
+  },
+  {
+    "word": "助かる",
+    "reading": "たすかる",
+    "accent": "③",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 得救，脱险\n2. 省力，省事，负担减 得到帮助，因他人的帮助而受益\n3. 轻",
+    "example": "当に助かりました。",
+    "exampleTranslation": "您 帮我搬行李真是帮大忙 荷物を運んでもらって本 了。",
+    "category": "N4"
+  },
+  {
+    "word": "偶に",
+    "reading": "たまに",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 有时，偶尔",
+    "example": "偶にやって来る。",
+    "exampleTranslation": "很少 来。",
+    "category": "N4"
+  },
+  {
+    "word": "倒れる",
+    "reading": "たおれる",
+    "accent": "③",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 倒下，跌倒\n2. 塌，倒毁\n3. 垮台\n4. 倒 闭，破产\n5. 病倒\n6. 死",
+    "example": "石につまずいて倒れる",
+    "exampleTranslation": "被石头绊倒。",
+    "category": "N4"
+  },
+  {
+    "word": "倒す",
+    "reading": "たおす",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 杀死，打死，消灭\n2. 打败，击败\n3. 弄倒，放倒，推倒\n4. 推翻，打倒\n5. 赖帐，不还债",
+    "example": "てください。",
+    "exampleTranslation": "请把那个 そのスイッチを前に倒し 开关往前推。",
+    "category": "N4"
+  },
+  {
+    "word": "保つ",
+    "reading": "たもつ",
+    "accent": "②",
+    "partOfSpeech": "动·自他五段",
+    "meaning": "1. 保存\n2. 保持，维持\n3. 保护，保住\n4. 支持\n5. 保持不变\n6. 保存住",
+    "example": "秩序を保つ。",
+    "exampleTranslation": "保持（维 持）秩序。",
+    "category": "N4"
+  },
+  {
+    "word": "例えば",
+    "reading": "たとえば",
+    "accent": "②",
+    "partOfSpeech": "副词",
+    "meaning": "1. 譬如，比如，例如，假设\n2. 譬如， 比如，例如，假设",
+    "example": "好きです。",
+    "exampleTranslation": "我喜欢日本古 わたしは日本古来のも の、例えば歌舞伎などが 代的东西，譬如歌舞伎等 等。",
+    "category": "N4"
+  },
+  {
+    "word": "ただ今",
+    "reading": "ただいま",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 现在，当前\n2. 马上，立刻\n3. 刚刚\n4. 我回来了",
+    "example": "ただ今のところ。",
+    "exampleTranslation": "现在 这种时候。",
+    "category": "N4"
+  },
+  {
+    "word": "育てる",
+    "reading": "そだてる",
+    "accent": "③",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 培育，抚育\n2. 抚养\n3. 教育，培养\n4. 发展，使发展",
+    "example": "すいせんを育てる。",
+    "exampleTranslation": "培 育水仙花。",
+    "category": "N4"
+  },
+  {
+    "word": "底",
+    "reading": "そこ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 限度\n2. 最底下\n3. 到头，边际\n4. 内 底，底部，底儿，底子\n5. 最低处， 心\n6. 真的",
+    "example": "河の底",
+    "exampleTranslation": "河底。",
+    "category": "N4"
+  },
+  {
+    "word": "存ずる",
+    "reading": "ぞんずる",
+    "accent": "⓪",
+    "partOfSpeech": "·サ他动变",
+    "meaning": "1. 想，打算，认为\n2. 知道，认识",
+    "example": "があれば、私に申してみ よ。",
+    "exampleTranslation": "如果有人知道什么 何か良い策略を存ずる者 好策略就告诉我。",
+    "category": "N4"
+  },
+  {
+    "word": "存じる",
+    "reading": "ぞんじる",
+    "accent": "③⓪",
+    "partOfSpeech": "动·自他一段",
+    "meaning": "1. 认为，想，打算「思う」｢考える｣ 的自谦语",
+    "example": "ます。",
+    "exampleTranslation": "我认为还是这个 こちらの方がよいと存じ 好。",
+    "category": "N4"
+  },
+  {
+    "word": "其処で",
+    "reading": "そこで",
+    "accent": "⓪",
+    "partOfSpeech": "接续",
+    "meaning": "1. 于是，因此，所以\n2. （表转移话 题）那么，可是",
+    "example": "つけたい。",
+    "exampleTranslation": "人数增加了 人数が増えて手狭になっ た。其処で新しい家を見 房子变得狭窄起来了，因 此想换个家。",
+    "category": "N4"
+  },
+  {
+    "word": "それぞれ",
+    "reading": "それぞれ",
+    "accent": "②③",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 各，分别，每个",
+    "example": "る。",
+    "exampleTranslation": "每个人有每个人的 各人それぞれの理想があ 理想。",
+    "category": "N4"
+  },
+  {
+    "word": "そのまま",
+    "reading": "そのまま",
+    "accent": "④⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 就那样，就照原样，一模一样，原 原本本，原封不动",
+    "example": "した。",
+    "exampleTranslation": "原封不动地引用 本の内容をそのまま引用 了书的内容。",
+    "category": "N4"
+  },
+  {
+    "word": "そんなに",
+    "reading": "そんなに",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 那样地，那么地\n2. 那么",
+    "example": "そんなにあわてるな",
+    "exampleTranslation": "不 要那么着慌。",
+    "category": "N4"
+  },
+  {
+    "word": "そんな",
+    "reading": "そんな",
+    "accent": "⓪",
+    "partOfSpeech": "连体词",
+    "meaning": "1. 那样的，那种\n2. 哪里，不会",
+    "example": "そんな人。",
+    "exampleTranslation": "那样的人。",
+    "category": "N4"
+  },
+  {
+    "word": "そろそろ",
+    "reading": "そろそろ",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "1. 就要，快要，不久\n2. 慢慢地，徐徐 地\n3. 渐渐，逐渐",
+    "example": "いる。",
+    "exampleTranslation": "老人慢慢地走 老人がそろそろと歩いて 着。",
+    "category": "N4"
+  },
+  {
+    "word": "それら",
+    "reading": "それら",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 那些（人或物）。「それ」的复数 表达。",
+    "example": "が生きています。",
+    "exampleTranslation": "那些犬 それらのイヌの内の１匹 只里有一只活着。",
+    "category": "N4"
+  },
+  {
+    "word": "それほど",
+    "reading": "それほど",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. （后多接否定）（并非）那么，那 样（程度）。",
+    "example": "のにできないのか。",
+    "exampleTranslation": "并 不是很难的事，你还不会 それほどのことでもない 做吗?",
+    "category": "N4"
+  },
+  {
+    "word": "それに",
+    "reading": "それに",
+    "accent": "⓪",
+    "partOfSpeech": "接续",
+    "meaning": "1. 而且，再加上",
+    "example": "に高い",
+    "exampleTranslation": "这个饭又难吃又 この料理まずいし、それ 贵。",
+    "category": "N4"
+  },
+  {
+    "word": "それなら",
+    "reading": "それなら",
+    "accent": "③",
+    "partOfSpeech": "接续",
+    "meaning": "1. 如果那样，要是那样，那么。",
+    "example": "さ。",
+    "exampleTranslation": "如果是那样的话， それならそれでいい 那也就行了。",
+    "category": "N4"
+  },
+  {
+    "word": "それなのに",
+    "reading": "それなのに",
+    "accent": "③",
+    "partOfSpeech": "接续",
+    "meaning": "1. 尽管那样，虽然那样",
+    "example": "しまった。",
+    "exampleTranslation": "做了充分的 十分な手当てをした。そ れなのにこの子は死んで 治疗，尽管如此，这孩子 还是死了。",
+    "category": "N4"
+  },
+  {
+    "word": "それとも",
+    "reading": "それとも",
+    "accent": "③",
+    "partOfSpeech": "接续",
+    "meaning": "1. 还是，或者",
+    "example": "コーヒーか、それとも紅 茶か",
+    "exampleTranslation": "咖啡还是红茶？",
+    "category": "N4"
+  },
+  {
+    "word": "それで",
+    "reading": "それで",
+    "accent": "⓪",
+    "partOfSpeech": "接续",
+    "meaning": "1. 么，后来。催促对方继续说下去的 因此，所以。用以承上启下。\n2. 那 用语。\n3. 因此，因而，所以。",
+    "example": "彼は予備校へ通った。そ れで成績がよくなっ た。",
+    "exampleTranslation": "他在补习学校学 习，所以成绩好了。",
+    "category": "N4"
+  },
+  {
+    "word": "その頃",
+    "reading": "そのころ",
+    "accent": "⓪①",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 当时，那时",
+    "category": "N4"
+  },
+  {
+    "word": "その為",
+    "reading": "そのため",
+    "accent": "⓪",
+    "partOfSpeech": "接续",
+    "meaning": "1. 因此，所以为此由于那种原因（理 由）",
+    "example": "はならない。",
+    "exampleTranslation": "明年要考 来年は大学入試だ、その 為の準備を今から怠って 大学，为此（因此）从现 在起不能放松学习。",
+    "category": "N4"
+  },
+  {
+    "word": "その他",
+    "reading": "そのほか",
+    "accent": "②",
+    "partOfSpeech": "惯用",
+    "meaning": "1. 除此之外，另外。",
+    "example": "イトをしている。",
+    "exampleTranslation": "每天 毎日勉強している。その ほか、近くの店でアルバ 都在学习。除此之外，还 在附近的商店打工。",
+    "category": "N4"
+  },
+  {
+    "word": "そうすれば",
+    "reading": "そうすれば",
+    "accent": "④",
+    "partOfSpeech": "惯用",
+    "meaning": "1. 这样一来，那样的话。",
+    "example": "ここには木を植えて、ベ",
+    "category": "N4"
+  },
+  {
+    "word": "そうしたら",
+    "reading": "そうしたら",
+    "accent": "④",
+    "partOfSpeech": "副词",
+    "meaning": "1. 这样一来，要是那样的话，如果那 样",
+    "example": "るだろう。",
+    "exampleTranslation": "在这里种上 ンチを置こう。そうした ら、いい憩い場所ができ 树，再安置上长椅。这样 一来，这里就可以成为一",
+    "category": "N4"
+  },
+  {
+    "word": "～センチ",
+    "reading": "～せんち",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. Sentimental的缩写。情感上的、 centi.……公分，……厘米。\n2. 感性的或容易受情绪影响的",
+    "example": "去年より3センチ伸び た。",
+    "exampleTranslation": "比去年高了3厘米。",
+    "category": "N4"
+  },
+  {
+    "word": "背中",
+    "reading": "せなか",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 背，脊背\n2. 脊梁\n3. 背后，背面",
+    "example": "…を背中にする。",
+    "exampleTranslation": "背 着……。",
+    "category": "N4"
+  },
+  {
+    "word": "ぜひ",
+    "reading": "ぜひ",
+    "accent": "①",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 非……不可\n2. 是非\n3. 正确与错误， 务必，必须\n4. 一定\n5. 无论如何\n6. 对与不对\n7. 善恶，好与坏",
+    "example": "是非欲しい。",
+    "exampleTranslation": "非要不 可；一定要。",
+    "category": "N4"
+  },
+  {
+    "word": "咳",
+    "reading": "せき",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 咳嗽",
+    "example": "から咳。",
+    "exampleTranslation": "干咳。",
+    "category": "N4"
+  },
+  {
+    "word": "世話",
+    "reading": "せわ",
+    "accent": "②",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 帮助，帮忙，援助\n2. 推荐，周旋， 照料，照顾，照应，照看，照管\n3. 斡旋，介绍",
+    "example": "る。",
+    "exampleTranslation": "把朋友介绍到公 会社に友人を世話す 司。",
+    "category": "N4"
+  },
+  {
+    "word": "单词 ～過ぎる",
+    "reading": "发音 ～すぎる",
+    "accent": "音调",
+    "partOfSpeech": "词性文法",
+    "meaning": "1. 释义 过于……，过度……\n2. 太……",
+    "example": "例句 今日の衣装、神すぎま す！",
+    "exampleTranslation": "今天妆造太神了！",
+    "notes": "笔记",
+    "category": "N4"
+  },
+  {
+    "word": "随分",
+    "reading": "ずいぶん",
+    "accent": "①",
+    "partOfSpeech": "·形副词动",
+    "meaning": "1. 子，比想象的更加\n2. 残酷，无情， 相当，非常\n3. 超越一般程度的样 不像话，过分",
+    "example": "ただよ。",
+    "exampleTranslation": "这种说法不像 それはずいぶんな言いか 话！",
+    "category": "N4"
+  },
+  {
+    "word": "隅",
+    "reading": "すみ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 角落\n2. 边缘、角落、不起眼的地方",
+    "example": "頭の隅で考える。",
+    "exampleTranslation": "在脑 海深处思考。",
+    "category": "N4"
+  },
+  {
+    "word": "進む",
+    "reading": "すすむ",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 进展顺利\n2. 进，前进\n3. 进步，先 进\n4. 主动做来劲儿\n5. 上升，晋升",
+    "example": "風上に向かって進む。",
+    "exampleTranslation": "顶〔逆〕风前进。",
+    "category": "N4"
+  },
+  {
+    "word": "素晴らしい",
+    "reading": "すばらしい",
+    "accent": "④",
+    "partOfSpeech": "形",
+    "meaning": "1. 出色的，优秀的，了不起的，极好 的，绝佳的",
+    "example": "ありがとうございまし のような素晴らしい会を 設けていただきまして、 た。",
+    "exampleTranslation": "谢谢您今天为我安 排了这样一个精彩的聚",
+    "category": "N4"
+  },
+  {
+    "word": "空く",
+    "reading": "すく",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 数量减少\n2. 饥饿，肚子空，肚子 稀疏，空旷\n3. 某个空间里的人、物 饿\n4. 有空闲",
+    "example": "道路がすいている。",
+    "exampleTranslation": "路 上人很少。",
+    "category": "N4"
+  },
+  {
+    "word": "する",
+    "reading": "する",
+    "accent": "⓪",
+    "partOfSpeech": "动·自他サ变",
+    "meaning": "1. 的感觉\n2. 经过……时间\n3. 做，干， 感觉到声、色、形、味等，有…… 办",
+    "example": "においがする。",
+    "exampleTranslation": "走过饭 食堂の前を通ると、いい 厅前面嗅到香味儿。",
+    "category": "N4"
+  },
+  {
+    "word": "済む",
+    "reading": "すむ",
+    "accent": "①",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 完（了），终了，结束\n2. 过得去， 没问题\n3. 足够\n4. （问题）解决， （事情）了结\n5. （良心上）过得 去，对得起",
+    "example": "わずに済んだ。",
+    "exampleTranslation": "因为有 あったので,新しいのを買 哥哥在学校用过的书，所 兄が学校で使った本が 以我不买新书也行了。",
+    "category": "N4"
+  },
+  {
+    "word": "掏る",
+    "reading": "する",
+    "accent": "①",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 扒窃，掏摸",
+    "example": "る。",
+    "exampleTranslation": "在电车上钱包被偷 電車の中で財布を掏られ 了。",
+    "category": "N4"
+  },
+  {
+    "word": "捨てる",
+    "reading": "すてる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 弃\n2. 置之不理，不顾不理\n3. （接动 扔掉抛弃\n4. 抛弃，放弃，遗弃，丢 词连用形后）弃之不管，搁置不 （将无用的东西、无价值的东西） 管\n5. 下（车）\n6. 抛弃（俗世）出家",
+    "example": "ごみを捨てる。",
+    "exampleTranslation": "扔掉垃 圾。",
+    "category": "N4"
+  },
+  {
+    "word": "少なくとも",
+    "reading": "すくなくとも",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "1. 少，最起码（ほかの物事はともか 少说也要，保守估计也要…\n2. 至 くとしてせめて）",
+    "example": "かかる",
+    "exampleTranslation": "费用少说也要花 費用は少なくとも一億円 费1亿元。",
+    "category": "N4"
+  },
+  {
+    "word": "姿",
+    "reading": "すがた",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. （身体或物品的）姿态，姿容，身 段［容貌］\n2. 风采，态度，举止， 面貌，状态，装束，打扮\n3. 身子， 身影.\n4. 姿势,形象",
+    "example": "上品な姿",
+    "exampleTranslation": "文雅的姿态.",
+    "category": "N4"
+  },
+  {
+    "word": "单词凄い",
+    "reading": "发音すごい",
+    "accent": "音调 ②",
+    "partOfSpeech": "词性形",
+    "meaning": "1. 释义 了不起的，好得很的\n2. 非常的厉害 的\n3. 可怕的，骇人的\n4. 阴森可怕的",
+    "example": "例句 凄い光景。",
+    "exampleTranslation": "骇人的情 景。",
+    "notes": "笔记",
+    "category": "N4"
+  },
+  {
+    "word": "全て",
+    "reading": "すべて",
+    "accent": "①",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 一切，所有，全部\n2. 都，所有，一 切，统统，整个",
+    "example": "た。",
+    "exampleTranslation": "这样就失去了一 これですべてを失っ 切。",
+    "category": "N4"
+  },
+  {
+    "word": "すり",
+    "reading": "すり",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 扒手，小偷",
+    "example": "大スリ。",
+    "exampleTranslation": "大盗；盗贼。",
+    "category": "N4"
+  },
+  {
+    "word": "ステーキ",
+    "reading": "すてーき",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 〈料理〉steak牛排，烤肉，烤牛排",
+    "example": "ステーキを焼く。",
+    "exampleTranslation": "煎牛 排。",
+    "category": "N4"
+  },
+  {
+    "word": "ステレオ",
+    "reading": "すてれお",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. stereo〔立体〕立体,立体声.\n2. 立体 声设备,实感音响设备.",
+    "example": "ステレオ·スコープ",
+    "exampleTranslation": "立 体镜;双眼照相镜.",
+    "category": "N4"
+  },
+  {
+    "word": "ずっと",
+    "reading": "ずっと",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 远貌\n2. 径直（走,去,进）\n3. （从……）一直，始终，从头至 尾\n4. 远远，很\n5. 时间、空间上的遥 （比……）……得多，……得很， 还要……",
+    "example": "彼はわたしよりずっと若 い",
+    "exampleTranslation": "他比我年轻得多。",
+    "category": "N4"
+  },
+  {
+    "word": "すると",
+    "reading": "すると",
+    "accent": "⓪",
+    "partOfSpeech": "接续",
+    "meaning": "1. 于是，于是就，于是乎\n2. 那，那 么，那么说来，这么说来",
+    "example": "妹も歌いだした。",
+    "exampleTranslation": "我唱 了个歌。于是，妹妹也唱 わたしが歌った。すると 起来了。",
+    "category": "N4"
+  },
+  {
+    "word": "すっかり",
+    "reading": "すっかり",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "1. 〈商〉脱销卖光售完.全，都，全 全,都，全都完全，全部已经\n2. 都，完全",
+    "example": "了;忘得精光;忘得干干净 すっかり忘れた",
+    "exampleTranslation": "全都忘 净。",
+    "category": "N4"
+  },
+  {
+    "word": "～時間目",
+    "reading": "～じかんめ",
+    "accent": "",
+    "partOfSpeech": "接尾",
+    "meaning": "1. 第……节课。",
+    "example": "2時間目",
+    "exampleTranslation": "第二节课",
+    "category": "N4"
+  },
+  {
+    "word": "食料品",
+    "reading": "りょうしょくひん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. （除主食以外的）食品",
+    "example": "食料品製造業。",
+    "exampleTranslation": "食品加 工业。",
+    "category": "N4"
+  },
+  {
+    "word": "食卓",
+    "reading": "しょくたく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 饭桌，餐桌，食案",
+    "example": "食卓につく。",
+    "exampleTranslation": "就席，就 餐。",
+    "category": "N4"
+  },
+  {
+    "word": "邪魔",
+    "reading": "じゃま",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 魔\n2. 妨碍，阻碍，碍事，障碍\n3. 干 扰，打扰，搅扰，打搅，累赘\n4. 访 （佛教语）邪魔，妨碍修行的恶 问，拜访，添麻烦",
+    "example": "い。",
+    "exampleTranslation": "挪开碍事〔眼〕的 邪魔な物をどかしなさ 东西。",
+    "category": "N4"
+  },
+  {
+    "word": "辞典",
+    "reading": "じてん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 词典，辞典\n2. 辞书",
+    "example": "ポケット辞典。",
+    "exampleTranslation": "袖珍词 典。",
+    "category": "N4"
+  },
+  {
+    "word": "試合",
+    "reading": "しあい",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. （武艺、体育等的）比赛",
+    "example": "模範試合。",
+    "exampleTranslation": "表演赛。",
+    "category": "N4"
+  },
+  {
+    "word": "親戚",
+    "reading": "しんせき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 亲属，亲戚",
+    "example": "あたる。",
+    "exampleTranslation": "他是我的远 彼はわたしの遠い親戚に 亲。",
+    "category": "N4"
+  },
+  {
+    "word": "親切",
+    "reading": "しんせつ",
+    "accent": "①",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 亲切，热情，恳切，好心\n2. 亲切， 热情，恳切，好心",
+    "example": "親切に教える。",
+    "exampleTranslation": "恳切地 教。",
+    "category": "N4"
+  },
+  {
+    "word": "单词親しい",
+    "reading": "发音したしい",
+    "accent": "音调 ③",
+    "partOfSpeech": "词性形",
+    "meaning": "1. 释义 （血缘）近\n2. 亲近，亲密，亲切， 亲昵\n3. 熟悉，不生疏，不稀奇",
+    "example": "例句 親しい縁者。",
+    "exampleTranslation": "近亲。",
+    "notes": "笔记",
+    "category": "N4"
+  },
+  {
+    "word": "舌",
+    "reading": "した",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 舌\n2. 舌头\n3. 话，说话\n4. 舌状物",
+    "example": "舌をかみ切る",
+    "exampleTranslation": "咬断舌 头。",
+    "category": "N4"
+  },
+  {
+    "word": "習慣",
+    "reading": "しゅうかん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 个人习惯\n2. 国家地区风俗习惯",
+    "example": "習慣を培う。",
+    "exampleTranslation": "养成习 惯。",
+    "category": "N4"
+  },
+  {
+    "word": "締まる",
+    "reading": "しまる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 被压紧，被勒紧紧张，被紧紧的压 住或缠住而喘不过气来\n2. 紧张的气 氛，状态\n3. 生活态度变得认真\n4. 节 约，节俭",
+    "example": "袋が締まる。",
+    "exampleTranslation": "袋子勒 紧。",
+    "category": "N4"
+  },
+  {
+    "word": "しっかり",
+    "reading": "しっかり",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "1. 强，高明坚定，可靠人的性格、见 醒，坚实头脑和肉体等健全，能充 分发挥其功能\n2. （性格）坚强，刚 识等踏实而无风险\n3. 用力地，好好 地（动作、行为）扎实，稳健\n4. 坚",
+    "example": "しっかりとした造り。",
+    "exampleTranslation": "牢固的结构。",
+    "category": "N4"
+  },
+  {
+    "word": "知り合い",
+    "reading": "しりあい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 情处于上升趋势 相识\n2. 结识，认识\n3. 相识的人\n4. 熟 人，熟识\n5. 朋友",
+    "example": "知り合いになる。",
+    "exampleTranslation": "结 识；成为相识。",
+    "category": "N4"
+  },
+  {
+    "word": "知らせる",
+    "reading": "しらせる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 通知",
+    "example": "さい。",
+    "exampleTranslation": "他来了，就告诉 彼がきたら知らせてくだ 我一声。",
+    "category": "N4"
+  },
+  {
+    "word": "知らせ",
+    "reading": "しらせ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 通知，告示\n2. 信，信息，消息\n3. 预 兆，前兆",
+    "example": "採用の知らせがきた。",
+    "exampleTranslation": "录用的通知到了。",
+    "category": "N4"
+  },
+  {
+    "word": "正月",
+    "reading": "しょうがつ",
+    "accent": "④",
+    "partOfSpeech": "名",
+    "meaning": "1. 正月，新年\n2. 过年似的热闹愉快",
+    "example": "正月の晴れ着",
+    "exampleTranslation": "新年穿的 盛装。",
+    "category": "N4"
+  },
+  {
+    "word": "しばらく",
+    "reading": "しばらく",
+    "accent": "②",
+    "partOfSpeech": "副词",
+    "meaning": "1. 久，许久 时间要经过得稍长一点 暂时，片刻，且慢，不久，一会儿 虽不太长但亦非很短的时间\n2. 很 的\n3. 暂且，姑且，暂时 不管将来如 何，指是眼前时刻",
+    "example": "しばらくお待ちくださ い。",
+    "exampleTranslation": "请稍候片刻。",
+    "category": "N4"
+  },
+  {
+    "word": "敷金",
+    "reading": "しききん",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 押金，保证金",
+    "example": "敷金を入れる。",
+    "exampleTranslation": "付押 金。",
+    "category": "N4"
+  },
+  {
+    "word": "支度",
+    "reading": "したく",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. （日常琐事的）准备，预备\n2. 打 扮，整理穿戴\n3. 外出服",
+    "example": "旅支度",
+    "exampleTranslation": "准备旅行。",
+    "category": "N4"
+  },
+  {
+    "word": "心配",
+    "reading": "しんぱい",
+    "accent": "⓪",
+    "partOfSpeech": "·自他动形动·サ",
+    "meaning": "1. 挂虑，惦念\n2. 害怕，不安，忧虑， 操心，张罗\n3. 操心，费心\n4. 关照\n5. 担心，挂心，挂念，牵挂，惦记， 张罗，介绍\n6. 担心\n7. 不安\n8. 操心",
+    "example": "ご心配はご無用です。",
+    "exampleTranslation": "请 您不必担心。",
+    "category": "N4"
+  },
+  {
+    "word": "幸せ",
+    "reading": "しあわせ",
+    "accent": "⓪",
+    "partOfSpeech": "变名·形动",
+    "meaning": "1. 幸福，幸运\n2. 运气，侥幸\n3. 过于天 真，过于乐观",
+    "example": "ありがたき幸せ",
+    "exampleTranslation": "庆幸. 日本の島々の多くは、そ",
+    "category": "N4"
+  },
+  {
+    "word": "島々",
+    "reading": "しまじま",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 许多岛屿\n2. 群岛",
+    "example": "でいることが特徴です。",
+    "exampleTranslation": "れぞれ、固有の自然や文 化を持ち、多様性に富ん 日本的诸多岛屿都各自拥 有独有的大自然与文化，",
+    "category": "N4"
+  },
+  {
+    "word": "少々",
+    "reading": "しょうしょう",
+    "accent": "①",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 少许，一点，一些，稍微，稍稍， 些微",
+    "example": "其特点便是富有多样性。 砂糖を少々ください。",
+    "exampleTranslation": "给我一点糖。",
+    "category": "N4"
+  },
+  {
+    "word": "実際に",
+    "reading": "じっさいに",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 其实，实际上\n2. 亲自，实地（强调 真实行动，而非想象或传闻）",
+    "example": "る。",
+    "exampleTranslation": "实际上曾经发生 実際に起こったことがあ 过。",
+    "category": "N4"
+  },
+  {
+    "word": "実家",
+    "reading": "じっか",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 父母之家，老家\n2. 娘家\n3. 婆家",
+    "example": "妻は実家に行ってい る。",
+    "exampleTranslation": "妻子回娘家去了。",
+    "category": "N4"
+  },
+  {
+    "word": "四角い",
+    "reading": "しかくい",
+    "accent": "⓪③",
+    "partOfSpeech": "形",
+    "meaning": "1. 四角形的，四方的，方形的\n2. 生 硬，端正",
+    "example": "四角い顔。",
+    "exampleTranslation": "四方脸。",
+    "category": "N4"
+  },
+  {
+    "word": "品物",
+    "reading": "しなもの",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 物品，东西\n2. 实物\n3. 商品，货物",
+    "example": "品物の寄付",
+    "exampleTranslation": "实物的捐 赠。",
+    "category": "N4"
+  },
+  {
+    "word": "叱る",
+    "reading": "しかる",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 责备，批评\n2. 训斥，责骂",
+    "example": "きびしく叱る。",
+    "exampleTranslation": "严厉斥 责。",
+    "category": "N4"
+  },
+  {
+    "word": "受話器",
+    "reading": "じゅわき",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. （电话机等的）听筒，耳机，受话 器",
+    "example": "て「もしもし」と言っ た。",
+    "exampleTranslation": "她拿起听筒说”喂 彼女は受話器をとりあげ 喂”。",
+    "category": "N4"
+  },
+  {
+    "word": "収入",
+    "reading": "しゅうにゅう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 收入，所得",
+    "example": "収入印紙。",
+    "exampleTranslation": "印花税票。",
+    "category": "N4"
+  },
+  {
+    "word": "冗談",
+    "reading": "じょうだん",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 玩笑，戏言，笑话 做完，搞完，干完，亦指结束终",
+    "example": "冗談を言う",
+    "exampleTranslation": "说笑话；开 玩笑。",
+    "category": "N4"
+  },
+  {
+    "word": "しまう",
+    "reading": "しまう",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 作全部结束或该状态完成往往表示 光了，尽了 （补助动词）表示该动 某事的非志愿发生\n2. 关闭，停业\n3. 了，完了\n4. 「～てしまう」完了， 整理，收拾起来，放起来把东西收",
+    "example": "店をしまう。",
+    "exampleTranslation": "闭店歇 业。",
+    "category": "N4"
+  },
+  {
+    "word": "仕方ない",
+    "reading": "しかたない",
+    "accent": "④",
+    "partOfSpeech": "形",
+    "meaning": "1. 没办法，不得已，无可奈何",
+    "example": "在没办法，实在不得已， どうにも仕方ない。",
+    "exampleTranslation": "实 无可奈何。",
+    "category": "N4"
+  },
+  {
+    "word": "仕方",
+    "reading": "しかた",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 做法，做的方法\n2. 办法\n3. 手势，动 作",
+    "example": "料理の仕方",
+    "exampleTranslation": "烹调法。",
+    "notes": "方法、做法、手势",
+    "category": "N4"
+  },
+  {
+    "word": "ジャム",
+    "reading": "じゃむ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. (英)jam 果（子）酱",
+    "example": "なった。",
+    "exampleTranslation": "到了做梅子酱 梅ジャムをつくる時期に 的时期了。",
+    "category": "N4"
+  },
+  {
+    "word": "シャーペン",
+    "reading": "しゃーぺん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. sharppencil 自动铅笔，「シャー プペンシル」的简称",
+    "example": "田中君の?",
+    "exampleTranslation": "那只活铅是田 そのシャープペンって、 中的？",
+    "category": "N4"
+  },
+  {
+    "word": "プペンシャーシル",
+    "reading": "ぷぺんしゃーしる",
+    "accent": "④",
+    "partOfSpeech": "名",
+    "meaning": "1. sharppencil 活心铅笔，自动铅笔",
+    "example": "しい猫型のシャープペン シルをノートに走らせて いく。",
+    "exampleTranslation": "想到点子而闪亮 双眼的女孩，在笔记本上",
+    "category": "N4"
+  },
+  {
+    "word": "騒ぐ",
+    "reading": "さわぐ",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 吵，吵闹\n2. 吵嚷\n3. 骚动，骚乱，闹 事，显出不稳\n4. 慌张，着忙，不 安\n5. 激动，兴奋不安\n6. 极力称赞\n7. 哄嚷\n8. 吹捧",
+    "example": "火事だと騒ぐ。",
+    "exampleTranslation": "吵嚷说 着火了。",
+    "category": "N4"
+  },
+  {
+    "word": "騒ぎ",
+    "reading": "さわぎ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 嚣\n2. 混乱，骚乱\n3. 闹事\n4. 事件\n5. 纠 纷\n6. 忙得乱哄哄的，忙乱\n7. …程度 的问题上接“どころの”，下加否 定词哪里谈得到，远不是那种程度",
+    "example": "なんという騒ぎだ",
+    "exampleTranslation": "多么 吵闹!",
+    "category": "N4"
+  },
+  {
+    "word": "酒屋",
+    "reading": "さかや",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 的小问题\n2. 远远谈不到\n3. 岂止 酒铺，卖酒的（人）\n4. 酿酒厂，酒 坊",
+    "example": "一軒酒屋。",
+    "exampleTranslation": "一间酒坊。",
+    "category": "N4"
+  },
+  {
+    "word": "誘う",
+    "reading": "さそう",
+    "accent": "⓪③",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 约，劝诱，邀请\n2. 促使，引发，引 起，引诱，诱惑",
+    "example": "彼を誘っていっしょに行 こう",
+    "exampleTranslation": "约他一块儿去吧。",
+    "category": "N4"
+  },
+  {
+    "word": "爽やか",
+    "reading": "さわやか",
+    "accent": "②",
+    "partOfSpeech": "形动",
+    "meaning": "1. 快\n2. ［口齿］爽利\n3. 清楚，［嗓 ［天气］清爽，爽朗\n4. ［心情］爽 音］嘹亮，鲜明",
+    "example": "爽やかなあいさつ。",
+    "exampleTranslation": "爽 朗的招呼。",
+    "category": "N4"
+  },
+  {
+    "word": "流石",
+    "reading": "さすが",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 然（是）\n2. 就连，甚至\n3. 但是，不 真不愧，到底是，还是，的确，果 过还是",
+    "example": "た。",
+    "exampleTranslation": "到底是你，干得 流石は君だ、よくやっ 好。",
+    "category": "N4"
+  },
+  {
+    "word": "様様",
+    "reading": "さまざま",
+    "accent": "②③",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 种种\n2. 各种各样\n3. 形形色色",
+    "example": "様様な型。",
+    "exampleTranslation": "各种类型。",
+    "category": "N4"
+  },
+  {
+    "word": "様",
+    "reading": "さま",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. （物事の様子や狀態。ありさ 樣子，景況，狀態，情況，情形 ま）。",
+    "example": "町の様が一変した",
+    "exampleTranslation": "街上 的情況完全變了。",
+    "category": "N4"
+  },
+  {
+    "word": "～様",
+    "reading": "さま",
+    "accent": "",
+    "partOfSpeech": "接尾",
+    "meaning": "1. 姿势，姿态，形状\n2. …同志\n3. …先 样子，景况，状态，情况，情形\n4. 生\n5. …女士\n6. 动词后缀",
+    "example": "町の様が一変した",
+    "exampleTranslation": "街上 的情况完全变了。",
+    "category": "N4"
+  },
+  {
+    "word": "最古",
+    "reading": "さいこ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 最古，最早，最古老，最旧",
+    "example": "世界最古の建造物。",
+    "exampleTranslation": "世 界最古老的建筑物。",
+    "category": "N4"
+  },
+  {
+    "word": "探す",
+    "reading": "さがす",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 查找，寻找，找搜索",
+    "example": "職を探す。",
+    "exampleTranslation": "找工作。",
+    "category": "N4"
+  },
+  {
+    "word": "指す",
+    "reading": "さす",
+    "accent": "①",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 名\n2. 指向，朝向，朝着\n3. 指代\n4. 下 （用手、箭头等）指\n5. 指名，点 将棋",
+    "example": "先生にさされたが、答え られなかった。",
+    "exampleTranslation": "老师指 了我的名,但是我答不上 来。",
+    "category": "N4"
+  },
+  {
+    "word": "差し上げる",
+    "reading": "さしあげる",
+    "accent": "⓪④",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 「与える」的自谦语）敬献，呈 送\n2. （补助动词「～て差し上げ 举，举起\n3. （「上げる」「やる」 る」）给您…",
+    "example": "げる。",
+    "exampleTranslation": "把杠铃高高举 バーベルを高々と差し上 起。",
+    "category": "N4"
+  },
+  {
+    "word": "叫ぶ",
+    "reading": "さけぶ",
+    "accent": "②",
+    "partOfSpeech": "动·自他五段",
+    "meaning": "1. 大声喊叫，呼喊\n2. 向社会呼吁，主 张",
+    "example": "大声で叫ぶ。",
+    "exampleTranslation": "大声喊。",
+    "category": "N4"
+  },
+  {
+    "word": "下げる",
+    "reading": "さげる",
+    "accent": "②",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 佩带提，挎\n2. 后退，使后退，向后 降低，降下\n3. 放低\n4. 吊\n5. 悬\n6. 挂\n7. 移动\n8. 撤下，收拾",
+    "example": "声を下げる",
+    "exampleTranslation": "放低声音。",
+    "category": "N4"
+  },
+  {
+    "word": "下がる",
+    "reading": "さがる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 代\n2. 前进。\n3. 向后倒\n4. 退后\n5. 退 退\n6. 下降\n7. 降低\n8. 后退。\n9. 推移时 往\n10. 后退。\n11. （从地位高的人的身 温。\n12. （功能、本领）退步\n13. 衰 旁）退出（下）。\n14. 放学下班自学",
+    "example": "エレベーターが下がって くる。",
+    "exampleTranslation": "电梯降下来。",
+    "category": "N4"
+  },
+  {
+    "word": "一昨々日",
+    "reading": "さきおととい",
+    "accent": "⑤",
+    "partOfSpeech": "名",
+    "meaning": "1. 大前天，前天的前一天。",
+    "example": "は水曜だ。",
+    "exampleTranslation": "今天是周 今日は土曜で、一昨々日 六，大前天是周三。",
+    "category": "N4"
+  },
+  {
+    "word": "一昨昨年",
+    "reading": "くさくいっさねん",
+    "accent": "④⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 一昨年の前年。さきおととし。",
+    "category": "N4"
+  },
+  {
+    "word": "一昨昨年",
+    "reading": "さきおととし",
+    "accent": "⑤",
+    "partOfSpeech": "名",
+    "meaning": "1. 大前年，前年的前一年\n2. 三年前， 前三年",
+    "example": "年は2019年だ。",
+    "exampleTranslation": "今年是 2022年，大前年是2019 今年は2022年で、一昨々 年。",
+    "category": "N4"
+  },
+  {
+    "word": "单词サークル",
+    "reading": "发音さーくる",
+    "accent": "音调 ①",
+    "partOfSpeech": "词性名",
+    "meaning": "1. 释义 圆，圆周，圆阵\n2. circle 社团，团 体，小组，研究班",
+    "example": "例句 読書サークル。",
+    "exampleTranslation": "书友 会。",
+    "notes": "笔记",
+    "category": "N4"
+  },
+  {
+    "word": "サンダル",
+    "reading": "さんだる",
+    "accent": "①⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 草鞋式的皮鞋\n2. 凉鞋\n3. 拖鞋",
+    "example": "履いてたら、転んで捻挫 しちゃうぞ。",
+    "exampleTranslation": "穿那么厚 あんな底の厚いサンダル 的凉鞋，会摔倒扭伤的。",
+    "category": "N4"
+  },
+  {
+    "word": "サラダ",
+    "reading": "さらだ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. salad 色拉，沙拉，凉拌菜",
+    "example": "ハム·サラダ",
+    "exampleTranslation": "火腿色 拉。",
+    "category": "N4"
+  },
+  {
+    "word": "サツマイモ",
+    "reading": "さつまいも",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 番薯，红薯，地瓜",
+    "example": "養成分がたっぷりです。",
+    "exampleTranslation": "サツマイモには、便秘の 改善や予防に効果的な栄 红薯中有很多改善和预防 便秘的营养成分。",
+    "category": "N4"
+  },
+  {
+    "word": "ざあざあ",
+    "reading": "ざあざあ",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "1. 哗啦哗啦雨猛烈降落的声音（或状 态）水剧烈流动的声音（或状态）",
+    "example": "啦哗啦下的雨；倾盆大 雨がざあざあ降る。",
+    "exampleTranslation": "哗 雨。",
+    "category": "N4"
+  },
+  {
+    "word": "込む",
+    "reading": "こむ",
+    "accent": "①",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 人多，拥挤\n2. 混杂\n3. 费事，费工 夫\n4. 精致，精巧\n5. 复杂\n6. …… 进，……进去\n7. 彻底\n8. 深\n9. 表示进 入的意思\n10. 表示深入或持续到底",
+    "example": "劇場が込んでいる",
+    "exampleTranslation": "剧场 里观众很多。",
+    "category": "N4"
+  },
+  {
+    "word": "言葉遣い",
+    "reading": "ことばづかい",
+    "accent": "④",
+    "partOfSpeech": "名",
+    "meaning": "1. 说法\n2. 用语，措词，措辞",
+    "example": "上品な言葉遣い。",
+    "exampleTranslation": "文雅 的措词。",
+    "category": "N4"
+  },
+  {
+    "word": "航空券",
+    "reading": "こうくうけん",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 手提行李的登机旅行事宜已与航空 机票，飞机票 证明旅客就其本人及 公司签定合同的文件",
+    "example": "に乗れないよ。",
+    "exampleTranslation": "飞机票 忘了的话就不能乘飞机 航空券を忘れると飛行機 了。",
+    "category": "N4"
+  },
+  {
+    "word": "細かい",
+    "reading": "こまかい",
+    "accent": "③",
+    "partOfSpeech": "形",
+    "meaning": "1. 细，入微，精密，仔细\n2. 吝啬，花 小，细，细小，零碎\n3. 详细，微 钱精打细算",
+    "example": "細かい字を書く",
+    "exampleTranslation": "写蝇头 小字。",
+    "category": "N4"
+  },
+  {
+    "word": "米",
+    "reading": "こめ",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 稻米，大米",
+    "example": "米をつく。",
+    "exampleTranslation": "捣米。",
+    "category": "N4"
+  },
+  {
+    "word": "混む",
+    "reading": "こむ",
+    "accent": "①",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 拥挤，混杂，混乱",
+    "example": "混む。",
+    "exampleTranslation": "上下班高峰期， ラッシュアワーで電車が 电车上十分拥挤。",
+    "category": "N4"
+  },
+  {
+    "word": "木の葉",
+    "reading": "このは",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 树叶",
+    "example": "木の葉が散る。",
+    "exampleTranslation": "树叶散 落。",
+    "category": "N4"
+  },
+  {
+    "word": "こう",
+    "reading": "こう",
+    "accent": "⓪①",
+    "partOfSpeech": "副词",
+    "meaning": "1. 如此，这样，这么\n2. 啊，嗯，这个",
+    "example": "こう思う。",
+    "exampleTranslation": "这么觉得。",
+    "category": "N4"
+  },
+  {
+    "word": "怖がる",
+    "reading": "こわがる",
+    "accent": "③",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 害怕，恐惧",
+    "example": "生徒に怖がられる先 生。",
+    "exampleTranslation": "学生害怕的老师。",
+    "category": "N4"
+  },
+  {
+    "word": "怖い",
+    "reading": "こわい",
+    "accent": "②",
+    "partOfSpeech": "形",
+    "meaning": "1. 令人害怕的\n2. 可怕的\n3. 担心\n4. 可怕",
+    "example": "彼は怒ると怖い。",
+    "exampleTranslation": "他一 发怒很可怕。",
+    "category": "N4"
+  },
+  {
+    "word": "单词御馳走",
+    "reading": "发音ごちそう",
+    "accent": "音调 ⓪",
+    "partOfSpeech": "词性惯用",
+    "meaning": "1. 释义 款待，请客，宴请\n2. 饭菜，美味佳 肴\n3. 丰盛的酒菜，酒宴",
+    "example": "例句 御馳走に呼ぶ。",
+    "exampleTranslation": "请客 （吃饭）。",
+    "notes": "笔记",
+    "category": "N4"
+  },
+  {
+    "word": "小鳥",
+    "reading": "ことり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 小鸟 坏，破碎，毁，坍塌物体失去固有",
+    "example": "小鳥を飼う。",
+    "exampleTranslation": "养鸟。",
+    "category": "N4"
+  },
+  {
+    "word": "壊れる",
+    "reading": "こわれる",
+    "accent": "③",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 去正常功能或发生故障\n2. （计划 的形状或七零八落\n3. 坏，出故障失 等）失败，落空，毁掉，破裂计划 或约定告吹",
+    "example": "ガラスが粉々に壊れる",
+    "exampleTranslation": "玻璃打得粉碎。",
+    "category": "N4"
+  },
+  {
+    "word": "壊す",
+    "reading": "こわす",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 弄坏，毁坏，弄碎\n2. 损害，伤害， 损伤\n3. 拆开，毁掉\n4. 破坏",
+    "example": "小屋を壊す。",
+    "exampleTranslation": "毁坏屋架。",
+    "category": "N4"
+  },
+  {
+    "word": "ご覧になる",
+    "reading": "ごらんになる",
+    "accent": "⑤",
+    "partOfSpeech": "惯用",
+    "meaning": "1. 语，用以表述尊敬对象 「ご覧になる」是「見る」的敬 的“看”“观赏”行为。",
+    "example": "なってください。",
+    "exampleTranslation": "请您 どうぞ、ゆっくりご覧に 慢慢观看吧。",
+    "category": "N4"
+  },
+  {
+    "word": "ご存知",
+    "reading": "ごぞんじ",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 您知道，您认识相识\n2. 熟人\n3. 朋友",
+    "example": "ご存知より。",
+    "exampleTranslation": "（书信用 语）知名不具。",
+    "category": "N4"
+  },
+  {
+    "word": "ご主人",
+    "reading": "ごしゅじん",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. （称呼别人丈夫时候的尊敬表达） 您丈夫，您先生",
+    "example": "り、悲しみにたえませ ん。",
+    "exampleTranslation": "对您先生的去世， ご主人様のご逝去を知 我深表悲伤。",
+    "category": "N4"
+  },
+  {
+    "word": "これら",
+    "reading": "これら",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 这些。指属说话人方的人或事物。",
+    "example": "です。",
+    "exampleTranslation": "这些作品均为伪 これらの作品は全て偽物 作。",
+    "category": "N4"
+  },
+  {
+    "word": "この頃",
+    "reading": "このごろ",
+    "accent": "⓪",
+    "partOfSpeech": "名·副词",
+    "meaning": "1. 近来，最近，这些天来，最近时 期\n2. 现在",
+    "example": "この頃の天候。",
+    "exampleTranslation": "最近天 气。",
+    "category": "N4"
+  },
+  {
+    "word": "この間",
+    "reading": "このあいだ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 最近\n2. 前几天，不久以前，前些时 候",
+    "example": "ほんのこの間のことだっ た。",
+    "exampleTranslation": "就是前几天的事。",
+    "category": "N4"
+  },
+  {
+    "word": "見物",
+    "reading": "けんぶつ",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 旁观\n2. 观众\n3. 旁观者，看热闹的\n4. 观赏，游览，参观\n5. 旁观",
+    "example": "いろいろ見物する。",
+    "exampleTranslation": "到 各方面参观游览。",
+    "category": "N4"
+  },
+  {
+    "word": "見物人",
+    "reading": "けんぶつにん",
+    "accent": "⓪④",
+    "partOfSpeech": "名",
+    "meaning": "1. 游客，观众",
+    "example": "被災地の見物人。",
+    "exampleTranslation": "受灾 地的游客。",
+    "category": "N4"
+  },
+  {
+    "word": "決して",
+    "reading": "けっして",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. （后接否定）决（不）……，绝对 （不）……，断然（不）…… 毛，毛发。哺乳动物身体表面生长",
+    "example": "ご恩は決して忘れませ ん。",
+    "exampleTranslation": "决不忘您的恩情。",
+    "category": "N4"
+  },
+  {
+    "word": "毛",
+    "reading": "け",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 的细毛，头发，鸟类的羽毛\n2. 毛， 植物叶、茎等表皮上毛状物的总 称\n3. 毛兽毛，尤指羊毛纺成的纤 维\n4. 毛，露出物体表面的丝状物",
+    "example": "毛のシャツ",
+    "exampleTranslation": "毛衣，羊毛 衫。",
+    "category": "N4"
+  },
+  {
+    "word": "欠席",
+    "reading": "けっせき",
+    "accent": "⓪",
+    "partOfSpeech": "自动·サ名·变",
+    "meaning": "1. 缺席\n2. 缺课",
+    "example": "無断欠席。",
+    "exampleTranslation": "不请假缺 席；无故缺席；旷课。",
+    "category": "N4"
+  },
+  {
+    "word": "怪我",
+    "reading": "けが",
+    "accent": "②",
+    "partOfSpeech": "名·自他动·サ变",
+    "meaning": "1. 伤，受伤，负伤\n2. 过错，过失",
+    "example": "おお怪我。",
+    "exampleTranslation": "重伤。",
+    "category": "N4"
+  },
+  {
+    "word": "喧嘩",
+    "reading": "けんか",
+    "accent": "⓪",
+    "partOfSpeech": "名·自动·サ变",
+    "meaning": "1. 吵嘴，口角，吵闹，吵架\n2. 喧嚷， 打架",
+    "example": "人と喧嘩をする。",
+    "exampleTranslation": "跟人 吵架。",
+    "category": "N4"
+  },
+  {
+    "word": "下宿",
+    "reading": "げしゅく",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 供膳宿的公寓\n2. 寄宿在别人家中的 房间里，租房间住，住公寓",
+    "example": "素人下宿。",
+    "exampleTranslation": "家庭公寓。",
+    "category": "N4"
+  },
+  {
+    "word": "けれども",
+    "reading": "けれども",
+    "accent": "①",
+    "partOfSpeech": "助词",
+    "meaning": "1. 预想的前项内容应该产生的结果不 表示认可前文的内容，并表示其与 后述的内容并存\n2. 表示后项内容与 一致\n3. 用说半截子话的形式，表示 委婉的叙述",
+    "example": "少し高すぎる。",
+    "exampleTranslation": "这个东 これは非常に便利なもの です。けれども、価格は 西非常方便，不过，价格 有点过高。",
+    "notes": "替换が，表转折",
+    "category": "N4"
+  },
+  {
+    "word": "けれど",
+    "reading": "けれど",
+    "accent": "①",
+    "partOfSpeech": "接续",
+    "meaning": "1. 虽然……可是,但是,然而,不过.\n2. 也, 又,更.\n3. 表顺承",
+    "example": "まだ降っている",
+    "exampleTranslation": "风虽停 風はやんだけれど、雨は 了,可是雨还在下着.",
+    "category": "N4"
+  },
+  {
+    "word": "配る",
+    "reading": "くばる",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 分配，分给，分送\n2. 多方注意，多 方留神，用心周到使（注意等）留 心各处，亦指观察到各处\n3. 配置， 部署，分派，分放",
+    "example": "菓子を配る。",
+    "exampleTranslation": "分配糕 点。",
+    "category": "N4"
+  },
+  {
+    "word": "草",
+    "reading": "くさ",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 非专业的\n2. 网络缩略语，笑，开怀 草\n3. 杂草\n4. 牧草\n5. 稻草\n6. 非正规的 大笑",
+    "example": "庭に草が生える。",
+    "exampleTranslation": "院内 长草。",
+    "category": "N4"
+  },
+  {
+    "word": "臭い",
+    "reading": "くさい",
+    "accent": "②",
+    "partOfSpeech": "形",
+    "meaning": "1. 臭的\n2. 可疑的\n3. 做作的\n4. 有……气 味的\n5. …的样子\n6. 强化语意",
+    "example": "幼稚的；有孩子气的；乳 乳臭い。",
+    "exampleTranslation": "有乳臭味儿； 臭未干的。",
+    "category": "N4"
+  },
+  {
+    "word": "比べる",
+    "reading": "くらべる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 比，比较\n2. 对比，对照\n3. 比，比 赛，竞赛，较量，比试",
+    "example": "むかしといまを比べ る。",
+    "exampleTranslation": "今昔对比。",
+    "category": "N4"
+  },
+  {
+    "word": "暮れる",
+    "reading": "くれる",
+    "accent": "⓪",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 日暮，天黑，入夜\n2. （时间，季 节）接近尾声、临近结束，岁末\n3. 长时间地处于……中\n4. 不知如何是 好",
+    "example": "日が暮れる。",
+    "exampleTranslation": "天黑了。",
+    "category": "N4"
+  },
+  {
+    "word": "口に合う",
+    "reading": "くちにあう",
+    "accent": "④",
+    "partOfSpeech": "惯用",
+    "meaning": "1. （食物等）合口味，对胃口",
+    "example": "お口に合いますか。",
+    "exampleTranslation": "这 个饭菜怎么样，合口味 この料理はどうですか。 吗？",
+    "category": "N4"
+  },
+  {
+    "word": "口げんか",
+    "reading": "くちげんか",
+    "accent": "③",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 争吵，吵架，吵嘴",
+    "example": "激しく口げんかする。",
+    "exampleTranslation": "激烈地吵架。",
+    "category": "N4"
+  },
+  {
+    "word": "具合",
+    "reading": "ぐあい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 情形，样子\n2. （健康的）状况\n3. 状 （事物/机械运转的）情况，状态， 态\n4. 方便，合适\n5. 方法，样子",
+    "example": "天気の具合。",
+    "exampleTranslation": "天气情 况。",
+    "category": "N4"
+  },
+  {
+    "word": "下さる",
+    "reading": "くださる",
+    "accent": "③",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 送，给\n2. 补助动词，跟在动词连用 形后面，表对动作人的敬意。",
+    "example": "て恐縮です。",
+    "exampleTranslation": "麻烦您特意 わざわざおいでくださっ 来一趟，实在不敢当。",
+    "category": "N4"
+  },
+  {
+    "word": "ぐっと",
+    "reading": "ぐっと",
+    "accent": "⓪①",
+    "partOfSpeech": "副词",
+    "meaning": "1. 加，……得多，非常\n2. 哑口无言\n3. 使劲儿,一（口）气地……\n4. 更 深受感动",
+    "example": "ぐっと引く。",
+    "exampleTranslation": "用劲一 拉。",
+    "category": "N4"
+  },
+  {
+    "word": "ぐっすり",
+    "reading": "ぐっすり",
+    "accent": "③",
+    "partOfSpeech": "副词",
+    "meaning": "1. 酣然，熟睡的样子\n2. 香甜\n3. 坚实 地\n4. 完全地",
+    "example": "た。",
+    "exampleTranslation": "因为累了，所以睡 疲れたから、ぐっすり寝 得很香。",
+    "category": "N4"
+  },
+  {
+    "word": "くれる",
+    "reading": "くれる",
+    "accent": "⓪",
+    "partOfSpeech": "动·一段",
+    "meaning": "1. す。）\n2. 给（我）。（他者がこち ら側へ物を寄越す。）\n3. （含有鄙 益となることをする意を表 意地）给\n4. ［施す］施舍。（他者",
+    "example": "る。",
+    "exampleTranslation": "老师详细地给我说 先生がよく教えてくれ 明。",
+    "category": "N4"
+  },
+  {
+    "word": "くねくね",
+    "reading": "くねくね",
+    "accent": "①",
+    "partOfSpeech": "副词",
+    "meaning": "1. に物を与える。蔑んだ言い方。） 弯弯曲曲，蜿蜒\n2. 忸怩作态",
+    "example": "山道がくねくねしてい る。",
+    "exampleTranslation": "山路弯弯曲曲。",
+    "category": "N4"
+  },
+  {
+    "word": "金色",
+    "reading": "こんじき",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 金色，金黄色",
+    "example": "东方的天空闪耀金色的光 東の空が金色に輝く。",
+    "exampleTranslation": "辉。",
+    "category": "N4"
+  },
+  {
+    "word": "近所",
+    "reading": "きんじょ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 附近，近处，左近\n2. 近邻，邻居， 街坊，四邻",
+    "example": "い。",
+    "exampleTranslation": "四邻没有人不知 近所で知らぬ者がな 道；家喻户晓。",
+    "category": "N4"
+  },
+  {
+    "word": "規則",
+    "reading": "きそく",
+    "accent": "②①",
+    "partOfSpeech": "名",
+    "meaning": "1. 规则，规章，章程",
+    "example": "そうするのは規則違反で ある",
+    "exampleTranslation": "那么做违反规章。",
+    "category": "N4"
+  },
+  {
+    "word": "胡瓜",
+    "reading": "きゅうり",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 黄瓜葫芦科一年生草本植物",
+    "example": "胡瓜もみ。",
+    "exampleTranslation": "卤拌黄瓜。",
+    "category": "N4"
+  },
+  {
+    "word": "聞こえる",
+    "reading": "きこえる",
+    "accent": "⓪③",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 能听到\n2. 听起来觉得……，听来似 听得见，能听见，听到，听得到， 乎是……\n3. 闻名，出名，著名",
+    "example": "てきた。",
+    "exampleTranslation": "听到了轰隆轰 ごろごろいう音が聞こえ 隆的声音。",
+    "category": "N4"
+  },
+  {
+    "word": "聞かせる",
+    "reading": "きかせる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 语、歌、音乐动听\n2. 讲清讲给对方 使...听到，让...听\n3. 中听，好听言 听，使其理解、明白",
+    "example": "せる。",
+    "exampleTranslation": "唱日本童谣给外 外国人に日本童謡を聞か 国人听。",
+    "category": "N4"
+  },
+  {
+    "word": "絹",
+    "reading": "きぬ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 丝绸，绸子，丝织品\n2. （蚕）丝",
+    "example": "絹の着物。",
+    "exampleTranslation": "绸子衣服。",
+    "category": "N4"
+  },
+  {
+    "word": "給料",
+    "reading": "きゅうりょう",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 工资，薪金，薪水",
+    "example": "給料をかせぐ。",
+    "exampleTranslation": "赚 （挣）工资。",
+    "category": "N4"
+  },
+  {
+    "word": "着物",
+    "reading": "きもの",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 和服\n2. 衣服",
+    "example": "着物が似合う。",
+    "exampleTranslation": "和服合 适。",
+    "category": "N4"
+  },
+  {
+    "word": "着る物",
+    "reading": "きるもの",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 穿的衣服。",
+    "example": "きれいな着る物。",
+    "exampleTranslation": "干净 的衣服。",
+    "category": "N4"
+  },
+  {
+    "word": "着せる",
+    "reading": "きせる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 给……穿上（衣服）\n2. 蒙上，盖上 （被子等）\n3. 镀上，包上\n4. 使蒙 受，嫁（祸），加（罪），败坏 （名声）",
+    "example": "ぐっすり眠っている子ど もに毛布を着せてや る。",
+    "exampleTranslation": "给酣睡着的孩子盖 上毯子。",
+    "category": "N4"
+  },
+  {
+    "word": "汽車",
+    "reading": "きしゃ",
+    "accent": "②①",
+    "partOfSpeech": "名",
+    "meaning": "1. 蒸汽火车，列车",
+    "example": "6時の汽車",
+    "exampleTranslation": "六点钟开的火 车。",
+    "category": "N4"
+  },
+  {
+    "word": "決める",
+    "reading": "きめる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 定\n2. 约定\n3. 商定\n4. （独自）断定\n5. 定，决定，决心，规定\n6. 指定\n7. 选 认定\n8. （自己）作主",
+    "example": "頭から決めてかかる",
+    "exampleTranslation": "自 作主张；想当然。",
+    "category": "N4"
+  },
+  {
+    "word": "気持ち",
+    "reading": "きもち",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 怀，襟怀\n2. 心神\n3. 小意思，心意对 感，感觉，感受\n4. 心情，心绪，情 绪\n5. 心地，心境\n6. 精神状态\n7. 胸 于自己的用心表示谦逊时使用的自 谦语\n8. 点点\n9. 稍微，略略",
+    "example": "気持ちがよい",
+    "exampleTranslation": "心情舒 畅。",
+    "category": "N4"
+  },
+  {
+    "word": "気分",
+    "reading": "きぶん",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 境\n2. 气氛，空气\n3. 身体状况\n4. 脾 （短暂的）心情\n5. 情绪\n6. 心绪\n7. 心 气，性格",
+    "example": "楽しい気分。",
+    "exampleTranslation": "快乐的心 情。",
+    "category": "N4"
+  },
+  {
+    "word": "気づく",
+    "reading": "きづく",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 注意到，察觉，发觉，意识到，认 识到",
+    "example": "用心しろ",
+    "exampleTranslation": "当心别叫他发 彼に気づかれないように 觉了。",
+    "category": "N4"
+  },
+  {
+    "word": "気が付く",
+    "reading": "きがつく",
+    "accent": "③",
+    "partOfSpeech": "惯用",
+    "meaning": "1. 到，无微不至\n2. 恢复神志，意识苏 意识到，注意到，发觉\n3. 细心周 醒",
+    "example": "く。",
+    "exampleTranslation": "觉悟到事情的严重 事の重大さに気が付 性。",
+    "category": "N4"
+  },
+  {
+    "word": "技術",
+    "reading": "ぎじゅつ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 技术\n2. 工艺",
+    "example": "技術を修得する",
+    "exampleTranslation": "学习技 术；掌握技术。",
+    "category": "N4"
+  },
+  {
+    "word": "岸",
+    "reading": "きし",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 岸，岸边，滨陆地与水相接之处\n2. 崖，悬崖，绝壁土地的峭立处",
+    "example": "海の岸。",
+    "exampleTranslation": "海岸。",
+    "category": "N4"
+  },
+  {
+    "word": "君",
+    "reading": "きみ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. （敬称）君\n2. 您\n3. （男性用语） 主人，主公\n4. 国君，帝王，国王\n5. （对同辈或晚辈的称呼）你",
+    "example": "あなたの父君（ちちぎ み）",
+    "exampleTranslation": "您的父亲；令尊。",
+    "category": "N4"
+  },
+  {
+    "word": "厳しい",
+    "reading": "きびしい",
+    "accent": "③",
+    "partOfSpeech": "形",
+    "meaning": "1. 重，厉害，很甚，难熬\n2. 严酷，残 严\n3. 严格\n4. 严厉\n5. 严峻\n6. 严肃\n7. 严 酷，毫不留情",
+    "example": "規則が厳しい。",
+    "exampleTranslation": "规章严 格。",
+    "category": "N4"
+  },
+  {
+    "word": "きっと",
+    "reading": "きっと",
+    "accent": "⓪",
+    "partOfSpeech": "副词",
+    "meaning": "1. 是「きと」的促音添加形式「屹 一定，必定\n2. 严峻，严厉\n3. 锐利\n4. 度」「急度」是别字（音译字）",
+    "example": "きっと成功する。",
+    "exampleTranslation": "一定 成功。",
+    "category": "N4"
+  },
+  {
+    "word": "のみ",
+    "reading": "のみ",
+    "accent": "",
+    "partOfSpeech": "助词",
+    "meaning": "1. 只是\n2. 以のみならず（また）的形 只，仅，只是，只有，光\n3. 只有， 式来用",
+    "example": "でない。",
+    "exampleTranslation": "不应该光考虑 学歴のみを問題にすべき 学历问题。",
+    "notes": "只，仅仅",
+    "category": "N4"
+  },
+  {
+    "word": "髪の毛",
+    "reading": "かみのけ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 头发",
+    "example": "髪の毛を洗う。",
+    "exampleTranslation": "洗头 发。",
+    "category": "N4"
+  },
+  {
+    "word": "飾る",
+    "reading": "かざる",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 装饰，装点\n2. 打扮自己\n3. 排列（得 粉饰、使自己表面上看起来很好\n4. 整齐漂亮）\n5. 润色，增光，生色",
+    "example": "身なりを飾る。",
+    "exampleTranslation": "修饰打 扮。",
+    "category": "N4"
+  },
+  {
+    "word": "頑張る",
+    "reading": "がんばる",
+    "accent": "③",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 顽固，固执己见\n2. 不动，不走，不 努力，坚持\n3. 坚持己见，硬主张\n4. 离开",
+    "example": "案は否決された。",
+    "exampleTranslation": "因为 他的坚持，所以那个方案 彼ががんばったのでその 被否决了。",
+    "category": "N4"
+  },
+  {
+    "word": "鏡",
+    "reading": "かがみ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 镜子\n2. 模范，榜样\n3. 酒桶的盖\n4. 「鏡饼」的略称。一种扁平的圆形 年糕。作为祭品用于供奉\n5. 人贵自 知。",
+    "example": "鏡と相談せよ。",
+    "exampleTranslation": "人贵自 知。",
+    "category": "N4"
+  },
+  {
+    "word": "通う",
+    "reading": "かよう",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 往来，来往\n2. 通行\n3. 上学，走读\n4. 上班，通勤\n5. 通，流通\n6. 循环\n7. 通 晓\n8. 相印，心意相通\n9. 相似，有相 同之处",
+    "example": "ふたりの心が通う。",
+    "exampleTranslation": "二 人心心相印；意气相投。",
+    "category": "N4"
+  },
+  {
+    "word": "貸出",
+    "reading": "かしだし",
+    "accent": "⓪",
+    "partOfSpeech": "他动·サ名·变",
+    "meaning": "1. 放款，贷款\n2. 出借，出租",
+    "example": "図書の貸出を停止す る。",
+    "exampleTranslation": "停止图书出借。",
+    "category": "N4"
+  },
+  {
+    "word": "考え方",
+    "reading": "かんがえかた",
+    "accent": "⑤⑥ ⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 想法，看法，见解，观点",
+    "example": "う。",
+    "exampleTranslation": "对于事物的想法 （看法）不同，观点不 ものの考え方がちが 同。",
+    "category": "N4"
+  },
+  {
+    "word": "考え出す",
+    "reading": "かんがえだす",
+    "accent": "⑤⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 想起来，想出来\n2. 开始思考",
+    "example": "画期的な戦術を考え出 す。",
+    "exampleTranslation": "想到划时代的战术。",
+    "category": "N4"
+  },
+  {
+    "word": "考える",
+    "reading": "かんがえる",
+    "accent": "④③",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 持……意见,有……看法\n2. 研究，探 想，思，思维，思索\n3. 考虑\n4. 讨，系统分析",
+    "example": "い。",
+    "exampleTranslation": "怎么想也想不明 どう考えてもわからな 白；百思不解。",
+    "category": "N4"
+  },
+  {
+    "word": "考え",
+    "reading": "かんがえ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 想法\n2. 意见\n3. 念头，观念，信念\n4. 心思，意图，意思\n5. 考虑，思虑\n6. 指思考，也指思考的事情\n7. 思想， 思考",
+    "example": "なたの役に立ちます。",
+    "exampleTranslation": "终 有一天，你的思考会有助 いつかあなたの考えがあ 于你。",
+    "category": "N4"
+  },
+  {
+    "word": "缶",
+    "reading": "かん",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. （金属制的）罐（子），桶\n2. 罐头 （盒）\n3. （接尾）罐罐装物的量词",
+    "example": "ドラム缶。",
+    "exampleTranslation": "汽油桶。",
+    "category": "N4"
+  },
+  {
+    "word": "硬い",
+    "reading": "かたい",
+    "accent": "⓪②",
+    "partOfSpeech": "形",
+    "meaning": "1. 硬\n2. 坚实，坚固\n3. 坚定\n4. 坚决\n5. 紧\n6. 用力\n7. 可靠\n8. 正派\n9. 说话算 数\n10. 生硬\n11. 顽固\n12. 拘谨，僵硬\n13. 严 厉\n14. (想象)无差，(确信)无疑",
+    "example": "かたく信じて疑わな い。",
+    "exampleTranslation": "坚信不疑。",
+    "category": "N4"
+  },
+  {
+    "word": "看護師",
+    "reading": "かんごし",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. （男或女）护士",
+    "example": "です。",
+    "exampleTranslation": "将来想成为一名护 将来は看護師になりたい 士。",
+    "category": "N4"
+  },
+  {
+    "word": "介護士",
+    "reading": "かいごし",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 护士。",
+    "example": "な方法がある？",
+    "exampleTranslation": "要成为 介護士になるには、どん 护士，有些什么方法？",
+    "category": "N4"
+  },
+  {
+    "word": "看護士",
+    "reading": "かんごし",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 男看护，男护士具有护理伤病者等 疗养或辅助诊疗资格的男子",
+    "example": "格好いいね。",
+    "exampleTranslation": "那个护士 あの看護士のお兄さん、 小哥哥好帅噢。",
+    "category": "N4"
+  },
+  {
+    "word": "片付ける",
+    "reading": "かたづける",
+    "accent": "④",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 整理，收拾，拾掇\n2. 解决，处理\n3. 嫁给\n4. 除掉，消灭\n5. 杀死",
+    "example": "本を片付ける",
+    "exampleTranslation": "整理书。",
+    "category": "N4"
+  },
+  {
+    "word": "片付く",
+    "reading": "かたづく",
+    "accent": "③",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 收拾整齐，整理好\n2. 得到解决\n3. 处 理好\n4. 做完\n5. 卖掉\n6. 出嫁，嫁人",
+    "example": "机の上が片付く。",
+    "exampleTranslation": "桌子 上整理得干净整齐。",
+    "category": "N4"
+  },
+  {
+    "word": "渇く",
+    "reading": "かわく",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 渴，干渴\n2. 渴望，内心的要求",
+    "example": "いた。",
+    "exampleTranslation": "因为出汗所以嗓 汗をかいたのでのどが渇 子干渴。",
+    "category": "N4"
+  },
+  {
+    "word": "構う",
+    "reading": "かまう",
+    "accent": "②",
+    "partOfSpeech": "动·自他五段",
+    "meaning": "1. 管\n2. 顾\n3. 介意\n4. 理睬\n5. 干预（多用 形式，表示“不在意/不关心”）\n6. 于否定形式，表“不管”)\n7. 照顾， 关心\n8. 在意\n9. 有关系（多用于否定 照料\n10. 招待\n11. 调戏，逗弄",
+    "example": "彼なんか構うもんか。",
+    "exampleTranslation": "管他什么的呢。",
+    "category": "N4"
+  },
+  {
+    "word": "格好",
+    "reading": "かっこう",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 姿态，姿势\n2. 装束，打扮\n3. 情况\n4. （人或物的）样子，外形，形状\n5. 合适\n6. 大约，差不多",
+    "example": "妙な格好の石",
+    "exampleTranslation": "形状稀奇 古怪的石头。",
+    "category": "N4"
+  },
+  {
+    "word": "数える",
+    "reading": "かぞえる",
+    "accent": "③",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 算得上，数得着确认为某一范围之 内的事物\n2. 计算，数\n3. 列举，枚举",
+    "example": "人数を数える。",
+    "exampleTranslation": "数人 数。",
+    "category": "N4"
+  },
+  {
+    "word": "掛ける",
+    "reading": "かける",
+    "accent": "②",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 捆上\n2. 撩（水）\n3. 浇\n4. 泼\n5. 倒， 戴上\n6. 蒙上\n7. 盖上\n8. 搭上\n9. 系上\n10. 灌\n11. 称，衡量\n12. 坐（在…上）\n13. 放 费，花\n14. 发动，开动（机器等）\n15. （在…上）\n16. 课（税等）\n17. 缴",
+    "example": "看板を掛ける。",
+    "exampleTranslation": "把牌子 挂在墙上。",
+    "notes": "草树木浇水可以用掛ける, 和设备可以用掛ける,给花 用钥匙给锁上锁可以用掛 万能动词，发动启动机器 ける,开",
+    "category": "N4"
+  },
+  {
+    "word": "掛かる",
+    "reading": "かかる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 等）发动\n2. 着手，从事\n3. 陷入，落 金钱、劳动力、体力等）\n4. （机器 在……（的）手中\n5. 覆盖\n6. 眼看就 垂挂，悬挂，挂上\n7. 花费（时间、 要，即将\n8. 正在进行",
+    "example": "ていない。",
+    "exampleTranslation": "那项事业还 まだその事業には掛かっ 没着手。",
+    "category": "N4"
+  },
+  {
+    "word": "感心",
+    "reading": "かんしん",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 钦佩，赞佩，佩服\n2. 值得赞美，应 该夸奖\n3. 令人吃惊",
+    "example": "にはやくできた。",
+    "exampleTranslation": "钦 佩，钦佩！竟能完成得这 感心、感心、よくこんな 么快。",
+    "category": "N4"
+  },
+  {
+    "word": "悲しがる",
+    "reading": "かなしがる",
+    "accent": "⓪③",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. （他人看来）悲痛，露出难过的表 情",
+    "example": "る。",
+    "exampleTranslation": "他为离别感到悲 彼は別れを悲しがってい 痛。",
+    "category": "N4"
+  },
+  {
+    "word": "单词悲しい",
+    "reading": "发音かなしい",
+    "accent": "音调 ⓪③",
+    "partOfSpeech": "词性形",
+    "meaning": "1. 释义 悲哀的，悲伤的，悲愁的，可悲 的，遗憾的。",
+    "example": "例句 悲しい物語。",
+    "exampleTranslation": "悲哀的故 事。",
+    "notes": "笔记",
+    "category": "N4"
+  },
+  {
+    "word": "彼女",
+    "reading": "かのじょ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 她\n2. 她，女朋友，对象，情妇\n3. 女 朋友，女情人，对象",
+    "example": "だ。",
+    "exampleTranslation": "她是一位出色的数 彼女はりっぱな数学者 学家。",
+    "category": "N4"
+  },
+  {
+    "word": "彼",
+    "reading": "かれ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 他\n2. 彼\n3. 情人，男朋友，对象",
+    "example": "彼は科学者だ。",
+    "exampleTranslation": "他是个 科学家。",
+    "category": "N4"
+  },
+  {
+    "word": "彼ら",
+    "reading": "かれら",
+    "accent": "①",
+    "partOfSpeech": "代名",
+    "meaning": "1. 他们，那伙人，那些人",
+    "example": "彼らには友だちがいな い。",
+    "exampleTranslation": "他们没有朋友。",
+    "category": "N4"
+  },
+  {
+    "word": "家内",
+    "reading": "かない",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 子，内人，爱人（男性对自己妻子 家内，家庭，全家\n2. 我老婆，妻 的谦称）",
+    "example": "6人家内",
+    "exampleTranslation": "全家六口人。",
+    "category": "N4"
+  },
+  {
+    "word": "学習者",
+    "reading": "しゅうがくしゃ",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 学习者",
+    "example": "日本語の学習者。",
+    "exampleTranslation": "日语 学习者。",
+    "category": "N4"
+  },
+  {
+    "word": "学習",
+    "reading": "がくしゅう",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 验为基础，掌握行为和适应的方 学习\n2. 学习心理学上指以过去的经 法\n3. 学习",
+    "example": "学習の手引。",
+    "exampleTranslation": "学习辅 导。",
+    "category": "N4"
+  },
+  {
+    "word": "変える",
+    "reading": "かえる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 改变，变更\n2. 变动",
+    "example": "向きを変える。",
+    "exampleTranslation": "改变方 向。",
+    "category": "N4"
+  },
+  {
+    "word": "変わる",
+    "reading": "かわる",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 众不同\n2. 奇怪，出奇\n3. 改变时间\n4. 变，变化\n5. 改变，转变\n6. 不同，与 改变地点，迁居，迁移",
+    "example": "風向きが変わる",
+    "exampleTranslation": "风向改 变。",
+    "category": "N4"
+  },
+  {
+    "word": "変わり",
+    "reading": "かわり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 正常\n2. 事变，变故\n3. 奇异的，花式 变，变化\n4. 改变，变更\n5. 异状，不 的，怪的",
+    "example": "りもない。",
+    "exampleTranslation": "他的情况没 彼のようすになんの変わ 有任何变化。",
+    "category": "N4"
+  },
+  {
+    "word": "堅い",
+    "reading": "かたい",
+    "accent": "⓪②",
+    "partOfSpeech": "形",
+    "meaning": "1. 住\n2. 可靠，可信有信用\n3. 死板，拘 硬，坚硬，坚固即使用力也不易改 变形态\n4. 坚挺，稳健坚实，靠得 谨，僵硬，庄严，太严肃一本正 经，没有风趣",
+    "example": "かたい鉛筆。",
+    "exampleTranslation": "硬铅笔。",
+    "category": "N4"
+  },
+  {
+    "word": "固い",
+    "reading": "かたい",
+    "accent": "⓪②",
+    "partOfSpeech": "形",
+    "meaning": "1. 态\n2. 结实紧而不宜分离\n3. 人的意 志、态度“坚定、坚决”\n4. （规 则、约定、时间等）严厉，严肃严 格的，严重\n5. 执拗，固执，顽固",
+    "example": "規則が固い",
+    "exampleTranslation": "规则严格",
+    "category": "N4"
+  },
+  {
+    "word": "噛む",
+    "reading": "かむ",
+    "accent": "①",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 石）\n2. 冲刷\n3. 咬\n4. 嚼，咀嚼\n5. 有 咬合\n6. 击岸，拍岸\n7. 冲击（岩 关\n8. 口误",
+    "example": "う。",
+    "exampleTranslation": "恶言恶语地说；以 かんで吐き出すように言 十分讨厌的样子说。",
+    "category": "N4"
+  },
+  {
+    "word": "可哀相",
+    "reading": "かわいそう",
+    "accent": "④",
+    "partOfSpeech": "形动",
+    "meaning": "1. 可怜",
+    "example": "可哀相な子ども。",
+    "exampleTranslation": "可怜 的孩子。",
+    "category": "N4"
+  },
+  {
+    "word": "勝つ",
+    "reading": "かつ",
+    "accent": "①",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 胜，赢\n2. 超过，与他人相比，优于 他人\n3. 胜过，这种元素或趋势比其 他更强\n4. （克服）努力抑制做某事 的冲动",
+    "example": "勝って兜の緒を締め よ。",
+    "exampleTranslation": "胜而不骄。",
+    "category": "N4"
+  },
+  {
+    "word": "元旦",
+    "reading": "がんたん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 元旦，新年",
+    "example": "一年の計は元旦にあ り。",
+    "exampleTranslation": "一年之计在于始。",
+    "category": "N4"
+  },
+  {
+    "word": "係員",
+    "reading": "かかりいん",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 负责人，担任……（的）人员，主 管人员",
+    "example": "と。",
+    "exampleTranslation": "详细情况询问主管 詳細は係員にたずねるこ 人员。",
+    "category": "N4"
+  },
+  {
+    "word": "係り",
+    "reading": "かかり",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 负责人",
+    "example": "係りの者が応対する。",
+    "exampleTranslation": "相关负责人。",
+    "category": "N4"
+  },
+  {
+    "word": "～係",
+    "reading": "～がかり",
+    "accent": "",
+    "partOfSpeech": "接尾",
+    "meaning": "1. （的）人员。（特定の仕事·役目 ……（的）主管人，负责…… を受け持つ人。）",
+    "example": "案内係",
+    "exampleTranslation": "向导；引路人。",
+    "category": "N4"
+  },
+  {
+    "word": "会員",
+    "reading": "かいいん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 会员",
+    "example": "会員を募集する。",
+    "exampleTranslation": "招募 会员。",
+    "category": "N4"
+  },
+  {
+    "word": "代わりに",
+    "reading": "かわりに",
+    "accent": "⓪",
+    "partOfSpeech": "·接副词续",
+    "meaning": "1. 代替\n2. 取代",
+    "category": "N4"
+  },
+  {
+    "word": "代わり",
+    "reading": "かわり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 代替\n2. 代理\n3. 补偿\n4. 报答\n5. 再来一 碗",
+    "example": "た。",
+    "exampleTranslation": "代替辞职者的人来 やめた人のかわりが来 了。",
+    "category": "N4"
+  },
+  {
+    "word": "乾く",
+    "reading": "かわく",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 干燥\n2. 冷淡无感情",
+    "example": "洗濯ものが乾いた。",
+    "exampleTranslation": "洗 的东西干了。",
+    "category": "N4"
+  },
+  {
+    "word": "ガム",
+    "reading": "がむ",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. gum橡皮\n2. 口香糖",
+    "example": "なる。",
+    "exampleTranslation": "嚼口香糖肚子就 ガムを噛んでれば満腹に 饱了。",
+    "category": "N4"
+  },
+  {
+    "word": "ンスタガソリンド",
+    "reading": "んすたがそりんど",
+    "accent": "⑥",
+    "partOfSpeech": "名",
+    "meaning": "1. gasolinestand<和制语>加油站， 街头汽油销售站。美国叫做 gasstation，英国叫做 petrolstation。",
+    "example": "にガソリンを入れます。",
+    "exampleTranslation": "てきたお客さまの自動車 给来到加油站的客人们的 ガソリンスタンドにやっ 汽车加油。",
+    "category": "N4"
+  },
+  {
+    "word": "カーテン",
+    "reading": "かーてん",
+    "accent": "①",
+    "partOfSpeech": "名",
+    "meaning": "1. 幕\n2. 帘子\n3. 屏障\n4. 舞台の幕\n5. 障碍",
+    "example": "窓のカーテン",
+    "exampleTranslation": "窗帘。",
+    "category": "N4"
+  },
+  {
+    "word": "カボチャ",
+    "reading": "かぼちゃ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 南瓜，倭瓜",
+    "category": "N4"
+  },
+  {
+    "word": "かなり",
+    "reading": "かなり",
+    "accent": "①",
+    "partOfSpeech": "·形副词动",
+    "meaning": "1. 颇，颇为\n2. 相当。\n3. 表示出乎意料 的程度。",
+    "example": "かなりな距離。",
+    "exampleTranslation": "相当 （长）的距离。",
+    "category": "N4"
+  },
+  {
+    "word": "驚く",
+    "reading": "おどろく",
+    "accent": "③",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 跳\n2. 惊讶\n3. 惊奇\n4. 惊叹，意想不 惊恐\n5. 惊惧\n6. 害怕，吃惊\n7. 吓了一 到，感到意外",
+    "example": "大いに驚く",
+    "exampleTranslation": "吓一大跳； 大吃一惊。",
+    "category": "N4"
+  },
+  {
+    "word": "单词重たい",
+    "reading": "发音おもたい",
+    "accent": "音调 ⓪",
+    "partOfSpeech": "词性形",
+    "meaning": "1. 释义 重，沉分量多\n2. 感觉沉（重）\n3. 沉 重，沉闷，郁闷心情不愉快，消沉",
+    "example": "例句 このかばんは重たい。",
+    "exampleTranslation": "这个皮包很重。",
+    "notes": "笔记",
+    "category": "N4"
+  },
+  {
+    "word": "送る",
+    "reading": "おくる",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 时间）\n2. 派，派遣，打发\n3. 传送\n4. 送行，送走\n5. 伴送\n6. 度过（某一段 传递\n7. 依次挪动\n8. 用假名标写，给 送\n9. 寄，邮寄\n10. 汇寄\n11. 送（人）， 汉字标上假名",
+    "example": "夏休みを郷里で送る。",
+    "exampleTranslation": "暑假在家乡度过。",
+    "category": "N4"
+  },
+  {
+    "word": "起こる",
+    "reading": "おこる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 起，发生，闹\n2. 发作",
+    "example": "戦争が起こる。",
+    "exampleTranslation": "发生战 争。",
+    "notes": "发生（某事）",
+    "category": "N4"
+  },
+  {
+    "word": "起こす",
+    "reading": "おこす",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 唤起，唤醒，叫醒\n2. 扶起\n3. 立起\n4. 起\n5. 生起\n6. 引起\n7. 惹起\n8. 振起",
+    "example": "疑いを起こす。",
+    "exampleTranslation": "起疑心； 犯疑。",
+    "category": "N4"
+  },
+  {
+    "word": "起きる",
+    "reading": "おきる",
+    "accent": "②",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 起，起来，立起来\n2. 坐起来\n3. 起 床\n4. 不睡\n5. 发生",
+    "example": "た。",
+    "exampleTranslation": "倒伏的稻子立起来 倒れていた稲が起き 了。",
+    "category": "N4"
+  },
+  {
+    "word": "贈る",
+    "reading": "おくる",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 赠送，送礼，馈赠\n2. 授予",
+    "example": "る。",
+    "exampleTranslation": "赠送纪念品给毕业 卒業生に記念品を贈 生。",
+    "category": "N4"
+  },
+  {
+    "word": "贈り物",
+    "reading": "おくりもの",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 礼物，礼品，赠品，献礼",
+    "example": "新年の贈り物。",
+    "exampleTranslation": "新年礼 品。",
+    "category": "N4"
+  },
+  {
+    "word": "覚える",
+    "reading": "おぼえる",
+    "accent": "③",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 会，掌握，懂得\n2. 感觉，感到，觉 记，记住，记得，记忆\n3. 学会\n4. 领 得",
+    "example": "しっかり覚えなさい。",
+    "exampleTranslation": "要牢牢记住。",
+    "notes": "记得，觉得，掌握",
+    "category": "N4"
+  },
+  {
+    "word": "表",
+    "reading": "おもて",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 前部，前面\n2. 正门，前厅\n3. 屋外， 表面，面儿，正面\n4. 外表，外观\n5. 户外，外边，外头",
+    "example": "本の表。",
+    "exampleTranslation": "书皮。",
+    "category": "N4"
+  },
+  {
+    "word": "行う",
+    "reading": "おこなう",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 行，做，办。\n2. 实行，进行，施 行，执行，履行。\n3. 举行。",
+    "example": "彼は口ばかりで行わな い。",
+    "exampleTranslation": "他光说不练。",
+    "category": "N4"
+  },
+  {
+    "word": "落とす",
+    "reading": "おとす",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 使降落，弄下，往下投，摔下\n2. 弄 丢，遗失，失落",
+    "example": "爆弾を落とす。",
+    "exampleTranslation": "扔炸弹。",
+    "category": "N4"
+  },
+  {
+    "word": "落ちる",
+    "reading": "おちる",
+    "accent": "②",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 落下，降落，掉下来，坠落\n2. 掉， 落\n3. 脱落\n4. 剥落\n5. 褪落\n6. 没考中\n7. 落选，落后\n8. 陷落\n9. （柔道）气 绝\n10. 断气，晕过去\n11. 亡命\n12. 逃遁",
+    "example": "猿も木から落ちる",
+    "exampleTranslation": "智者 千虑，必有一失。",
+    "category": "N4"
+  },
+  {
+    "word": "押し入れ",
+    "reading": "おしいれ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 作的放被褥等物品的场所。推入式 壁橱，壁柜。在日式房间中设计制 壁橱，和式房中放寝具等的壁橱。",
+    "example": "ない。",
+    "exampleTranslation": "壁橱里的杂志不 押し入れにあった雑誌が 见了。",
+    "category": "N4"
+  },
+  {
+    "word": "折れる",
+    "reading": "おれる",
+    "accent": "②",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 折断\n2. 折叠\n3. 拐弯\n4. 屈服",
+    "example": "本のページが折れていま すよ。",
+    "exampleTranslation": "书页折了呀。",
+    "category": "N4"
+  },
+  {
+    "word": "折る",
+    "reading": "おる",
+    "accent": "①",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 折断\n2. 折叠\n3. 叠纸\n4. 中断\n5. 封笔\n6. （使）伤心",
+    "example": "ページの端を折る。",
+    "exampleTranslation": "把 页角折起来。",
+    "category": "N4"
+  },
+  {
+    "word": "恐ろしい",
+    "reading": "おそろしい",
+    "accent": "④",
+    "partOfSpeech": "形",
+    "meaning": "1. 可怕\n2. 惊人，非常，厉害",
+    "example": "恐ろしい顔をしてい る。",
+    "exampleTranslation": "一副可怕的脸。",
+    "category": "N4"
+  },
+  {
+    "word": "思い出す",
+    "reading": "おもいだす",
+    "accent": "④⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 记起回忆起",
+    "example": "死んだ戦友を思い出す。",
+    "exampleTranslation": "想起死去的战友。",
+    "category": "N4"
+  },
+  {
+    "word": "御陰",
+    "reading": "おかげ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. （神佛的）保佑，庇护\n2. 帮助，恩 惠\n3. 托……的福，沾……的光，幸 亏……，归功于……\n4. 由于……缘 故\n5. 亏得，怪，多亏",
+    "example": "た。",
+    "exampleTranslation": "神的保佑下合格 神様の御陰で合格し 了。",
+    "category": "N4"
+  },
+  {
+    "word": "屋上",
+    "reading": "おくじょう",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 屋顶（上），房顶（上），房上 面，屋顶平台",
+    "example": "屋上庭園。",
+    "exampleTranslation": "屋顶花园。",
+    "category": "N4"
+  },
+  {
+    "word": "居る",
+    "reading": "おる",
+    "accent": "①",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 长，生活\n2. 正在……，……着\n3. 在，有\n4. 居住\n5. 停留\n6. 生存，生 （动作完成）了\n7. 在",
+    "example": "ります。",
+    "exampleTranslation": "主任因病在静养 主任は病気で静養してお 中。",
+    "category": "N4"
+  },
+  {
+    "word": "大通り",
+    "reading": "おおどおり",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 主要街道\n2. （个别地方）商业街， 大道，大路，大街，（大）马路\n3. 购物街",
+    "example": "大通りや路地。",
+    "exampleTranslation": "大街小 巷。",
+    "category": "N4"
+  },
+  {
+    "word": "大人しい",
+    "reading": "おとなしい",
+    "accent": "④",
+    "partOfSpeech": "形",
+    "meaning": "1. 规规矩矩\n2. 驯顺\n3. 驯服\n4. 听话\n5. 老实\n6. 安详\n7. 温顺，稳重\n8. 善良\n9. 乖\n10. 雅致\n11. 素气",
+    "example": "大人しい娘。",
+    "exampleTranslation": "温顺的姑 娘；安详的姑娘。",
+    "category": "N4"
+  },
+  {
+    "word": "可笑しい",
+    "reading": "おかしい",
+    "accent": "③",
+    "partOfSpeech": "形",
+    "meaning": "1. 可笑的，滑稽的，奇怪的，可疑的",
+    "example": "い。",
+    "exampleTranslation": "这个漫画其实蛮可 この漫画は実におかし 笑的。",
+    "category": "N4"
+  },
+  {
+    "word": "仰る",
+    "reading": "おっしゃる",
+    "accent": "③",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 示尊重的人，表达其 “说话” 的行 尊敬语，用于对长辈、上级等需表 为 。",
+    "example": "仰るとおりです。",
+    "exampleTranslation": "您说得 对。",
+    "category": "N4"
+  },
+  {
+    "word": "主",
+    "reading": "おも",
+    "accent": "①",
+    "partOfSpeech": "形动",
+    "meaning": "1. 主要，重要 （从高处往低处移动）下，降，下",
+    "example": "主な人物。",
+    "exampleTranslation": "主要的人 物。",
+    "category": "N4"
+  },
+  {
+    "word": "下りる",
+    "reading": "おりる",
+    "accent": "②",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 行政机关下发许可、财物等）\n2. 退 可、批准等）获得，批下来（官方 位，卸任从职位上退下\n3. 退出，停 来\n4. （雨、雪，霜）降下\n5. （许 止参与事务\n6. 卸下负担、松一口",
+    "example": "幕がおりる。",
+    "exampleTranslation": "幕布降 下。",
+    "category": "N4"
+  },
+  {
+    "word": "オーバー",
+    "reading": "おーばー",
+    "accent": "①",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. （被）上锁 超过，越过\n2. 夸张，夸大\n3. 超过， 结束",
+    "example": "予算をオーバーする。",
+    "exampleTranslation": "超出预算。",
+    "category": "N4"
+  },
+  {
+    "word": "お釣り",
+    "reading": "おつり",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 找零，找头\n2. 有剩余",
+    "example": "りが来る。",
+    "exampleTranslation": "挣了不少生 家計費を十分賄ってお釣 活费，能剩下不少。",
+    "category": "N4"
+  },
+  {
+    "word": "お見舞い",
+    "reading": "おみまい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 探望\n2. 看望。",
+    "example": "病院へお見舞いに行 く。",
+    "exampleTranslation": "去医院看望。",
+    "category": "N4"
+  },
+  {
+    "word": "お礼",
+    "reading": "おれい",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 感谢，谢意\n2. 回敬，回礼，还礼， 答礼谢礼，报酬，酬谢",
+    "example": "お礼を述べる。",
+    "exampleTranslation": "道谢， 致谢。",
+    "category": "N4"
+  },
+  {
+    "word": "お目にかかる",
+    "reading": "おめにかかる",
+    "accent": "⑤",
+    "partOfSpeech": "惯用",
+    "meaning": "1. 见到「会う」的自谦语",
+    "example": "す。",
+    "exampleTranslation": "能见到您是我的荣 お目にかかって光栄で 幸。",
+    "category": "N4"
+  },
+  {
+    "word": "お宅",
+    "reading": "おたく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 您，您那里，贵处\n2. 您的家，贵 府，府上\n3. 宅男（女）\n4. 贵公司",
+    "example": "伺います。",
+    "exampleTranslation": "明天拜访贵公 あしたお宅の田中さんに 司的田中。",
+    "category": "N4"
+  },
+  {
+    "word": "お子さん",
+    "reading": "おこさん",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. （您的）孩子，令郎，令爱",
+    "example": "さんが座っていまし た。",
+    "exampleTranslation": "在中间的是夫妻二 婦、その前に二人のお子 人，在他们前面坐着的是",
+    "category": "N4"
+  },
+  {
+    "word": "お嬢さん",
+    "reading": "おじょうさん",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 令爱,（您的）女儿\n2. 千金\n3. 小姐， 姑娘\n4. 女青年\n5. 娇生惯养的小姐",
+    "example": "か。",
+    "exampleTranslation": "令爱已经上学了 お嬢さんはもう学校です 吗。",
+    "category": "N4"
+  },
+  {
+    "word": "お前",
+    "reading": "おまえ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. （男性用语）（对同辈或晚辈的称 呼）你\n2. 神前，佛前\n3. 贵人面前",
+    "example": "お前にこれをくれてやろ う。",
+    "exampleTranslation": "这个给你吧。",
+    "category": "N4"
+  },
+  {
+    "word": "おかず",
+    "reading": "おかず",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 菜，菜肴［备齐多种东西之意，原 为女性用语］",
+    "example": "しをくう",
+    "exampleTranslation": "就着咸菜吃 つけ物をおかずにしてめ 饭。",
+    "category": "N4"
+  },
+  {
+    "word": "おいでになる",
+    "reading": "おいでになる",
+    "accent": "⑤",
+    "partOfSpeech": "动",
+    "meaning": "1. 去，来，在，光临，驾临。",
+    "example": "になります。",
+    "exampleTranslation": "不久将光临 まもなくこちらへおいで 此地。",
+    "category": "N4"
+  },
+  {
+    "word": "遠慮",
+    "reading": "えんりょ",
+    "accent": "⓪①",
+    "partOfSpeech": "他动·サ名·变",
+    "meaning": "1. 远虑，深谋远虑\n2. 客气\n3. 回避\n4. 谦 辞\n5. 谢绝\n6. 毫不客气地",
+    "example": "遠慮を欠く。",
+    "exampleTranslation": "缺乏远 虑。",
+    "category": "N4"
+  },
+  {
+    "word": "蝦",
+    "reading": "えび",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 虾",
+    "example": "えびの鯛交じり。",
+    "exampleTranslation": "鱼龙 混杂。",
+    "category": "N4"
+  },
+  {
+    "word": "海老",
+    "reading": "えび",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 虾\n2. 虾",
+    "example": "海老のむき身。",
+    "exampleTranslation": "虾仁。",
+    "category": "N4"
+  },
+  {
+    "word": "枝",
+    "reading": "えだ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 树枝\n2. 分支",
+    "example": "太い枝。",
+    "exampleTranslation": "粗枝。",
+    "category": "N4"
+  },
+  {
+    "word": "レーエスカター",
+    "reading": "れーえすかたー",
+    "accent": "④",
+    "partOfSpeech": "名",
+    "meaning": "1. escalator自动扶梯\n2. 能自动升学、 晋级的机制",
+    "example": "エスカレーターにの る。",
+    "exampleTranslation": "坐自动扶梯。",
+    "category": "N4"
+  },
+  {
+    "word": "单词馬",
+    "reading": "发音うま",
+    "accent": "音调 ②",
+    "partOfSpeech": "词性名",
+    "meaning": "1. 释义 马\n2. 脚凳子\n3. 马\n4. 木马，鞍马",
+    "example": "例句 馬に乗る。",
+    "exampleTranslation": "骑马，上 马。",
+    "notes": "笔记",
+    "category": "N4"
+  },
+  {
+    "word": "裏",
+    "reading": "うら",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. （面）\n2. 背后\n3. 内幕，幕后\n4. 背 里儿，里子，底子\n5. 内部，里 面\n6. 后（面），后边",
+    "example": "色紙の裏。",
+    "exampleTranslation": "彩纸的背 面。",
+    "category": "N4"
+  },
+  {
+    "word": "腕",
+    "reading": "うで",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "1. 前臂\n2. 胳膊，臂\n3. 上臂\n4. 本事，本 领，技能，能耐『口』\n5. 腕力，膂 力，力气〔腕力力〕\n6. 支架，托 架\n7. 扶手\n8. 电唱头臂",
+    "example": "腕を貸す",
+    "exampleTranslation": "给予帮助；助 一臂之力。",
+    "category": "N4"
+  },
+  {
+    "word": "羨ましい",
+    "reading": "うらやましい",
+    "accent": "⑤",
+    "partOfSpeech": "形",
+    "meaning": "1. 羡慕的，眼红的",
+    "example": "羨ましい。",
+    "exampleTranslation": "那里的居住 あのところの住宅事情が 状况令人羡慕。",
+    "category": "N4"
+  },
+  {
+    "word": "移る",
+    "reading": "うつる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 颜色）\n2. （疾病、火势等）蔓延， 移动，搬家\n3. 变心\n4. 染上（香味或 感染\n5. 时光流逝\n6. 转移，改变",
+    "example": "移れば変わる。",
+    "exampleTranslation": "时过境 迁。",
+    "category": "N4"
+  },
+  {
+    "word": "移す",
+    "reading": "うつす",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 移\n2. 挪\n3. 搬\n4. 迁\n5. 转移，改变\n6. 度，度过\n7. 调动，变动\n8. 薰染，染 上颜色、香味\n9. （病）传染\n10. 开 始，着手",
+    "example": "家を移す。",
+    "exampleTranslation": "搬家。",
+    "category": "N4"
+  },
+  {
+    "word": "植わる",
+    "reading": "うわる",
+    "accent": "⓪",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 栽着",
+    "example": "植わっていた。",
+    "exampleTranslation": "院子里 庭にはいろいろのばらが 栽着各种玫瑰。",
+    "category": "N4"
+  },
+  {
+    "word": "植える",
+    "reading": "うえる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 栽植\n2. 嵌入\n3. 接种培育",
+    "example": "花を植える。",
+    "exampleTranslation": "栽花。",
+    "category": "N4"
+  },
+  {
+    "word": "打つ",
+    "reading": "うつ",
+    "accent": "①",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 么\n2. 标上记号\n3. 采取必要的措施或 去\n4. 以打的动作做什么或制作什 做必要的动作\n5. 马上反应，马上见 打或以类似打的动作，一下子打进 效",
+    "example": "碁を打つ。",
+    "exampleTranslation": "下围棋。",
+    "category": "N4"
+  },
+  {
+    "word": "嬉しい",
+    "reading": "うれしい",
+    "accent": "③",
+    "partOfSpeech": "形",
+    "meaning": "1. 高兴，快活，喜悦，欢喜",
+    "example": "嬉しい日。",
+    "exampleTranslation": "高兴的日 子。",
+    "category": "N4"
+  },
+  {
+    "word": "受付係",
+    "reading": "けがかうけつり",
+    "accent": "⑤",
+    "partOfSpeech": "名",
+    "meaning": "1. 旅馆、事务所等雇用的)接待员，受 理员",
+    "example": "親切な受付係",
+    "exampleTranslation": "热情的接 待员",
+    "category": "N4"
+  },
+  {
+    "word": "受付",
+    "reading": "うけつけ",
+    "accent": "⓪",
+    "partOfSpeech": "名·サ变",
+    "meaning": "1. 受理，接受\n2. 接待员，传达员\n3. 传 达室，接待处\n4. （医院）挂号处",
+    "example": "受付時間。",
+    "exampleTranslation": "受理时间。",
+    "category": "N4"
+  },
+  {
+    "word": "受ける",
+    "reading": "うける",
+    "accent": "②",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 承蒙，受到\n2. 接到\n3. 得到\n4. 奉\n5. 承 接\n6. 认为，理解\n7. 受欢迎\n8. 接受， 答应，承认\n9. 遭受\n10. 应，考\n11. 继 承，接续\n12. 稟承，享受",
+    "example": "冗談をまに受ける。",
+    "exampleTranslation": "把 玩笑当作真事。",
+    "category": "N4"
+  },
+  {
+    "word": "動く",
+    "reading": "うごく",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 动，发动，动员，转动\n2. 动摇心 情，想法发生变化\n3. 变动，变更状 态或情况发生变化\n4. 确凿无疑（下 接否定）确实而不可改变\n5. 调动，",
+    "example": "電気で動く。",
+    "exampleTranslation": "电动。",
+    "category": "N4"
+  },
+  {
+    "word": "写る",
+    "reading": "うつる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 照像，拍照，映现在胶片、相纸上 留下影像\n2. 透明",
+    "example": "写っている。",
+    "exampleTranslation": "这张照片 この写真はたいそうよく 照得很好。",
+    "category": "N4"
+  },
+  {
+    "word": "写す",
+    "reading": "うつす",
+    "accent": "②",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. 抄，誊，摹\n2. 拍照\n3. 描写,描绘",
+    "example": "カラーで写す。",
+    "exampleTranslation": "用彩色胶 片照像。",
+    "category": "N4"
+  },
+  {
+    "word": "内側",
+    "reading": "ないそく",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 物の内面。うちがわ。",
+    "category": "N4"
+  },
+  {
+    "word": "内側",
+    "reading": "うちがわ",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 内侧，里面",
+    "example": "内側からかぎをかけ る。",
+    "exampleTranslation": "从里面锁上。",
+    "category": "N4"
+  },
+  {
+    "word": "裡",
+    "reading": "うち",
+    "accent": "⓪",
+    "partOfSpeech": "名·形动",
+    "meaning": "1. 表示事物行进之间发生的情况。",
+    "example": "暗黙のうちに理解しあ う。",
+    "exampleTranslation": "默契地互相理解。",
+    "category": "N4"
+  },
+  {
+    "word": "内",
+    "reading": "うち",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 中\n2. 时候\n3. 期间\n4. 以前\n5. 趁\n6. 内， 内部，里面，里边，里头\n7. 内\n8. 中\n9. 我，我们\n10. 我",
+    "example": "内の社長",
+    "exampleTranslation": "我们公司的社 长。",
+    "category": "N4"
+  },
+  {
+    "word": "伺う",
+    "reading": "うかがう",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. う」的谦让语\n2. 拜访，访问。「訪 请教，打听。「聞く·尋ねる·問 ねる·訪問する」的谦让语",
+    "example": "があります",
+    "exampleTranslation": "还要向您打 もうひとつ伺いたいこと 听〔请教〕一件事。",
+    "category": "N4"
+  },
+  {
+    "word": "うっとり",
+    "reading": "うっとり",
+    "accent": "③",
+    "partOfSpeech": "·形副词动",
+    "meaning": "1. 发呆\n2. 陶醉\n3. 入迷",
+    "example": "たっている。",
+    "exampleTranslation": "陶醉在回 うっとりと思い出にひ 忆中。",
+    "category": "N4"
+  },
+  {
+    "word": "行ける",
+    "reading": "いける",
+    "accent": "⓪",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 好，不坏\n2. 好吃\n3. 好喝\n4. 能喝酒， 能去，能走\n5. 会，行，能搞\n6. 很 海量",
+    "example": "歩いて5分で行ける。",
+    "exampleTranslation": "走 着去五分钟可以到。",
+    "category": "N4"
+  },
+  {
+    "word": "行き先",
+    "reading": "いきさき",
+    "accent": "⓪",
+    "partOfSpeech": "名",
+    "meaning": "1. 去的地方，目的地",
+    "example": "行先の場所",
+    "exampleTranslation": "目的地的地 点",
+    "category": "N4"
+  },
+  {
+    "word": "苛める",
+    "reading": "いじめる",
+    "accent": "⓪",
+    "partOfSpeech": "·一他动段",
+    "meaning": "1. 欺负\n2. 虐待\n3. 捉弄\n4. 折磨",
+    "example": "下級生を苛める。",
+    "exampleTranslation": "欺负 低年级的学生。",
+    "category": "N4"
+  },
+  {
+    "word": "至る",
+    "reading": "いたる",
+    "accent": "②",
+    "partOfSpeech": "·五自动段",
+    "meaning": "1. 至，到\n2. 到来，来临\n3. 达，及，到 达\n4. 成为，完成（结果）\n5. 多项事 物中强调一项\n6. （多用否定形）照 顾不周，不周到",
+    "example": "それがもとで彼は一大発 見をなすに至った。",
+    "exampleTranslation": "由 此他完成了一个很大的发 现。",
+    "category": "N4"
+  },
+  {
+    "word": "生きる",
+    "reading": "いきる",
+    "accent": "②",
+    "partOfSpeech": "·一自动段",
+    "meaning": "1. 生命\n2. 生活，维持生活，以……为 生动，栩栩如生\n3. 活，生存，保持 生\n4. 为……生活\n5. 生活于……之中",
+    "example": "90歳まで生きる。",
+    "exampleTranslation": "活到 九十岁。",
+    "category": "N4"
+  },
+  {
+    "word": "いただく",
+    "reading": "いただく",
+    "accent": "⓪",
+    "partOfSpeech": "·五他动段",
+    "meaning": "1. （「もらう」的自谦语）\n2. 请……\n3. 顶，戴，顶在头上\n4. 顶在 领受，拜领，蒙……赐给\n5. 要 上面\n6. 拥戴\n7. 吃\n8. 喝\n9. 抽",
+    "example": "い。",
+    "exampleTranslation": "今天晚上请来一 今晩おいでいただきた 趟。",
+    "category": "N4"
+  },
+  {
+    "word": "従兄弟",
+    "reading": "けいてじゅうい",
+    "accent": "③",
+    "partOfSpeech": "名",
+    "meaning": "1. 堂兄弟，表兄弟",
+    "example": "は正常であった。",
+    "exampleTranslation": "其 番転位染色体で、表現型 母、姨、舅舅、表哥均为 従兄弟は皆、患児同様３ 与患儿相同的３号易位染",
+    "category": "N4"
+  }
+]

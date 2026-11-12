@@ -1,0 +1,776 @@
+﻿[
+  {
+    "word": "をちゅうしんに 〜を中 心に",
+    "partOfSpeech": "文法",
+    "meaning": "以……为中心；把……作为重点。 日本は東京を中心に経済 が発展している。",
+    "exampleTranslation": "日本 以东京为中心发展经济。",
+    "category": "N3"
+  },
+  {
+    "word": "〜といえば 〜といえば",
+    "partOfSpeech": "文法",
+    "meaning": "提出话题中出现的词语，导入到与 该词语相关的其他话题。；提 起……，说起……；姑且承人…… 这件事，之后表述真正想说的事 情。；姑且承认……这件事，之后 表述真正想说的事情。 松本さんのうちのお嬢さん、かわいいといえばかわいいけど、ちょっとわがままね。",
+    "exampleTranslation": "松本家的千 金，要说可爱也很可爱， 就是有点任性啊。",
+    "category": "N3"
+  },
+  {
+    "word": "〜によって ①⓪ 〜によって",
+    "partOfSpeech": "文法",
+    "meaning": "以……的手段、方法来……。 通 过…… インターネットによってたくさんの情報を知れるようになりました。",
+    "exampleTranslation": "能 通过互联网获得很多信 息。",
+    "category": "N3"
+  },
+  {
+    "word": "〜から 〜にかけて 〜から〜にかけて",
+    "partOfSpeech": "文法",
+    "meaning": "从……到…… 昨夜は10時から11時にかけて、地震が2回あった。",
+    "exampleTranslation": "昨晚10点到11点发 生了两次地震。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ほど 〜はない 〜ほど〜はない",
+    "partOfSpeech": "文法",
+    "meaning": "没有比……更……。 ワンピースほど面白い漫 画はない。",
+    "exampleTranslation": "没有比海贼 王更有趣的漫画了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜も〜 ば、〜 も 〜も〜 ば、〜 も",
+    "partOfSpeech": "文法",
+    "meaning": "有……，也有……；既……又…… この携帯は値段も安ければ、機能も多い。コスパ 最強。",
+    "exampleTranslation": "这种手机不仅价 格便宜，而且功能也多。 性价比最高。",
+    "category": "N3"
+  },
+  {
+    "word": "〜はもちろん 〜はもちろん",
+    "partOfSpeech": "文法",
+    "meaning": "……自不必说；不用说……。 私は旅行が嫌いなので、 海外はもちろん、他の県 にも行ったことがない。",
+    "exampleTranslation": "我不喜欢旅行，所 以别说国外了，其他县我 也没去过。",
+    "category": "N3"
+  },
+  {
+    "word": "〜をつうじて・〜 をとおして 〜を通 じて・〜 を通して",
+    "partOfSpeech": "文法",
+    "meaning": "通过……，以……为手段；在…… 期间一直……。 あの地方は、1年を通じて雨が多い。",
+    "exampleTranslation": "那个地方 一年到头降雨很多。",
+    "category": "N3"
+  },
+  {
+    "word": "〜につれて・〜 にしたがって 〜につれて・〜 にしたがって",
+    "partOfSpeech": "文法",
+    "meaning": "随着・・・。一方发生变化的同 时，另一方也发生变化。；随 着…… 台風の接近につれて、雨 や風が強くなってきた。",
+    "exampleTranslation": "随着台风的临近， 雨势和风势都增强了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ついでに 〜ついでに",
+    "partOfSpeech": "文法",
+    "meaning": "顺便……。 散歩のついでに、コンビニに行く。",
+    "exampleTranslation": "散步的时候 顺便去便利店。",
+    "category": "N3"
+  },
+  {
+    "word": "〜とたん （に） 〜とたん （に）",
+    "partOfSpeech": "文法",
+    "meaning": "一……就……；刚……就…… 国から来た手紙を見たとたん、彼女は泣き出してしまった。",
+    "exampleTranslation": "一看到老家 来的信，她便哭了出来。",
+    "category": "N3"
+  },
+  {
+    "word": "〜いっぽうだ 〜一方 だ",
+    "partOfSpeech": "文法",
+    "meaning": "不断地……；越来越……。 \"忙しくて、積みゲームが増える 一方です。\"",
+    "exampleTranslation": "\"太忙了，买了不 玩 的游戏只会越来越 多。\"",
+    "category": "N3"
+  },
+  {
+    "word": "〜てからでないと・〜 てからでなければ 〜てからでないと・〜 てからでなければ",
+    "partOfSpeech": "文法",
+    "meaning": "如果不先……就无法……。 実際に実物を見てからでないと、購入するかどうか決められません。",
+    "exampleTranslation": "如 果不看实物的话，没法确 定到底买不买。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ばかりでなく 〜ばかりでなく",
+    "partOfSpeech": "文法",
+    "meaning": "不仅……。 彼女は英語ばかりでなく、韓国語も話せる。",
+    "exampleTranslation": "她不止会说英语，也会说 韩语。",
+    "category": "N3"
+  },
+  {
+    "word": "〜かける/〜 かけの 〜かける / 〜 かけの",
+    "partOfSpeech": "文法",
+    "meaning": "表某事做到一半，还未完成。 テーブルの上に飲みかけのコーヒーがおかれている。",
+    "exampleTranslation": "桌上放着一杯還沒 喝完的咖啡。",
+    "category": "N3"
+  },
+  {
+    "word": "〜さい （に） ・〜さいの 〜際（ に ）・ 〜際の",
+    "partOfSpeech": "文法",
+    "meaning": "……时。 お降りの際にはお足元にご注意ください。",
+    "exampleTranslation": "下车 时请注意脚下。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ている 〜ている",
+    "partOfSpeech": "文法",
+    "meaning": "“……了”；正在做...... もう時間ですか？寂しいですが、これからもずっとずっと応援しています！",
+    "exampleTranslation": "已经到时间了 吗？ 虽然很舍不 得，但我今后 一 直支持你的！",
+    "category": "N3"
+  },
+  {
+    "word": "にかぎる 〜に限 る",
+    "partOfSpeech": "文法",
+    "meaning": "限于……；只限……；……是最好 的。 参加者は女性に限る。",
+    "exampleTranslation": "参加者仅限于女性。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ことはない 〜ことはない",
+    "partOfSpeech": "文法",
+    "meaning": "没必要、用不着……。 たくさん頑張ったんだから、できなくてもがっかりすることはないよ。",
+    "exampleTranslation": "正因为十分努力地去做 了，就算做不到也不必过 于失望。",
+    "category": "N3"
+  },
+  {
+    "word": "〜というのは 〜のことだ 〜というのは〜のことだ",
+    "partOfSpeech": "文法",
+    "meaning": "所谓……就是…… 名大というのは、名古屋 大学のことだ。",
+    "exampleTranslation": "名大就 是名古屋大学。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ために 〜ために",
+    "partOfSpeech": "文法",
+    "meaning": "因为…… たくさん雨が降ったために、洪水になりました。",
+    "exampleTranslation": "因为暴雨，导致洪 水泛滥。",
+    "category": "N3"
+  },
+  {
+    "word": "~には 〜には",
+    "partOfSpeech": "文法",
+    "meaning": "要......，为了...... 本を借りるには、貸出 カードが必要です。",
+    "exampleTranslation": "想借 书的话，必须要有借书 卡。",
+    "category": "N3"
+  },
+  {
+    "word": "〜としても・〜 にしても・〜 にしろ・〜 にせよ 〜としても・〜 にしても・〜 にしろ・〜 にせよ",
+    "partOfSpeech": "文法",
+    "meaning": "即使……是事实，说话人的情绪也 不受其影响。；即使…… 何をするにせよ、心を込 めて取り組みたい。",
+    "exampleTranslation": "无 论做什么，都想尽心而 为。",
+    "category": "N3"
+  },
+  {
+    "word": "〜うえ （に） 〜上 （に）",
+    "partOfSpeech": "文法",
+    "meaning": "不仅…，而且・・・。 彼は英語が話せる上に、 中国語もできる。",
+    "exampleTranslation": "他不 仅会说英语，而且还会中 文。",
+    "category": "N3"
+  },
+  {
+    "word": "お〜ですお〜です",
+    "partOfSpeech": "文法",
+    "meaning": "表尊敬。 どのようなお部屋をお探 しですか。",
+    "exampleTranslation": "您需要什么 样的房间呢？",
+    "category": "N3"
+  },
+  {
+    "word": "〜しかない・〜 ほかない 〜しかない・〜 ほかない",
+    "partOfSpeech": "文法",
+    "meaning": "只能……。 ここまで来たら、ゴールするまで走り続けるしかない。",
+    "exampleTranslation": "都到这里了，只 能一直坚持走到终点了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜だらけ 〜だらけ",
+    "partOfSpeech": "文法",
+    "meaning": "有很多……，全是……。",
+    "category": "N3"
+  },
+  {
+    "word": "〜だろう 〜だろう",
+    "partOfSpeech": "文法",
+    "meaning": "……吧。 空に雲がたくさんあるから、もうすぐ雨が降るだろう。",
+    "exampleTranslation": "天上的云很厚， 应该快要下雨了吧。",
+    "category": "N3"
+  },
+  {
+    "word": "〜なあ 〜なあ",
+    "partOfSpeech": "文法",
+    "meaning": "……啊。 今日は本当に暑いなあ。",
+    "exampleTranslation": "今天真热啊。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ているばあいはない 〜ている場合 はない",
+    "partOfSpeech": "文法",
+    "meaning": "不应该是做……的时候。 東京大学へ行きたいなら、こんなところで遊んでいる場合じゃないでしょう。今すぐ家に帰って勉強しなさい。",
+    "exampleTranslation": "你想 考上东京大学的话，就不 应该在这里玩乐。现在马 上回家去学习。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ようとする 〜ようとする",
+    "partOfSpeech": "文法",
+    "meaning": "刚要，正要……；准备……时；想 要…… 出かけようとした時、雨 が降ってきました。",
+    "exampleTranslation": "我 正打算出门的时候，下起 雨来了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜わけがない 〜わけがない",
+    "partOfSpeech": "文法",
+    "meaning": "绝对不可能……，……是无法想象 的。 推しがそんなことをするわけがありません。",
+    "exampleTranslation": "\"我 推绝不可能做那 种事。\"",
+    "category": "N3"
+  },
+  {
+    "word": "〜にわたって 〜にわたって",
+    "partOfSpeech": "文法",
+    "meaning": "涉及……；一直……；在……范围 内 日本全域にわたって台風 の影響が出ています。",
+    "exampleTranslation": "日 本全国都受到了台风的影 响。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ぶり・ 〜っぷり 〜ぶり ・〜っぷり",
+    "partOfSpeech": "文法",
+    "meaning": "……的样子。；经过很长时 间，……。 彼の生活ぶりを見ていると、将来が心配になる。",
+    "exampleTranslation": "看着他现在生活的 样子，真为他的将来担 心。",
+    "category": "N3"
+  },
+  {
+    "word": "〜たところ 〜たところ",
+    "partOfSpeech": "文法",
+    "meaning": "……后，反而……。 ノートパソコンの代わりにタブレットを買ってみたところ、思ったよりも 使いやすかった。",
+    "exampleTranslation": "没有 买笔记本电脑，反而买了 平板电脑，结果比想象中 要好用。",
+    "category": "N3"
+  },
+  {
+    "word": "〜とか〜とか 〜とか〜とか",
+    "partOfSpeech": "文法",
+    "meaning": "……和……之类的 休日はテレビを見るとか、買い物するとかして 過ごすことが多い",
+    "exampleTranslation": "休息 日时一般看看电视、买买 东西。",
+    "category": "N3"
+  },
+  {
+    "word": "〜にたいして 〜に対 して",
+    "partOfSpeech": "文法",
+    "meaning": "面对……，对于……",
+    "category": "N3"
+  },
+  {
+    "word": "〜からには 〜からには",
+    "partOfSpeech": "文法",
+    "meaning": "既然……，就……。 学生であるからには、よく勉強しなければならない。",
+    "exampleTranslation": "既然是学生，就必 须好好学习。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ば〜 ほど 〜ば〜 ほど",
+    "partOfSpeech": "文法",
+    "meaning": "越……越……。 駅に近ければ近いほど、 便利です。",
+    "exampleTranslation": "离车站越近越 方便。",
+    "category": "N3"
+  },
+  {
+    "word": "〜っけ 〜っけ",
+    "partOfSpeech": "文法",
+    "meaning": "是……吗？",
+    "category": "N3"
+  },
+  {
+    "word": "〜ことになっている ~ことになっている",
+    "partOfSpeech": "文法",
+    "meaning": "按规矩、习惯是如此。 このホテルでは、チェックインは午後3時以降のことになっています。",
+    "exampleTranslation": "这 家酒店规定，办理入住是 在下午3点以后。",
+    "category": "N3"
+  },
+  {
+    "word": "〜にしたがって・にしたがい 〜にしたがって・にしたがい",
+    "partOfSpeech": "文法",
+    "meaning": "随着…… 命令にしたがって行動してください。",
+    "exampleTranslation": "请跟随命 令行动。",
+    "category": "N3"
+  },
+  {
+    "word": "〜がち 〜がち",
+    "partOfSpeech": "文法",
+    "meaning": "经常……，容易……。 \"異世界転生ものは、 チート 能力持ちがちですよね。\"",
+    "exampleTranslation": "\"异世界转生 番， 主角往往都自带 外 挂能力。\"",
+    "category": "N3"
+  },
+  {
+    "word": "〜にたいして 〜に対 して",
+    "partOfSpeech": "文法",
+    "meaning": "与……相比。 兄は活発なのに対して、 弟はおとなしい性格 だ。",
+    "exampleTranslation": "相对于哥哥活泼的 性格，弟弟更加沉稳。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ずに 〜ずに",
+    "partOfSpeech": "文法",
+    "meaning": "没有……，不……。",
+    "category": "N3"
+  },
+  {
+    "word": "〜わけではない/わけじゃない 〜わけではない / わけじゃない",
+    "partOfSpeech": "文法",
+    "meaning": "并非…… 眠くないわけではないが 寝られない。",
+    "exampleTranslation": "虽然不是 不困但是睡不着。",
+    "category": "N3"
+  },
+  {
+    "word": "つい〜 てしまうつい〜 てしまう",
+    "partOfSpeech": "文法",
+    "meaning": "一不小心就……。 勉強しなければいけないと思っているが、ついアニメを見てしまう。",
+    "exampleTranslation": "虽 然想着不学习不行，但一 不留神就看起了动漫。",
+    "category": "N3"
+  },
+  {
+    "word": "〜をこめて 〜を込 めて",
+    "partOfSpeech": "文法",
+    "meaning": "集中，倾注 母の誕生日に、こころを 込めてセーターを編んだ。",
+    "exampleTranslation": "为母亲生日倾注心 血编织了件毛衣。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ようがない 〜ようがない",
+    "partOfSpeech": "文法",
+    "meaning": "不能……；无法…… \"公式の設定なので、否 定しようがありません。\"",
+    "exampleTranslation": "\"这是官方设定， 没法反驳。\"",
+    "category": "N3"
+  },
+  {
+    "word": "〜のでしょうか・〜 んでしょうか 〜のでしょうか・〜 んでしょうか",
+    "partOfSpeech": "文法",
+    "meaning": "礼貌的询问。 もし大きい地震が起きたら、どこに逃げれば良いのでしょうか。",
+    "exampleTranslation": "如果发 生了强烈的地震，要逃到 哪里比较好呢？",
+    "category": "N3"
+  },
+  {
+    "word": "〜たがる 〜たがる",
+    "partOfSpeech": "文法",
+    "meaning": "想……。 息子はアニメを見たがっていますが、宿題が終 わっていないので、見させません。",
+    "exampleTranslation": "儿子很想看 动漫，但他的作业还没有 做完，所以不让他看。",
+    "category": "N3"
+  },
+  {
+    "word": "〜じゃない？ 〜じゃない？",
+    "partOfSpeech": "文法",
+    "meaning": "应该是……。 あそこにいる人って、田 中先生じゃない？",
+    "exampleTranslation": "那边 那个人，不是田中吗？",
+    "category": "N3"
+  },
+  {
+    "word": "〜ということだ 〜ということだ",
+    "partOfSpeech": "文法",
+    "meaning": "听说……，据说……。；也就是 说……。 新聞によると、先日起きた事件の犯人が捕まったということだ。",
+    "exampleTranslation": "新闻上 说，前几天发生的事件的 犯人抓到了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜くらい 〜くらい",
+    "partOfSpeech": "文法",
+    "meaning": "（这么点）之类的……；大约，大 概，左右 駅で友達を1時間ぐらい 待ちました。",
+    "exampleTranslation": "在车站等 了朋友一个小时左右。",
+    "category": "N3"
+  },
+  {
+    "word": "〜にかけては 〜にかけて （は）",
+    "partOfSpeech": "文法",
+    "meaning": "在……方面。",
+    "category": "N3"
+  },
+  {
+    "word": "〜といっても 〜といっても",
+    "partOfSpeech": "文法",
+    "meaning": "虽说……，但实际上……。 わたしは今おばの家に住 んでいる。おばといっても母のきょうだいではなく、祖母の妹にあたる人 だ。",
+    "exampleTranslation": "我现在住在姨妈 家。虽说是姨妈，可并不 是妈妈的姐妹，而是相当 于祖母妹妹的一个人。",
+    "category": "N3"
+  },
+  {
+    "word": "〜べきだ 〜べきだ",
+    "partOfSpeech": "文法",
+    "meaning": "应该……。",
+    "category": "N3"
+  },
+  {
+    "word": "〜によって 〜によって",
+    "partOfSpeech": "文法",
+    "meaning": "因为……的原因。 不景気の影響により、物 を買う人が減ってきた。",
+    "exampleTranslation": "因为经济不景气， 购物的人变少了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜とみえる 〜とみえる",
+    "partOfSpeech": "文法",
+    "meaning": "……一样。 トムさん、朝からなんだから楽しそうだね。何かいいことがあったとみえる。",
+    "exampleTranslation": "汤姆从一大早就看 上去很高兴的样子。应该 是有什么喜事。",
+    "category": "N3"
+  },
+  {
+    "word": "〜うちに 〜うちに",
+    "partOfSpeech": "文法",
+    "meaning": "〜している間に変化が現れる 正在 做......期间发生了变化。 動詞辞書 形",
+    "exampleTranslation": "ている形/ない形+うちに ⚠時 間の幅のある言葉につく。後には、意志的な動作を表す動詞の文 が来る。 前接有时间跨度的词语。 后接不含人的意志性行为动作，以 及表达变化的句子。；正在做...... 期间发生了变化。；時間の制限があって、〜ではなくなった後では 実現が難しいから、その前にしてしまう。 因为有时间限制，如果变 得不......之后那就很难实现，所以 要赶在这种变化发生之前完成。 ⚠ 名詞ーの・動詞辞書形/ている/ない形・イ形い・ナ形な+うちに 時 間の幅のある言葉につく。後には、意志的な動作を表す動詞の文 が来る。 前接有时间跨度的词语。 后续表达人的意志性动作的动词 句。；趁着……。 インターネットで調べているうちに、いろいろなことがわかってきた。/ 上网查阅期间，了解到了 很多事情。",
+    "category": "N3"
+  },
+  {
+    "word": "〜とおりに 〜とおりに",
+    "partOfSpeech": "文法",
+    "meaning": "按……一样；与……相同。 私の思ったとおり、田中 さんは朝寝坊して遅刻した。",
+    "exampleTranslation": "如我所想，田中因 为睡懒觉迟到了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ば〜 のに 〜ば〜 のに",
+    "partOfSpeech": "文法",
+    "meaning": "要是……就好了。 あと５分あれば、全部の 問題を解くことができたのに。",
+    "exampleTranslation": "要是再有五分 钟，我就能做出所有题 了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜こと 〜こと",
+    "partOfSpeech": "文法",
+    "meaning": "需要……。 テストのときは携帯電話 はカバンの中にしまうこと。",
+    "exampleTranslation": "考试时要把手机放 在包里。",
+    "category": "N3"
+  },
+  {
+    "word": "〜さえ 〜ば 〜さえ〜ば",
+    "partOfSpeech": "文法",
+    "meaning": "只要……就……。 有名でさえあれば、どこの大学の何学部でも構いません。",
+    "exampleTranslation": "只要是名校， 任何学校、学科都无所 谓。",
+    "category": "N3"
+  },
+  {
+    "word": "〜にかんして 〜に関 して",
+    "partOfSpeech": "文法",
+    "meaning": "关于……；有关……。",
+    "category": "N3"
+  },
+  {
+    "word": "〜としても 〜としても",
+    "partOfSpeech": "文法",
+    "meaning": "作为……也……；即使…… 也……。 彼女は母としても、妻としても、すばらしい女性 だ。",
+    "exampleTranslation": "她为人母，为人妻 都相当优秀。",
+    "category": "N3"
+  },
+  {
+    "word": "なんて 〜だろうなんて〜だろう",
+    "partOfSpeech": "文法",
+    "meaning": "多么……啊 なんて美味しい料理なんだろう。",
+    "exampleTranslation": "这是多么美味 的饭菜啊。",
+    "category": "N3"
+  },
+  {
+    "word": "~について 〜について",
+    "partOfSpeech": "文法",
+    "meaning": "关于……。 タイの観光地について調 べています。",
+    "exampleTranslation": "调查了一下 泰国的景点。",
+    "category": "N3"
+  },
+  {
+    "word": "〜てはじめて 〜てはじめて",
+    "partOfSpeech": "文法",
+    "meaning": "……之后才……；只有……才…… 山田先生の指導を受けてはじめて、生物の観察が 面白いと思うようになった。",
+    "exampleTranslation": "得到山田老师的指 导以后，我才开始觉得观 察生物很有趣。",
+    "category": "N3"
+  },
+  {
+    "word": "〜おかげで 〜おかげで",
+    "partOfSpeech": "文法",
+    "meaning": "多亏……。 薬を飲んだおかげで、 すっかり元気になりました。",
+    "exampleTranslation": "多亏了每天吃药， 已经完全恢复健康了。",
+    "category": "N3"
+  },
+  {
+    "word": "にちがいない 〜に違 いない",
+    "partOfSpeech": "文法",
+    "meaning": "一定是……，肯定是…… 水の汚染をこのままにしておくと、地球環境はますます悪くなるに違いない。",
+    "exampleTranslation": "水污染就这样放任 不管的话，地球环境一定 会日益恶化的。",
+    "category": "N3"
+  },
+  {
+    "word": "〜にきまっている 〜に決 まっている",
+    "partOfSpeech": "文法",
+    "meaning": "一定......，肯定...... 毎日、ファストフードばかり食べたら病気になるに決まっている。",
+    "exampleTranslation": "每天 都只吃快餐的话，肯定会 生病的。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ものだ 〜ものだ",
+    "partOfSpeech": "文法",
+    "meaning": "表回忆，过去常有的事。 子供の時は、よく友達とサッカーをしたものだ。",
+    "exampleTranslation": "小时候经常和朋友 们一起踢足球。",
+    "category": "N3"
+  },
+  {
+    "word": "〜はべつとして 〜は別 として",
+    "partOfSpeech": "文法",
+    "meaning": "……另当别论 彼女の料理は見た目は別 として、味はとても美味 しい。",
+    "exampleTranslation": "先不说她做的菜 外观如何，味道的话真是 一绝。",
+    "category": "N3"
+  },
+  {
+    "word": "こそ 〜こそ",
+    "partOfSpeech": "文法",
+    "meaning": "正是…… [今年こそ]日本語能力試 験に通（とお）ってみせる。",
+    "exampleTranslation": "今年我定會通過日 語能力考試。",
+    "category": "N3"
+  },
+  {
+    "word": "〜さえ 〜さえ",
+    "partOfSpeech": "文法",
+    "meaning": "甚至连…… ジョンさんは1年も日本 語を勉強したのに、ひらがなさえ書けない。",
+    "exampleTranslation": "约 翰明明学了1年日语了， 连平假名都不会写。",
+    "category": "N3"
+  },
+  {
+    "word": "〜としたら 〜としたら",
+    "partOfSpeech": "文法",
+    "meaning": "如果……。 もし、ここに100万円 あったとしたら、何に使 いますか。",
+    "exampleTranslation": "如果有100 万，你要用来做什么？",
+    "category": "N3"
+  },
+  {
+    "word": "〜において・〜 における 〜において・〜 における",
+    "partOfSpeech": "文法",
+    "meaning": "在…… いままでの研究に於けるデータを整理しておいた。",
+    "exampleTranslation": "把有关目前研究的 数据做了整理。",
+    "category": "N3"
+  },
+  {
+    "word": "〜せいで・せいだ・ せいか 〜せいで・せいだ・ せいか",
+    "partOfSpeech": "文法",
+    "meaning": "由于・・・的缘故。 原料が安いせいか、この 製品は値段が安い。",
+    "exampleTranslation": "大 概是原材料便宜，所以这 个产品的价格便宜。",
+    "category": "N3"
+  },
+  {
+    "word": "〜とともに 〜とともに",
+    "partOfSpeech": "文法",
+    "meaning": "和……一起；……同时；随着…… 逐渐…… 同じ夢を持っている仲間 とともに夢を叶えるために頑張っていく。",
+    "exampleTranslation": "与拥 有共同梦想的同伴一起为 了实现梦想而努力。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ことから 〜ことから",
+    "partOfSpeech": "文法",
+    "meaning": "因为……。 学生であることから、22 時以降はゲームセンターで遊べません。",
+    "exampleTranslation": "因为是 学生，所以22点后就不能 在游戏中心玩。",
+    "category": "N3"
+  },
+  {
+    "word": "〜だけ 〜だけ",
+    "partOfSpeech": "文法",
+    "meaning": "只有；把某事做到……的极限范 围。；把某事做到……的极限范 围。 高いケーキを１つだけ買 いました。",
+    "exampleTranslation": "就买了一个 昂贵的蛋糕。",
+    "category": "N3"
+  },
+  {
+    "word": "〜かな・〜 かなあ 〜かな・〜 かなあ",
+    "partOfSpeech": "文法",
+    "meaning": "表示怀疑或疑问 あと、30分でコンサートが始まっちゃう。電車が 遅れてるし、間に合うかなあ。",
+    "exampleTranslation": "还有30分钟音乐 会就要开始了。电车来得 太迟了，不知道能不能赶 上。",
+    "category": "N3"
+  },
+  {
+    "word": "〜さいちゅうに 〜最中 に",
+    "partOfSpeech": "文法",
+    "meaning": "正在……时。 食事の最中に大きな地震 が起こった。",
+    "exampleTranslation": "正在吃饭的 时候发生了强烈的地震。",
+    "category": "N3"
+  },
+  {
+    "word": "〜など 〜など",
+    "partOfSpeech": "文法",
+    "meaning": "像……之类的 試験も近いし、ゲームなどしている暇はない。",
+    "exampleTranslation": "临近考试了，没时间玩游 戏之类的的了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜たびに 〜たびに",
+    "partOfSpeech": "文法",
+    "meaning": "每次……都会…… このカードを見るたびに、胸がドキドキします",
+    "exampleTranslation": "\"每次看见这张卡 我都 会心动不已\"",
+    "category": "N3"
+  },
+  {
+    "word": "〜といけないから 〜といけないから",
+    "partOfSpeech": "文法",
+    "meaning": "避免前项不好的情况，所以做后 项。 忘れるといけないから、 すぐにメモしておきましょう。",
+    "exampleTranslation": "不能忘了这件 事，先记下来吧。",
+    "category": "N3"
+  },
+  {
+    "word": "〜によってわ 〜によっては",
+    "partOfSpeech": "文法",
+    "meaning": "根据……情况，也有……。 国によっては、食べ物、 飲み物持ち込み可のレストランもある。",
+    "exampleTranslation": "根据各 个国家不同，也有可以自 带食物、饮料的餐厅。",
+    "category": "N3"
+  },
+  {
+    "word": "〜むけだ・〜 むけに・〜 むけの 〜向けだ・〜 向けに・〜 向けの",
+    "partOfSpeech": "文法",
+    "meaning": "面向……；为了……；以……为受 众。 この本は難読漢字が多いので、子供でなく、大人 向けだ。",
+    "exampleTranslation": "这本书有很多 难读的汉字，是面向大人 的，不面向小孩。",
+    "category": "N3"
+  },
+  {
+    "word": "〜かわりに 〜かわりに",
+    "partOfSpeech": "文法",
+    "meaning": "作为替代，作为补偿。；代 替……。",
+    "category": "N3"
+  },
+  {
+    "word": "〜てもはじまらない 〜ても 始まらない",
+    "partOfSpeech": "文法",
+    "meaning": "就算现在开始……也没用",
+    "exampleTranslation": "没用意 义。 愚痴を言っていても始まらない。/发牢骚也没 用。",
+    "category": "N3"
+  },
+  {
+    "word": "〜おそれがある 〜おそれがある",
+    "partOfSpeech": "文法",
+    "meaning": "有……（不好）的可能。 事故があったので、予定 の時間に到着しないおそれがあります。",
+    "exampleTranslation": "路上遇到 了事故，可能没办法准时 到达。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ほど 〜ほど",
+    "partOfSpeech": "文法",
+    "meaning": "达到……的程度。 死ぬほど嬉しいです！",
+    "exampleTranslation": "\"开心到快要死掉 了！\"",
+    "category": "N3"
+  },
+  {
+    "word": "〜にはんして・〜 にはんする 〜に反 して・〜 に反する",
+    "partOfSpeech": "文法",
+    "meaning": "与……相反。 予想に反して、試験はとても難しかった。",
+    "exampleTranslation": "跟預 想中的相反，這次考試很 難。",
+    "category": "N3"
+  },
+  {
+    "word": "〜にくらべて 〜に比 べて",
+    "partOfSpeech": "文法",
+    "meaning": "与…相比 今年は去年に比べて猛暑 の日が多いらしい。",
+    "exampleTranslation": "和 去年相比，今年酷热的日 子好像较多。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ということだ 〜ということだ",
+    "partOfSpeech": "文法",
+    "meaning": "听说……，据说……。 新聞によると、先日起きた事件の犯人が捕まったということだ。",
+    "exampleTranslation": "新闻上 说，前几天发生的事件的 犯人抓到了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜きる 〜きる",
+    "partOfSpeech": "文法",
+    "meaning": "做完…… この小説をやっと読みきった。",
+    "exampleTranslation": "终于看完了这 本小说。",
+    "category": "N3"
+  },
+  {
+    "word": "〜というより （も） 〜というより （も）",
+    "partOfSpeech": "文法",
+    "meaning": "与其说……不如说…… この絵本は子供向けの作 品というより、むしろ大 人向けのものでしょう。",
+    "exampleTranslation": "这本书与其说是面 向儿童的，不如说是面向 成人的",
+    "category": "N3"
+  },
+  {
+    "word": "〜わりに 〜わりに",
+    "partOfSpeech": "文法",
+    "meaning": "没想到…… この鞄は高いわりに、よく売れる。",
+    "exampleTranslation": "这款包虽然 贵，但是很畅销。",
+    "category": "N3"
+  },
+  {
+    "word": "〜つもりだ 〜つもりだ",
+    "partOfSpeech": "文法",
+    "meaning": "本来有……的打算。；打算……； 表示“（虽然实际情况并非如此或 是别人并不这样认为，但）自己觉 得〜”。 こんなに汚いのに、それでも掃除したつもりですか。",
+    "exampleTranslation": "都这么脏了，你还 觉得已经打扫过了吗？",
+    "category": "N3"
+  },
+  {
+    "word": "〜わけにはいかない 〜わけにはいかない",
+    "partOfSpeech": "文法",
+    "meaning": "不能……；不可以……。",
+    "category": "N3"
+  },
+  {
+    "word": "〜によって ⓪ 〜によって",
+    "partOfSpeech": "文法",
+    "meaning": "……根据……有变。 文化は国によって異なる。",
+    "exampleTranslation": "每个国家的文化都 不同。",
+    "category": "N3"
+  },
+  {
+    "word": "〜はずがない 〜はずがない",
+    "partOfSpeech": "文法",
+    "meaning": "应该不……，不可能……。",
+    "category": "N3"
+  },
+  {
+    "word": "〜につき 〜につき",
+    "partOfSpeech": "文法",
+    "meaning": "每……。 ここの時給は1時間につき900円です。",
+    "exampleTranslation": "这里的时 薪是1小时900日元。",
+    "category": "N3"
+  },
+  {
+    "word": "〜ではないか 〜ではないか",
+    "partOfSpeech": "文法",
+    "meaning": "用于力荐自己的主张、提议和劝 诱，并征求同意；那不就是〜吗； 不是吗、也许是吧 たっぷり休んだし、もう 少し登ろうではないか。",
+    "exampleTranslation": "休息了很久，就让 我们再爬一会儿吧。",
+    "category": "N3"
+  },
+  {
+    "word": "〜にかわって・にかわり 〜に代 わって・にかわり",
+    "partOfSpeech": "文法",
+    "meaning": "代替……。 後輩に代わって、私が責 任を取ることになった。",
+    "exampleTranslation": "我代替後輩擔負起 了責任。",
+    "category": "N3"
+  },
+  {
+    "word": "〜にとって 〜にとって",
+    "partOfSpeech": "文法",
+    "meaning": "对……来说。 私にとって、漢字の勉強 はとても楽しい。",
+    "exampleTranslation": "对我 来说，学汉字十分开心。",
+    "category": "N3"
+  },
+  {
+    "word": "〜とはかぎらない 〜とは 限らない",
+    "partOfSpeech": "文法",
+    "meaning": "不见得……；未必……。 海外に住んだからと言って、英語がペラペラになるとは限らない。",
+    "exampleTranslation": "虽说 是住在国外，但英语也不 一定很流利。",
+    "category": "N3"
+  },
+  {
+    "word": "〜がきっかけで・〜 をきっかけに 〜がきっかけで・〜 をきっかけに",
+    "partOfSpeech": "文法",
+    "meaning": "以……为契机 インターネットで日本人 の友達ができたことがきっかけで日本語を勉強 するようになった。",
+    "exampleTranslation": "由 于在网上和日本人成为朋 友这个契机，我开始学日 语了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜てたまらない 〜てたまらない",
+    "partOfSpeech": "文法",
+    "meaning": "忍不住……，受不了……；非 常……。 期待していた海外旅行が 行けなくなった。残念でたまらない。",
+    "exampleTranslation": "期待已久 的出国旅行去不成了，遗 憾死了。",
+    "category": "N3"
+  },
+  {
+    "word": "〜わけだ/〜 とゆーわけだ 〜わけだ / 〜 というわけだ",
+    "partOfSpeech": "文法",
+    "meaning": "所以（当然）就…… 彼女の両親は先生なんですか。それで、彼女も先 生になりたいというわけなんですね。",
+    "exampleTranslation": "原来她的 父母是老师啊？所以她也 想成为老师。",
+    "category": "N3"
+  },
+  {
+    "word": "〜によると 〜によると",
+    "partOfSpeech": "文法",
+    "meaning": "根据…… 天気予報によると、明日 は雨だそうです。",
+    "exampleTranslation": "據天氣 預報說，明天會下雨。",
+    "category": "N3"
+  }
+]

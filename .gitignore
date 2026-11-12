@@ -41,7 +41,11 @@ Thumbs.db
 # Claude local settings
 .claude/settings.local.json
 
-# 原始学习资料（不入库）
-英语单词/
-日语单词/
+# 原始学习资料（只入库 json 导入数据，其余 md/pdf/bak/中间产物不入库）
+英语单词/**/*.*
+!英语单词/**/*.json
+英语单词/.work/
+日语单词/**/*.*
+!日语单词/**/*.json
+日语单词/**/*.json.bak
 .playwright-cli/

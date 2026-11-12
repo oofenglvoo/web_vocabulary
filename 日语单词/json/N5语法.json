@@ -1,0 +1,88 @@
+﻿[
+  {
+    "word": "~てもいいですか 〜てもいいですか",
+    "partOfSpeech": "文法",
+    "meaning": "……可以吗？ 試着してもいいですか。",
+    "exampleTranslation": "可以试穿吗？",
+    "category": "N5"
+  },
+  {
+    "word": "〜てはいけない 〜てはいけない",
+    "partOfSpeech": "文法",
+    "meaning": "不可以；如果……就不行。 この川で泳いではいけません。",
+    "exampleTranslation": "不能在这条河里 游泳。",
+    "category": "N5"
+  },
+  {
+    "word": "方",
+    "reading": "かた",
+    "accent": "②",
+    "partOfSpeech": "名",
+    "meaning": "方，方向，方面；位，人；地方，场所；（下多接否定语）手段，方法；时期时分",
+    "example": "田中さんという方。",
+    "exampleTranslation": "姓田中的那位。",
+    "category": "N5"
+  },
+  {
+    "word": "〜ないで〜 〜ないで〜",
+    "partOfSpeech": "文法",
+    "meaning": "没……就……。 今朝、朝ごはんを食べないで学校に来ました。",
+    "exampleTranslation": "今天早上，我没吃早饭就 去学校了。",
+    "category": "N5"
+  },
+  {
+    "word": "~ないでください 〜ないでください",
+    "partOfSpeech": "文法",
+    "meaning": "请不要……。 パクチーは入れないでください。",
+    "exampleTranslation": "请不要放香 菜。",
+    "category": "N5"
+  },
+  {
+    "word": "〜たり〜たり 〜たり〜たり",
+    "partOfSpeech": "文法",
+    "meaning": "既……又……。 土曜日は買い物したり、 映画を見たりしました。",
+    "category": "N5"
+  },
+  {
+    "word": "~とき 〜とき",
+    "partOfSpeech": "文法",
+    "meaning": "……时……。 ご飯を食べるとき、「いただきます」といいます。",
+    "exampleTranslation": "吃饭时，要说“我开 动了。”",
+    "category": "N5"
+  },
+  {
+    "word": "〜まえに 〜前に",
+    "partOfSpeech": "文法",
+    "meaning": "在……之前。 旅行する前に、観光地やオススメのレストランなどを調べておきます。",
+    "exampleTranslation": "旅 行前，要先做好相关景点 和推荐餐厅的调查。",
+    "category": "N5"
+  },
+  {
+    "word": "〜ましょう 〜ましょう",
+    "partOfSpeech": "文法",
+    "meaning": "表劝诱。 一緒に、帰りましょう。",
+    "exampleTranslation": "一起回去吧。",
+    "category": "N5"
+  },
+  {
+    "word": "〜なる 〜なる",
+    "partOfSpeech": "文法",
+    "meaning": "变成……，变为……。 5年ぶりに会ったけど、 だいぶ背が高くなったね。",
+    "exampleTranslation": "時隔5年未見，你已 經長得很高了呢。",
+    "category": "N5"
+  },
+  {
+    "word": "〜ながら〜 〜ながら〜",
+    "partOfSpeech": "文法",
+    "meaning": "一边……一边……。 日本語の勉強をしながらテレビを見ます。",
+    "exampleTranslation": "我一边 学日语，一边看电视。",
+    "category": "N5"
+  },
+  {
+    "word": "〜てもらう 〜てもらう",
+    "partOfSpeech": "文法",
+    "meaning": "说话人请别人做某事；说话人承受 了由于别人的动作而带来的恩惠。 係りの人に切符を交換してもらいました。",
+    "exampleTranslation": "请工 作人员给我换了车票。",
+    "category": "N5"
+  }
+]
