@@ -6,6 +6,10 @@ dist/
 dist-android/
 dist-ssr/
 
+# 浏览器扩展构建产物与测试用临时 profile
+extension/dist/
+tmp-ext-*/
+
 # Vite cache
 .vite/
 
@@ -38,5 +42,6 @@ Thumbs.db
 .claude/settings.local.json
 
 # 原始学习资料（不入库）
+英语单词/
 日语单词/
 .playwright-cli/

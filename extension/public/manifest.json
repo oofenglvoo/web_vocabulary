@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "划词词汇助手",
+  "version": "1.0.0",
+  "description": "在任意网页划词查词，一键收藏到本地词汇应用。",
+  "action": {
+    "default_title": "划词词汇助手",
+    "default_popup": "src/popup/index.html"
+  },
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": ["storage", "activeTab", "scripting", "offscreen"],
+  "host_permissions": [
+    "<all_urls>",
+    "https://r.jina.ai/*",
+    "https://cn.bing.com/*",
+    "http://127.0.0.1:5199/*",
+    "http://localhost:5199/*"
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

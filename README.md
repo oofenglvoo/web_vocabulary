@@ -61,6 +61,7 @@
 - **笔记**: 日语词支持笔记字段——词库卡片直接展示；学习翻面与词条详情页可现场查看/编辑（学习过程中无需中断即可记录释义笔记）
 - **分类语言隔离**: 分类归属语言（en/ja），各语言只见自己的分类；导入时缺失的日语分类自动创建
 - **本地存储**: IndexedDB (Dexie.js v14) 持久化，无需后端
+- **浏览器划词扩展**: 独立 MV3 扩展，任意网页划词查词并一键收藏到指定分类（详见文末「浏览器划词扩展」章节）
 
 ## 技术栈
 
@@ -90,6 +91,11 @@ npm run build
 # 运行 E2E 测试（98 用例，含语言切换/数据隔离/滚动恢复回归）
 npm run test:e2e
 
+# 浏览器划词扩展：构建 / 类型检查 / 端到端测试（详见文末「浏览器划词扩展」章节）
+npm run build:extension
+npm run typecheck:extension
+npm run test:e2e:extension
+
 # 安卓 APK 打包（需先配置 Capacitor）
 npm run build:android   # VITE_ANDROID=1 tsc && vite build
 ```
@@ -116,8 +122,30 @@ src/
     useFavorites / useCheckIn                                  # 收藏夹与打卡
   db/             # Dexie 数据库配置与迁移 (v14: 分类语言归属)
   types/          # TypeScript 类型定义
-  utils/          # 工具函数 (srs 7周期算法, tts, dictionary 在线词典（必应）, dictionaryPrefs 自动查词典偏好, translation 在线翻译多通道, import, export, search, achievements, studyPrefs, categoryType)
+  utils/          # 工具函数 (srs 7周期算法, tts, dictionary 在线词典（必应）, dictionaryPrefs 自动查词典偏好, translation 在线翻译多通道, import, export, search, achievements, studyPrefs, categoryType, embedProtocol/embedBridge 扩展桥接)
 ```
+
+`extension/` 为独立的浏览器划词扩展（MV3，单独构建到 `extension/dist`），详见文末章节：
+
+```
+extension/
+  public/manifest.json      # MV3 清单
+  vite.config.ts            # 多入口构建
+  src/background.ts         # service worker：待办暂存、打开面板、offscreen 委派
+  src/content.ts            # 划词捕获 + Shadow DOM 气泡
+  src/offscreen/            # 隐藏文档：跑 DOMParser 解析必应词典
+  src/popup/                # 面板：iframe 内嵌 app（?embed=1）
+  src/shared/               # 协议副本与拆词逻辑
+```
+
+### 本地目录与忽略规则
+
+以下目录只存在于本机，**不入版本库**（已写入 `.gitignore`）：
+
+- `英语单词/`、`日语单词/`：原始学习资料与导入流水线中间产物（`*_convert.json` / `*_import.json` / `.work/`），仅用于生成导入文件
+- `node_modules/`、`dist/`、`dist-android/`、`extension/dist/`：依赖与构建产物
+- `test-results/`、`playwright-report/`、`playwright-artifacts/`、`.playwright-cli/`：测试产物
+- `.claude/settings.local.json`：本机 Claude Code 权限配置
 
 ## 架构说明：双语言统一页面
 
@@ -125,3 +153,96 @@ src/
 - 学习题型的 `StudyItem` 抽象统一两种词条：英语音标槽 / 日语假名槽，释义渲染由各语言映射函数提供
 - 分类通过 `Category.lang` 字段隔离；日语导入自动创建缺失的日语分类
 - 备份（`utils/backup.ts`）包含全部 11 张表，覆盖两种语言的完整数据
+
+## 浏览器划词扩展（规划与进度）
+
+在任意网页划词快速查词，并一键收藏到本应用的指定分类。**这不是 web 应用的一部分，而是独立的 MV3 浏览器扩展（`extension/` 目录，单独构建）**。
+
+### 功能目标
+
+- 划选网页文字 → 就近弹出浮动气泡，展示单词音标与前若干条中文释义，可展开查看完整词典面板
+- 支持一次划选一句话，自动拆成多个单词逐个查询；多次划选可累积成待处理清单
+- 点击气泡「收藏」→ 自动弹出面板，把单词写入指定分类（分类选择持久记忆，下次默认复用）
+- 遇同名单词完全跳过，不改动旧数据
+- 交付方式：Chrome 开发者模式加载未打包扩展（不上架商店）
+
+### 架构
+
+```
+[任意网页] 划选文字
+   → content script：捕获 selection、拆词、Shadow DOM 气泡、累积清单
+   → background(service worker)：协调 content 与 popup；查词转交 offscreen
+   → offscreen 文档：有 DOM，跑 DOMParser 解析必应词典 HTML
+   → popup 窗口：iframe 内嵌 app 的 ?embed=1 精简模式
+   → postMessage（同源）
+   → app EmbedHost：校验来源 → 写 IndexedDB（新建 words / 建分类；同名词跳过）
+```
+
+**为什么必须走这条路**：扩展运行在任意网页 origin，跨 origin 无法直接读写 app 的 IndexedDB。唯一无后端可行方案 = 让 app 自身在 `?embed=1` 精简模式下接收 `postMessage` 并写库。
+
+**关键约束与对策**：
+
+| 约束 | 对策 |
+| --- | --- |
+| MV3 service worker 无 DOM（`DOMParser` 不可用） | 用 `chrome.offscreen` 隐藏文档承接词典解析 |
+| service worker 无法主动向 iframe 发消息 | 收藏时用 `chrome.windows.create` 打开 popup 窗口，popup 主动拉取待办并自动提交 |
+| content script 不支持 ESM `import` | content 脚本自包含，内联协议字符串 |
+| popup 内嵌 app 需快速加载 | app 支持 `?embed=1` 精简模式：只挂消息监听，不渲染整站 |
+| `r.jina.ai` 对自动化 profile 触发 Cloudflare 挑战 | 扩展测试把代理前缀 `VITE_DICT_PROXY` 指向本地 mock 服务器 |
+| MV3 无头模式不注入 content script | 扩展 E2E 必须 headful 运行 |
+
+### 阶段计划与进度
+
+| 阶段 | 内容 | 状态 |
+| --- | --- | --- |
+| 1 | app 侧 embed 基础设施：协议、`EmbedHost`、`main.tsx` 的 `?embed=1` 分支 | ✅ 完成 |
+| 2 | 扩展骨架：`manifest.json`、Vite 多入口构建、popup iframe 握手 | ✅ 完成 |
+| 3 | 词典能力：复用 app `dictionary.ts`、拆词、offscreen 代理查词、划词气泡 | ✅ 完成 |
+| 4 | 收藏闭环：气泡收藏 → 自动打开面板 → `postMessage` → 建词/建分类、同名词跳过 | ✅ 完成 |
+| 5 | 累积清单 + 目标分类持久记忆 | ⏳ 进行中 |
+| 6 | 文档与构建脚本收尾 | ⏳ 待办 |
+
+### 已完成实现要点
+
+**app 侧（`src/`）**
+- `utils/embedProtocol.ts`：消息协议常量与类型（唯一事实源，扩展 `shared/protocol.ts` 与之对齐）
+- `utils/embedBridge.ts`：`collectEmbedWords` / `ensureEmbedCategory` / `listEmbedCategories`，落库逻辑（自动建英语分类、同名词跳过、SRS 字段初始化）
+- `pages/EmbedHost.tsx`：embed 模式精简宿主，挂 `postMessage` 监听（校验 `event.source === window.parent`）
+- `main.tsx`：按 `?embed=1` 分流渲染 `EmbedHost`，非 embed 路径完全不变
+- `utils/dictionary.ts` 两处兼容性调整：`window.setTimeout` → 全局 `setTimeout`（SW/offscreen 通用）；代理前缀支持 `VITE_DICT_PROXY` 覆盖
+
+**扩展侧（`extension/`）**
+- `public/manifest.json`：MV3，权限 `storage`/`activeTab`/`scripting`/`offscreen` + `<all_urls>`
+- `vite.config.ts` + `build-for-test.mjs`：多入口构建（background/content 固定文件名）
+- `src/background.ts`：待办暂存（`chrome.storage.session`）、`openCollectPanel`（复用/新建 popup 窗口）、offscreen 委派查词、结果回传标签页
+- `src/offscreen/`：隐藏文档，复用 app `dictionary.ts` 完成必应解析
+- `src/content.ts`：划词捕获、拆词、Shadow DOM 气泡、查词渲染、收藏触发、结果 toast
+- `src/popup/`：iframe 内嵌 `?embed=1`、握手、分类列表、待办自动提交、完成后面板自动关闭
+- `src/shared/protocol.ts` / `tokens.ts`：协议副本与拆词逻辑
+
+### 构建与命令
+
+```bash
+# 构建扩展（输出 extension/dist）
+npm run build:extension
+
+# 扩展类型检查
+npm run typecheck:extension
+
+# 扩展 E2E：内部先做测试构建（代理指向本地 mock），再跑 Playwright
+npm run test:e2e:extension
+```
+
+**加载扩展**：Chrome → `chrome://extensions` → 开启开发者模式 → 「加载已解压的扩展程序」→ 选 `extension/dist`。默认 iframe 指向本地 dev 服务器 `http://127.0.0.1:5199/web_vocabulary/?embed=1`，使用前需先 `npm run dev`。
+
+### 测试
+
+- `tests/embed.spec.ts`：app 侧 embed 模式（协议握手、落库、同名词跳过、分类列表、跨源 iframe 通信）
+- `tests/extension.spec.ts`：真实加载扩展（划词查词、拆词、停用词过滤、收藏闭环）
+- `playwright.extension.config.ts`：扩展专用配置（`launchPersistentContext`，headful）
+- 词典网络在扩展测试中被 mock（`r.jina.ai` 对自动化 profile 会触发 Cloudflare 挑战）
+
+### 待办（阶段 5–6）
+
+- 阶段 5：划选累积清单的跨次持久化；目标分类记忆的完善（已部分落地于 `chrome.storage.local` 的 `vocab.targetCategory`）
+- 阶段 6：`AGENTS.md` / `tests/TESTING.md` 的扩展章节补充；`.gitignore` 排除 `extension/dist` 与临时 profile

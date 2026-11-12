@@ -1,12 +1,10 @@
 # Web Vocabulary App — 功能测试用例文档
 
-> 版本：1.3 | 日期：2026-09-10 | 测试范围：全功能模块
+> 版本：1.4 | 日期：2026-09-23 | 测试范围：全功能模块 + 浏览器划词扩展
 >
 > 本文档站在专业功能测试人员角度，对应用所有页面和功能进行系统分析，生成可执行的测试用例。
 >
-> **执行状态：122 个 E2E 测试通过，1 个场景跳过**（11 个 spec 文件）
->
-> 测试框架：Playwright · 执行命令：`npm run test:e2e` · 报告：`npx playwright show-report`
+> 测试框架：Playwright · 执行命令：`npm run test:e2e`（web）、`npm run test:e2e:extension`（扩展） · 报告：`npx playwright show-report`
 
 ---
 
@@ -24,6 +22,7 @@
 10. [全局与边界](#10-全局与边界)
 11. [在线翻译增量测试](#11-在线翻译增量测试)
 12. [在线词典增量测试](#12-在线词典增量测试)
+13. [浏览器扩展测试](#13-浏览器扩展测试)
 
 ---
 
@@ -69,6 +68,38 @@
 | TC-DICT-020 | 日语词不自动查词典 | 日语词详情无自动查词典按钮、不展开面板 |
 
 在线接口同样用 `page.route` mock：词典 mock 必应通道（经 `r.jina.ai` 代理返回 HTML 片段），翻译 mock Google / MyMemory，保证结果确定。
+
+## 13. 浏览器扩展测试
+
+浏览器划词扩展（`extension/`，MV3）有两组测试：
+
+**app 侧 embed 模式**（`tests/embed.spec.ts`，走主配置 `npm run test:e2e`）：
+
+| 编号 | 测试点 | 预期结果 |
+|------|--------|---------|
+| TC-EMBED-001 | `?embed=1` 只渲染精简宿主 | 显示「划词助手已连接」，不渲染完整应用导航 |
+| TC-EMBED-002 | 首次加载发送 ready 握手 | 挂载即向父级 `postMessage` `vocab:embed-ready`（含协议版本） |
+| TC-EMBED-003 | collect 写入单词并自动创建分类 | 收到 collect 后新建词条、自动建英语分类、回传结果 |
+| TC-EMBED-004 | 同名单词跳过 | 大小写不同的同名词被跳过，旧数据不被改动 |
+| TC-EMBED-005 | 请求分类列表 | 返回英语分类名数组 |
+| TC-EMBED-006 | 跨源 iframe 通信 | 父页面跨源内嵌时，postMessage 完整走通并落到 iframe 的 IndexedDB |
+
+**扩展端到端**（`tests/extension.spec.ts`，`npm run test:e2e:extension`，配置 `playwright.extension.config.ts`）：
+
+| 编号 | 测试点 | 预期结果 |
+|------|--------|---------|
+| TC-EXT-001 | 划选单词弹出气泡 | 气泡显示单词、音标与中文释义 |
+| TC-EXT-002 | 划选一句话自动拆词 | 气泡统计「共 N 个」 |
+| TC-EXT-003 | 停用词与过短词过滤 | 「The adequate」只识别出 adequate |
+| TC-EXT-010 | 收藏闭环 | 点气泡「收藏」自动打开面板，单词落入指定分类 |
+| TC-EXT-011 | 同名单词再次收藏 | 面板落库后被跳过，库里仍只有一条 |
+
+扩展测试的环境约束：
+
+- **必须 headful**：MV3 无头模式不注入 content script。
+- **词典请求走本地 mock**：`r.jina.ai` 对自动化 profile 触发 Cloudflare 挑战，故 `npm run build:extension:test` 把 `VITE_DICT_PROXY` 指向本地 mock 服务器（端口 5397）；offscreen 文档发起的 fetch 不被 Playwright 路由拦截，只能改端点。
+- **dev 服务器由测试自行启停**：popup 内嵌 `http://127.0.0.1:5199/web_vocabulary/?embed=1`。
+- 运行前需先构建扩展：`npm run test:e2e:extension` 已内置测试构建。
 
 ## 1. 单词管理
 

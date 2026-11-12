@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
+import { EmbedHost } from './pages/EmbedHost'
 import './index.css'
 import { initDarkMode } from './utils/theme'
 import { db } from './db/database'
+import { isEmbedMode } from './utils/embedProtocol'
 
 initDarkMode()
 
@@ -43,10 +45,10 @@ if (!rootEl) {
   throw new Error('找不到 #root 挂载点，请检查 index.html')
 }
 
+const embed = isEmbedMode()
+
 ReactDOM.createRoot(rootEl).render(
   <React.StrictMode>
-    <DatabaseGate>
-      <App />
-    </DatabaseGate>
+    <DatabaseGate>{embed ? <EmbedHost /> : <App />}</DatabaseGate>
   </React.StrictMode>,
 )

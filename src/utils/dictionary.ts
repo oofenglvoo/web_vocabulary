@@ -4,7 +4,8 @@
 // 结果按 30 天缓存在 localStorage，重复查询不再走网络。
 
 const BING_DICT_ENDPOINT = 'https://cn.bing.com/dict/search'
-const JINA_PROXY = 'https://r.jina.ai/'
+// 代理前缀，默认 r.jina.ai；可通过 VITE_DICT_PROXY 覆盖（扩展端测试指向本地 mock 服务器）。
+const JINA_PROXY = import.meta.env?.VITE_DICT_PROXY || 'https://r.jina.ai/'
 const CACHE_PREFIX = 'vocab.dictionary:'
 const REQUEST_TIMEOUT_MS = 8000
 const CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 30
@@ -95,11 +96,12 @@ function cacheKey(word: string) {
 
 async function fetchWithTimeout(url: string, init?: RequestInit): Promise<Response> {
   const controller = new AbortController()
-  const timeout = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+  // 用全局 setTimeout 而非 window.setTimeout：service worker / offscreen 等无 window 环境也能运行
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
   try {
     return await fetch(url, { ...init, signal: controller.signal })
   } finally {
-    window.clearTimeout(timeout)
+    clearTimeout(timeout)
   }
 }
 

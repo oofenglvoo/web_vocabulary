@@ -11,7 +11,11 @@
     "test:e2e": "playwright test",
     "test:e2e:translation": "playwright test tests/translation.spec.ts",
     "test:e2e:dictionary": "playwright test tests/dictionary.spec.ts",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "build:extension": "tsc -p extension/tsconfig.json && vite build --config extension/vite.config.ts",
+    "build:extension:test": "tsc -p extension/tsconfig.json && node extension/build-for-test.mjs",
+    "test:e2e:extension": "npm run build:extension:test && playwright test --config playwright.extension.config.ts",
+    "typecheck:extension": "tsc -p extension/tsconfig.json"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.0",
@@ -30,6 +34,7 @@
   "devDependencies": {
     "@playwright/test": "^1.62.1",
     "@types/canvas-confetti": "^1.9.0",
+    "@types/chrome": "^0.3.0",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
