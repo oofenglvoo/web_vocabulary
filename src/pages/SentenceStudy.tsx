@@ -328,10 +328,11 @@ export function SentenceStudy() {
 
   useEffect(() => {
     // 回忆式：加载完成后队列清空(所有词都"认识")才算完成；
-    // 其他模式：index 走完。都需 !loading，避免初始空队列/未加载时误判完成
+    // 其他模式：index 走完。都需 !loading，避免初始空队列/未加载时误判完成；
+    // 回忆式额外要求本轮确实有短句，否则无到期短句进入复习页会被误判成"复习完成"
     const completed = !loading
       ? studyType === 'recall'
-        ? queue.length === 0
+        ? startTotal > 0 && queue.length === 0
         : total > 0 && index >= total
       : false
     if (completed && !done) {

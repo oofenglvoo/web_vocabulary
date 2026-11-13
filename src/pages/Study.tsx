@@ -404,10 +404,11 @@ export function Study() {
   // 回忆式：队列清空(所有词都"认识")即完成；其他模式：index 走完
   useEffect(() => {
     // 回忆式：加载完成后队列清空(所有词都"认识")才算完成；
-    // 其他模式：index 走完。都需 !loading，避免初始空队列/未加载时误判完成
+    // 其他模式：index 走完。都需 !loading，避免初始空队列/未加载时误判完成；
+    // 回忆式额外要求本轮确实有词，否则无到期词进入复习页会被误判成"复习完成"
     const completed = !loading
       ? studyType === 'recall'
-        ? queue.length === 0
+        ? initialItems.length > 0 && queue.length === 0
         : total > 0 && index >= total
       : false
     if (completed && !done) {
@@ -434,7 +435,6 @@ export function Study() {
   const reachedEnd = initialItems.length > 0 && (
     studyType === 'recall' ? queue.length === 0 : total > 0 && index >= total
   )
-
   // 空队列
   if (total === 0 && !done && !reachedEnd) {
     return (

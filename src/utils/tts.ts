@@ -3,8 +3,9 @@
 //
 // 英语: 有道词典真人发音 https://dict.youdao.com/dictvoice?audio=<word>&type=<1|2>
 //   type=1 英音, type=2 美音
-// 日语: Google 翻译 TTS https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ja&q=<word>
-//   (有道 dictvoice 对日文只返回无效音频,不能用作日语发音源)
+// 日语: 有道词典日语发音 https://dict.youdao.com/dictvoice?le=jap&audio=<word>
+//   (Google 翻译 TTS 现被 Chrome 的 ORB 拦截 net::ERR_BLOCKED_BY_ORB,
+//    fetch 也因缺少 CORS 头失败,故改用有道的 le=jap 通道)
 // 注意: 两者均为公开但非官方的接口,无 SLA 保证。
 
 export type Accent = 'us' | 'uk'
@@ -100,9 +101,9 @@ function youdaoUrl(word: string, accent: Accent) {
   return `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=${type}`
 }
 
-function googleTtsUrl(word: string) {
-  // 仅用于日语发音(英语走有道真人音频)
-  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ja&q=${encodeURIComponent(word.slice(0, 200))}`
+function youdaoJaUrl(word: string) {
+  // 有道日语发音通道(le=jap);实测假名/汉字均可正常播放
+  return `https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(word.slice(0, 200))}`
 }
 
 /**
@@ -180,9 +181,9 @@ export async function speakWord(
   }
 
   if (lang === 'ja') {
-    // 有道 dictvoice 对日文返回无效音频;自动模式下日语改用 Google 翻译 TTS
+    // 自动模式下日语走有道 le=jap 通道(Google 翻译 TTS 已被 ORB 拦截)
     if (provider === 'auto') {
-      const result = await speakRemoteAudio(googleTtsUrl(w), myToken)
+      const result = await speakRemoteAudio(youdaoJaUrl(w), myToken)
       if (myToken !== speakToken) return
       if (result === 'played') return
     }
