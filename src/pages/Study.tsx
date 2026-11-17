@@ -515,7 +515,7 @@ export function Study() {
           )}
 
           <button
-            onClick={() => navigate(planIdNum ? '/plan' : '/')}
+            onClick={() => navigate(planIdNum ? '/plan' : '/', { replace: true })}
             className="btn-secondary w-full"
           >
             {planIdNum ? '返回计划' : '返回首页'}
