@@ -515,10 +515,10 @@ export function Study() {
           )}
 
           <button
-            onClick={() => navigate(planIdNum ? '/plan' : '/', { replace: true })}
+            onClick={() => navigate('/', { replace: true })}
             className="btn-secondary w-full"
           >
-            {planIdNum ? '返回计划' : '返回首页'}
+            返回首页
           </button>
         </motion.div>
       </div>
