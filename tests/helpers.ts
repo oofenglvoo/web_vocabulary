@@ -11,6 +11,42 @@ export function url(path: string): string {
 
 export { BASE }
 
+/**
+ * 在 /plan 页创建一个「全部」来源的单词计划，返回计划 ID。
+ * 可选题型参数用于验证计划级题型配置（不传即保持默认 = 跟随全局）。
+ */
+export async function createWordPlan(
+  page: Page,
+  name: string,
+  opts?: { newType?: string; reviewType?: string }
+): Promise<string> {
+  await page.goto(url('/plan'))
+  await page.getByRole('button', { name: /创建学习计划/ }).click()
+  const overlay = page.locator('.modal-overlay')
+  await page.getByPlaceholder(/例如/).fill(name)
+  await overlay.getByRole('button', { name: /全部/ }).click()
+  if (opts?.newType) {
+    await overlay
+      .getByText('新学题型')
+      .locator('..')
+      .getByRole('button', { name: opts.newType, exact: true })
+      .click()
+  }
+  if (opts?.reviewType) {
+    await overlay
+      .getByText('复习题型')
+      .locator('..')
+      .getByRole('button', { name: opts.reviewType, exact: true })
+      .click()
+  }
+  await page.getByRole('button', { name: /创建计划/ }).click()
+  await page.getByText(name, { exact: true }).first().waitFor({ timeout: 10000 })
+  const href = await page.locator('a[href*="/plan/"][href$="/words"]').first().getAttribute('href')
+  const id = href?.match(/\/plan\/(\d+)\/words/)?.[1]
+  if (!id) throw new Error('未找到新建计划 ID')
+  return id
+}
+
 /** Moji 学习流程：进入当天词表后确认开始测试 */
 export async function startStudyTest(page: Page) {
   const startButton = page.getByRole('button', { name: '开始测试', exact: true })

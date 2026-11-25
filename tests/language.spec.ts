@@ -274,3 +274,48 @@ test('TC-LANG-013: 日语导入同分类重复词条后搜索显示全部结果'
   await search.fill('重複語')
   await expect(page.getByText('重複語', { exact: true })).toHaveCount(2)
 })
+
+test('TC-LANG-014: 日语计划可单独设置学习题型', async ({ page }) => {
+  await switchLang(page, '日语')
+  // 两个日语词：保证计划有可学内容
+  const words: [string, string, string][] = [
+    ['食べる', 'たべる', '吃'],
+    ['飲む', 'のむ', '喝'],
+  ]
+  for (const [kanji, kana, trans] of words) {
+    await page.goto(url('/add'))
+    await page.getByPlaceholder('如：食べる').fill(kanji)
+    await page.getByPlaceholder('如：たべる').fill(kana)
+    await page.getByPlaceholder('中文翻译').first().fill(trans)
+    await page.getByRole('button', { name: '保存', exact: true }).click()
+    await page.waitForURL(/\/words$/)
+  }
+
+  // 新建日语计划并把新学题型设为选择题
+  await page.goto(url('/plan'))
+  await page.getByRole('button', { name: '新建计划' }).click()
+  const overlay = page.locator('.modal-overlay')
+  await page.getByPlaceholder(/CET-4/).fill('日语题型计划')
+  await overlay.getByRole('button', { name: /全部/ }).click()
+  await expect(overlay.getByText('新学题型')).toBeVisible()
+  await overlay
+    .getByText('新学题型')
+    .locator('..')
+    .getByRole('button', { name: '选择题', exact: true })
+    .click()
+  await page.getByRole('button', { name: /创建计划/ }).click()
+  await expect(page.getByText('日语题型计划').first()).toBeVisible({ timeout: 10000 })
+
+  const href = await page.locator('a[href*="/plan/"][href$="/words"]').first().getAttribute('href')
+  const planId = href?.match(/\/plan\/(\d+)\/words/)?.[1]
+  if (!planId) throw new Error('未找到新建日语计划 ID')
+
+  await page.goto(url(`/study?plan=${planId}&mode=learn`))
+  await startStudyTest(page)
+  await expect(page.getByText('新学 · 选择题')).toBeVisible({ timeout: 10000 })
+
+  // 计划级题型只落库到日语计划表，不污染全局
+  const globalPrefs = await page.evaluate(() => localStorage.getItem('vocab.study.prefs'))
+  expect(globalPrefs).toBeNull()
+})
+

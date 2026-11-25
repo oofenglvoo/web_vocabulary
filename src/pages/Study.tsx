@@ -17,17 +17,18 @@ import {
   getRandomLangWords,
   toLangStudyItem,
   getLangAllTranslations,
+  updateLangPlanSettings,
 } from '../hooks/languageAware'
 import { LangWord } from '../hooks/languageAware'
 import { useLang } from '../context/Language'
 import type { LangPlan } from '../hooks/languageAware'
 import { speakWord, unlockTts } from '../utils/tts'
-import { getStudyType } from '../utils/studyPrefs'
+import { resolveStudyType, STUDY_TYPE_LABEL } from '../utils/studyPrefs'
 import { StudyItem } from '../components/study/types'
 import { RecallMode } from '../components/study/RecallMode'
 import { ChoiceMode } from '../components/study/ChoiceMode'
 import { QuickMode, QuickRating } from '../components/study/QuickMode'
-import { StudyTypeSettings } from '../components/StudyTypeSettings'
+import { StudyTypeSettings, PlanTypeContext } from '../components/StudyTypeSettings'
 import { prefetchWordDetail } from '../App'
 import { BackButton } from '../components/BackButton'
 import { useToast } from '../components/Toast'
@@ -72,10 +73,10 @@ export function Study() {
   const [confirmStartTest, setConfirmStartTest] = useState(false)
   // 题型版本号：切题型时递增，强制重渲染让 studyType 重新读 localStorage
   const [studyTypeVersion, setStudyTypeVersion] = useState(0)
-  // 依赖 studyTypeVersion：切题型时重算题型（重新读 localStorage）
+  // 依赖 studyTypeVersion：切题型时重算题型（计划级优先，未配置回退全局）
   const studyType = useMemo(
-    () => getStudyType(isReviewMode),
-    [studyTypeVersion, isReviewMode] // eslint-disable-line react-hooks/exhaustive-deps
+    () => resolveStudyType(isReviewMode, plan),
+    [studyTypeVersion, isReviewMode, plan?.newType, plan?.reviewType] // eslint-disable-line react-hooks/exhaustive-deps
   )
   // 选择题当前项的干扰项
   const [choiceDistractors, setChoiceDistractors] = useState<string[]>([])
@@ -120,7 +121,12 @@ export function Study() {
     requeuedRef.current = new Set()
     recallProgressRef.current = new Map()
     allTranslationsRef.current = null
+    setPlan(null)
     let items: { word: LangWord; isReview: boolean }[] = []
+    // 本轮实际题型：计划级配置优先，未配置回退全局。
+    // 必须用局部变量——首次渲染时 plan 还是 null，render 期的 studyType 会读到全局值，
+    // 用它去取进度快照会因题型不符而误删计划级快照。
+    let effectiveType = resolveStudyType(isReviewMode, null)
     if (planIdNum) {
       const p = await getLangPlan(planIdNum)
       if (!p) {
@@ -128,6 +134,7 @@ export function Study() {
         return
       }
       setPlan(p)
+      effectiveType = resolveStudyType(isReviewMode, p)
       if (isReviewMode) {
         const reviewWords = await getLangTodayReviewWords(p)
         items = reviewWords.map((w) => ({ word: w, isReview: true }))
@@ -147,7 +154,7 @@ export function Study() {
     let studyItems: StudyItem[] = items.map(({ word, isReview }) =>
       toLangStudyItem(word, isReview)
     )
-    const savedProgress = getStudyProgress(lang, planIdNum, isReviewMode, isExtra, studyType)
+    const savedProgress = getStudyProgress(lang, planIdNum, isReviewMode, isExtra, effectiveType)
     if (savedProgress) {
       const savedWords = await getLangWordsByIds(savedProgress.queue.map((item) => item.id))
       const wordMap = new Map(savedWords.map((word) => [word.id!, word]))
@@ -161,7 +168,7 @@ export function Study() {
     } else {
       setIndex(0)
     }
-    if (studyType === 'quick') {
+    if (effectiveType === 'quick') {
       const savedRatings = getQuickProgress(lang, planIdNum, isExtra)
       setQuickRatings(
         Object.fromEntries(
@@ -424,6 +431,26 @@ export function Study() {
     }
   }, [loading, index, total, done, queue.length, studyType])
 
+  // 齿轮的上下文：带计划时改当前计划题型，自由学习时改全局默认
+  const planTypeContext: PlanTypeContext | undefined =
+    planIdNum && plan
+      ? {
+          planName: plan.name,
+          newType: plan.newType,
+          reviewType: plan.reviewType,
+          onPersist: async (patch) => {
+            try {
+              await updateLangPlanSettings(planIdNum, patch)
+            } catch (e) {
+              toast('error', '题型保存失败: ' + (e as Error).message)
+              throw e
+            }
+            // plan 是一次性快照，必须本地 patch，否则 studyType 仍读旧值
+            setPlan((prev) => (prev ? { ...prev, ...patch } : prev))
+          },
+        }
+      : undefined
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -537,7 +564,10 @@ export function Study() {
                 <Target size={11} /> {plan.name}
               </span>
             )}
-            <StudyTypeSettings onChange={() => { setDone(false); setStudyTypeVersion((v) => v + 1) }} />
+            <StudyTypeSettings
+              plan={planTypeContext}
+              onChange={() => { setDone(false); setStudyTypeVersion((v) => v + 1) }}
+            />
           </div>
         </div>
         <div className="flex justify-center mb-3">
@@ -580,7 +610,7 @@ export function Study() {
             >
               <h2 className="font-bold text-lg dark:text-gray-100">开始测试？</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 mb-5">
-                开始测试后将进入{STUDY_TYPE_LABEL_ZH[studyType]}，不能返回当天学习列表。
+                开始测试后将进入{STUDY_TYPE_LABEL[studyType]}，不能返回当天学习列表。
               </p>
               <div className="flex gap-2">
                 <button onClick={() => setConfirmStartTest(false)} className="btn-secondary flex-1">继续学习</button>
@@ -616,7 +646,10 @@ export function Study() {
               ? `剩余 ${queue.length}`
               : `${Math.min(index + 1, total)} / ${total}`}
           </span>
-          <StudyTypeSettings onChange={() => { setDone(false); setStudyTypeVersion((v) => v + 1) }} />
+          <StudyTypeSettings
+            plan={planTypeContext}
+            onChange={() => { setDone(false); setStudyTypeVersion((v) => v + 1) }}
+          />
         </div>
       </div>
 
@@ -624,15 +657,15 @@ export function Study() {
       <div className="flex justify-center mb-2">
         {isReviewMode ? (
           <span className="chip bg-accent-50 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400">
-            <RefreshCw size={11} /> 复习 · {STUDY_TYPE_LABEL_ZH[studyType]}
+            <RefreshCw size={11} /> 复习 · {STUDY_TYPE_LABEL[studyType]}
           </span>
         ) : isExtra ? (
           <span className="chip bg-warn-50 dark:bg-warn-900/30 text-warn-600 dark:text-warn-400">
-            <Sparkles size={11} /> 加学 · {STUDY_TYPE_LABEL_ZH[studyType]}
+            <Sparkles size={11} /> 加学 · {STUDY_TYPE_LABEL[studyType]}
           </span>
         ) : (
           <span className="chip bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400">
-            <Sparkles size={11} /> 新学 · {STUDY_TYPE_LABEL_ZH[studyType]}
+            <Sparkles size={11} /> 新学 · {STUDY_TYPE_LABEL[studyType]}
           </span>
         )}
       </div>
@@ -713,10 +746,4 @@ export function Study() {
 
     </div>
   )
-}
-
-const STUDY_TYPE_LABEL_ZH: Record<string, string> = {
-  recall: '回忆式',
-  choice: '选择题',
-  quick: '快速自测',
 }

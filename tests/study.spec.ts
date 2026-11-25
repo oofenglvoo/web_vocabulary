@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { url, startStudyTest } from './helpers'
+import { url, startStudyTest, createWordPlan } from './helpers'
 
 async function addWords(page: import('@playwright/test').Page, words: [string, string][]) {
   for (const [word, trans] of words) {
@@ -412,4 +412,68 @@ test('TC-STUDY-FREE-002: 无词可学', async ({ page }) => {
   await page.goto(url('/study'))
   await page.waitForTimeout(1500)
   await expect(page.getByText('今日学习已完成!')).toBeVisible()
+})
+
+// ===== 计划级题型 =====
+
+test('TC-STUDY-TYPE-PLAN-001: 计划内齿轮改题型写入计划', async ({ page }) => {
+  await addWords(page, [['apple', '苹果']])
+  const planId = await createWordPlan(page, '齿轮计划', { newType: '选择题' })
+  await page.goto(url(`/study?plan=${planId}&mode=learn`))
+  await startStudyTest(page)
+  await expect(page.getByText('新学 · 选择题')).toBeVisible({ timeout: 10000 })
+
+  await page.getByRole('button', { name: '题型设置' }).click()
+  const overlay = page.locator('.modal-overlay')
+  await expect(overlay.getByText(/当前计划：齿轮计划/)).toBeVisible()
+  await overlay
+    .getByText('新学题型')
+    .locator('..')
+    .getByRole('button', { name: '快速自测', exact: true })
+    .click()
+  await overlay.getByRole('button', { name: '关闭', exact: true }).click()
+  await expect(page.getByText('新学 · 快速自测')).toBeVisible()
+
+  // 刷新后仍生效（已写入计划）
+  await page.reload()
+  await startStudyTest(page)
+  await expect(page.getByText('新学 · 快速自测')).toBeVisible({ timeout: 10000 })
+
+  // 全局配置未被改动
+  const globalPrefs = await page.evaluate(() => localStorage.getItem('vocab.study.prefs'))
+  expect(globalPrefs).toBeNull()
+})
+
+test('TC-STUDY-TYPE-PLAN-002: 计划内可改回跟随全局且不影响自由学习', async ({ page }) => {
+  await addWords(page, [['apple', '苹果']])
+  const planId = await createWordPlan(page, '跟随全局计划', { newType: '选择题' })
+  await page.goto(url(`/study?plan=${planId}&mode=learn`))
+  await startStudyTest(page)
+  await expect(page.getByText('新学 · 选择题')).toBeVisible({ timeout: 10000 })
+
+  await page.getByRole('button', { name: '题型设置' }).click()
+  let overlay = page.locator('.modal-overlay')
+  await overlay
+    .getByText('新学题型')
+    .locator('..')
+    .getByRole('button', { name: '跟随全局（当前：回忆式）' })
+    .click()
+  await overlay.getByRole('button', { name: '关闭', exact: true }).click()
+  await expect(page.getByText('新学 · 回忆式')).toBeVisible()
+
+  // 自由学习改的仍是全局配置
+  await page.goto(url('/study'))
+  await startStudyTest(page)
+  await page.getByRole('button', { name: '题型设置' }).click()
+  overlay = page.locator('.modal-overlay')
+  await overlay
+    .getByText('新学题型')
+    .locator('..')
+    .getByRole('button', { name: '选择题', exact: true })
+    .click()
+  await overlay.getByRole('button', { name: '关闭', exact: true }).click()
+  await expect(page.getByText('新学 · 选择题')).toBeVisible()
+
+  const globalPrefs = await page.evaluate(() => localStorage.getItem('vocab.study.prefs'))
+  expect(globalPrefs).toContain('choice')
 })

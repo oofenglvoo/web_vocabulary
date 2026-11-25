@@ -51,6 +51,8 @@ import {
 } from '../hooks/languageAware'
 import { bulkMarkLearned, useCategories } from '../hooks/useWords'
 import { updatePlanSettings } from '../hooks/useStudyPlan'
+import { StudyTypePicker } from '../components/StudyTypePicker'
+import { getStudyPrefs, StudyType } from '../utils/studyPrefs'
 import {
   useActiveSentencePlan,
   useAllSentencePlans,
@@ -657,6 +659,11 @@ function EditPlanModal({
   const isJa = useLang() === 'ja'
   const [name, setName] = useState(plan.name)
   const [newPerDay, setNewPerDay] = useState(plan.newPerDay)
+  // 计划级题型：undefined = 跟随全局（短句计划不展示这两项）
+  const [newType, setNewType] = useState<StudyType | undefined>(plan.newType)
+  const [reviewType, setReviewType] = useState<StudyType | undefined>(plan.reviewType)
+  const globalPrefs = getStudyPrefs()
+  const isSentencePlan = !isJa && (plan.entityType ?? 'word') === 'sentence'
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
 
@@ -673,9 +680,9 @@ function EditPlanModal({
     setSaving(true)
     try {
       const changes = { name: trimmed, newPerDay }
-      if (isJa) await updateLangPlanSettings(plan.id!, changes)
-      else if ((plan.entityType ?? 'word') === 'sentence') await updateSentencePlanSettings(plan.id!, changes)
-      else await updatePlanSettings(plan.id!, changes)
+      if (isJa) await updateLangPlanSettings(plan.id!, { ...changes, newType, reviewType })
+      else if (isSentencePlan) await updateSentencePlanSettings(plan.id!, changes)
+      else await updatePlanSettings(plan.id!, { ...changes, newType, reviewType })
       toast('success', `计划「${trimmed}」已更新`)
       onSaved()
     } catch (e) {
@@ -705,6 +712,27 @@ function EditPlanModal({
           <div className="grid grid-cols-2 gap-3">
             <NumberStepper label="每日新词" value={newPerDay} onChange={setNewPerDay} min={1} max={50} icon={Sparkles} />
           </div>
+          {!isSentencePlan && (
+            <div className="space-y-3">
+              <StudyTypePicker
+                label="新学题型"
+                value={newType}
+                globalType={globalPrefs.newType}
+                allowFollowGlobal
+                onChange={setNewType}
+              />
+              <StudyTypePicker
+                label="复习题型"
+                value={reviewType}
+                globalType={globalPrefs.reviewType}
+                allowFollowGlobal
+                onChange={setReviewType}
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                未选择时跟随学习页的全局题型设置。
+              </p>
+            </div>
+          )}
           <p className="text-xs text-gray-500 dark:text-gray-400">修改配额只影响之后的每日任务，不会重置已学习进度。</p>
         </div>
         <div className="px-5 py-3 border-t border-gray-100 dark:border-slate-700 flex gap-2">
@@ -734,6 +762,10 @@ function CreatePlanModal({
   const [sourceKind, setSourceKind] = useState<'category' | 'favorites' | 'all'>('category')
   const [sourceCategory, setSourceCategory] = useState(categories[0]?.name ?? (isJa ? '日语' : '默认'))
   const [newPerDay, setNewPerDay] = useState(10)
+  // 计划级题型：undefined = 跟随全局
+  const [newType, setNewType] = useState<StudyType | undefined>(undefined)
+  const [reviewType, setReviewType] = useState<StudyType | undefined>(undefined)
+  const globalPrefs = getStudyPrefs()
   const [error, setError] = useState('')
   const [creating, setCreating] = useState(false)
 
@@ -772,6 +804,9 @@ function CreatePlanModal({
         sourceKind,
         sourceCategory: sourceKind === 'category' ? sourceCategory : '',
         newPerDay,
+        // 未选择时不写字段（= 跟随全局）
+        ...(newType ? { newType } : {}),
+        ...(reviewType ? { reviewType } : {}),
       })
       toast('success', `计划「${n}」已创建`)
       onCreated()
@@ -874,6 +909,26 @@ function CreatePlanModal({
               max={50}
               icon={Sparkles}
             />
+          </div>
+
+          <div className="space-y-3">
+            <StudyTypePicker
+              label="新学题型"
+              value={newType}
+              globalType={globalPrefs.newType}
+              allowFollowGlobal
+              onChange={setNewType}
+            />
+            <StudyTypePicker
+              label="复习题型"
+              value={reviewType}
+              globalType={globalPrefs.reviewType}
+              allowFollowGlobal
+              onChange={setReviewType}
+            />
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              未选择时跟随学习页的全局题型设置。
+            </p>
           </div>
 
           <div className="bg-gradient-card dark:bg-slate-700/40 rounded-xl p-3.5 flex items-center gap-3">

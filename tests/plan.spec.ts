@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { url, startStudyTest } from './helpers'
+import { url, startStudyTest, createWordPlan, makeAllWordsDue } from './helpers'
 
 async function addWords(page: import('@playwright/test').Page, words: [string, string][]) {
   for (const [word, trans] of words) {
@@ -183,4 +183,41 @@ test('TC-EXTRA-005: 取消加学', async ({ page }) => {
   await expect(page.getByText('今日新词已学满')).toBeVisible()
   await page.getByRole('button', { name: '取消', exact: true }).click()
   await expect(page.getByText('今日新词已学满')).toHaveCount(0)
+})
+
+// --- 计划级题型 (TC-PLN-TYPE-001 ~ 002) ---
+
+test('TC-PLN-TYPE-001: 计划可单独指定新学题型', async ({ page }) => {
+  await addWords(page, [['apple', '苹果'], ['banana', '香蕉']])
+  // 新建时默认「跟随全局」
+  const planId = await createWordPlan(page, '题型计划', { newType: '选择题' })
+
+  await page.goto(url(`/study?plan=${planId}&mode=learn`))
+  await startStudyTest(page)
+  await expect(page.getByText('新学 · 选择题')).toBeVisible({ timeout: 10000 })
+
+  // 计划级题型不应写入全局配置
+  const globalPrefs = await page.evaluate(() => localStorage.getItem('vocab.study.prefs'))
+  expect(globalPrefs).toBeNull()
+})
+
+test('TC-PLN-TYPE-002: 复习题型与全局独立', async ({ page }) => {
+  await addWords(page, [['apple', '苹果'], ['banana', '香蕉']])
+  // 只设复习题型，新学保持跟随全局（回忆式），便于用「认识」把词标为已学
+  const planId = await createWordPlan(page, '复习题型计划', { reviewType: '快速自测' })
+
+  // 复习队列只取 startedIds 里的词，先学完两个词
+  await page.goto(url(`/study?plan=${planId}&mode=learn`))
+  await startStudyTest(page)
+  await expect(page.getByText('新学 · 回忆式')).toBeVisible({ timeout: 10000 })
+  for (let i = 0; i < 2; i++) {
+    await page.getByRole('button', { name: '认识', exact: true }).click()
+    await page.waitForTimeout(600)
+  }
+  await expect(page.getByText('今日学习已完成!')).toBeVisible({ timeout: 10000 })
+
+  await makeAllWordsDue(page)
+  await page.goto(url(`/study?plan=${planId}&mode=review`))
+  await startStudyTest(page)
+  await expect(page.getByText('复习 · 快速自测')).toBeVisible({ timeout: 10000 })
 })

@@ -12,6 +12,7 @@ import {
   StudyKind,
   Flag,
   StudySession,
+  PlanStudyTypes,
 } from '../types/word'
 import { useLang, getCurrentLang } from '../context/Language'
 import { NotesBlock } from '../components/NotesBlock'
@@ -462,7 +463,7 @@ export async function createLangPlan(input: {
   sourceCategory?: string
   newPerDay: number
   reviewPerDay?: number
-}): Promise<number> {
+} & PlanStudyTypes): Promise<number> {
   return ja() ? createJapaneseStudyPlan(input) : createPlan(input)
 }
 
@@ -478,7 +479,10 @@ export async function deleteLangPlan(id: number) {
   return ja() ? deleteJapaneseStudyPlan(id) : deletePlan(id)
 }
 
-export async function updateLangPlanSettings(id: number, changes: { name?: string; newPerDay?: number; reviewPerDay?: number }) {
+export async function updateLangPlanSettings(
+  id: number,
+  changes: { name?: string; newPerDay?: number; reviewPerDay?: number } & PlanStudyTypes
+) {
   return ja() ? updateJapaneseStudyPlanSettings(id, changes) : updatePlanSettings(id, changes)
 }
 

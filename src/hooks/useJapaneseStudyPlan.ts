@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
-import { JapaneseStudyPlan, JapaneseWord } from '../types/word'
+import { JapaneseStudyPlan, JapaneseWord, PlanStudyTypes } from '../types/word'
 import { getTodayReviewCutoff } from '../utils/srs'
 
 // 与 useStudyPlan.ts 完全对等的日语学习计划数据层：
@@ -155,7 +155,7 @@ export async function createJapaneseStudyPlan(input: {
   sourceCategory?: string
   newPerDay: number
   reviewPerDay?: number
-}): Promise<number> {
+} & PlanStudyTypes): Promise<number> {
   const wordIds = await buildJapaneseWordIdsFromSource(input.sourceKind, input.sourceCategory ?? '')
   // 新建计划时把其他激活计划置 0；事务内取回新计划 id
   let createdId = 0
@@ -180,6 +180,9 @@ export async function createJapaneseStudyPlan(input: {
         todayNewDone: 0,
         todayReviewDone: 0,
         todayExtraDone: 0,
+        // 计划级题型：未指定时不写字段（= 跟随全局）
+        ...(input.newType ? { newType: input.newType } : {}),
+        ...(input.reviewType ? { reviewType: input.reviewType } : {}),
       } as JapaneseStudyPlan)
     )
   })
@@ -206,7 +209,7 @@ export async function deleteJapaneseStudyPlan(id: number) {
 
 export async function updateJapaneseStudyPlanSettings(
   id: number,
-  changes: { name?: string; newPerDay?: number; reviewPerDay?: number }
+  changes: { name?: string; newPerDay?: number; reviewPerDay?: number } & PlanStudyTypes
 ) {
   await db.japaneseStudyPlans.update(id, changes)
 }

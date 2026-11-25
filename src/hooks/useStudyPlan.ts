@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/database'
-import { StudyPlan, Word } from '../types/word'
+import { StudyPlan, Word, PlanStudyTypes } from '../types/word'
 import { getTodayReviewCutoff } from '../utils/srs'
 
 // 当日日期字符串 (本地时区 yyyy-mm-dd)
@@ -172,7 +172,7 @@ export async function createPlan(input: {
   sourceCategory?: string
   newPerDay: number
   reviewPerDay?: number
-}): Promise<number> {
+} & PlanStudyTypes): Promise<number> {
   const wordIds = await buildWordIdsFromSource(
     input.sourceKind,
     input.sourceCategory ?? ''
@@ -205,6 +205,9 @@ export async function createPlan(input: {
         todayNewDone: 0,
         todayReviewDone: 0,
         todayExtraDone: 0,
+        // 计划级题型：未指定时不写字段（= 跟随全局）
+        ...(input.newType ? { newType: input.newType } : {}),
+        ...(input.reviewType ? { reviewType: input.reviewType } : {}),
       } as StudyPlan)
     )
   })
@@ -235,7 +238,7 @@ export async function deletePlan(id: number) {
 
 export async function updatePlanSettings(
   id: number,
-  changes: { name?: string; newPerDay?: number; reviewPerDay?: number }
+  changes: { name?: string; newPerDay?: number; reviewPerDay?: number } & PlanStudyTypes
 ) {
   await db.studyPlans.update(id, changes)
 }

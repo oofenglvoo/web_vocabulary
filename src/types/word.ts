@@ -1,3 +1,5 @@
+import type { StudyType } from '../utils/studyPrefs'
+
 // 单个释义条目：词性 + 英文释义 + 中文翻译
 export interface Definition {
   pos: string   // 词性缩写，如 n. / v. / adj. 等
@@ -194,7 +196,13 @@ export type PlanSource =
   | { kind: 'favorites' }
   | { kind: 'all' }
 
-export interface StudyPlan {
+// 计划级题型覆盖：缺省(undefined) = 跟随全局 vocab.study.prefs；仅单词/日语计划使用
+export interface PlanStudyTypes {
+  newType?: StudyType
+  reviewType?: StudyType
+}
+
+export interface StudyPlan extends PlanStudyTypes {
   id?: number
   name: string
   // 计划实体类型:单词 or 短句。旧记录无此字段时视为 'word'(向前兼容)
@@ -222,7 +230,7 @@ export interface StudyPlan {
   todayExtraDone: number
 }
 
-export interface JapaneseStudyPlan {
+export interface JapaneseStudyPlan extends PlanStudyTypes {
   id?: number
   name: string
   sourceKind: 'category' | 'favorites' | 'all'
