@@ -36,6 +36,7 @@ React 18 + TypeScript + Vite + Tailwind + Dexie (IndexedDB) vocabulary app. No b
 ## Conventions & gotchas
 
 - Use the shared component classes `.card`, `.btn-primary`, `.btn-secondary`, `.input-field` from `src/index.css`, not raw utility stacks.
+- Study card body comes from `item.renderDefs()` (`renderJaDefs` / `renderEnDefs` in `languageAware.tsx`) and is shared by `FlipCard`'s back face (recall) and `QuickMode`'s expanded row — editing it changes both. In-card audio uses `SpeakButton` (it stops propagation so tapping it won't flip the card); the list/card header keeps its own speak button.
 - Tailwind custom palette (`primary` is green, plus `accent`/`success`/`warn`) and `darkMode: 'class'`; define new colors in `tailwind.config.js`.
 - Vite injects `import.meta.env.VITE_APP_BASE` (router basename) — use it instead of hardcoding `/web_vocabulary`. `VITE_BASE` / `VITE_OUT_DIR` override defaults.
 - TTS (`src/utils/tts.ts`): both languages use Youdao `dictvoice` (English by accent `type=1|2`, Japanese via `le=jap`), falling back to Web Speech. Google Translate TTS was dropped because Chrome blocks it with `net::ERR_BLOCKED_BY_ORB`. Japanese detection only matches kana, so pure-kanji text is ambiguous.

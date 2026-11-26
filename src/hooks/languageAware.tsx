@@ -284,7 +284,11 @@ function renderJaDefs(w: JapaneseWord): ReactNode {
   return (
     <div className="space-y-3">
       <div className="bg-primary-50 dark:bg-primary-900/30 rounded-xl p-3.5">
-        <div className="text-xs text-primary-600 dark:text-primary-400 mb-1">假名{w.accent ? ' · 音调' : ''}</div>
+        <div className="flex items-center justify-between gap-2 mb-1">
+          <div className="text-xs text-primary-600 dark:text-primary-400">假名{w.accent ? ' · 音调' : ''}</div>
+          {/* 假名行内发音：学习/复习展开后不必再回到头部找播放 */}
+          <SpeakButton text={w.word} lang="ja" label="播放发音" size={14} />
+        </div>
         <p className="text-base font-medium dark:text-gray-100">
           {w.reading}
           {w.accent && <span className="ml-2 text-rose-600 dark:text-rose-300">{w.accent}</span>}
@@ -326,6 +330,16 @@ function renderEnDefs(w: Word): ReactNode {
   return (
     <>
       <div className="space-y-3">
+        {/* 音标块与日语「假名」块对称：读音旁边即可播放，头部播放按钮仍保留 */}
+        {w.phonetic?.trim() && (
+          <div className="bg-primary-50 dark:bg-primary-900/30 rounded-xl p-3.5">
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <div className="text-xs text-primary-600 dark:text-primary-400">音标</div>
+              <SpeakButton text={w.word} lang="en" label="播放发音" size={14} />
+            </div>
+            <p className="text-base font-medium dark:text-gray-100">{w.phonetic}</p>
+          </div>
+        )}
         {defs.length > 0 ? (
           defs.map((d, i) => (
             <div key={i} className="bg-gray-50 dark:bg-slate-700/60 rounded-xl p-3.5">
